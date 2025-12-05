@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> iso / bel - about me </title>
+    <link rel="icon" type="image/x-icon" href="/misc_resources/favicon_I.png">
+
+    <!-- The style.css file allows you to change the look of your web pages.
+         If you include the next line in all your web pages, they will all share the same look.
+         This makes it easier to make new pages for your site. -->
+    <link href="/style.css" rel="stylesheet" type="text/css" media="all">
+
+
+  </head>
+  <body>
+        <div id="container">
+
+            <div id="headerArea">
+                <div id="header">
+                     <div class="header-ISOBEL" id="header-ISOBEL"><a href="/"><img id='iso_bel' src="/misc_resources/ISOLogo.png"></a></div>
+                                       <script src="/scripts/headerimage.js"></script>
+
+                </div>
+                <nav id="navbar">
+                    <ul>
+                        <li><a href="/index.html">home</a></li>
+                        <li><a href="/writing/writing.html">writing</a></li>
+                        <li><a href="/art/art.html">art</a></li>
+                        <li><a href="/about/about.html">about</a></li>
+                        <li><a href="/blog/blog.html">blog</a></li>
+
+                    </ul>
+                </nav>
+            </div>
+
+            <div id="flex">
+                <aside id="leftSidebar">
+                    <script language="javascript"> 
+                    
+                    months = ['January', 'Febraury', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];         
+                    var theDate = new Date(document.lastModified);  
+                    theDate.setTime((theDate.getTime()) ) 
+                    with (theDate) { 
+                    document.write("<b>Last updated</b> <br><div style='padding-left:5px'>"+getDate()+' '+months[getMonth()]+' '+getFullYear()+' - '+(getHours() < 10 ? '0' : '') + getHours() + ':' + (getMinutes() < 10 ? '0' : '') + getMinutes()+"</div>")
+                    
+                        } 
+                    </script> 
+                    <hr>
+
+            <!-- site path!-->
+
+            <div id="sidebarSitemap">
+                            sitemap not found
+            </div>
+            <script src="/scripts/sitemap.js"></script>
+
+            <!--socials-->
+            <div id="sidebarSocials"> </div>
+                <script src="/scripts/fetchtxt.js"></script>
+                <script>fetchTxt('/text/socials.txt', 'sidebarSocials')</script>
+
+
+                    
+                </aside>
+                <main>
+                    <p><a href="https://www.npg.org.uk/collections/search/portrait/mw307536/Hon-Henrietta-Franklin-ne-Montagu"><img src="/misc_resources/hen_franklin.jpg" width="300" alt='Hon Henrietta Franklin (née Montagu) - John Singer Sargent' ></a></p><hr>
+                    <h1>about me</h1>
+
+                    <p>i'm Isobel (newly formed). i'm a few different things that i'm still trying to work together into a whole. i made this site to try and be more intentional in how i'm putting myself across, and less afraid of getting it wrong. having your own space is much better for that than social media. like, you're on my turf now.</p>
+                    
+                    <p>i suppose i've also just got a lot of interests and feel like most of them stay pretty underdeveloped because i bounce from one thing to the other. so this space is also to chuck all my mishmash of failed projects and random facts and interests, so they're easier to retrieve. tumblr's been good to me for this for 10 years, so i'll probably still use that as well.</p>
+
+                    <p>writing a 'bio' is always really difficult, isn't it? i'm making this site for myself, so in a way I don't really need one - though it feels like one of those things you ought to have. but what's the most important things to boil down? it's tempting to give like, a full biography in a kinda a/s/l format. but i think i'll do it a bit more scattered. </p>
+
+                    <p>i've pretty recently moved to london (about three months ago, at time of writing). in some ways i'd been thinking about moving here for years, ever since i graduated uni in 2021. but in other ways it just kinda happened. one job contract ran out, i was in sheffield with nothing really tying me down, and a job came up in london which i went for. god i love living in a big city. some people weren't convinced, and it has been hard, but there's not much in life you can say you've got absolutely 0 regrets about, and this is one of them. its a strange, spooky, place. </p>
+
+                    <p>i guess i can talk about work? i work ~in social housing~, an appropriately vague thing to tell people you don't know. in theory I like it a lot - there's a lot of strategy stuff for homelessness, setting powers to go after rogue landlords, helping people who are vulnerable in social housing. in practice, the reality of working for local government is doing my fucking head in. i've been around between lobbying things and frontline things and now strategic things, i feel pretty jaded about the possibility of actually effecting change, and I'm only 26. plus i figured out i was transgender pretty soon after moving, so i've kinda had that going on.</p>
+                    
+                    <p>terminally poor houseplant owner, bordering on sadistic. i keep them in a dark corner and barely water them. despite my abuse they're still reaching towards <u><a href="https://qfp.quaker.org.uk/">the light</a></u>, as are we all. </p>
+                    
+                    <hr> 
+                    <p>
+                    <div class="whitelinks"><strong><a href=/about/music.html>• listen to this shit</a></strong><br></div>
+                    <div class="whitelinks"><strong><a href=/about/reading.html>• give these a read</a></strong><br></div>
+                    <div class="whitelinks"><strong><a href=/about/misc.html>• a bit more chill / internet rubbish</a></strong><br></div>
+                    <div class="whitelinks"><strong><a href=/about/art_i_love.html>• art i ❤️❤️</a></strong><br>  </p></div>
+                    </p>
+
+                    </div>
+                </main>
+                <footer id="footer">
+                <div class="footer-quote">
+                <p id="random-quote">...</p>
+                </div>
+
+              <script src="/scripts/footerquote.js"></script>
+            </div>
+            
+
+
+            </footer>
+        </div>
+    
+    
+  </body>
+</html>

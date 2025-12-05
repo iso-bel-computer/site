@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iso / bel </title>
+    <link rel="icon" type="image/x-icon" href="/misc_resources/favicon_I.png">
+    <link href="/style.css" rel="stylesheet" type="text/css" media="all">
+    <link href="/traingame/traingame.css" rel="stylesheet" type="text/css" media="all">
+    <link href="/homepage/homepage.css" rel="stylesheet" type="text/css" media="all">    
+    <script src="/scripts/fetchtxt.js"></script>
+    <script src="/scripts/gallery.js"></script>
+    <script src="/scripts/displayrandom.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+    <script src="/scripts/clock.js"></script>
+    <style>.button {margin-right: 3px}</style>
+
+</head>
+
+<body onload="startTime(); refreshAPI()">
+    <div id="container">
+
+        <!-- HEADER -->
+        <div id="headerArea">
+                <div id="header">
+                     <div class="header-ISOBEL" id="header-ISOBEL"><a href="/"><img id='iso_bel' src="/misc_resources/ISOLogo.png"></a></div>
+                                      <script src="/scripts/headerimage.js"></script>
+
+                </div>
+
+            <nav id="navbar">
+                <ul>
+                    <li><a href="/index.html">home</a></li>
+                    <li><a href="/writing/writing.html">writing</a></li>
+                    <li><a href="/art/art.html">art</a></li>
+                    <li><a href="/about/about.html">about</a></li>
+                    <li><a href="/blog/blog.html">blog</a></li>
+                </ul>                  
+            </nav>
+        </div>
+
+        <div id="flex" >
+
+        <!-- SIDEBAR -->
+        <aside id="leftSidebar">
+
+            <div id=sidebarLastUpdate>
+                <script src="/scripts/lastupdate.js"></script> 
+                <hr>
+            </div>
+            <!-- site path!-->
+
+            <div id="sidebarSitemap">
+              sitemap not found         
+            </div>
+            <script src="/scripts/sitemap.js"></script>
+            <hr>
+            <!--statusCafe-->
+
+            <div id=sidebarStatusCafe style="margin-bottom: 7px">
+                <div id="statuscafe"><div id="statuscafe-username"></div><div id="statuscafe-content"></div><a style="font-size: x-small; text-align: right" target="_blank" href=https://status.cafe/add>update</a></div><script src="https://status.cafe/current-status.js?name=isobelh" defer></script> 
+            </div>               
+
+            <!--userboxes
+            <div id="sidebarUserbox">userboxes unavailable  </div>
+                <script>displayRandom('/text/userboxes.txt', 'sidebarUserbox').catch(error => {document.getElementById(elementId).innerHTML = 'Content unavailable';});</script>
+                -->
+            <!--socials-->
+            <div id="sidebarSocials">
+            </div>
+                <script>fetchTxt('/text/socials.txt', 'sidebarSocials')</script>
+
+
+        </aside>
+
+        <!-- CONTENT -->
+        <main>
+            
+             <div id="fromtheairbutton" style="cursor: crosshair"><h1>this is your captain.<br>we are going down.<br>we are all going down, together.</h1></div>
+                <div id="fromtheairplayer" style="display:none; transform: translateY(-300%); transition: translateY 2s ease">
+                    <iframe width="355" height="315" src="https://www.youtube.com/embed/CL2a8fos5NI?si=jgAO11w7XPn5orFi" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+
+            <script>
+                let isPlayerOpen = false
+                document.getElementById('fromtheairbutton').addEventListener('click', function() {
+                    if (isPlayerOpen === false) {
+                        document.getElementById('fromtheairplayer').style.display='block';
+                        document.getElementById('fromtheairplayer').style.transform='translateY(0%)';
+                        isPlayerOpen = true
+                    }
+                    else {
+                        document.getElementById('fromtheairplayer').style.display='none';
+                        document.getElementById('fromtheairplayer').style.transform='translateY(-300%)';
+                        isPlayerOpen = false
+                    }})
+
+            </script>
+
+            <p>hii, i'm isobel. it's good to have you here. 
+            <br><br> 
+            i'm a writer, artist, policy person, trans woman, and all round pain. living in da big apple, london uk. greatest city in the world baybee.
+            <br><br> 
+            standby...</p>
+            <hr>
+
+                         <a href="https://www.outsavvy.com/event/29926/general-trans-fest-4-day-pass-excl-sapphic-speed-dating"><img src="misc_resources/promo.png" style="max-width: 700px; border:2px black solid"></a>
+            <p>⬆️ Some of my photography is in a group show! ⬆️<br><br> It's happening at Chats Palace in Hackney, in That London, on the 20th - 23rd November. Click for more details and tickets. <br><br>I'm v excited!! Come through! </p>
+
+
+            <hr>           
+            
+            <!--site updates -->
+                <button type="button" class="collapsible"><div class="buttonlabel">updates </div></button>
+                    <div class="content">
+                        <div style="height:50vh;width:100%;border:1px inset black;overflow:auto; margin-top: 8px;">
+                            <div class="updates" style="padding-right: 3%">
+                                <p id="updates-content">Loading updates...</p><script> fetchTxt('/text/updates.txt', 'updates-content');</script>
+                            </div>
+                        </div>
+                        <br>
+                        <div style='display: flex; width: 100%; justify-content: right'> <a href='https://neocities.org/site_files/text_editor?filename=text%2Fupdates.txt'>✏️</a></div>
+
+                    </div>
+                <hr>
+
+                <!--site ideas -->
+                <button type="button" class="collapsible"><div class="buttonlabel">future site ideas </div></button>
+                    <div class="content">
+                        <div style="height:50vh;width:100%;border:1px inset black;overflow:auto; margin-top: 8px;">
+                            <div class="ideas" style="padding-right: 3%">
+                                <p id="ideas-content">Loading ideas...</p><script> fetchTxt('/text/ideas.txt', 'ideas-content');</script>
+                            </div>
+                        </div>
+                        <br>
+                        <div style='display: flex; width: 100%; justify-content: right'> <a href='https://neocities.org/site_files/text_editor?filename=text%2Fideas.txt'>✏️</a></div>
+
+                    </div>
+                <hr> 
+
+                <!--webrings -->
+                <button type="button" class="collapsible"><div class="buttonlabel">webrings</div></button>
+                    <div class="content" width="50%" style="text-align: center; margin-top: 15px;">
+                        <script src="https://transring.neocities.org/ring.js"></script>
+                    </div>
+                <hr>
+
+                <!--guest book  -->
+                <button type="button" class="collapsible"><div class="buttonlabel">sign the guestbook! </div></button>
+                    <div class="content">
+                        <iframe src="https://isobel.atabook.org/?page" style="margin-top: 10px;"width="100%" height="750px"></iframe>
+                    </div>
+                <hr>
+
+
+                <!--isopod  -->
+                <button type="button" class="collapsible"><div class="buttonlabel">my isopod :)</div></button>
+                    <div class="content">
+                        <a href="https://kelpeater.neocities.org/collections/isopods.html"><img id="ISODEBUG" src="/misc_resources/isopod.png" style="margin-top: 10px"></a>
+                    </div>
+                <hr>    
+                
+                <!--train!-->
+
+                <button type="button" id='traingamebutton' class="collapsible"><div class="buttonlabel"><div id="nextTrainButton">catch the train</div></div></button>
+                    <div class="content" style="cursor: url('/traingame/pointer.png'), auto"> 
+                        <div id="noticeboardandplatform">
+                            <!--platform-->
+                            <div id="platformcontainer">
+                                <div id="trainplatform">
+                                <div id="trains" class="trains">
+                                <img src="/misc_resources/traintransparent.gif" class="trains" id="tubeTrain"> 
+                                </div>
+                                </div>
+                            </div>
+
+                            <!--noticeboard-->
+                            <div id="noticeboardcontainer">
+                                <div id="noticeboard"> 
+                                    <div id='traintimes'><div>1. Walthamstow Central</div><div id="train1"></div></div>
+                                    <div id='traintimes'><div>2. Walthamstow Central</div><div id="train2"></div></div>
+                                    <div id='traintimes'><div>3. Walthamstow Central</div><div id="train3"></div></div>
+                                    <marquee id='scrollingtext' behavior="scroll" direction="left"><div id="victoria-status">*** STAND BACK - TRAIN APPROACHING ***</marquee>
+                                    <br>
+                                    <div style="width: 630px; display: flex; align-items: end; justify-content: space-between">
+                                        <div id="live">&#8226; Live</div>
+                                        <div id="clock"></div>
+                                        <div id="muteButton">Audio</div>
+                                    </div>
+                                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+                                    <script src="/scripts/clock.js"></script>
+                                    <script src="/scripts/mute.js"></script>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--card reader-->
+                        <div id="cardreadercontainer">
+                            <img src="/traingame/readerneutral.png" id="cardreader" style="width: 60px">
+                        </div>
+
+                        <!--debug-->
+                        <div id="debugcontent">
+                        <button type="button" class="collapsible"><div class="buttonlabel">DEBUG</div></button>
+                            <div class="content">
+                                train on platform: <div id="debugtrainOnPlatform"></div> 
+                                <br>
+                                ready to travel: <div id="debugreadyToTravel"></div> 
+                                <br>
+                                current station:  <div id="debugcurrentStation"></div> 
+                                <br>
+                                time until next train:  <div id="debugtimeUntilNextTrain"></div> 
+                                <br>
+                                click the isopod to send a train
+                                <div id="debugSendTrain"><img src="misc_resources/isopod.png" style="transform: scale(0.5)"></div> 
+                                click the ISO to refresh the API 
+                                <div id="debugRefreshAPI"><img src="/misc_resources/iso_bel.png"></div>
+                                <div id="debugConsole" style="border: black 1px solid; background-color: white; color: black;"><h3>debug log</h3></div>
+                            </div>
+                        </div>
+                        <!--load resources-->
+                        <audio id="beep-sound" src="/misc_resources/oysterbeep.mp3"></audio>
+                        <audio id="beep-declined" src="/traingame/beepdeclined.mp3"></audio>
+                        <audio id="mindthegap" src="/traingame/mindthegap.mp3"></audio>
+                        <audio id="leaveplatformsound" src="/traingame/leaveplatform.mp3"></audio>
+                        <audio id="victoriaarrive" src="/traingame/victoriaarrive.mp3"></audio>
+                        <audio id="brixtonarrive" src="/traingame/brixtonarrive.mp3"></audio>
+                        
+
+                    </div>
+                <hr>
+
+                <button type="button" class="collapsible"><div class="buttonlabel">testing area </div></button>
+                    <div class="content">
+                                        click this to change header image <img id="imageForward" src="/misc_resources/iso_bel.png" style="margin-top: 10px"><br>
+                click this to change header image <img id="imageBackward" src="/misc_resources/iso_bel.png" style="margin-top: 10px">
+
+                <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                let imageForward = document.getElementById('imageForward')
+                let imageBackward = document.getElementById('imageBackward')
+
+                let header = document.getElementById('header')  // Define header variable
+                let imageno = 0
+
+                function imageChange(direction) {
+
+                    fetch('/headerimages/headerimages.txt')
+                    .then(response => response.text())
+                    .then(data => {
+                        const headerImages = data.trim().split('\n');
+                        
+                        imageno = imageno + direction;
+                        
+                        if (imageno >= headerImages.length) {
+                            imageno = 0;
+                        }
+                        if (imageno <= 0) {
+                            imageno = headerImages.length;
+                        }
+
+                        header.style.backgroundImage = `url(${headerImages[imageno]})`;
+                    })
+                }
+
+                imageForward.addEventListener('click', function() {imageChange(1)})
+                imageBackward.addEventListener('click', function() {imageChange(-1)})
+
+                });
+
+                </script>
+
+                    </div>
+            <hr>
+
+            <!--buttons !-->
+            <div width="100%" style="display: flex; justify-content: flex-end; margin-top: 20px">
+                <div class=button><a href="/"><img src="/misc_resources/iso_bel.png"></a></div>
+                <div class=button><a href=https://marcypink.neocities.org><img src="/misc_resources/transrights.png"></a></div>
+                <div class=button><img src="/misc_resources/oysterbutton.png" id="oyster" draggable="true" style="cursor: url('/traingame/pointer.png'), auto;"></div>
+                <div class=button><a href=https://sitesforpalestine.neocities.org><img src=https://sitesforpalestine.neocities.org/graphics/freegaza.png></a></div>
+                <div class=button><a href=https://get.adobe.com/uk/reader><img src=https://anlucas.neocities.org/GETACRO.gif style="max-width:168px"></a></div>
+            </div>
+
+            <!--scripts -->
+            <script src="/traingame/traingame.js"></script>
+            <script src="/scripts/buttons.js"></script>
+            <script src="/scripts/footerquote.js"></script>
+        </main> 
+        </div>
+
+        <footer id="footer">
+            <div class="footer-quote"><p id="random-quote">...</p></div>
+        </footer>
+
+    </div>
+  </body>
+</html>

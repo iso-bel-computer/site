@@ -1,0 +1,231 @@
+        
+{
+
+    "watched4": {
+        "title": "Just Because You're Paranoid Doesn't Mean They Aren't Watching You",
+        "thumbnail": "/art/photos/bcurparanoid/i-culturalbody.png",
+        "link": "/art/photos/bcurparanoid/i-culturalbody.png",
+        "desc": "i - the monster's body is a cultural body",
+        "nsfw": false,
+        "about": "<p>This trans pride was my first public event where I felt confident enough to go presenting as a woman.</p>"
+    },
+
+    "watched1": {
+        "title": "Just Because You're Paranoid Doesn't Mean They Aren't Watching You",
+        "thumbnail": "/art/photos/bcurparanoid/ii-alwaysescapes.png",
+        "link": "/art/photos/bcurparanoid/ii-alwaysescapes.png",
+        "desc": "ii - the monster always escapes",
+        "nsfw": false,
+        "about": "<p>I took my camera hoping to capture pictures of trans joy and improve my confidence in publicly transitioning (which I did get!). However, as we were marching, I felt more moved to try to capture the looks we got from spectators, random people out shopping or hanging out, obviously taken aback by the parade. </p>"
+
+
+    },
+
+    "watched2": {
+        "title": "Just Because You're Paranoid Doesn't Mean They Aren't Watching You",
+        "thumbnail": "/art/photos/bcurparanoid/iii-categorycrises.png",
+        "link": "/art/photos/bcurparanoid/iii-categorycrises.png",
+        "desc": "iii - the monster is the harbinger of category crises",
+        "nsfw": false,
+                "about": "<p>I felt enraged by how many of them stood there, scowls on their faces, or pointing and jeering, and filming what I experienced as a beautiful march. I don’t know what’s in their hearts, but I think the pictures get across in their facial expressions and body language a mixture of disgust, humour, and maybe a bit of intrigue or longing? </p>"
+
+    },
+    
+      "watched3": {
+        "title": "Just Because You're Paranoid Doesn't Mean They Aren't Watching You",
+        "thumbnail": "/art/photos/bcurparanoid/iv-gatesofdifference.png",
+        "link": "/art/photos/bcurparanoid/iv-gatesofdifference.png",
+        "desc": "iv - the monster dwells at the gates of difference",
+        "nsfw": false,
+                "about": "<p>Being early on in my transition, I find that my experience of being trans in public is mediated and policed by a hyper-vigilance of the expressions on strangers faces, the side eyes and half-laughter as you pass by. Trans pride was the only time I felt the safety in numbers enough to photograph these hostile gazes, without fear of aggression. </p>"
+
+    },
+    
+    
+    "watched5": {
+        "title": "Just Because You're Paranoid Doesn't Mean They Aren't Watching You",
+        "thumbnail": "/art/photos/bcurparanoid/v-akindofdesire.png",
+        "link": "/art/photos/bcurparanoid/v-akindofdesire.png",
+        "desc": "v - your fear of the monster is really a kind of desire...",
+        "nsfw": false,
+                "about": "<p>By including a self portrait as the final image, I want to get across how trans people can fall into seeing ourselves through the mocking and hostile gaze of cis society. I also want it to work as an anticlimax to show the absurdity of their reactions - after all that, this is what you were looking at?</p>"
+
+    },
+    
+    "watched6": {
+        "title": "Just Because You're Paranoid Doesn't Mean They Aren't Watching You",
+        "thumbnail": "/art/photos/bcurparanoid/vi-policestheboundaries.png",
+        "link": "/art/photos/bcurparanoid/vi-policestheboundaries.png",
+        "desc": "vi - the monster polices the boundaries of the possible",
+        "nsfw": false,
+                "about": "<p>I hope the series works partly to rub their faces in how ridiculous and hateful they appear, and to make the point that, just as cis society spectates trans people as a hyper-visible cultural scapegoat, we can spectate them right back. </p>"
+
+    },
+    
+    "watched7": {
+        "title": "Just Because You're Paranoid Doesn't Mean They Aren't Watching You",
+        "thumbnail": "/art/photos/bcurparanoid/vii-thresholdofbecoming.png",
+        "link": "/art/photos/bcurparanoid/vii-thresholdofbecoming.png",
+        "desc": "vii - the monster stands at the threshold... of becoming",
+        "nsfw": false,
+                "about": "<p>We aren’t a funny freak show you can safely watch from the sidelines and film for your group chat, we see you watching us, and we’re fucking angry.</p>"
+
+    },
+
+    "transrightshumanrights": {
+        "title": "trans rights are human rights",
+        "thumbnail": "/art/photos/transrightshumanrights.png",
+        "link": "/art/photos/transrightshumanrights.png",
+        "desc": "26.07.25",
+        "nsfw": false,
+        "about": "just a few more random ones from trans pride. all of these were shot on a Nikon FE with Ilford HP5+. basic, i know..."
+
+    },
+
+    "thecistem": {
+        "title": "fuck the cis-tem",
+        "thumbnail": "/art/photos/thecistem.png",
+        "link": "/art/photos/thecistem.png",
+        "desc": "26.07.25",
+        "nsfw": false,
+        "about": "just a few more random ones from trans pride. all of these were shot on a Nikon FE with Ilford HP5+. basic, i know..."
+    },
+
+    "mumtate": {
+        "title": "light leak ghost",
+        "thumbnail": "/art/photos/mumtate.png",
+        "link": "/art/photos/mumtate.png",
+        "desc": "5.6.25",
+        "nsfw": false,
+        "about": "i've gotta get this camera fixed..."
+
+
+    },
+
+    "spidertate": {
+        "title": "spider at the tate",
+        "thumbnail": "/art/photos/spidertate.png",
+        "link": "/art/photos/spidertate.png",
+        "desc": "5.6.25",
+        "nsfw": false,
+        "about": "louise bourgeois' giant spider. i read a book by an old german guy who fucking hated this artist for some reason? anyway i saw this once when i was a kid at the guggenheim bilbao. funny to see it's still crawling around."
+
+    },
+
+
+    "watchout!!!": {
+        "title": "behind you!",
+        "thumbnail": "/art/photos/watchout.png",
+        "link": "/art/photos/watchout.png",
+        "desc": "1.8.25",
+        "nsfw": false,
+        "about": "it's been a shit day at the office, my manager chewed me out over last quarter's KPI's, and the giant head won't stop watching me, so that's just another thing on my fucking plate..."    
+
+    },
+
+    "theface": {
+        "title": "talk to the face",
+        "thumbnail": "/art/photos/theface.png",
+        "link": "/art/photos/theface.png",
+        "desc": "17.7.25",
+        "nsfw": false,
+        "about": "cause the hand aint listening"    
+
+    },
+
+
+
+    "ten": {
+        "title": "underpass (2019/20 archive)",
+        "thumbnail": "/art/photos/underpass.jpg",
+        "link": "/art/photos/underpass.jpg",
+        "desc": "i waited like an hour to get this shot lol",
+        "nsfw": false,
+        "about": "these are all old ass photos from when i was living in philly in 2019/20. they're not super high res bc flickr holds the originals hostage unless you pay the cunts for their premium account. "    
+    },
+
+    "nine": {
+        "title": "sheffield horse (2019/20 archive)",
+        "thumbnail": "/art/photos/sheffhorse.jpg",
+        "link": "/art/photos/sheffhorse.jpg",
+        "desc": "citizen! pick up that can",
+        "nsfw": false,
+        "about": "these are all old ass photos from when i was living in philly in 2019/20. they're not super high res bc flickr holds the originals hostage unless you pay the cunts for their premium account. "    
+        },
+
+    "eight": {
+        "title": "penns landing (2019/20 archive)",
+        "thumbnail": "/art/photos/pennslanding.jpg",
+        "link": "/art/photos/pennslanding.png",
+        "desc": "eliza and ruby",
+        "nsfw": false,
+        "about": "these are all old ass photos from when i was living in philly in 2019/20. they're not super high res bc flickr holds the originals hostage unless you pay the cunts for their premium account. "    
+    },
+
+    "seven": {
+        "title": "drexel (2019/20 archive)",
+        "thumbnail": "/art/photos/darklying.jpg",
+        "link": "/art/photos/darklying.jpg",
+        "desc": "good evening moody man",
+        "nsfw": false,
+        "about": "these are all old ass photos from when i was living in philly in 2019/20. they're not super high res bc flickr holds the originals hostage unless you pay the cunts for their premium account. "    
+    },
+
+    "six": {
+        "title": "penn med (2019/20 archive)",
+        "thumbnail": "/art/photos/pennmed.jpg",
+        "link": "/art/photos/pennmed.png",
+        "desc": "medicare 4 all ? ",
+        "nsfw": false,
+        "about": "these are all old ass photos from when i was living in philly in 2019/20. they're not super high res bc flickr holds the originals hostage unless you pay the cunts for their premium account. "    
+    },
+
+    "five": {
+        "title": "new york crossing (2019/20 archive)",
+        "thumbnail": "/art/photos/nycross.png",
+        "link": "/art/photos/nycross.png",
+        "desc": "feb 20",
+        "nsfw": false,
+        "about": "these are all old ass photos from when i was living in philly in 2019/20. they're not super high res bc flickr holds the originals hostage unless you pay the cunts for their premium account. "    
+    },
+
+
+    "four": {
+        "title": "city hall trumpeter (2019/20 archive)",
+        "thumbnail": "/art/photos/cityhall.jpg",
+        "link": "/art/photos/cityhall.jpg",
+        "desc": "he was playing some jazz",
+        "nsfw": false,
+        "about": "these are all old ass photos from when i was living in philly in 2019/20. they're not super high res bc flickr holds the originals hostage unless you pay the cunts for their premium account. "    
+    },
+
+    "three": {
+        "title": "it's always sunny (2019/20 archive)",
+        "thumbnail": "/art/photos/toohot.jpg",
+        "link": "/art/photos/toohot.jpg",
+        "desc": "too hot",
+        "nsfw": false,
+        "about": "these are all old ass photos from when i was living in philly in 2019/20. they're not super high res bc flickr holds the originals hostage unless you pay the cunts for their premium account. "    
+    },
+
+    "two": {
+        "title": "deer park road (2019/20 archive)",
+        "thumbnail": "/art/photos/deer_rd.jpg",
+        "link": "/art/photos/deer_rd.png",
+        "desc": "shot from bolehills",
+        "nsfw": false,
+        "about": "these are all old ass photos from when i was living in philly in 2019/20. they're not super high res bc flickr holds the originals hostage unless you pay the cunts for their premium account. "    
+    },
+
+    "one": {
+        "title": "library bird (2019/20 archive)",
+        "thumbnail": "/art/photos/bird.jpg",
+        "link": "/art/photos/bird.jpg",
+        "desc": "<3",
+        "nsfw": false,
+        "about": "these are all old ass photos from when i was living in philly in 2019/20. they're not super high res bc flickr holds the originals hostage unless you pay the cunts for their premium account. "    
+    }
+
+
+
+}

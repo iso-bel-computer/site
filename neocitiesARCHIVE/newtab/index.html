@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+   <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/x-icon" href="/misc_resources/favicon_I.png">
+    <title>new tab</title>
+    <link href="/style.css" rel="stylesheet" type="text/css" media="all">
+    <link href="/newtab/ntsplayer.css" rel="stylesheet" type="text/css" media="all">
+    <link href="/newtab/newtab.css" rel="stylesheet" type="text/css" media="all">
+    <script src="/scripts/fetchtxt.js"></script>
+    <script src="/newtab/rss.js"></script>
+
+    <script src="/newtab/newtabalerts.js"></script>
+    <script src="/newtab/newtabnews.js"></script>
+
+  </head>
+
+  <body>
+    <div id="container">
+        <div id="headerArea">
+          <nav id="navbar">
+            <ul>
+                <li><a href="/index.html">home</a></li>
+                <li><a href="/writing/writing.html">writing</a></li>
+                <li><a href="/art/art.html">art</a></li>
+                <li><a href="/about/about.html">about</a></li>
+                  <li><a href="/blog/blog.html">blog</a></li>
+            </ul>
+          </nav>
+        </div>
+
+        <div id="flex">
+
+          <main>
+                         <div style="display: flex; justify-content: center;">
+                   
+            <div class="newTabLinks">
+            
+              <a href="https://snowlithills.tumblr.com">
+                <img src="/newtab/assets/ppp.png">
+              </a>
+
+              <a href="https://neocities.org/dashboard">
+                <img src="/newtab/assets/neocities.png">
+              </a>
+              
+              <a href="https://tumblr.com">
+                <img src="/newtab/assets/tumblr.png">
+              </a>
+
+              <a href="https://www.youtube.com">
+                <img src="/newtab/assets/yt.png">
+              </a>
+
+              <a href="https://photos.google.com">
+                <img src="/newtab/assets/photos.png">
+              </a>
+
+              <a href="https://www.google.com/maps/">
+                <img src="/newtab/assets/maps.png">
+              </a>
+
+              <a href="https://www.instagram.com">
+                <img src="/newtab/assets/ig.png">
+              </a><br>
+
+              <a href="https://www.twitch.tv/traditional_scrench">
+                <img src="/newtab/assets/twitch.png">
+              </a><br>
+
+              <a href="https://gist.github.com/iso-bel-computer">
+                <img src="/newtab/assets/github.png">
+              </a><br>
+
+              <a href="https://linkedin.com">
+                <img src="/newtab/assets/linkedin.png">
+              </a><br>
+
+
+              <a href="https://patreon.com">
+                <img src="/newtab/assets/patreon.png">
+              </a><br>
+
+              <a href="https://goodreads.com">
+                <img src="/newtab/assets/goodreads.png">
+              </a><br>
+
+              <a href="https://amazon.co.uk">
+                <img src="/newtab/assets/amazon.png">
+              </a><br>
+
+              <a href="https://en.wikipedia.org">
+                <img src="/newtab/assets/wiki.png">
+              </a><br>
+
+              <a href="https://soundcloud.com">
+                <img src="/newtab/assets/soundcloud.png">
+              </a><br>
+
+
+              <a href="https://theguardian.com/uk">
+                <img src="/newtab/assets/guardian.png">
+              </a><br>
+
+              <a href="https://bsky.app">
+                <img src="/newtab/assets/bluesky.png">
+              </a><br>
+
+
+            </div>
+            </div>
+                        <hr>
+
+                                    <div style="display: flex; justify-content: center; margin-bottom: 11px">
+                                        <div id="alertWrapper"></div>
+                        </div>
+
+
+              <!--TEXT BOXES-->
+            <div class="textBoxContainer">
+              <div class='fullTextBox' id="london-content">
+                  <p>Loading...</p><script> fetchTxt('/newtab/text/london.txt', 'london-content');</script>
+              </div>
+
+              <div class='fullTextBox' id="tech-content">
+                  <p>Loading...</p><script> fetchTxt('/newtab/text/tech.txt', 'tech-content');</script>
+                    
+
+              </div>
+              <div class='fullTextBox' id="todo-content">
+                  <p>Loading...</p><script> fetchTxt('/newtab/text/todo.txt', 'todo-content');</script>
+              </div>
+              
+              <div style="display: flex">
+                    <div class="fullTextBox" id="newsDisplay">error fetching news stories.</div>
+              </div>
+             <!-- <div id="radio-display">
+
+                <audio id="nts-stream" src="https://stream-relay-geo.ntslive.net/stream"></audio>
+                <div class="audioplayer" id="nts-audio-player">           
+                  <img id="nts-logo" class='audiologo' src="/newtab/assets/nts.png">
+                  <img id="nts-button" class='playbutton' src="/newtab/assets/play.png">
+                  <div class="vl"></div>
+                  <div style='width: 100%'><p>NTS</p></div>
+
+                </div>
+
+
+                <audio id="nts2-stream" src="https://stream-relay-geo.ntslive.net/stream2"></audio>
+                <div class="audioplayer" id="nts2-audio-player">           
+                  <img id="nts2-logo" class='audiologo' src="/newtab/assets/nts.png">
+                  <img id="nts2-button" class='playbutton' src="/newtab/assets/play.png">
+                  <div class="vl"></div>
+                  <div style='width: 100%'><p>NTS 2</p></div>
+
+                </div>   
+
+                <audio id="fip-stream"  src="https://stream.radiofrance.fr/fip/fip.m3u8?id=radiofrance"></audio>
+                <div class="audioplayer" id="fip-audio-player">
+                  <img id="fip-logo" class='audiologo' src="/newtab/assets/fip.png">
+                  <img id="fip-button" class='playbutton' src="/newtab/assets/play.png">
+                  <div class="vl"></div>
+                  <div style='width: 100%'><p>FIP</p></div>
+                </div>
+
+                <audio id="r4-stream"  src="http://as-hls-ww-live.akamaized.net/pool_55057080/live/ww/bbc_radio_fourfm/bbc_radio_fourfm.isml/bbc_radio_fourfm-audio%3d96000.norewind.m3u8"></audio>
+                <div class="audioplayer" id="r4-audio-player">
+                  <img id="r4-logo" class='audiologo' src="/newtab/assets/r4.png">
+                  <img id="r4-button" class='playbutton' src="/newtab/assets/play.png">
+                  <div class="vl"></div>
+                  <div style='width: 100%'><p>Radio 4</p></div>
+                </div>
+
+
+
+
+                <script>
+                  function playAudio (player, button) 
+                    {button.addEventListener('click', () => {
+                      if (player.paused) {
+                        player.play();
+                        button.src = '/newtab/assets/pause.png';
+                      } else {
+                        player.pause();
+                        button.src = '/newtab/assets/play.png';
+                      }
+                  });}
+
+                  playAudio(
+                    document.getElementById('nts-stream'),
+                    document.getElementById('nts-button')
+                  );
+
+                  playAudio(
+                    document.getElementById('nts2-stream'),
+                    document.getElementById('nts2-button')
+                  );
+
+                  playAudio(
+                    document.getElementById('fip-stream'),
+                    document.getElementById('fip-button')
+                  );
+
+                  playAudio(
+                    document.getElementById('r4-stream'),
+                    document.getElementById('r4-button')
+                  );
+
+
+                </script>
+
+
+              </div>-->
+              
+          </div>
+
+          <script>
+            window.addEventListener('load', () => {
+              if (window.location.hash === '#autofocus') {
+                const box = document.getElementById('searchbox');
+                if (box) setTimeout(() => box.focus(), 100);
+              }
+            });
+          </script>
+          </main>
+                
+        </div>
+
+      <footer id="footer">
+        <div class="footer-quote"><p id="random-quote">...</p></div>
+      </footer>
+    </div>
+
+  <!-- PLACE SCRIPTS HERE -->
+  <script src="/scripts/footerquote.js"></script>
+
+  </body>
+</html>

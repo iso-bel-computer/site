@@ -1,0 +1,238 @@
+.textbox {
+    width: 300px;
+    margin-right: 10px;
+    box-sizing: border-box; /* Ensures padding/border don't break layout */
+    font-family: Imperator;
+    background-color: rgb(246, 241, 228);
+    border: 0px black dotted;
+    border-radius: 4px;
+
+}
+
+.defaultDisplay {
+    display: flex;           /* ← This is the key! */
+    align-items: center;     /* Centers vertically in flexbox */
+    justify-content: center; /* Centers horizontally in flexbox */
+    width: 100%;
+    height: 100%;
+}
+
+.defaultDisplay img {
+
+    filter: opacity(0.05);
+    max-width: 200px;
+    max-height: 200px;
+
+}
+
+
+#container {
+    margin: 0 auto;
+    overflow: auto;
+}
+
+
+
+#resetButton {
+    font-size: 15pt;
+    margin-top: 10px;
+    cursor: pointer;
+    max-width: 20px;
+}
+
+#infodisplay {
+    font-size: 11pt;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#infodisplay td {
+    align-content: start;
+    justify-content: start;
+    padding-right: 10px;
+}
+
+#console {
+    width: 20%;
+    max-width: 20%;
+
+    height: 500px;
+    border: black 1px solid;
+    margin-right: 10px;
+    overflow: auto;
+    padding: 10px;
+    font-size: 9pt;
+
+}
+
+#console tr {
+    transition: background-color 0.2s ease;
+    padding: 3px;
+
+}
+.active_ a {
+    color:  #000000 !important;
+
+}
+
+#console table {
+    width: 100%
+}
+
+#console tr a {
+    text-decoration: none;
+    color: rgba(162, 162, 162, 0.503);
+}
+
+
+#console tr:hover {
+    background-color:  #bdbbb8da;
+}
+
+#details {
+    width: 39.5%;
+    max-width: 39.5%;
+    height: 500px;
+    border: black 1px solid;
+    overflow: auto;
+    padding: 10px;
+    margin-right: 10px;
+}
+
+#people {
+    width: 39.5%;
+    max-width: 39.5%;
+    height: 500px;
+    border: black 1px solid;
+    overflow: auto;
+    padding: 10px;
+}
+
+
+#officersList {
+    font-size: 8pt;
+
+}
+#officersList a {
+    font-size: 8pt;
+    text-decoration: none;
+}
+
+#pastOfficers {
+    font-size: 8pt;
+    color: rgba(105, 105, 105, 0.846);
+
+}
+
+#pastOfficers a {
+    font-size: 8pt;
+    color: rgba(105, 105, 105, 0.846);
+    text-decoration: none;
+}
+
+.appointedOfficerTable {
+    width: 100%
+}
+
+.appointedOfficerName {
+    width: 60%
+}
+
+.appointedOfficerDates {
+    width: 20%;
+
+}
+
+#detailLeft {
+    width: 18%;
+    max-width: 18%;
+    border-right: rgba(138, 138, 138, 0.479) dotted 1px;
+    font-weight: bold;
+    font-size: 9pt;
+}
+
+#detailRight {
+    padding-left: 10px;
+    padding-bottom: 5px;
+}
+
+#companies1 {
+    width: 20%;
+    max-width: 20%;
+    font-size: 8pt;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+}
+
+#companies2 {
+    display: flex;
+}
+
+#resultsNumber {
+    margin-right: 4px;
+}
+
+#newsDisplay {
+    width: 100%;
+    max-width: 100%;
+    height: 200px;
+    border: black 1px solid;
+    margin-right: 5px;
+    overflow: auto;
+    padding: 10px
+}
+
+
+.bottomMargin {
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 5px;
+}
+
+.inactiveCompany, .inactiveCompany a {
+
+    color: rgba(105, 105, 105, 0.846) !important
+
+}
+
+.debugconsole {
+    width: 49%;
+    max-width: 49%;
+    height: 500px;
+    border: black 1px solid;
+    overflow: scroll;
+    white-space: pre;
+    padding: 15px;
+    margin-top: 10px;
+}
+
+.officerCompanyList a {
+    color: rgba(198, 197, 197, 0.846);
+    text-decoration: none !important
+}
+
+#consoleTitleRow {
+    overflow: hidden;
+}
+
+#accountsTableRow {
+    display: flex;
+    justify-content: start; 
+
+}
+
+#accountsOverdueAlert {
+    color: red;
+    margin-left: 8px
+
+}
+
+#officerFlags {
+    color: red;
+    font-size: 8pt;
+    font-weight: bold;
+    margin-bottom: 7px;
+}

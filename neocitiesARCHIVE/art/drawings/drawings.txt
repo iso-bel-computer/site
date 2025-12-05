@@ -1,0 +1,325 @@
+         { 
+        "fourtyone": {
+            "title": "london drawing - nina (1)",
+            "thumbnail": "/art/drawings/Nov30LDNina2.jpeg",
+            "link": "/art/drawings/Nov30LDNina1.jpeg",
+            "desc": "30.11.25 - realising that the way to do a mouth right is usually to do the shadow on the top lip, and underneath the bottom lip (or vice versa). i can't figure out if the mouth is too small or if it's just gna look like that on a side profile. i think it's a bit too far down. u gotta remember the skull! ",
+            "nsfw": false
+        },                   
+        "fourty": {
+            "title": "london drawing - nina (2)",
+            "thumbnail": "/art/drawings/Nov30LDNina1.jpeg",
+            "link": "/art/drawings/Nov30LDNina1.jpeg",
+            "desc": "30.11.25",
+            "nsfw": false
+        },           
+        "thirtynine": {
+            "title": "london drawing - elestiel",
+            "thumbnail": "/art/drawings/IMG_3111.jpg",
+            "link": "/art/drawings/IMG_3111.jpg",
+            "desc": "8.11.25",
+            "nsfw": false
+        },           
+
+        "thirtyeight": {
+            "title": "self portrait",
+            "thumbnail": "/art/drawings/selfp2510.jpeg",
+            "link": "/art/drawings/selfp2510.jpeg",
+            "desc": "25.10.25 - sideeye... ",
+            "nsfw": false
+        },           
+
+
+        "thirtyseven": {
+            "title": "london drawing",
+            "thumbnail": "/art/drawings/londondrawing2510.png",
+            "link": "/art/drawings/londondrawing2510.png",
+            "desc": "25.10.25 - hmmmmm..... good collarbones! ",
+            "nsfw": false
+        },           
+        "thirtysix": {
+            "title": "london drawing - david (1)",
+            "thumbnail": "/art/drawings/david2londondrawing.png",
+            "link": "/art/drawings/david2londondrawing.png",
+            "desc": "19.10.25 - thought i'd smashed this. look at his fucking arms!!! his tiny little matchstick arms!!! fuck!!!!! i think they're that short because they're bent at the elbows, which i've not captured?",
+            "nsfw": false
+        },   
+        
+        "thirtyfive": {
+            "title": "london drawing - david (2)",
+            "thumbnail": "/art/drawings/david1londondrawing.png",
+            "link": "/art/drawings/david2londondrawing.png",
+            "desc": "19.10.25 - beam me up scotty. this was a really really hard angle, and i think i smashed it tbh. props to the model for holding that fucking pose for half an hour (!)",
+            "nsfw": false
+        },   
+        
+        "thirtyfour": {
+            "title": "trans life drawing (stoke newington) - flora and DE",
+            "thumbnail": "/art/drawings/transLD_9Oct.jpg",
+            "link": "/art/drawings/transLD_9Oct.jpg",
+            "desc": "9.10.25 - kinda a different style! i usually do very slow construction lines, then very slow shading and contour, then very fine detail. trying to do some loose construction lines then shading first, then hard contour in a few places. it won't work for faces but it's a nice effect!! someone said my charchol was like water, which was v sweet.",
+            "nsfw": false
+        },   
+
+
+        "thirtythree": {
+            "title": "london drawing - andrew",
+            "thumbnail": "/art/drawings/ld5.10.25.jpg",
+            "link": "/art/drawings/ld5.10.25.jpg",
+            "desc": "5.10.25 - this is probs my best portrait to date? if so it's unfortunate he ended up looking like stalker, from stalker. charcoal is just better for moody atmospheres!",
+            "nsfw": false
+        },   
+
+
+        "thirtytwo": {
+            "title": "london drawing - margie",
+            "thumbnail": "/art/drawings/1_10_25_Marsha.jpg",
+            "link": "/art/drawings/1_10_25_Marsha.jpg",
+            "desc": "1.10.25 - kinda tried something different here. did the face and hands quicker and a bit more geometric to try to finish the whole thing in 30 mins. don't feel like it fully comes together? feels like two different art styles mashed into one, and the shading isn't where i'd like it to be. could be worse. - edit: coming back to this a couple weeks later i'm rly happy w it. don't count a drawing out too early!  ",
+            "nsfw": false
+        },   
+
+        "thirtyone": {
+            "title": "london drawing - jaz",
+            "thumbnail": "/art/drawings/ld290925.jpeg",
+            "link": "/art/drawings/ld290925.jpeg",
+            "desc": "28.9.25 - this took 30 minutes! really struggling to get anatomy properly scaled rn. her arm's too long as well. smh.",
+            "nsfw": false
+        },   
+        
+        "thirty": {
+            "title": "self portrait - ih",
+            "thumbnail": "/art/drawings/selfp139.jpeg",
+            "link": "/art/drawings/selfp139.jpeg",
+            "desc": "13.9.25 - waayyyyy better than the last one. v pleased.",
+            "nsfw": false
+        },
+        
+        "twennynine": {
+            "title": "candid life drawing - laura",
+            "thumbnail": "/art/drawings/lauracandid3.jpeg",
+            "link": "/art/drawings/lauracandid3.jpeg",
+            "desc": "12.9.25 - just a little 10 min one. was doing the construction lines and was thinking 'am i insanely exaggerating the hourglass here'? turns out no, some people are just built like that. crazy world.     ",
+            "nsfw": false
+        },
+
+        "twennyeight": {
+            "title": "candid life drawing - laura",
+            "thumbnail": "/art/drawings/lauracandid.jpeg",
+            "link": "/art/drawings/lauracandid.jpeg",
+            "desc": "12.9.25 - i left the face till the last minute, but it somehow still came out alright??",
+            "nsfw": false
+        },
+
+
+        "twennyseven": {
+            "title": "london drawing - ann",
+            "thumbnail": "/art/drawings/ann310825.jpeg",
+            "link": "/art/drawings/ann310825.jpeg",
+            "desc": "31.8.25 - mostly a values study. i love this class! it's so cute in a lil studio below a pub, and everyone is so friendly",
+            "nsfw": false
+        },
+
+
+        "twennysix": {
+            "title": "southeastern",
+            "thumbnail": "/art/drawings/IMG_2563.jpg",
+            "link": "/art/drawings/IMG_2563.jpg",
+            "desc": "28.8.25 - a couple of quick sketches while my trains were delayed.",
+            "nsfw": false
+        },
+
+        "twennyfive": {
+            "title": "shortlands",
+            "thumbnail": "/art/drawings/IMG_2562.jpg",
+            "link": "/art/drawings/IMG_2562.jpg",
+            "desc": "28.8.25 - there's a nice idea in this one with the transparent train i'd like to give more time.",
+            "nsfw": false
+        },
+
+
+        "twennythree": {
+            "title": "lindford water - aisling",
+            "thumbnail": "/art/drawings/24.8.25.aisling.jpeg",
+            "link": "/art/drawings/24.8.25.aisling.jpeg",
+            "desc": "24.8.25 - on a camping holiday. i've put her ear horifically far down her head. i guess you can't tell from the hair?",
+            "nsfw": false
+        },
+
+        "twennyone": {
+            "title": "everatts farm campsite - eliza",
+            "thumbnail": "/art/drawings/24.8.25.eliza.jpeg",
+            "link": "/art/drawings/24.8.25.eliza.jpeg",
+            "desc": "24.8.25 - she looks quite mean the way i've drawn her. she's actually v nice!",
+            "nsfw": false
+        },
+
+        "twenty": {
+            "title": "dulwich art group - sandra",
+            "thumbnail": "/art/drawings/sandradulwich2107.jpeg",
+            "link": "/art/drawings/sandradulwich2107.jpeg",
+            "desc": "21.8.25 - head too big!!!",
+            "nsfw": false
+        },
+
+        "nineteen": {
+            "title": "london drawing",
+            "thumbnail": "/art/drawings/ld3.6.25_1.jpeg",
+            "link": "/art/drawings/ld3.6.25_1.jpeg",
+            "desc": "3.8.25",
+            "nsfw": false
+        },
+
+        "eighteen": {
+            "title": "london drawing",
+            "thumbnail": "/art/drawings/ld3.6.25_2.jpeg",
+            "link": "/art/drawings/ld3.6.25_2.jpeg",
+            "desc": "3.8.25 - torso too tall!!",
+            "nsfw": false
+        },
+
+        "seventeen": {
+            "title": "adrian dutton",
+            "thumbnail": "/art/drawings/dutton18jul.jpeg",
+            "link": "/art/drawings/dutton18jul.jpeg",
+            "desc": "18.7.25 - pleased with this one (tho it does look a liiiiiil bit like a nazi poster - oops)",
+            "nsfw": false
+        },
+
+        "sixteen": {
+            "title": "set social - felan",
+            "thumbnail": "/art/drawings/set16jul.jpeg",
+            "link": "/art/drawings/set16jul.jpeg",
+            "desc": "16.7.25",
+            "nsfw": false
+        },
+
+        "fifteen": { 
+            "title": "set social - theo",
+            "thumbnail": "/art/drawings/set16jul2.jpeg",
+            "link": "/art/drawings/set16jul2.jpeg",
+            "desc": "16.7.25",
+            "nsfw": false
+        },
+
+        "fourteen": {
+            "title": "set social - naiomi",
+            "thumbnail": "/art/drawings/set16jul3.jpeg",
+            "link": "/art/drawings/set16jul3.jpeg",
+            "desc": "16.7.25",
+            "nsfw": false
+        },
+
+        "thirteen": {
+            "title": "dulwich art group",
+            "thumbnail": "/art/drawings/14juldulwich.jpg",
+            "link": "/art/drawings/14juldulwich.jpg",
+            "desc": "14.7.25 - happy with the shading but sorry to the model, who ive made look like a witch!",
+            "nsfw": false
+        },
+
+        "twelve": {
+            "title": "dulwich art group - intro to tonal (1)",
+            "thumbnail": "/art/drawings/7.7.4.jpeg",
+            "link": "/art/drawings/7.7.4.jpeg",
+            "desc": "7.7.25",
+            "nsfw": false
+        },
+
+        "eleven": {
+            "title": "dulwich art group - intro to tonal (2)",
+            "thumbnail": "/art/drawings/7.7.3.jpeg",
+            "link": "/art/drawings/7.7.3.jpeg",
+            "desc": "7.7.25",
+            "nsfw": false
+        },
+
+        "ten": {
+            "title": "dulwich art group - ariana (1)",
+            "thumbnail": "/art/drawings/IMG_2131.jpg",
+            "link": "/art/drawings/IMG_2131.jpg",
+            "desc": "31.6.25",
+            "nsfw": false
+        },
+
+        "nine": {
+            "title": "dulwich art group - ariana (2)",
+            "thumbnail": "/art/drawings/IMG_2132.jpg",
+            "link": "/art/drawings/IMG_2132.jpg",
+            "desc": "31.6.25",
+            "nsfw": false
+        },
+
+        "eight": {
+            "title": "set social portrait club",
+            "thumbnail": "/art/drawings/setsocial_drawing.jpeg",
+            "link": "/art/drawings/setsocial_drawing.jpeg",
+            "desc": "18.6.25",
+            "nsfw": false
+        },
+
+        "seven": {
+            "title": "london drawing - mike",
+            "thumbnail": "/art/drawings/IMG_0891.jpg",
+            "link": "/art/drawings/IMG_0891.jpg",
+            "desc": "3.5.25",
+            "nsfw": false
+        },
+
+        "six": {
+            "title": "east london strippers collective - kleo",
+            "thumbnail": "/art/drawings/IMG_0595-2.jpg",
+            "link": "/art/drawings/IMG_0595-2.jpg",
+            "desc": "7.4.25",
+            "nsfw": false
+        },
+
+        "five": {
+            "title": "east london strippers collective - skye",
+            "thumbnail": "/art/drawings/skye_elsc.jpg",
+            "link": "/art/drawings/skye_elsc.jpg",
+            "desc": "17.3.25",
+            "nsfw": false
+        },
+
+        "four": {
+            "title": "the regent arms",
+            "thumbnail": "/art/drawings/regentarms.jpeg",
+            "link": "/art/drawings/regentarms.jpeg",
+            "desc": "12.3.25",
+            "nsfw": false
+        },
+
+        "three": {
+            "title": "anomaly life drawing - leah edwardes",
+            "thumbnail": "/art/drawings/july24.jpg",
+            "link": "/art/drawings/july24.jpg",
+            "desc": "9.7.24",
+            "nsfw": false
+        },
+
+        "two": {
+            "title": "anomaly life drawing",
+            "thumbnail": "/art/drawings/purple.jpg",
+            "link": "/art/drawings/purple.jpg",
+            "desc": "7.5.24",
+            "nsfw": false
+        },
+
+        "one": {
+            "title": "anomaly life drawing",
+            "thumbnail": "/art/drawings/floristryshop.jpeg",
+            "link": "/art/drawings/floristryshop.jpeg",
+            "desc": "7.5.24",
+            "nsfw": false
+        },
+
+        "noughtptfive": {
+            "title": "anomaly life drawing",
+            "thumbnail": "/art/drawings/anomaly30apr.jpg",
+            "link": "/art/drawings/anomaly30apr.jpg",
+            "desc": "30.4.24 - this is the first drawing i've got a picture of, a few weeks into going to life classes",
+            "nsfw": false
+        }
+
+        }

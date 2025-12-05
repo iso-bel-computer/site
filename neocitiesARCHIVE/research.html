@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iso / bel </title>
+    <link rel="icon" type="image/x-icon" href="/misc_resources/favicon_I.png">
+    <link href="/style.css" rel="stylesheet" type="text/css" media="all">
+    <link href="/research/research.css" rel="stylesheet" type="text/css" media="all">    
+    <script src="/scripts/fetchtxt.js"></script>
+    <script src="/scripts/displayrandom.js"></script>
+    <script src="/research/scripts/api.js"></script>
+
+</head>
+
+<body>
+    <div id="container">
+        <div id="headerArea">
+                <div id="header">
+                     <div class="header-ISOBEL" id="header-ISOBEL"><a href="/"><img id='iso_bel' src="/misc_resources/ISOLogo.png"></a></div>
+                        <script src="/scripts/headerimage.js"></script>
+
+                </div>
+
+            <nav id="navbar">
+                <ul>
+                    <li><a href="/index.html">home</a></li>
+                    <li><a href="/writing/writing.html">writing</a></li>
+                    <li><a href="/art/art.html">art</a></li>
+                    <li><a href="/about/about.html">about</a></li>
+                    <li><a href="/blog/blog.html">blog</a></li>
+                </ul>                  
+            </nav>
+        </div>
+        <div id="flex" >
+        <aside id="leftSidebar">
+
+            <div id=sidebarLastUpdate>
+                <script src="/scripts/lastupdate.js"></script> 
+                <hr>
+            </div>
+            <!-- site path!-->
+
+            <div id="sidebarSitemap">
+              sitemap not found         
+            </div>
+            <script src="/scripts/sitemap.js"></script>
+
+            <div id="sidebarSocials">
+            </div>
+                <script>fetchTxt('/text/socials.txt', 'sidebarSocials')</script>
+
+
+        </aside>
+
+        <main>
+            <h1><div id=hidesidebarbutton>> research aid </div></h1>
+               
+
+            <!-- 
+            <button type="button" class="collapsible"><div class="buttonlabel">person lookup </div></button>-->
+            <div  display="block">
+            <p>search companies house. this won't work if you don't turn off CORS! but you shouldn't do that. it's not ready for primetime and i dont want to figure out backend ok? </p>
+                <table>
+                    <tr>
+                        <td>first name:</td>
+                        <td><input class='textbox' name="fname" type="text"></td>
+                    </tr>
+                    <tr>
+                        <td>last name:</td>
+                        <td><input class='textbox' name="lname" type="text"></td>
+                    </tr>
+                    <tr>
+                        <td>company:</td>
+                        <td><input class='textbox' name="company" type="text"></td>
+                    </tr>
+                </table>
+            <button id="companieshousebutton">search</button>
+            <button id="loadCouncillorsButton">load councillors?</button>
+            <button id="testButton">test</button>
+            <br>
+            <div id="resetButton">↺</div>
+            <div id="infodisplay">
+                <div id="console" ><div class='defaultDisplay'><img src="/research/search.png"></div></div>
+                <div id="details"><div class='defaultDisplay'><img src="/research/business.png"></div></div>
+                <div id="people"><div class='defaultDisplay'><img src="/research/person.png"></div></div>
+            </div>
+            <div id="companies1">
+                <div id="totalResults">total results: </div>
+                <div id="companies2">
+                    <div id="resultsNumber">x/x</div>
+                    <div id="backButton">←</div>
+                    <div id="fwdButton">→</div>
+                </div>
+            </div>
+            <br>
+            news stories
+            <div id="newsDisplay"></div>
+           
+           <div id="infodisplay">
+           <div class="debugconsole" id="debugconsole"></div>
+           to do - 
+           <ul>
+            <li>get the third page for people working and making api calls whenever you click on them</li>
+            <li>remember your search, maybe through cookies</li>
+            <li>simple backend so that you don't have to fuck around with cors</li>
+            <li>once the backend is done start autofetching news api</li>
+            <li>autofetch charity commission data where relevant (much more rich)</li>
+            <li>incorporate councillor & mp spreadsheet and flag where someone has run for office / is in office</li>
+            <li>some kind of social media search? not sure how to do free, esp x dot com the everything app</li>
+            <li>start pulling together selective / additional / HMO registers and merge datasets to flag landlords</li>
+
+
+           </ul>
+            </div>
+
+        </div>
+
+
+        </main> 
+        </div>
+
+        <footer id="footer">
+            <div class="footer-quote"><p id="random-quote">...</p></div>
+            <script src="/scripts/footerquote.js"></script>
+            <script src="/scripts/buttons.js"></script>
+            <script src="/scripts/pagecontrols.js"></script> 
+            <script>  hideSidebar(true, '< research aid', '> research aid')</script>
+
+        </footer>
+
+    </div>
+  </body>
+</html>

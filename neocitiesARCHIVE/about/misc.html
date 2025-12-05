@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/x-icon" href="/misc_resources/favicon_I.png">
+
+    <title> iso / bel - random shit </title>
+    <!-- The style.css file allows you to change the look of your web pages.
+         If you include the next line in all your web pages, they will all share the same look.
+         This makes it easier to make new pages for your site. -->
+    <link href="/style.css" rel="stylesheet" type="text/css" media="all">
+  </head>
+  <body>
+
+        <div id="container">
+            <div id="headerArea">
+                <div id="header">
+                     <div class="header-ISOBEL" id="header-ISOBEL"><a href="/"><img id='iso_bel' src="/misc_resources/ISOLogo.png"></a></div>
+                                     <script src="/scripts/headerimage.js"></script>
+
+                </div>
+                <nav id="navbar">
+                    <ul>
+                        <li><a href="/index.html">home</a></li>
+                        <li><a href="/writing/writing.html">writing</a></li>
+                        <li><a href="/art/art.html">art</a></li>
+                        <li><a href="/about/about.html">about</a></li>
+                        <li><a href="/blog/blog.html">blog</a></li>
+
+                    </ul>
+                </nav>
+            </div>
+
+            <div id="flex">
+                <aside id="leftSidebar">
+                    <script language="javascript"> 
+                    
+                    months = ['January', 'Febraury', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];         
+                    var theDate = new Date(document.lastModified);  
+                    theDate.setTime((theDate.getTime()) ) 
+                    with (theDate) { 
+                    document.write("<b>Last updated</b> <br><div style='padding-left:5px'>"+getDate()+' '+months[getMonth()]+' '+getFullYear()+' - '+getHours()+':'+getMinutes()+"</div>") 
+                    
+                        } 
+                    </script> 
+                    <hr>
+            <!-- site path!-->
+
+            <div id="sidebarSitemap">
+                            sitemap not found
+            </div>
+            <script src="/scripts/sitemap.js"></script>
+
+            <!--socials-->
+            <div id="sidebarSocials"> </div>
+                <script src="/scripts/fetchtxt.js"></script>
+                <script>fetchTxt('/text/socials.txt', 'sidebarSocials')</script>
+
+                </aside>
+                <main>
+                    <p><h1>a bit more chill / interent rubbish</h1>
+                    <h3>thats scrench baby</h3>
+                    <p>im a long time loyal hog of da traditional scrench, the number one transgender variety show. mondays and thursdays on twitch dot tee vee.</p>
+
+                    <script src= "https://player.twitch.tv/js/embed/v1.js"></script>
+                    <div id="scrench"></div>
+                    <script type="text/javascript">
+                    var options = {
+                        width: "100%",
+                        height: "400px",
+                        channel: "traditional_scrench",
+                    };
+                    var player = new Twitch.Player("scrench", options);
+                    player.setVolume(0);
+                    </script>
+
+                    <h3>yum yum</h3>
+                    
+                    my mate leo runs some incredible drag / club nights at wharf chambers in leeds. if ur ever lucky enough to go then u gotta. i once saw a girl tip an entire plate of spaghetti bolegnase on her lap here. <a href="https://linktr.ee/victoriapeachesx?utm_source=linktree_profile_share&ltsid=5fe5de79-cac9-4133-9bb1-4705e4a87f79"><b><u>get yerself over</b></a> </u>
+
+                </div>
+                </main>
+                <footer id="footer">
+                <div class="footer-quote">
+                <p id="random-quote">...</p>
+                </div>
+
+              <script src="/scripts/footerquote.js"></script>
+
+
+
+            </footer>
+            </div>
+            
+            
+        </div>
+    
+    
+  </body>
+</html>

@@ -1,0 +1,248 @@
+<ul>
+<li>
+
+<b>1 Dec</b> - i've not forgotten about this site, lovelies. there's a new blog post - <a href="https://iso-bel.computer/blog/1_12_25">Mati Law</a>. It's about being looked at, looking back, and placing your sight on stable ground. It's as pretentious as you'd hope. 
+
+<br><br>
+in other site news, i'm planning on moving this site off neocities soon. i'd like something with a backend - going to try to learn pythonanywhere. that'll probs mean a full rewrite, i love the web 1.0 feel of this place, but would like something i can experiment with a bit more. 
+<br><br>
+and last bit of sight news, a final callout, somewhere noone will ever read it - my photo series 'just because you're paranoid doesn't mean they're not watching you' is showing at East London Pride this weekend. it's on city island, which i've never been to, find out where it is yourself. it should be a good time xxx 
+<br>
+<br>
+
+</li>
+
+<li>
+
+<b>12 Sep</b> - been working on a research tool for the last week or so - it links to companies house and lets you explore what corporate appointments people have been made to quicly and easily. it's really just been a pet project to teach myself api's, but i have found some mildly interesting stuff out with it.
+
+<br>
+<br>
+
+i've also built a feature that crossreferences when someone's a councillor - i'd ideally want to link it to data for the register of members interests, planning decisions, landlord licenses, &c - but that takes you away from the interesting programming and into the annoying matching datasets stuff i dont want to do.  
+
+<br>
+<br>
+
+if you wanna try it out, it's <a href='/research'>here</a>. oh, i've not built a backend yet (and will struggle to with neocities ((tho not impossible!)), so you'll have to disable cross origin resource sharing before u use it. go turn it off in your developer settings. 
+<br>
+<br>
+
+done? 
+
+<br>
+<br>
+fab. now go turn it back on. don't fuck around with your browser security just because some strange lady tells you to online. are you stupid or what? 
+<br>
+<br>
+
+</li>
+<li>
+
+<b>4 Sep</b> - added some more random photos from those two rolls. i've got membership and done the training for a community darkroom now, so there should be more like that coming!  
+
+<br>
+<br>
+
+</li>
+<li>
+
+<b>3 Sep</b> - added a new photography series - 'Just Because You're Paranoid Doesn't Mean They Aren't Watching You'.  
+
+<br>
+<br>
+
+</li>
+
+<li>
+
+<b>27 Aug</b> - added a randomiser for the header images. it's a bit broken on mobile rn bc i've done the cropping too tight. also added some drawings i did on a camping trip at the weekend.  
+
+<br>
+<br>
+
+</li>
+
+
+<li>
+
+<b>22 Aug</b> - messed around and added a nsfw filter for the print. it's not acc for the OSA lol but i give my site to friends sometimes so it makes sense. plus it taught me how to use cookies! good stuff. also wrote a new system for displaying prints and drawings. pretty happy with how much i was able to code just by myself. 
+
+<br>
+<br>
+
+</li>
+<li>
+
+
+<b>21 Aug</b> - another new print!! it's got my naked ass in tho, watch yourself. oh fuck, the OSA. uhhhhh if you're under 18... go away?
+
+<br>
+<br>
+also new drawing! was loving the long pose then right at the end gave her a bobblehead. o well. 
+<br>
+<br>
+
+</li>
+<li>
+
+<b>11 Aug</b> - new print. quick march! peace n love</li>
+
+<br>
+
+
+<li>
+
+<b>3 Aug</b> - new drawings!</li>
+
+<br>
+
+
+<li>
+
+<b>25 Jul</b> - new blog post! it's good, obv. run don't walk.</li>
+
+<br>
+
+
+<li>
+
+<b>19 Jul</b> - I've been doing less on the site recently, but that's kinda bc its in a state i like. i'm regularly adding new drawing and writing to it, and as soon as i'm developing my own photos i'm gna be adding those as well. exciting!!!</li>
+
+<br>
+
+
+<li>
+
+
+<b>10 Jul</b> - new poem! i went to the london lgbt centre and they had a writing group which was rly nice. i'm not as happy with it as most of my other stuff but im tryna fire stuff off more quickly and not obsess over every last detail. it feels a lot less stressful putting something up on a website vs posting it on social media.
+
+<br> <br>
+
+also made the drop down buttons sparkle and added a userbox randomiser. peace n love
+
+<br> <br>
+
+
+</li>
+
+
+<li>
+
+<b>9 Jul</b> - adding drop shadows to everything. its web 2.0 baby. it's the future. also adding secrets here and there. click around and find them x 
+
+<br> <br>
+
+
+</li>
+
+
+
+<li>
+
+<b>8 Jul</b> - finally redid the art page! and added an auto disappearing sidebar, and a gallery button to the photography and prints sections, which i coded alllll by myself in js. <3 <3 gotta go to sleep byeeee
+
+<br> <br>
+
+
+</li>
+
+
+<li>
+
+<b>7 Jul</b> - been in a coding fugue state for the last few days. think i'm finally done. the game's still a bit broken but i want to move on to something else. maybe i'll come back to it at some point.
+
+<br> <br>
+
+also really getting to grips with css now, animated the social buttons and the sitemap, a lot of this stuff will just need going back over every page on the site and cleaning up the backend file system, and tbh i just really dont want to do that lol. javascript is fucking magic. 
+
+<br> <br>
+
+also new domain! i pulled the trigger on iso-bel.computer. luv it. 
+
+<br> <br>
+
+</li>
+
+<li>
+
+<b>4 Jul</b> - i made a little tube game! right now it just goes between brixton and victoria, i want to get all the stations on the victoria line, and hook it up to the tfl api so trains come when they arrive irl. 
+<br> <br>
+
+</li>
+
+
+<li>
+
+<b>2 Jul</b> - it's 33 fucking degrees and i have heat madness, so I added the Heat obsessed robot. this will last until i get sick of the joke. if you try to argue with me about ai i will explode you with my mind. see this <a href="/blog/25_06_25">blog post</a> for what i think abt ai. 
+
+
+<br> <br>
+also, added a section for me to quickly jot down ideas for the site in future, put a webring in (and sent the application to join off), and made myself a lil button! 
+<br> <br>
+the fucking imperator font works on safari but not anywhere else. the london underground font works on safari mobile but not on web?!?! WHAT IS GOING ON?????
+<br> <br>
+
+</li>
+
+
+<li>
+
+<b>1 Jul</b> - added a page for my life drawings. also added links to the footer quotes, which (usually) take you to the source. also also added a guestbook. also also also figured out how to put this text in a scroll box. hellooo from the box! 
+
+<br><br> 
+
+also note to self - the lovely font i use for the header (imperator plaque) is FUCKED on any browser apart from safari. googling around it looks like that's because i may have acquired it not superrr legitly. ugh. there's a solution but it involves installing some shit from the command line and fucking around with it, which i really cba to do right now. please imagine the lovely ISO / BEL in the header instead. or buy a mac. sorry! 
+<br> <br>
+
+</li>
+
+
+<li>
+
+<b>29 Jun</b> - added the lil statuscafe widget. 
+<br> <br>
+
+</li>
+
+
+
+<li>
+
+<b>27 Jun</b> - added the sitemap to every page, and made it so that it reacts to where you are in the site. also changed my social icons so they fit the colour scheme. having this site gives me a good excuse to be fussy lol. 
+<br> <br>
+
+</li>
+
+
+<li>
+
+<b>26 Jun</b> - added some little buttons to the side, and stole some wikipedia useboxes. they're cute! also figured out how to pull the sidebar from one txt file for every page. 
+<br> <br>
+
+</li>
+
+
+<li>
+
+<b>25 Jun</b> - added an 'art inspo' page to dump the stuff I like. I should put some little descriptions of why I like them there at some point. blog page is uber fucked and i don't get why. 
+
+<br> <br>
+
+also found a better way of embedding my tumblr! though its some weird low rent web widget company thing, but free is free. i had a funny idea to embed an ai chatbot like one of those happy customer help fucking things, but configure it to only talk about some obscure music or something, and redirect any question back to it. like that time claude got obsessed with the golden gate bridge. OTOH that might get me shouted at. 
+<br> <br>
+
+</li>
+
+<li>
+
+<b>24 Jun</b> - tightened up the reading section, added the one measly track i've made to the art section, added a background, figured out how to get text in the header after wrestling and tears.
+<br> <br>
+
+</li>
+
+<li>
+
+<b>23 Jun</b> - a website is born. i've set up the homepage, about me section, added some of my prints and poems. idk what this is going to be yet but i'm really enjoying just messing around.
+
+</ul>

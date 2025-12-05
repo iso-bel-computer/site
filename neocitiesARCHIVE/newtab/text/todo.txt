@@ -1,0 +1,35 @@
+<div style='text-align: center;'><h3><a href='https://neocities.org/site_files/text_editor?filename=newtab%2Ftext%2Ftodo.txt'>to do</a></h3></div>
+<b>buy</b>
+<div class=whitelinks><li><a href='https://www.punkyouth.com/products/chic-guillotine-earrings?utm_content=29C&utm_source=Facebook_ads&variant=46544227205340&utm_medium=Others&utm_campaign=250506-CATALOG-29C-Earrings&adname=Earrings&utm_id=120222650073660786&utm_term=120222650073670786&fbclid=PAQ0xDSwLAHeVleHRuA2FlbQEwAGFkaWQBqx3dE06rQgGnQIl1IfCnugDtcu8ucupYsCpPf5bjuVzCcRzpAOvl8fM_Zr-vOYJja4-Yo5w_aem_BfhjyXOvmV3qqZ3BjFaeZA'>guillotine earrings</a></li></div>
+<div class=whitelinks><li><a href='https://shop.rmg.co.uk/collections/jewellery/products/moon-stud-earrings'>moon stud earring </a></li></div>
+<div class=whitelinks><li><a href='https://www.iamvagabond.co.uk/natashatorbati'>tattoo </a></li></div>
+
+<br>
+<b>classes</b>
+<div class=whitelinks><li><a href='https://www.udemy.com/course/ableton-live-11-masterclass/?srsltid=AfmBOorxPQYN1yu51TSZG_j3VxIuggEGSYtyGXk-1QIRrQ0j2WFqxvMg&couponCode=LEARNNOWPLANSGB'>ableton</a></li></div>
+<div class=whitelinks><li><a href='https://www.bbk.ac.uk/annual-events/london-critical-theory-summer-school'>bb crit theory summer school</div></a></li>
+
+
+<br>
+<b>music</b>
+<div class=whitelinks><li><a href='https://www.nts.live/mobile/shows/the-breakfast-show-flo/episodes/the-breakfast-show-flo-22nd-october-2024'>nts - dan hancox </a></li></div>
+<div class=whitelinks><li><a href='https://soundcloud.com/boris'>soundcloud - boris </a></li></div>
+
+<br>
+<b>museums</b>
+<div class=whitelinks><li><a href='https://www.timeout.com/london/museums/museum-of-the-home'>museum of the home </a></li></div>
+<div class=whitelinks><li><a href='https://www.ltmuseum.co.uk'>tfl museum </a></li></div>
+
+
+<br>
+<b>larp</b>
+
+<div class=whitelinks><li><a href='https://www.almamaterlarp.com/copy-of-setting'>alma mater </a></li></div>
+<div class=whitelinks><li><a href='https://www.megagameassembly.com/megagame-calendar?category=uk/europe'>megagame assembly </a></li></div>
+<div class=whitelinks><li><a href='https://opentheboxproductions.co.uk'>soe resistance </a></li></div>
+
+<br>
+<b>photography</b>
+<div class=whitelinks><li><a href='https://www.digitaltruth.com/devchart.php'>developing guide </a></li></div>
+<div class=whitelinks><li><a href='https://www.instagram.com/p/DKseL8GsX6t/'>trans rage exhibition </a></li></div>
+ 

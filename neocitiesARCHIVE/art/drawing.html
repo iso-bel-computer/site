@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+
+    <!--load all the gallery resources-->
+    <script src="/scripts/gallery.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+      gallery('/art/drawings/drawings.txt')
+      })
+    </script>
+    <link href="/stylesheets/gallery.css" rel="stylesheet" type="text/css" media="all"> 
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> iso / bel - art </title>
+    <link rel="icon" type="image/x-icon" href="/misc_resources/favicon_I.png">
+    <link href="/style.css" rel="stylesheet" type="text/css" media="all"> 
+  </head>
+  <body>
+
+        <div id="container">
+            <div id="headerArea">             
+            <div id="header">
+                     <div class="header-ISOBEL" id="header-ISOBEL"><a href="/"><img id='iso_bel' src="/misc_resources/ISOLogo.png" style="transform:scale(0.27)"></a></div>
+                    <script src="/scripts/headerimage.js"></script>
+
+                </div>
+                <nav id="navbar">
+                    <ul>
+                        <li><a href="/index.html">home</a></li>
+                        <li><a href="/writing/writing.html">writing</a></li>
+                        <li><a href="/art/art.html">art</a></li>
+                        <li><a href="/about/about.html">about</a></li>
+                        <li><a href="/blog/blog.html">blog</a></li>
+
+                    </ul>
+                </nav>
+            </div>
+
+            <div id="flex">
+                    <aside id="leftSidebar" style="display: none; width: 170px;">
+                        <script src="/scripts/lastupdate.js"></script> 
+                        <hr>
+            <!-- site path!-->
+
+            <div id="sidebarSitemap">
+                <div class=sitemap>⤳<a href="/"> home</a><br></div>
+
+                <div class=sitemap>⤳⤳<a href="/writing/writing"> writing</a><br></div>
+                <div class=sitemap>⤳⤳<a href="/art/art"> art</a><br></div>
+                <div class=sitemap>⤳⤳⤳<a href="/art/photography"> photos</a><br></div>
+                <div class=sitemap>⤳⤳⤳<a href="/art/drawing"> drawing</a><br></div>
+                <div class=sitemap>⤳⤳⤳<a href="/art/prints"> prints</a><br></div>
+                <div class=sitemap>⤳⤳⤳<a href="/art/music"> music</a><br></div>
+                <div class=sitemap>⤳⤳<a href="/about/about"> about me</a><br></div>  
+                <div class=sitemap>⤳⤳⤳<a href="/about/music"> music recs</a><br></div>
+                <div class=sitemap>⤳⤳⤳<a href="/about/reading"> book recs</a><br></div>
+                <div class=sitemap>⤳⤳⤳<a href="/about/misc"> random stuff</a><br></div>
+                <div class=sitemap>⤳⤳⤳<a href="/about/art_i_love"> inspo</a><br></div>
+                <div class=sitemap>⤳⤳<a href="/blog/blog"> blog</a><br></div>
+            </div>
+            <script src="/scripts/sitemap.js"></script>
+
+            <!--socials-->
+            <div id="sidebarSocials"> </div>
+                <script src="/scripts/fetchtxt.js"></script>
+                <script>fetchTxt('/text/socials.txt', 'sidebarSocials')</script>
+                    </aside>
+
+                <main>
+                    <h1><div id=hidesidebarbutton>> life drawing </div></h1>
+                    <br>
+                    <div id=navDisplay>
+                    <div id="backButton" class="navButtons"></div> 
+                    <div style="align-content: center">
+                        <div id="imageTitle">loading...</div>
+                        <div id="imageDesc">loading...</div>
+                    </div>
+                    <div id="forwardsButton" class="navButtons">→</div> 
+                    </div>
+
+
+                <hr> 
+                <div id="imageDisplay">
+                    <img src="/art/drawings/umb.jpg">
+                </div>
+                <hr>
+                    <div style="display: flex; justify-content: space-between; margin-top: 15px">
+                        <div style="display: flex">
+                            <div id="currentImageCounter" style="margin-right: 5px">test</div>
+                            /
+                            <div id="maxImageCounter" style="margin-left: 5px">test</div>
+                        </div>
+
+                        <div id="aboutbutton" style="cursor: crosshair"><b>about</b></div>
+                    </div>                
+
+                <div id="aboutText" style="display:none">
+                    I've been doing life drawing for... about a year? and a bit? it's slow slow going to improve, but every so often you do one that you're like, 'that's alright actually'. these are those drawings. *svu noise*. i've included the models name where i've got a record of it. 
+                </div>
+            <br>
+        
+            <div style='display: flex; width: 100%; justify-content: right'> <a href='https://neocities.org/site_files/text_editor?filename=art%2Fdrawings%2Fdrawings.txt'>✏️</a></div>
+
+
+    <script>
+        let isPlayerOpen = false
+        document.getElementById('aboutbutton').addEventListener('click', function() {
+            if (isPlayerOpen === false) {
+                document.getElementById('aboutText').style.display='block';
+                isPlayerOpen = true
+            }
+            else {
+                document.getElementById('aboutText').style.display='none';
+                isPlayerOpen = false
+            }})
+
+    </script>
+
+
+                <script src="/scripts/pagecontrols.js"></script> 
+                <script>  hideSidebar(true, '< life drawing', '> life drawing')</script>
+
+          </div>
+        <script src="/scripts/buttons.js"></script>
+
+        </main>
+
+                <footer id="footer">
+
+                <div class="footer-quote">
+                <p id="random-quote">...</p>
+                </div>
+                <script src="/scripts/footerquote.js"></script>
+            </footer>
+            </div>
+        </div>
+
+
+
+
+  </body>
+</html>
