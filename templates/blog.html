@@ -28,7 +28,8 @@
 <script>
 
 function togglePost(postId) {
-    const content = document.querySelector(`#${postId} .blogcontent`);
+    const container = document.getElementById(postId);
+    const content = container.querySelector('.blogcontent');
     const isVisible = content.style.display === 'block';
 
     // Close all posts
