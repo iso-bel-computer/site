@@ -42,6 +42,13 @@ function togglePost(postId) {
     }
 }
 
+window.addEventListener('load', () => {
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+        togglePost(hash);
+    }
+});
+
 
 </script>
 
