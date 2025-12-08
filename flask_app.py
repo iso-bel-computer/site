@@ -22,10 +22,10 @@ def getBlogPosts():
             postId = filename.replace('.html','')
 
             # this is silly but it works well enough
-            postDate = postId.split('_')[0].replace('-','/')
+            postDate = postId.split('_')[0]
             months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
                       'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-            postDateSplit = postdate.split('/')
+            postDateSplit = postDate.split('-')
             displayDate = postDateSplit[2] + months[postDateSplit[1]] + postDateSplit[0]
 
             postTitle = postId.split('_')[1].replace('-',' ')
