@@ -15,7 +15,7 @@ def home():
 
 def getBlogPosts():
     posts = []
-    postsDir = '/site/templates/blog/posts'
+    postsDir = '/home/1sobel/site/templates/blog/posts'
     for filename in os.listdir(postsDir):
         if filename.endswith('.html'):
             print('we got to here...')
