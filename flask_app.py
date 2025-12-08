@@ -18,27 +18,27 @@ def getBlogPosts():
     postsDir = os.path.expanduser('~/site/templates/blog/posts')
     for filename in os.listdir(postsDir):
         if filename.endswith('.html'):
-            print('we got to here...')
-            postId = filename.replace('.html','')
+            try:
+                postId = filename.replace('.html','')
 
-            # this is silly but it works well enough
-            postDate = postId.split('_')[0]
-            months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
-                      'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-            postDateSplit = postDate.split('-')
-            displayDate = postDateSplit[2] + months[int(postDateSplit[1]) - 1] + postDateSplit[0]
+                # this is silly but it works well enough
+                postDate = postId.split('_')[0]
+                months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
+                        'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                postDateSplit = postDate.split('-')
+                displayDate = postDateSplit[2] + months[int(postDateSplit[1]) - 1] + postDateSplit[0]
 
+                postTitle = postId.split('_')[1].replace('-',' ')
+                posts.append({
+                    'id': postId,
+                    'title': postTitle,
+                    'date': postDate,
+                    'displayDate': displayDate,
+                    'template': f'blog/posts/{filename}'
 
-            postTitle = postId.split('_')[1].replace('-',' ')
-            print(postId, postDate, postTitle)
-            posts.append({
-                'id': postId,
-                'title': postTitle,
-                'date': postDate,
-                'displayDate': displayDate,
-                'template': f'blog/posts/{filename}'
-
-            })
+                })
+            except:
+                print(f'Error processing {filename}')
     return sorted(posts, key=lambda x: x['date'], reverse=True)
 
 BLOGPOSTS = getBlogPosts()
