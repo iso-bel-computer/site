@@ -16,7 +16,10 @@
 
 
     </h3>
-    <div class='blogcontent'>
+    <div class='blogcontent'
+         {% if active_post == post.id %}style="display: block;"
+         {% else %}style="display: none;"{% endif %}>
+
         {% include post.template %}
     </div>
 </div>
@@ -38,6 +41,7 @@ function togglePost(postId) {
         content.style.display = 'block';
     }
 }
+
 
 </script>
 
