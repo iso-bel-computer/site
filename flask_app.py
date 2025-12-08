@@ -20,7 +20,7 @@ def getBlogPosts():
         if filename.endswith('.html'):
             print('we got to here...')
             postId = filename.replace('.html','')
-            postDate = postId.split('_')[0].replace('-',' ')
+            postDate = postId.split('_')[0].replace('-','/')
             postTitle = postId.split('_')[1].replace('-',' ')
             print(postId, postDate, postTitle)
             posts.append({
