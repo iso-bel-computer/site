@@ -31,6 +31,7 @@ def getBlockPosts():
             })
     return sorted(posts, key=lambda x: x['date'], reverse=True)
 
+BLOGPOSTS = getBlogPosts()
 
 @app.route('/blog')
 def blog():
