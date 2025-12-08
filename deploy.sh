@@ -1,5 +1,6 @@
 #!/bin/bash
 
+cd ~/05.Site
 git add .
 git commit -m "${1:-Quick update}"
 git push 
