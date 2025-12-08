@@ -27,7 +27,7 @@ def getBlogPosts():
                 'id': postId,
                 'title': postTitle,
                 'date': postDate,
-                'template': postsDir + filename
+                'template': f'blog/posts/{filename}'
 
             })
     return sorted(posts, key=lambda x: x['date'], reverse=True)
