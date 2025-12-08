@@ -1,3 +1,9 @@
 .blogpost {
     width: 70vw
 }
+
+
+.quote {
+    padding-left: 5vw;
+    font-style: italic;
+}
