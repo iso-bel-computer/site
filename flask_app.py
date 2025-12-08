@@ -36,5 +36,5 @@ BLOGPOSTS = getBlogPosts()
 
 @app.route('/blog')
 def blog():
-    return render_template(os.path.expanduser('blog.html'),
+    return render_template('blog.html',
                            posts=BLOGPOSTS)
