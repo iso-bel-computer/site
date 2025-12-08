@@ -26,7 +26,8 @@ def getBlogPosts():
             months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
                       'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
             postDateSplit = postDate.split('-')
-            displayDate = postDateSplit[2] + months[postDateSplit[1]] + postDateSplit[0]
+            displayDate = postDateSplit[2] + months[int(postDateSplit[1])] + postDateSplit[0]
+
 
             postTitle = postId.split('_')[1].replace('-',' ')
             print(postId, postDate, postTitle)
