@@ -20,13 +20,21 @@ def getBlogPosts():
         if filename.endswith('.html'):
             print('we got to here...')
             postId = filename.replace('.html','')
+
+            # this is silly but it works well enough
             postDate = postId.split('_')[0].replace('-','/')
+            months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
+                      'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            postDateSplit = postdate.split('/')
+            displayDate = postDateSplit[2] + months[postDateSplit[1]] + postDateSplit[0]
+
             postTitle = postId.split('_')[1].replace('-',' ')
             print(postId, postDate, postTitle)
             posts.append({
                 'id': postId,
                 'title': postTitle,
                 'date': postDate,
+                'displayDate': displayDate,
                 'template': f'blog/posts/{filename}'
 
             })
