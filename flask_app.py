@@ -15,7 +15,7 @@ def home():
 
 def getBlogPosts():
     posts = []
-    postsDir = '/home/1sobel/site/templates/blog/posts'
+    postsDir = os.path.expanduser('~/site/templates/blog/posts')
     for filename in os.listdir(postsDir):
         if filename.endswith('.html'):
             print('we got to here...')
@@ -36,5 +36,5 @@ BLOGPOSTS = getBlogPosts()
 
 @app.route('/blog')
 def blog():
-    return render_template('/site/templates/blog.html',
+    return render_template(os.path.expanduser('~/site/templates/blog/blog.html'),
                            posts=BLOGPOSTS)
