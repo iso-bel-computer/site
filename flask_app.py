@@ -13,11 +13,11 @@ def home():
 
 
 
-def getBlockPosts():
+def getBlogPosts():
     posts = []
     postsDir = 'blog/posts'
 
-    for filename in os.listDir():
+    for filename in os.listdir(postsDir):
         if filename.endswith('.html'):
             postId = filename.replace('.html','')
             postDate = filename.split('_')[0].replace('-',' ')
