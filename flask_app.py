@@ -38,8 +38,8 @@ def getBlogPosts():
 
                 # this is silly but it works well enough
                 postDate = postId.split('_')[0]
-                months = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
-                        'August', 'September', 'October', 'November', 'December']
+                months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
+                        'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
                 postDateSplit = postDate.split('-')
                 suffix = getSuffix(int(postDateSplit[2]))
 

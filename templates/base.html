@@ -10,11 +10,11 @@
     </head>
     <body>
         <header>
-            <h1>
-                <a href='/'>
-                ISO<br>BEL
-                </a>
-            </h1>
+            <a href='/'>
+            <img src="{{ url_for('static', filename='resources/images/core/ISOBEL_LOGO.svg') }}"
+                 style="width: 100px"
+                 alt='ISO_BEL'>
+            </a>
         </header>
         <main>
             {% block content %}

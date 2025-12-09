@@ -7,7 +7,7 @@
 {% block content %}
 {% for post in posts %}
 <div class='blogpost' id={{ post.id }}>
-    <div onclick="togglePost('{{ post.id }}')" style='cursor: pointer; display: flex; justify-content: space-between; align-items: auto'>
+    <div class='blogtitle' onclick="togglePost('{{ post.id }}')" style='cursor: pointer; display: flex; justify-content: space-between; align-items: auto'>
 
      <h3>
         {{ post.title }} <!--   {{ post.displayDate }}  --->
@@ -26,7 +26,7 @@
 
 function togglePost(postId) {
     const container = document.getElementById(postId);
-    const title = container.querySelector('h3')
+    const title = container.querySelector('.blogtitle')
     const content = container.querySelector('.blogcontent');
     const isVisible = content.style.display === 'block';
 
@@ -34,13 +34,15 @@ function togglePost(postId) {
     // Toggle clicked post
     if (!isVisible) {
         content.style.display = 'block';
-        container.style.backgroundColor = '#00000007'
-        title.style.textDecoration = 'underline'
+        content.style.backgroundColor = '#00000007'
+        title.style.backgroundColor = '#142616'
+        title.style.color = 'white'
     }
     else {
         content.style.display = 'none';
-        container.style.backgroundColor = '#00000000'
-        title.style.textDecoration = 'none'
+        content.style.backgroundColor = '#00000000'
+        title.style.backgroundColor = '#00000000'
+        title.style.color = 'black'
     }
 }
 
