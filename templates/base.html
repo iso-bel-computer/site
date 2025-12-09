@@ -10,12 +10,20 @@
     </head>
     <body>
         <header>
-            <a href='/'>
-            <img src="{{ url_for('static', filename='resources/images/core/ISOBEL_LOGO.svg') }}"
-                 style="width: 100px"
-                 alt='ISO_BEL'>
+            <div class='flex' style='align-items: end'>
+                <a href='/'>
+                <img src="{{ url_for('static', filename='resources/images/core/ISOBEL_LOGO.svg') }}"
+                    style="width: 100px"
+                    alt='ISO_BEL'>
+                </a>
+                <span class='headerRouteDisplay'>{{ headerRouteDisplay }}</span>
+            </div>
+
+            <a href='/static/rss.xml'>
+                <img src="{{ url_for('static', filename='resources/images/core/RSS.png') }}"
+                 style="width: 20px"
+                 alt='Subscribe to my RSS feed'>
             </a>
-            <a href='/static/rss.xml'>RSS</a>
         </header>
         <main>
             {% block content %}

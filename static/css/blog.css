@@ -16,7 +16,10 @@
     padding-bottom: var(--blog-padding-topandtail);
     padding-left: 20px;
     padding-right: var(--blog-padding-sides);
-    transition: transform 0.1s
+    transition: transform 0.1s;
+    position: sticky;
+    z-axis: 50;
+    top: calc((var(--header-padding-topandtail) * 2) + var(--header-height))
 }
 
 .blogtitle:hover {
@@ -29,12 +32,70 @@
       padding-top: var(--blog-padding-topandtail);
     padding-bottom: var(--blog-padding-topandtail);
 }
-
 .quote {
     padding: 1vw;
     width: fit-content;
-    background-color: #00000010
+    background-color: #00000010;
+    position: relative;
+    border: 1px dotted var(--site-accent-color);
+    --corner-borders: 1px solid var(--site-accent-color)
 }
+
+    /* Create corner borders with pseudo-elements
+    .quote::before,
+    .quote::after {
+        content: '';
+        position: absolute;
+        width: 10px;
+        height: 10px;
+    }
+
+    .quote::before {
+        top: -1px;
+        left: -1px;
+        border-top: var(--corner-borders);
+        border-left: var(--corner-borders);
+    }
+
+    .quote::after { /* this does the right hand side corrner
+        top: -1px;
+        right: -1px;
+        border-top: var(--corner-borders);
+        border-right: var(--corner-borders);
+    }
+
+    .quote::before {
+        bottom: -1px;
+        left: -1px;
+        border-top: var(--corner-borders);
+        border-left: var(--corner-borders);
+    }
+
+    /* Bottom corners
+    .quotecaption::before {
+        content: '';
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        bottom: -1px;
+        left: -1px;
+        border-bottom: var(--corner-borders);
+        border-left: var(--corner-borders);
+    }
+
+    .quotecaption::after {
+        content: '';
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        bottom: -1px;
+        right: -1px;
+        border-bottom: var(--corner-borders);
+        border-right: var(--corner-borders);
+    }
+
+*/
+
 
 .quotecaption {
     font-style: italic;
@@ -44,8 +105,9 @@
     margin-top: 5px;
 }
 
+
 .blogpost h3 {
-    font-size: 14pt;
+    font-size: 12pt;
     margin: 0px;
     -webkit-user-select: none;  /* Safari */
     -moz-user-select: none;     /* Firefox */
@@ -54,6 +116,8 @@
 
 }
 .subtitle {
+    width: 100%;
+    text-align: center;
     font-size: 11pt;
     font-style: italic;
     margin-bottom: 10px;
@@ -67,15 +131,21 @@
     font-style: italic
 }
 
-img {
-    max-width: 500px;  /* Won't exceed 500px */
+.blogpost img {
+    max-width: 360px;  /* Won't exceed 500px */
     width: 100%;       /* But scales down on small screens */
     height: auto;      /* Maintains aspect ratio */
+    display: block;        /* Add this */
+    margin-left: auto;     /* Add this */
+    margin-right: auto;    /* Add this */
+    margin-bottom: 7px;
 }
 
 .imagecaption {
     font-style: italic;
     font-size: 10pt;
-    width: 500px;
-    text-align: right
+    max-width: 360px;      /* Change from width to max-width */
+    text-align: right;
+    margin-left: auto;     /* Add this */
+    margin-right: auto;    /* Add this */
 }

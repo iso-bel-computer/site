@@ -10,7 +10,8 @@ app = Flask(__name__)
 @app.route('/')
 def home():
     return render_template('base.html',
-                         current_date=datetime.now().strftime('%Y-%m-%d'))
+                         current_date=datetime.now().strftime('%Y-%m-%d')
+                           )
 
 
 
@@ -65,6 +66,7 @@ BLOGPOSTS = getBlogPosts()
 @app.route('/blog')
 def blog():
     return render_template('blog.html',
+                           headerRouteDisplay = '/Blog',
                            posts=BLOGPOSTS)
 
 

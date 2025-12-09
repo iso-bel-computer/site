@@ -4,26 +4,41 @@ body {
     margin: 0 auto;
     line-height: 1.17;
     --site-background-color: #DCD6C9;
+    --site-accent-color: #142616;
     background-color: var(--site-background-color);
     font-size: 11pt;
-    color: black
+    color: black;
+    --header-padding-topandtail: 10px;
+    --header-height: 70px;
+
 }
 
 
 header {
     display: flex;
     justify-content: space-between;
+    align-items: end;
     position: sticky;
     padding: 20px;
-    padding-bottom: 10px;
-    padding-top: 10px;
+    padding-bottom: var(--header-padding-topandtail);
+    padding-top: var(--header-padding-topandtail);
+    height: var(--header-height);
+    max-height: var(--header-height);
     top: 0;
     z-index: 100;
     background-color: var(--site-background-color);
     border-bottom: 1px black solid
 }
 
+.headerRouteDisplay {
+    padding-left: 1vw;
+    font-weight: bold;
+    font-size: 18pt;
+}
 
+.flex {
+    display: flex
+}
 nav a {
     margin-right: 15px;
     text-decoration: none;
