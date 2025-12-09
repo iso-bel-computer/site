@@ -3,19 +3,23 @@
     padding-left: 1vw;
     padding-right: 1vw;
     margin-bottom: 0px;
+    margin-top: 0px;
+    border-top: 1px dotted black;
+    border-botom: 1px dotted black;
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 
 .blogpost a {
     color: inherit
 }
-
 .quote {
     padding: 1vw;
     width: fit-content;
-    font-style: italic;
     border-radius: 3px;
-    border: 1px #ffffff70 dotted;
-    background-color: #ffffff10
+    border: 1px #00000070 dotted;
+
+    background-color: #00000010
 }
 
 .quotecaption {
@@ -23,19 +27,31 @@
     font-weight: bold;
     text-align: right;
     width: 100%;
-    margin-top: 3px;
+    margin-top: 5px;
 }
 
-h3 {
+.blogpost h3 {
     font-size: 17pt;
-    margin: 0px
+    margin: 0px;
+    -webkit-user-select: none;  /* Safari */
+    -moz-user-select: none;     /* Firefox */
+    -ms-user-select: none;      /* IE10+/Edge */
+    user-select: none;          /* Standard */
+
 }
 
 .subtitle {
-    size: 10pt;
+    font-size: 11pt;
     font-style: italic;
     margin-bottom: 10px;
+    margin-top: 0px
+}
 
+.publishDate {
+    width: fit-content;
+    text-align: right;
+    font-size: 9pt;
+    font-style: italic
 }
 
 img {

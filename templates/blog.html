@@ -7,38 +7,40 @@
 {% block content %}
 {% for post in posts %}
 <div class='blogpost' id={{ post.id }}>
-    <hr>
-    <h3 onclick="togglePost('{{ post.id }}')" style="cursor: pointer;">
-        {{ post.displayDate }} - {{ post.title }}
+    <div onclick="togglePost('{{ post.id }}')" style='cursor: pointer; display: flex; justify-content: space-between; align-items: auto'>
+
+     <h3>
+        {{ post.title }} <!--   {{ post.displayDate }}  --->
     </h3>
+    <div class='publishDate'>  {{ post.displayDate }}  </div>
+    </div>
     <div class='blogcontent'
          {% if active_post == post.id %}style="display: block;"
          {% else %}style="display: none;"{% endif %}>
-
         {% include post.template %}
     </div>
 </div>
 {% endfor %}
-<div class='blogpost'>
-<!-- this is a silly hack to get the lines looking right. delete at will -->
-    <hr>
-</div>
 
 <script>
 
 function togglePost(postId) {
     const container = document.getElementById(postId);
+    const title = container.querySelector('h3')
     const content = container.querySelector('.blogcontent');
     const isVisible = content.style.display === 'block';
 
-    // Close all posts
-    document.querySelectorAll('.blogcontent').forEach(element => {
-        element.style.display = 'none';
-    });
 
     // Toggle clicked post
     if (!isVisible) {
         content.style.display = 'block';
+        container.style.backgroundColor = '#00000007'
+        title.style.textDecoration = 'underline'
+    }
+    else {
+        content.style.display = 'none';
+        container.style.backgroundColor = '#00000000'
+        title.style.textDecoration = 'none'
     }
 }
 

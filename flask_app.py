@@ -2,7 +2,8 @@
 from datetime import datetime
 from flask import Flask, render_template
 import os
-
+import datetime
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -12,6 +13,16 @@ def home():
                          current_date=datetime.now().strftime('%Y-%m-%d'))
 
 
+
+def getSuffix(day):
+    if day == 1 or day == 21 or day == 31:
+        return 'st'
+    elif day == 2 or day == 22:
+        return 'nd'
+    elif day == 3 or day == 23:
+        return 'rd'
+    else:
+        return 'th'
 
 def getBlogPosts():
     posts = []
@@ -27,10 +38,14 @@ def getBlogPosts():
 
                 # this is silly but it works well enough
                 postDate = postId.split('_')[0]
-                months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
-                        'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                months = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
+                        'August', 'September', 'October', 'November', 'December']
                 postDateSplit = postDate.split('-')
-                displayDate = postDateSplit[2] + ' ' + months[int(postDateSplit[1]) - 1] + ' ' + postDateSplit[0][2:]
+                suffix = getSuffix(int(postDateSplit[2]))
+
+                displayDate = postDateSplit[2] + suffix + ' ' + months[int(postDateSplit[1]) - 1]
+                if postDateSplit[0] != datetime.now().strftime("%Y"):
+                    displayDate = displayDate + ' ' + postDateSplit[0][:2]
 
                 postTitle = postId.split('_')[1].replace('-',' ')
                 posts.append({
