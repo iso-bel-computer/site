@@ -1,10 +1,52 @@
 .blogpost {
-    width: 70vw
+    width: 75vw;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    margin-bottom: 0px;
 }
 
+.blogpost a {
+    color: inherit
+}
 
 .quote {
-    padding-left: 3vw;
-    padding-right: 3vw;
+    padding: 1vw;
+    width: fit-content;
     font-style: italic;
+    border-radius: 3px;
+    border: 1px #ffffff70 dotted;
+    background-color: #ffffff10
+}
+
+.quotecaption {
+    font-style: italic;
+    font-weight: bold;
+    text-align: right;
+    width: 100%;
+    margin-top: 3px;
+}
+
+h3 {
+    font-size: 17pt;
+    margin: 0px
+}
+
+.subtitle {
+    size: 10pt;
+    font-style: italic;
+    margin-bottom: 10px;
+
+}
+
+img {
+    max-width: 500px;  /* Won't exceed 500px */
+    width: 100%;       /* But scales down on small screens */
+    height: auto;      /* Maintains aspect ratio */
+}
+
+.imagecaption {
+    font-style: italic;
+    font-size: 10pt;
+    width: 500px;
+    text-align: right
 }

@@ -15,7 +15,11 @@ def home():
 
 def getBlogPosts():
     posts = []
-    postsDir = os.path.expanduser('~/site/templates/blog/posts')
+
+    # Get the directory where flask_app.py is located
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    postsDir = os.path.join(base_dir, 'templates', 'blog', 'posts')
+
     for filename in os.listdir(postsDir):
         if filename.endswith('.html'):
             try:
@@ -47,3 +51,7 @@ BLOGPOSTS = getBlogPosts()
 def blog():
     return render_template('blog.html',
                            posts=BLOGPOSTS)
+
+
+if __name__ == '__main__':
+    app.run(debug=True)

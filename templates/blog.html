@@ -5,16 +5,11 @@
 {% endblock %}
 
 {% block content %}
-
-<h2>Blog</h2>
-
 {% for post in posts %}
 <div class='blogpost' id={{ post.id }}>
-
+    <hr>
     <h3 onclick="togglePost('{{ post.id }}')" style="cursor: pointer;">
         {{ post.displayDate }} - {{ post.title }}
-
-
     </h3>
     <div class='blogcontent'
          {% if active_post == post.id %}style="display: block;"
@@ -24,6 +19,10 @@
     </div>
 </div>
 {% endfor %}
+<div class='blogpost'>
+<!-- this is a silly hack to get the lines looking right. delete at will -->
+    <hr>
+</div>
 
 <script>
 
