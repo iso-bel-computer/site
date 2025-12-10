@@ -31,6 +31,7 @@ header {
 }
 
 .headerRouteDisplay {
+    font-family: 'ImperatorBronze', serif;
     padding-left: 1vw;
     font-weight: bold;
     font-size: 18pt;
@@ -51,5 +52,17 @@ nav a:hover {
 
 @font-face {
     font-family: Imperator;
-    src: url('https://iso-bel.neocities.org/fonts/Imperator.ttf');
+    src: url('/static/resources/fonts/Imperator.ttf')
+
+}
+
+@font-face {
+    font-family: ImperatorSmallCaps;
+    src: url('/static/resources/fonts/ImperatorBronzeSmallCaps.ttf')
+}
+
+
+@font-face {
+    font-family: ImperatorBronze;
+    src: url('/static/resources/fonts/ImperatorBronze.ttf')
 }

@@ -27,6 +27,7 @@
 }
 
 .blogcontent {
+    z-axis: 5;
     padding-left: 20px;
     padding-right: var(--blog-padding-sides);
       padding-top: var(--blog-padding-topandtail);
@@ -35,13 +36,14 @@
 .quote {
     padding: 1vw;
     width: fit-content;
-    background-color: #00000010;
+    z-axis: 10;
     position: relative;
-    border: 1px dotted var(--site-accent-color);
-    --corner-borders: 1px solid var(--site-accent-color)
+    background-color: #00000009;
+    border: 1px dotted #00000020;
+    --corner-1px: borders solid var(--site-accent-color)
 }
 
-    /* Create corner borders with pseudo-elements
+    /* Create corner borders with pseudo-elements */
     .quote::before,
     .quote::after {
         content: '';
@@ -57,7 +59,7 @@
         border-left: var(--corner-borders);
     }
 
-    .quote::after { /* this does the right hand side corrner
+    .quote::after { /* this does the right hand side corrner */
         top: -1px;
         right: -1px;
         border-top: var(--corner-borders);
@@ -71,9 +73,10 @@
         border-left: var(--corner-borders);
     }
 
-    /* Bottom corners
+    /* Bottom corners */
     .quotecaption::before {
         content: '';
+
         position: absolute;
         width: 10px;
         height: 10px;
@@ -94,7 +97,6 @@
         border-right: var(--corner-borders);
     }
 
-*/
 
 
 .quotecaption {

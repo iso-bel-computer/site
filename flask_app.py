@@ -46,7 +46,7 @@ def getBlogPosts():
 
                 displayDate = postDateSplit[2] + suffix + ' ' + months[int(postDateSplit[1]) - 1]
                 if postDateSplit[0] != datetime.now().strftime("%Y"):
-                    displayDate = displayDate + ' ' + postDateSplit[0][:2]
+                    displayDate = displayDate + ' ' + postDateSplit[0][2:]
 
                 postTitle = postId.split('_')[1].replace('-',' ')
                 posts.append({
@@ -66,7 +66,7 @@ BLOGPOSTS = getBlogPosts()
 @app.route('/blog')
 def blog():
     return render_template('blog.html',
-                           headerRouteDisplay = '/Blog',
+                           headerRouteDisplay = '~/Blog',
                            posts=BLOGPOSTS)
 
 
