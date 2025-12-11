@@ -73,12 +73,12 @@ def blog():
 def art(category):
 
     files = {
-        "Drawing": "static/resources/images/art/drawing/Drawing.json",
-        "Photography": "static/resources/images/art/drawing/Photography.json",
-        "Prints": "data/Prints.json"
+        "drawing": "static/resources/images/art/drawing/Drawing.json",
+        "photography": "static/resources/images/art/drawing/Photography.json",
+        "prints": "data/Prints.json"
     }
 
-    if category not in files:
+    if category.lower() not in files.lower():
         abort(404)
 
     with open(files[category]) as f:
