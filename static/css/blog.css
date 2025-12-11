@@ -4,7 +4,7 @@
     --blog-padding-topandtail: 8px;
     margin-bottom: 0px;
     margin-top: 0px;
-    border-bottom: 1px dotted black;
+    border-bottom: 1px solid #00000020;
 }
 
 .blogpost a {

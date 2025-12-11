@@ -69,6 +69,26 @@ def blog():
                            headerRouteDisplay = '~/Blog',
                            posts=BLOGPOSTS)
 
+@app.route('/art/<category>')
+def art(category):
+
+    files = {
+        "Drawing": "static/resources/images/art/drawing/Drawing.json",
+        "Photography": "static/resources/images/art/drawing/Photography.json",
+        "Prints": "data/Prints.json"
+    }
+
+    if category not in files:
+        abort(404)
+
+    with open(files[category]) as f:
+        artData = json.load(f)
+
+    return render_template(
+        'art.html',
+        artData=artData,
+        headerRoute=category
+    )
 
 if __name__ == '__main__':
     app.run(debug=True)

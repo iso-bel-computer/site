@@ -168,20 +168,6 @@
     "contenttype": "Photography"
   },
   {
-    "originalFileName": "bird.jpg",
-    "fileName": "25-17-09_library-bird_120707",
-    "originalDir": "/Users/dylanhemmings/Desktop/photographystaging",
-    "originalPath": "/Users/dylanhemmings/Desktop/photographystaging/bird.jpg",
-    "destinationDir": "/Users/dylanhemmings/05.Site/static/resources/images/art/photography",
-    "previewFile": "25-17-09_library-bird_120707_PREVIEW.jpg",
-    "thumbnailFile": "25-17-09_library-bird_120707_THUMB.jpg",
-    "mainFile": "25-17-09_library-bird_120707.png",
-    "title": "library-bird",
-    "date": "25-17-09",
-    "description": "this was my first go around at learning photography. i still quite like it! it's cute",
-    "contenttype": "Photography"
-  },
-  {
     "originalFileName": "spidertate.png",
     "fileName": "25-07-05_tate-spider_120707",
     "originalDir": "/Users/dylanhemmings/Desktop/photographystaging",
@@ -319,20 +305,6 @@
     "title": "light-leak-ghost",
     "date": "25-07-06",
     "description": "",
-    "contenttype": "Photography"
-  },
-  {
-    "originalFileName": "25-17-09_library-bird_120707.png",
-    "fileName": "25-09-17_library-bird-_123450",
-    "originalDir": "/Users/dylanhemmings/Desktop/photographystaging",
-    "originalPath": "/Users/dylanhemmings/Desktop/photographystaging/25-17-09_library-bird_120707.png",
-    "destinationDir": "/Users/dylanhemmings/05.Site/static/resources/images/art/photography",
-    "previewFile": "25-09-17_library-bird-_123450_PREVIEW.jpg",
-    "thumbnailFile": "25-09-17_library-bird-_123450_THUMB.jpg",
-    "mainFile": "25-09-17_library-bird-_123450.png",
-    "title": "library-bird-",
-    "date": "25-09-17",
-    "description": "i think this is one of the first photos i ever took? i still like it a lot!",
     "contenttype": "Photography"
   },
   {
