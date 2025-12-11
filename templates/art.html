@@ -6,15 +6,38 @@
 
 {% block content %}
 
-        <div class='imageContainer'>
+        <div id='imageContainer'>
         <img class="mainImage" src='{{url_for('static',
-                     filename='resources/images/art/' + artData[5].contenttype + '/main/' + artData[5].mainFile)}}'>
+                     filename='resources/images/art/' + artData[0].contenttype + '/main/' + artData[0].mainFile)}}'>
         </div>
 
-        <div class='thumbnailContainer'>
+        <div id='thumbnailContainer'>
         {% for imgObj in artData %}
-        <img class="thumbnail" src='{{url_for('static',
+        <img class="thumbnail"
+             data-previewUrl='{{url_for('static',
+                    filename='resources/images/art/' + imgObj.contenttype + '/previews/' + imgObj.previewFile)}}'
+             src='{{url_for('static',
                      filename='resources/images/art/' + imgObj.contenttype + '/thumbnails/' + imgObj.thumbnailFile)}}'>
         {% endfor %}
         </div>
+
+<script>
+const imageContainer = document.getElementById('imageContainer')
+const thumbnailContainer = document.getElementById('thumbnailContainer')
+const mainImage = imageContainer.querySelector('.mainImage');
+
+ thumbnailContainer.addEventListener('mouseenter', e => {
+    const clickedThumb = e.target.closest('.thumbnail');
+    if (!clickedThumb) return; // clicked outside of a thumbnail
+
+    // Get the embedded data
+    const previewUrl = clickedThumb.dataset.previewurl; // note: dataset converts data-previewUrl to previewurl
+
+    // Update the main image
+    mainImage.src = previewUrl;
+
+ }, true)
+
+</script>
+
 {% endblock %}

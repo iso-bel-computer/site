@@ -1,17 +1,17 @@
-.thumbnailContainer {
-    --thumbnail-container-height: 50px;
+#thumbnailContainer {
+    --thumbnail-container-height: 40px;
     width: 100%;
     display: flex;
     position: fixed;       /* sticks to viewport */
     bottom: 0;             /* at the bottom */
     left: 0;               /* full width */
     overflow-x: auto;      /* scroll horizontally if too many thumbnails */
-    opacity: 0.3;
-    transition: opacity 0.15s
-
+    opacity: 0.1;
+    transition: opacity 0.15s;
+    cursor: crosshair
 }
 
-.thumbnailContainer:hover {
+#thumbnailContainer:hover {
     opacity: 1
 }
 
@@ -20,12 +20,18 @@
     width: auto;
     margin-left: 3px;
     padding-bottom: 5px;
+    opacity: 0.4;
+    transition: opacity 0.15s
 }
 
+.thumbnail:hover {
+    opacity: 1
+}
 
-.imageContainer {
+#imageContainer {
     --imageHeight: calc(100vh - var(--header-height) - var(--header-padding-topandtail) * 2 - var(--thumbnail-container-height));
-
+    justify-content: center;
+    display: flex;
     width: 100%;
     height: var(--imageHeight);
     max-height: var(--imageHeight);
@@ -34,8 +40,8 @@
     overflow: hidden
 }
 
-.imageContainer img {
-    max-height: 100%;      /* fill container height but do not exceed */
+#imageContainer img {
+    max-height: calc(100vh - ((var(--header-padding-topandtail) * 2) + var(--header-height)));      /* fill container height but do not exceed */
     max-width: 100vw;      /* never overflow width */
     height: auto;      /* fill container height but do not exceed */
     width: auto;      /* never overflow width */

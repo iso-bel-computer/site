@@ -5,6 +5,8 @@ import os
 import datetime
 from datetime import datetime
 
+os.chdir(os.path.dirname(__file__))  # change CWD to where flask_app.py lives
+
 app = Flask(__name__)
 
 @app.route('/')
