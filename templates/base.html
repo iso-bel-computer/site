@@ -18,12 +18,10 @@
                 </a>
                 <span class='headerRouteDisplay'>&nbsp{{ headerRouteDisplay }}</span>
             </div>
-
-            <a href='/static/rss.xml'>
-                <img src="{{ url_for('static', filename='resources/images/core/rss.png') }}"
-                 style="width: 20px"
-                 alt='Subscribe to my RSS feed'>
-            </a>
+            <div class='sociallinks'>
+                <a href='/static/rss.xml'>rss</a>
+                <a href="&#x6d;ailto&#58;izzy&#x40;iso-bel&#46;computer">izzy&#x40;iso-bel&#46;computer</a>
+            </div>
         </header>
         <main>
             {% block content %}

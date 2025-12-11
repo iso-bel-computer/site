@@ -1,34 +1,6 @@
 [
   {
     "originalFileName": "IMG_2562.jpg",
-    "fileName": "25-8-28_Shortlands_003612",
-    "originalDir": "/Users/dylanhemmings/Desktop/drawingstaging",
-    "originalPath": "/Users/dylanhemmings/Desktop/drawingstaging/IMG_2562.jpg",
-    "destinationDir": "/Users/dylanhemmings/05.Site/static/resources/images/art/drawing",
-    "previewFile": "25-8-28_Shortlands_003612_PREVIEW.jpg",
-    "thumbnailFile": "25-8-28_Shortlands_003612_THUMB.jpg",
-    "mainFile": "25-8-28_Shortlands_003612.png",
-    "title": "Shortlands",
-    "date": "25-8-28",
-    "description": "there's a nice idea in here with the transparent train that i'd like to give more time",
-    "contenttype": "Drawing"
-  },
-  {
-    "originalFileName": "dutton18jul.jpeg",
-    "fileName": "25-7-18_adrian-dutton-life-drawing_003612",
-    "originalDir": "/Users/dylanhemmings/Desktop/drawingstaging",
-    "originalPath": "/Users/dylanhemmings/Desktop/drawingstaging/dutton18jul.jpeg",
-    "destinationDir": "/Users/dylanhemmings/05.Site/static/resources/images/art/drawing",
-    "previewFile": "25-7-18_adrian-dutton-life-drawing_003612_PREVIEW.jpg",
-    "thumbnailFile": "25-7-18_adrian-dutton-life-drawing_003612_THUMB.jpg",
-    "mainFile": "25-7-18_adrian-dutton-life-drawing_003612.png",
-    "title": "adrian-dutton-life-drawing",
-    "date": "25-7-18",
-    "description": "pleased with this one (tho it does look a liiiiiil bit like a nazi poster - oops)",
-    "contenttype": "Drawing"
-  },
-  {
-    "originalFileName": "IMG_2562.jpg",
     "fileName": "25-08-28_Shortlands_004304",
     "originalDir": "/Users/dylanhemmings/Desktop/drawingstaging",
     "originalPath": "/Users/dylanhemmings/Desktop/drawingstaging/IMG_2562.jpg",
@@ -345,7 +317,7 @@
     "thumbnailFile": "25-06-31_dulwich-art-group---ariana_005310_THUMB.jpg",
     "mainFile": "25-06-31_dulwich-art-group---ariana_005310.png",
     "title": "dulwich-art-group---ariana",
-    "date": "25-06-31",
+    "date": "25-06-30",
     "description": "",
     "contenttype": "Drawing"
   },
@@ -401,7 +373,7 @@
     "thumbnailFile": "25-06-31_dulwich-art-group---ariana_005310_THUMB.jpg",
     "mainFile": "25-06-31_dulwich-art-group---ariana_005310.png",
     "title": "dulwich-art-group---ariana",
-    "date": "25-06-31",
+    "date": "25-06-30",
     "description": "",
     "contenttype": "Drawing"
   },

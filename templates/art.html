@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/art.css') }}">
+{% endblock %}
+
+{% block content %}
+
+        <div class='imageContainer'>
+        <img class="mainImage" src='{{url_for('static',
+                     filename='resources/images/art/' + artData[5].contenttype + '/main/' + artData[5].mainFile)}}'>
+        </div>
+
+        <div class='thumbnailContainer'>
+        {% for imgObj in artData %}
+        <img class="thumbnail" src='{{url_for('static',
+                     filename='resources/images/art/' + imgObj.contenttype + '/thumbnails/' + imgObj.thumbnailFile)}}'>
+        {% endfor %}
+        </div>
+{% endblock %}

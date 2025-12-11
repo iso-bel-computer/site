@@ -1,4 +1,4 @@
-
+import json
 from datetime import datetime
 from flask import Flask, render_template
 import os
@@ -74,15 +74,19 @@ def art(category):
 
     files = {
         "drawing": "static/resources/images/art/drawing/Drawing.json",
-        "photography": "static/resources/images/art/drawing/Photography.json",
-        "prints": "data/Prints.json"
+        "photography": "static/resources/images/art/photography/Photography.json",
     }
 
-    if category.lower() not in files.lower():
+    if category.lower() not in files:
         abort(404)
 
     with open(files[category]) as f:
         artData = json.load(f)
+        artData = sorted(
+            artData,
+            key=lambda x: datetime.strptime(x['date'], "%y-%m-%d"),
+            reverse=True
+        )
 
     return render_template(
         'art.html',

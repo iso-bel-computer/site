@@ -1,0 +1,44 @@
+.thumbnailContainer {
+    --thumbnail-container-height: 50px;
+    width: 100%;
+    display: flex;
+    position: fixed;       /* sticks to viewport */
+    bottom: 0;             /* at the bottom */
+    left: 0;               /* full width */
+    overflow-x: auto;      /* scroll horizontally if too many thumbnails */
+    opacity: 0.3;
+    transition: opacity 0.15s
+
+}
+
+.thumbnailContainer:hover {
+    opacity: 1
+}
+
+.thumbnail {
+    height: var(--thumbnail-container-height);
+    width: auto;
+    margin-left: 3px;
+    padding-bottom: 5px;
+}
+
+
+.imageContainer {
+    --imageHeight: calc(100vh - var(--header-height) - var(--header-padding-topandtail) * 2 - var(--thumbnail-container-height));
+
+    width: 100%;
+    height: var(--imageHeight);
+    max-height: var(--imageHeight);
+    max-width: 100vw;
+    background-color: #00000030;
+    overflow: hidden
+}
+
+.imageContainer img {
+    max-height: 100%;      /* fill container height but do not exceed */
+    max-width: 100vw;      /* never overflow width */
+    height: auto;      /* fill container height but do not exceed */
+    width: auto;      /* never overflow width */
+}
+
+}
