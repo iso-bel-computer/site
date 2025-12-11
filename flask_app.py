@@ -73,13 +73,13 @@ def blog():
 
 @app.route('/art/<category>')
 def art(category):
-
+    category = category.lower()
     files = {
         "drawing": "static/resources/images/art/drawing/Drawing.json",
         "photography": "static/resources/images/art/photography/Photography.json",
     }
 
-    if category.lower() not in files:
+    if category not in files:
         abort(404)
 
     with open(files[category]) as f:
