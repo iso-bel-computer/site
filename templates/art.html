@@ -8,7 +8,7 @@
 
         <div id='imageContainer'>
             <img class="mainImage" src='{{url_for('static',
-                        filename='resources/images/art/' + artData[0].contenttype + '/main/' + artData[0].mainFile)}}'>
+                        filename='resources/images/art/' + artData[0].contenttype|lower + '/main/' + artData[0].mainFile)}}'>
             <div id="imageInfo">
                 <h3 id="imageTitle">{{ artData[0].title|replace("-"," ")|replace("   "," - ") }}</h3>
                 <i id="imageDate">{{ artData[0].date }}</i>
