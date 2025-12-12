@@ -77,6 +77,7 @@ def art(category):
     files = {
         "drawing": "static/resources/images/art/drawing/Drawing.json",
         "photography": "static/resources/images/art/photography/Photography.json",
+        "prints": "static/resources/images/art/prints/Prints.json"
     }
 
     if category not in files:

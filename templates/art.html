@@ -7,17 +7,24 @@
 {% block content %}
 
         <div id='imageContainer'>
-        <img class="mainImage" src='{{url_for('static',
-                     filename='resources/images/art/' + artData[0].contenttype + '/main/' + artData[0].mainFile)}}'>
+            <img class="mainImage" src='{{url_for('static',
+                        filename='resources/images/art/' + artData[0].contenttype + '/main/' + artData[0].mainFile)}}'>
+            <div id="imageInfo">
+                <h3 id="imageTitle">{{ artData[0].title|replace("-"," ")|replace("   "," - ") }}</h3>
+                <i id="imageDate">{{ artData[0].date }}</i>
+                <p id="imageDesc">{{ artData[0].description }}</p>
+                <p><span id="counter">1</span> / <span>{{ artData|length }}</span></p>
+                <a id="zoomButton" target="_blank">🔍</p>
+            </div>
         </div>
 
         <div id='thumbnailContainer'>
         {% for imgObj in artData %}
         <img class="thumbnail"
-             data-previewUrl='{{url_for('static',
-                    filename='resources/images/art/' + imgObj.contenttype + '/previews/' + imgObj.previewFile)}}'
+             data-index={{ loop.index }}
+             data-imgobj='{{ imgObj|tojson }}'
              src='{{url_for('static',
-                     filename='resources/images/art/' + imgObj.contenttype + '/thumbnails/' + imgObj.thumbnailFile)}}'>
+                     filename='resources/images/art/' + imgObj.contenttype.lower() + '/thumbnails/' + imgObj.thumbnailFile)}}'>
         {% endfor %}
         </div>
 
@@ -25,16 +32,36 @@
 const imageContainer = document.getElementById('imageContainer')
 const thumbnailContainer = document.getElementById('thumbnailContainer')
 const mainImage = imageContainer.querySelector('.mainImage');
+const imageInfo = document.getElementById('imageInfo')
+const imageTitle = document.getElementById('imageTitle')
+const imageDate = document.getElementById('imageDate')
+const imageDesc = document.getElementById('imageDesc')
+const counter = document.getElementById('counter')
+const zoomButton = document.getElementById('zoomButton')
 
  thumbnailContainer.addEventListener('mouseenter', e => {
     const clickedThumb = e.target.closest('.thumbnail');
     if (!clickedThumb) return; // clicked outside of a thumbnail
 
+    const imgObj = JSON.parse(clickedThumb.dataset.imgobj);
+
     // Get the embedded data
-    const previewUrl = clickedThumb.dataset.previewurl; // note: dataset converts data-previewUrl to previewurl
+    const previewUrl = `/static/resources/images/art/${imgObj.contenttype}/previews/${imgObj.previewFile}`;
+    const highDefUrl = `/static/resources/images/art/${imgObj.contenttype}/main/${imgObj.mainFile}`
+     const previewTitle = imgObj.title.replace(/-/g, ' ').replace('   ', ' - ');
+     const previewCounter = clickedThumb.dataset.index
+    let previewDesc = imgObj.description
+    if(previewDesc == '') {
+        previewDesc = '...'
+    }
 
     // Update the main image
     mainImage.src = previewUrl;
+    imageTitle.innerText = previewTitle
+    imageDesc.innerText = previewDesc;
+    imageDate.innerText = imgObj.date
+    counter.innerText = previewCounter
+    zoomButton.href = highDefUrl
 
  }, true)
 

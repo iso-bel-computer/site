@@ -8,8 +8,8 @@ body {
     background-color: var(--site-background-color);
     font-size: 11pt;
     color: black;
-    --header-padding-topandtail: 10px;
-    --header-height: 70px;
+    --header-padding-topandtail: 8px;
+    --header-height: 50px;
 
 }
 
@@ -19,21 +19,26 @@ header {
     justify-content: space-between;
     align-items: center;
     position: sticky;
-    padding: 20px;
     padding-bottom: var(--header-padding-topandtail);
     padding-top: var(--header-padding-topandtail);
+    padding-right: 10px;
     height: var(--header-height);
     max-height: var(--header-height);
     top: 0;
+    color: white;
     z-index: 100;
-    background-color: var(--site-background-color);
-    border-bottom: 1px black solid
+    background-color: var(--site-accent-color);
+    border-bottom: 1px black solid;
+    filter: drop-shadow(0px 10px 10px #00000035);
+}
 
+header img {
+    max-height: calc(var(--header-height) - 5px);
+    width: auto
 }
 
 .headerRouteDisplay {
     font-family: 'ImperatorBronze', serif;
-    padding-left: 1vw;
     font-weight: bold;
     font-size: 18pt;
 }
@@ -41,10 +46,15 @@ header {
 .flex {
     display: flex
 }
-nav a {
-    margin-right: 15px;
+header a {
     text-decoration: none;
-    color: #0066cc;
+    color: white;
+}
+
+.sociallinks {
+    display: flex;
+    flex-direction: column;
+    text-align: right
 }
 
 nav a:hover {
