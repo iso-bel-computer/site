@@ -39,18 +39,6 @@ const imageDesc = document.getElementById('imageDesc')
 const counter = document.getElementById('counter')
 const zoomButton = document.getElementById('zoomButton')
 
-// Preload all preview images
-const artData = [
-    {% for imgObj in artData %}
-    {{ imgObj|tojson|safe }}{% if not loop.last %},{% endif %}
-    {% endfor %}
-];
-
-artData.forEach(imgObj => {
-    const previewImg = new Image();
-    previewImg.src = `/static/resources/images/art/${imgObj.contenttype.toLowerCase()}/previews/${imgObj.previewFile}`;
-});
-
  thumbnailContainer.addEventListener('mouseenter', e => {
     const clickedThumb = e.target.closest('.thumbnail');
     if (!clickedThumb) return; // clicked outside of a thumbnail
@@ -76,6 +64,21 @@ artData.forEach(imgObj => {
     zoomButton.href = highDefUrl
 
  }, true)
+
+
+// Preload all preview images
+const artData = [
+    {% for imgObj in artData %}
+    {{ imgObj|tojson|safe }}{% if not loop.last %},{% endif %}
+    {% endfor %}
+];
+
+artData.forEach(imgObj => {
+    const previewImg = new Image();
+    previewImg.src = `/static/resources/images/art/${imgObj.contenttype.toLowerCase()}/previews/${imgObj.previewFile}`;
+});
+
+
 
 </script>
 
