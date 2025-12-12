@@ -28,8 +28,9 @@ header {
     color: white;
     z-index: 100;
     background-color: var(--site-accent-color);
-    border-bottom: 1px black solid;
     filter: drop-shadow(0px 10px 10px #00000035);
+    backdrop-filter: blur(10px);
+    background-position: center;
 }
 
 header img {
@@ -38,9 +39,8 @@ header img {
 }
 
 .headerRouteDisplay {
-    font-family: 'ImperatorBronze', serif;
-    font-weight: bold;
-    font-size: 18pt;
+    font-family: 'Imperator', serif;
+    font-size: 14pt;
 }
 
 .flex {

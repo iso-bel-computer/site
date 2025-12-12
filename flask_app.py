@@ -93,6 +93,7 @@ def art(category):
 
     return render_template(
         'art.html',
+        headerRouteDisplay='~/art/' + category,
         artData=artData,
         headerRoute=category
     )

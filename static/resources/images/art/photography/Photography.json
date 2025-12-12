@@ -320,5 +320,33 @@
     "date": "17-09-25",
     "description": "this is one of the first pictures i ever took? i still like it!",
     "contenttype": "Photography"
+  },
+  {
+    "originalFileName": "cryingbuilding.png",
+    "fileName": "22-01-15_crying-building_164242",
+    "originalDir": "/Users/dylanhemmings/Desktop/photographystaging",
+    "originalPath": "/Users/dylanhemmings/Desktop/photographystaging/cryingbuilding.png",
+    "destinationDir": "/Users/dylanhemmings/05.Site/static/resources/images/art/photography",
+    "previewFile": "22-01-15_crying-building_164242_PREVIEW.jpg",
+    "thumbnailFile": "22-01-15_crying-building_164242_THUMB.jpg",
+    "mainFile": "22-01-15_crying-building_164242.png",
+    "title": "crying-building",
+    "date": "22-01-15",
+    "description": "found this on an sd card, i think it was somewhere in manchester? completely forgot about it, but i think i was cooking!",
+    "contenttype": "Photography"
+  },
+  {
+    "originalFileName": "birdsonawire.png",
+    "fileName": "23-10-15_birds-on-a-wire_164242",
+    "originalDir": "/Users/dylanhemmings/Desktop/photographystaging",
+    "originalPath": "/Users/dylanhemmings/Desktop/photographystaging/birdsonawire.png",
+    "destinationDir": "/Users/dylanhemmings/05.Site/static/resources/images/art/photography",
+    "previewFile": "23-10-15_birds-on-a-wire_164242_PREVIEW.jpg",
+    "thumbnailFile": "23-10-15_birds-on-a-wire_164242_THUMB.jpg",
+    "mainFile": "23-10-15_birds-on-a-wire_164242.png",
+    "title": "birds-on-a-wire",
+    "date": "23-10-15",
+    "description": "this was right outside park hill, where i used to live. another photo abandoned on an sd card for years!",
+    "contenttype": "Photography"
   }
 ]

@@ -60,17 +60,29 @@
 #imageInfo {
     padding: 20px;
     margin-left: 20px;
-    border-left: 1px solid black;
+    border-left: 1px solid #00000070;
     height: 100%;
     display: flex;
     flex-direction: column;
     width: 100%;
+    align-items: flex-end;
     text-align: right
 }
 
 #imageDate {
-    border-bottom: 1px solid black
+    border-bottom: 1px solid #00000070;
+    width: 100%
 }
+
+#imageDesc {
+    max-width: 60vw;
+}
+
+#counterContainer {
+    padding-bottom: 5px;
+    border-bottom: 1px dotted #00000070
+}
+
 
 h3 {
     font-size: 17pt;

@@ -13,7 +13,7 @@
                 <h3 id="imageTitle">{{ artData[0].title|replace("-"," ")|replace("   "," - ") }}</h3>
                 <i id="imageDate">{{ artData[0].date }}</i>
                 <p id="imageDesc">{{ artData[0].description }}</p>
-                <p><span id="counter">1</span> / <span>{{ artData|length }}</span></p>
+                <p id="counterContainer"><span id="counter">1</span> / <span>{{ artData|length }}</span></p>
                 <a id="zoomButton" target="_blank">🔍</p>
             </div>
         </div>
