@@ -101,11 +101,27 @@ function loadImage() {
     let previewDesc = imgObj.description
         if (previewDesc == '') { previewDesc = '...' }
 
+    imgDateParts = {
+        'dd': Number(imgObj.date.substring(6,9)),
+        'mm': Number(imgObj.date.substring(3,5)),
+        'yy': Number(imgObj.date.substring(0,2))
+    }
+
+    let date_appendage = 'th'
+    if (imgDateParts['dd'] === 1 || imgDateParts['dd'] === 21 || imgDateParts['dd'] === 31) {date_appendage = 'st'}
+    if (imgDateParts['dd'] === 2 || imgDateParts['dd'] === 22) {date_appendage = 'nd'}
+    if (imgDateParts['dd'] === 3 || imgDateParts['dd'] === 23) {date_appendage = 'rd'}
+
+    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    imgDateMonth = months[imgDateParts['mm']]
+    const imgDateStr = imgDateParts['dd'] +  date_appendage+ ' ' + imgDateMonth + ' 20' + imgDateParts['yy']
+
+
     // Update the main image
     mainImage.src = previewUrl;
     imageTitle.innerText = previewTitle
     imageDesc.innerText = previewDesc;
-    imageDate.innerText = imgObj.date
+    imageDate.innerText = imgDateStr
     counter.innerText = Number(currentImage + 1)
     zoomButton.href = highDefUrl
 
@@ -138,7 +154,7 @@ function setThumbnailBar(opacity) {
 
 setThumbnailBar('opaque') // set the bar to opaque when we load the page first so people notice it
 loadImage()
-setTimeout(hideOnOverlap, 3000) // but then hide it after three seconds
+setTimeout(hideOnOverlap, 1000) // but then hide it after one seconds
 thumbnailContainer.addEventListener('mouseleave', e => {setTimeout(hideOnOverlap,900)}) /// and hide it if it's blocking a picture
 
 // Preload all preview images

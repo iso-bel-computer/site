@@ -16,6 +16,8 @@ body {
 
 
 header {
+
+    font-size: 11pt;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -43,8 +45,18 @@ header img {
 
 .headerRouteDisplay {
     font-family: 'Imperator', serif;
+    background-color: #00000000;
+    border: none;
+    color: white;
+    font-size: 11pt;
+    height: 100%;
     filter: drop-shadow(0px 10px 10px #00000035);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
 }
+
 
 .flex {
     display: flex

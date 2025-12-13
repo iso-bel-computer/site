@@ -18,19 +18,20 @@
         filter: drop-shadow(0px 0px 15px #00000015);
         height: -webkit-fill-available;
         width: 100%;
-        padding-right: 20px;
-        padding-left: 20px;
         max-width: 75vw;
+        --imagewrapper-padding: 20px;
+        padding-right: var(--imagewrapper-padding);
+        padding-left: var(--imagewrapper-padding);
         background-color: var(--site-accent-color-transparent);
         background-size: cover;
         border-right: 1px dotted #00000040
     }
 
         #imageContainer img {
-            max-height: calc(100vh - ((var(--header-padding-topandtail) * 2) + var(--header-height)) + 20px);
+            max-height: calc(100vh - ((var(--header-padding-topandtail) * 2) + var(--header-height)));
             height: auto;
             width: auto;
-            max-width: 100%;
+            max-width: calc(75vw - (var(--imagewrapper-padding) * 2));
             object-fit: contain;
             border-right: 1px solid black;
             border-bottom: 1px solid black;
@@ -45,7 +46,7 @@
         height: auto;
         justify-content: space-between;
         width: 100%;
-        max-width: 24vw;
+        max-width: 25vw;
     }
 
         #imageInfo {
@@ -97,7 +98,8 @@
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            margin-bottom: var(--thumbnail-container-height)
+            margin-bottom: calc(var(--thumbnail-container-height) * 3) /* this has a fucking weird interaction with the -webkit-fill-available in imageWrapper.
+                                                                       i don't know why it's 3 either. but it seems to work so lets not worry about it.   */
         }
 
 
@@ -125,12 +127,11 @@
     transition: opacity 0.15s;
     cursor: crosshair;
     justify-content: right;
-    padding-top: 5px;
-    padding-left: 3px;
+    --thumbnail-vertical-padding: 4px;
+    padding-top: var(--thumbnail-vertical-padding);
+    padding-bottom: var(--thumbnail-vertical-padding);
     opacity: 0.3;
     background-color: #00000000;
-    height: var(--thumbnail-container-height);
-    max-height: var(--thumbnail-container-height)
 }
 
     #thumbnailContainer:hover {
@@ -139,10 +140,10 @@
     }
 
     .thumbnail {
-        height: var(--thumbnail-container-height);
+        height: calc(var(--thumbnail-container-height) - ((var(--thumbnail-vertical-padding) / 2)));
         width: auto;
         margin-left: 3px;
-        margin-bottom: 5px;
+
         opacity: 0.25;
         border: 1px solid #ffffff70;
         transition: opacity 0.15s, brightness 0.15s;
