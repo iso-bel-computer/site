@@ -5,18 +5,19 @@ body {
     line-height: 1.17;
     --site-background-color: #DCD6C9;
     --site-accent-color: #142616;
+    --site-accent-color-transparent: #14261625;
     background-color: var(--site-background-color);
     font-size: 11pt;
     color: black;
     --header-padding-topandtail: 8px;
     --header-height: 50px;
-
+    --header-total-height: calc(var(--header-padding-topandtail) + var(--header-height));
 }
 
 
 header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     position: sticky;
     padding-bottom: var(--header-padding-topandtail);
@@ -29,18 +30,20 @@ header {
     z-index: 100;
     background-color: var(--site-accent-color);
     filter: drop-shadow(0px 10px 10px #00000035);
-    backdrop-filter: blur(10px);
-    background-position: center;
+    backdrop-filter: blur(10px)xi;
+    outline: 1px solid black;
 }
 
 header img {
     max-height: calc(var(--header-height) - 5px);
-    width: auto
+    width: auto;
+    filter: drop-shadow(0px 0px 10px #00000085);
+
 }
 
 .headerRouteDisplay {
     font-family: 'Imperator', serif;
-    font-size: 14pt;
+    filter: drop-shadow(0px 10px 10px #00000035);
 }
 
 .flex {
@@ -54,7 +57,9 @@ header a {
 .sociallinks {
     display: flex;
     flex-direction: column;
-    text-align: right
+    text-align: right;
+    filter: drop-shadow(0px 10px 10px #00000035);
+
 }
 
 nav a:hover {

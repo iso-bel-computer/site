@@ -8,24 +8,29 @@
         {% block extra_css %}{% endblock %}
         <style>
         header {
-            background-image: url('{{ url_for("static", filename="resources/images/core/headerBG.png") }}');
+              background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+    url('{{ url_for("static", filename="resources/images/core/headerBG.png") }}');
+
+    background-position: center;
         }
         </style>
     </head>
     <body>
         <header>
             <div class='flex' style='align-items: end'>
-                <a href='/'>
-                <img src="{{ url_for('static', filename='resources/images/core/ISOBEL_LOGO.svg') }}"
-                    style="width: 100px"
-                    alt='ISO_BEL'>
-                </a>
+
+                <div class='sociallinks'>
+                    <a href="&#x6d;ailto&#58;izzy&#x40;iso-bel&#46;computer">izzy&#x40;iso-bel&#46;computer</a></div>
+
+                <a href='/' style='display: flex'>
+                    <img src="{{ url_for('static', filename='resources/images/core/ISOBEL_LOGO.svg') }}"
+                        style="width: 100px"
+                        alt='ISO_BEL'></a>
+
                 <span class='headerRouteDisplay'>&nbsp{{ headerRouteDisplay }}</span>
+
             </div>
-            <div class='sociallinks'>
-                <a href='/static/rss.xml'>rss</a>
-                <a href="&#x6d;ailto&#58;izzy&#x40;iso-bel&#46;computer">izzy&#x40;iso-bel&#46;computer</a>
-            </div>
+
         </header>
         <main>
             {% block content %}

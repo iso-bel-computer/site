@@ -7,26 +7,40 @@
 {% block content %}
 
         <div id='imageContainer'>
-            <img class="mainImage" src='{{url_for('static',
+            <div id="imageWrapper">
+            <img class="mainImage" id="mainImage" src='{{url_for('static',
                         filename='resources/images/art/' + artData[0].contenttype|lower + '/previews/' + artData[0].previewFile)}}'>
-            <div id="imageInfo">
-                <h3 id="imageTitle">{{ artData[0].title|replace("-"," ")|replace("   "," - ") }}</h3>
-                <i id="imageDate">{{ artData[0].date }}</i>
-                <p id="imageDesc">{{ artData[0].description }}</p>
-                <p id="counterContainer"><span id="counter">1</span> / <span>{{ artData|length }}</span></p>
-                <a id="zoomButton" target="_blank">🔍</p>
+            </div>
+            <div id="rightHandSideWrapper">
+                <div id="imageInfo">
+                    <h3 id="imageTitle">{{ artData[0].title|replace("-"," ")|replace("   "," - ") }}</h3>
+                    <i id="imageDate">{{ artData[0].date }}</i>
+                    <p id="imageDesc">{{ artData[0].description }}</p>
+                    <p id="counterContainer"><span id="counter">1</span> / <span>{{ artData|length }}</span></p>
+               </div>
+                <span id="navButtonWrapper">
+                    <button id="forwardsButton" class="navButtons">←</button>
+                    <a id="zoomButton" target="_blank">🔍</a>
+                    <button id="backwardsButton" class="navButtons">→</button>
+                </span>
+
             </div>
         </div>
 
         <div id='thumbnailContainer'>
         {% for imgObj in artData %}
         <img class="thumbnail"
-             data-index={{ loop.index }}
-             data-imgobj='{{ imgObj|tojson }}'
+             data-index={{ loop.index0 }}
              src='{{url_for('static',
                      filename='resources/images/art/' + imgObj.contenttype|lower + '/thumbnails/' + imgObj.thumbnailFile)}}'>
         {% endfor %}
         </div>
+<style>
+#imageWrapper {
+    background:  url('{{ url_for("static", filename="resources/images/core/galleryBG.png") }}');
+    background-position: center;
+}
+</style>
 
 <script>
 const imageContainer = document.getElementById('imageContainer')
@@ -39,46 +53,99 @@ const imageDesc = document.getElementById('imageDesc')
 const counter = document.getElementById('counter')
 const zoomButton = document.getElementById('zoomButton')
 
- thumbnailContainer.addEventListener('mouseenter', e => {
-    const clickedThumb = e.target.closest('.thumbnail');
-    if (!clickedThumb) return; // clicked outside of a thumbnail
-
-    const imgObj = JSON.parse(clickedThumb.dataset.imgobj);
-    const contentType = imgObj.contenttype.toLowerCase()
-    // Get the embedded data
-    const previewUrl = `/static/resources/images/art/${contentType}/previews/${imgObj.previewFile}`;
-    const highDefUrl = `/static/resources/images/art/${contentType}/main/${imgObj.mainFile}`
-     const previewTitle = imgObj.title.replace(/-/g, ' ').replace('   ', ' - ');
-     const previewCounter = clickedThumb.dataset.index
-    let previewDesc = imgObj.description
-    if(previewDesc == '') {
-        previewDesc = '...'
-    }
-
-    // Update the main image
-    mainImage.src = previewUrl;
-    imageTitle.innerText = previewTitle
-    imageDesc.innerText = previewDesc;
-    imageDate.innerText = imgObj.date
-    counter.innerText = previewCounter
-    zoomButton.href = highDefUrl
-
- }, true)
-
-
-// Preload all preview images
 const artData = [
     {% for imgObj in artData %}
     {{ imgObj|tojson|safe }}{% if not loop.last %},{% endif %}
     {% endfor %}
 ];
 
+currentImage = 0
+maxImages = artData.length - 1
+
+thumbnailContainer.addEventListener('mouseenter', e => {
+    thumbnailContainer.style.opacity = 1
+    thumbnailContainer.style.backgroundColor = '#00000040'
+
+    const clickedThumb = e.target.closest('.thumbnail');
+    if (!clickedThumb) return; // clicked outside of a thumbnail
+
+    currentImage = Number(clickedThumb.dataset.index)
+    loadImage(currentImage)
+}, true)
+
+function createNavButtons(button, operation) {
+    element = document.getElementById(button)
+    element.addEventListener('click', e => {
+        currentImage = currentImage + operation
+        if (currentImage > maxImages) {
+            currentImage = 0// if we have gone over we wrap
+        }
+        else if (currentImage == -1) {
+            currentImage = maxImages
+        }
+        loadImage()
+    })
+ }
+
+createNavButtons('backwardsButton', 1)
+createNavButtons('forwardsButton', -1)
+
+
+function loadImage() {
+    const imgObj = artData[currentImage];
+    const contentType = imgObj.contenttype.toLowerCase()
+    // Get the embedded data
+    const previewUrl = `/static/resources/images/art/${contentType}/previews/${imgObj.previewFile}`;
+    const highDefUrl = `/static/resources/images/art/${contentType}/main/${imgObj.mainFile}`
+    const previewTitle = imgObj.title.replace(/-/g, ' ').replace('   ', ' - ');
+    let previewDesc = imgObj.description
+        if (previewDesc == '') { previewDesc = '...' }
+
+    // Update the main image
+    mainImage.src = previewUrl;
+    imageTitle.innerText = previewTitle
+    imageDesc.innerText = previewDesc;
+    imageDate.innerText = imgObj.date
+    counter.innerText = Number(currentImage + 1)
+    zoomButton.href = highDefUrl
+
+ }
+
+
+function hideOnOverlap() {
+    rect1 = document.getElementById('mainImage').getBoundingClientRect()
+    rect2 = document.getElementById('thumbnailContainer').getBoundingClientRect()
+    // check if the image is overlapping the thumbnails
+    var overlap = !(rect1.right < rect2.left ||
+                    rect1.left > rect2.right ||
+                    rect1.bottom < rect2.top ||
+                    rect1.top > rect2.bottom)
+    // if it is, then set the opacity to low. else, bring it up.
+     if (overlap) {setThumbnailBar('transparent')}
+     else {setThumbnailBar('opaque')}
+}
+
+function setThumbnailBar(opacity) {
+     if (opacity === 'transparent') {
+         thumbnailContainer.style.opacity = 0.4
+        thumbnailContainer.style.backgroundColor = '#00000000'
+     }
+     else {
+        thumbnailContainer.style.opacity = 1
+        thumbnailContainer.style.backgroundColor = '#00000040'
+     }
+}
+
+setThumbnailBar('opaque') // set the bar to opaque when we load the page first so people notice it
+loadImage()
+setTimeout(hideOnOverlap, 3000) // but then hide it after three seconds
+thumbnailContainer.addEventListener('mouseleave', e => {setTimeout(hideOnOverlap,900)}) /// and hide it if it's blocking a picture
+
+// Preload all preview images
 artData.forEach(imgObj => {
     const previewImg = new Image();
     previewImg.src = `/static/resources/images/art/${imgObj.contenttype.toLowerCase()}/previews/${imgObj.previewFile}`;
 });
-
-
 
 </script>
 
