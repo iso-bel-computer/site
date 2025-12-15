@@ -1,6 +1,4 @@
-::root {
-    overflow: hidden;
-}
+
 #content {
     display: flex;
 }
@@ -12,89 +10,111 @@
     }
 
     #bookshelfOuterWrapper {
-        border-left: 1px solid var(--site-accent-color);
+        border-left: 1px dotted var(--site-accent-color);
         width: 20%;
-        padding-right: 15px;
-        padding-left: 15px;
-        background-color: #ccc4b1;
-        border-right: 1px dotted var(--site-accent-color-transparent)
+        min-width: 300px;
+        height: 100%;
+        max-height: calc(100vh - var(--header-total-height));
+        padding-right: 28px;
+        padding-left: 12px;
+        background-color: #cfc6b4;
+        border-right: 1px dotted var(--site-accent-color-transparent);
+        filter: brightness(0.93);
+        transition: filter 0.3s
     }
 
-    #bookshelfWrapper {
-        height: calc(98vh - var(--header-total-height));
-        overflow: scroll;
-        -ms-overflow-style: none;  /* IE and Edge */
-        scrollbar-width: none;  /* Firefox */
-        display: flex;
-        align-items: end;
-        flex-wrap: wrap;
-        padding-top: 20px;
-        padding-bottom: 20px;
-        background-color: var(--site-accent-color-transparent-darker);
-        border-right: 1px solid var(--site-accent-color);
-        border-left: 1px solid var(--site-accent-color);
-        cursor: crosshair;
+        #bookshelfOuterWrapper:hover {
+            filter: brightness(1)
 
-    }
-
-        #bookshelfWrapper::-webkit-scrollbar {
-            display: none;
         }
-
-        #bookshelfWrapper p {
-            font-style: italic;
-            width: 100%;
-            text-align: right;
-            font-size: 8pt;
-            margin-top: 0px;
-            margin-right: 20px;
-        }
-
-        .bookSpine {
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
-            font-size: 9pt;
-            transform:
-                rotate(var(--book-rotate))
-                scale(var(--book-scale))
-                translateY(var(--book-raise));
-
-            transition: transform 0.30s;
-            box-shadow:
-                -3px 0px 10px #00000020,
-                3px 0px 10px #00000020,
-                0px -3px 10px #00000020;     /* top shadow (no bottom) */
+        #bookshelfWrapper {
+            height: 100%;
+            max-height: calc(96vh - var(--header-total-height));
+            overflow: scroll;
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
             display: flex;
-            padding: 9px;
-            justify-content: space-between;
-            filter: brightness(0.9);
-            border: 2px solid #00000010;
-            display: flex;
-
-
+            align-items:  end;
+            flex-wrap: wrap;
+            padding-top: 70px;
+            padding-bottom: 20px;
+            border-right: 1px solid var(--site-accent-color);
+            border-left: 1px solid var(--site-accent-color);
+            cursor: crosshair;
+            background: linear-gradient(#00000030, #00000070);
+            overflow-y: scroll;
+            overflow-x: visible;
         }
 
-        .bookSpine:hover {
-            border: 2px solid #00000085;
-            --book-raise: -13px;
-            --book-scale: 1.05;
-            filter: brightness(1);
-            z-index: 99999
-        }
+            #bookshelfWrapper::-webkit-scrollbar {
+                display: none;
+            }
+
+            #bookshelfWrapper p {
+                font-style: italic;
+                width: 100%;
+                text-align: right;
+                font-size: 8pt;
+                margin-top: 0px;
+                margin-right: 20px;
+            }
+
+            .bookSpine {
+                writing-mode: vertical-rl;
+                text-orientation: mixed;
+                font-size: 9pt;
+                transform:
+                    rotate(var(--book-rotate, 0turn))
+                    scale(var(--book-scale, 1))
+                    translateY(3px);
+
+                --transition-time: 0.3s;
+                transition: transform var(--transition-time),
+                            border var(--transition-time),
+                            filter var(--transition-time);
+                display: flex;
+                padding: 9px;
+                justify-content: space-between;
+                filter: brightness(0.90);
+                display: flex;
+                cursor: pointer;
 
 
-        .bookAuthor {
-            margin-top: 10px;
-        }
+            }
 
-        .shelf {
-            width: 100%;
-            height: 11px;
-            background: #5c420b;
-            filter: drop-shadow(0px 7px 9px #00000095) ;
-            flex-basis: 100%; /* Forces shelf to take full width */
-            margin-bottom: 10px;
-        }
+            .bookSpine:hover {
+                transform: translateY(var(--book-raise));
+                --book-rotate: 0turn !important;
+                --book-scale: 1.04;
+                filter: brightness(1);
+                z-index: 80;
+
+            }
+
+            .bookSpine::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(#00000000, #00000020);
+                pointer-events: none;
+
+                box-shadow:
+                    -4px -2px 15px #00000095;
+            }
+
+            .bookAuthor {
+                margin-top: 10px;
+            }
+
+            .shelf {
+                width: 100%;
+                height: 14px;
+                background: linear-gradient(#382806, #1a1203);
+                flex-basis: 100%; /* Forces shelf to take full width */
+                margin-bottom: 25px;
+                z-index: 99999;
+                box-shadow: 0 7px 10px rgba(0,0,0,.55);
+            }
 
     #rightHandSideWrapper {
         height: fit-content;
@@ -103,5 +123,5 @@
 
     }
         #bookInfo {
-            padding-left: 15px;
+            padding-left: 25px;
         }

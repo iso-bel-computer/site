@@ -5,6 +5,7 @@ import re
 import json
 import time
 import os
+import random
 import datetime
 import dcolors
 from io import BytesIO
@@ -15,7 +16,7 @@ headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/
 readingLog = '../static/resources/data/reading.json'
 url="https://www.goodreads.com/review/list/63239304-dylanhemmings1?shelf=read&view=covers&per_page=20&page="
 maxPagesToFetch = 10
-refreshAll = False
+refreshAll = True
 bookData = []
 
 if not refreshAll:
@@ -112,8 +113,10 @@ while pageNo < maxPagesToFetch:
         print(title.ljust(80), str(pages).ljust(5), author.ljust(40), readDate.strftime('%d/%m/%Y').ljust(20), isbn.ljust(12), isbn13)
         for i, color in enumerate(coverColours):
             bg_hex(f"{i}                                             ", color)
-        coloursInput = False
 
+
+
+        coloursInput = False
         while not coloursInput:
             try:
                 mainColor = coverColours[int(input  ('Select main color    > '))]
@@ -126,6 +129,20 @@ while pageNo < maxPagesToFetch:
                 print(e)
                 print('Invalid entry. Try again')
 
+        fontInput = False
+        while not fontInput:
+            fontStyle = input('Input s for Serif font, or ss for non serif. Enter to randomize. >')
+            if fontStyle == '':
+                rand = random.randint(0, 1)
+                if rand == 0:
+                    fontStyle = 's'
+                else:
+                    fontStyle = 'ss'
+            if fontStyle in ('ss', 's'):
+                fontInput = True
+            else:
+                print('Invalid input. Try again...')
+
         bookDataObj = {
             'title': title,
             'pages': pages,
@@ -135,7 +152,8 @@ while pageNo < maxPagesToFetch:
             'readDate': readDate.strftime('%Y/%m/%d'),
             'coverColours': coverColours,
             'mainColor': mainColor,
-            'accentColor': accentColor
+            'accentColor': accentColor,
+            'fontStyle': fontStyle,
         }
 
         bookData.append(bookDataObj)
