@@ -98,5 +98,16 @@ def art(category):
         headerRoute=category
     )
 
+with open('static/resources/data/reading.json', 'r') as f:
+    bookData = json.load(f)
+
+@app.route('/about/reading')
+def readingReccs():
+
+    return render_template('reading.html',
+                           headerRouteDisplay = '~/about/reading',
+                           books = bookData)
+
+
 if __name__ == '__main__':
     app.run(debug=True)

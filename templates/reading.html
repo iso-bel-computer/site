@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reading.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div id="bookshelfWrapper">
+
+{% for book in books %}
+    <div class='bookSpine' style='
+                background-color: {{ book["coverColours"][0]}};
+                width: {{ book["pages"] / 8  }}px;
+                color: {{ book["coverColours"][1] }};
+                padding-left: {{ book["pages"] / 45 }}px;
+                padding-right: {{ book["pages"] / 45 }}px'>
+        <span class="bookTitle">{{ book['title'] }}</span>
+        <span class="bookAuthor">{{ book['author'] }}</span>
+    </div>
+{% endfor %}
+</div>
+
+<script>
+
+function getRandomInt(min, max) {
+  const minCeiled = Math.ceil(min);
+  const maxFloored = Math.floor(max);
+  return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
+}
+
+function getRandomArbitrary(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+function randomiseBook(book) {
+    const title = book.querySelector('.bookTitle')
+    const author = book.querySelector('.bookAuthor')
+
+    alignments = ['end', 'start', 'center']
+
+    book.style.marginRight = `${getRandomInt(3,6)}px`
+    book.style.height = `${getRandomInt(250, 350)}px`
+    book.style.borderRadius = `${getRandomInt(0,2)}px`
+    book.style.alignItems = `${alignments[getRandomInt(0,alignments.length)]}`
+    /// book.style.justifyContent = `${alignments[getRandomInt(0,alignments.length)]}`
+
+    const minTitleSize = 8
+    const maxTitleSize = 19
+
+    bookWidth = parseInt(book.style.width)
+    titleSize = (bookWidth / getRandomArbitrary(3, 6)) * 1.1
+    if (titleSize < minTitleSize || bookWidth < 15) {titleSize = minTitleSize}
+    if (titleSize > maxTitleSize || bookWidth > 80) {titleSize = maxTitleSize}
+    if (bookWidth < 15) { book.style.alignItems = 'center'}
+
+    authorSize = titleSize - getRandomInt(1,7)
+    if (authorSize < 7) {authorSize = 7}
+
+    title.style.fontSize = `${titleSize}px`
+    author.style.fontSize = `${authorSize}px`
+
+ }
+
+const books = document.querySelectorAll('.bookSpine')
+
+books.forEach(book => {
+     randomiseBook(book)
+ })
+
+
+</script>
+
+{% endblock %}
