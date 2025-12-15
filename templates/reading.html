@@ -5,6 +5,27 @@
 {% endblock %}
 
 {% block content %}
+
+
+<style>
+
+#imageWrapper {
+    background:  url('{{ url_for("static", filename="resources/images/core/galleryBG.png") }}');
+    background-position: center;
+}
+
+.bookSpine {
+    background: linear-gradient(#00000000, #00000010), url('{{ url_for("static", filename="resources/images/about/distressedPaperTexture.png") }}');
+    background-position: center;
+}
+
+#bookshelfWrapper {
+    background: linear-gradient(#00000020, #00000055), url('{{ url_for("static", filename="resources/images/about/bookshelfBackground.png") }}');
+    background-position: center;
+}
+
+</style>
+
 <div id="content">
     <div id='seperator'></div>
     <div id="bookshelfOuterWrapper">
@@ -33,27 +54,6 @@
         </div>
     </div>
 </div>
-
-<style>
-
-#imageWrapper {
-    background:  url('{{ url_for("static", filename="resources/images/core/galleryBG.png") }}');
-    background-position: center;
-}
-
-.bookSpine {
-    background: linear-gradient(#00000000, #00000010), url('{{ url_for("static", filename="resources/images/about/distressedPaperTexture.png") }}');
-    background-position: center;
-}
-
-#bookshelfWrapper {
-    background: linear-gradient(#00000020, #00000055), url('{{ url_for("static", filename="resources/images/about/bookshelfBackground.png") }}');
-    background-position: center;
-}
-
-
-</style>
-
 <script>
 
 function getRandomInt(min, max) {
@@ -73,7 +73,7 @@ function randomiseBook(book) {
 
     // randomizing basic attributes. these are obvious.
     book.style.zIndex = `${getRandomInt(3,80)}`
-    book.style.border = `${getRandomInt(1,3)}px outset #00000050`
+    book.style.border = `${getRandomInt(1,3)}px outset #00000080`
     book.style.marginLeft = `${getRandomInt(0,4)}px`
     book.style.borderRadius = `${getRandomInt(0,4)}px`
 
