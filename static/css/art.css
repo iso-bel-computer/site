@@ -1,5 +1,6 @@
 :root {
     --thumbnail-container-height: 40px;
+    overflow: hidden;
 }
 
 

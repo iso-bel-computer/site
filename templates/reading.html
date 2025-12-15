@@ -5,20 +5,32 @@
 {% endblock %}
 
 {% block content %}
-
-<div id="bookshelfWrapper">
-
-{% for book in books %}
-    <div class='bookSpine' style='
-                background-color: {{ book["coverColours"][0]}};
-                width: {{ book["pages"] / 8  }}px;
-                color: {{ book["coverColours"][1] }};
-                padding-left: {{ book["pages"] / 45 }}px;
-                padding-right: {{ book["pages"] / 45 }}px'>
-        <span class="bookTitle">{{ book['title'] }}</span>
-        <span class="bookAuthor">{{ book['author'] }}</span>
+<div id="content">
+    <div id='seperator'></div>
+    <div id="bookshelfOuterWrapper">
+        <div id="bookshelfWrapper">
+            {% for book in books %}
+            <div class='bookSpine' id="{{ book['title']|replace(' ','') }}" style='
+            background-color: {{ book["mainColor"] }};
+            color: {{ book["accentColor"] }};
+            padding-left: {{ book["pages"] / 45 }}px;
+            padding-right: {{ book["pages"] / 45 }}px'
+            data-index='{{ loop.index0 }}'
+            data-pages='{{ book["pages"] }}'>
+                <span class="bookTitle">{{ book['title'] }}</span>
+                <span class="bookAuthor">{{ book['author'] }}</span>
+            </div>
+            {% endfor %}
+            <p id="mapquote">the map is not the territory...</p>
+        </div>
     </div>
-{% endfor %}
+    <div id="rightHandSideWrapper">
+        <div id="bookInfo">
+            <h1 id='bookTitle'></h1>
+            <h3 id="bookAuthor"></h3>
+            <i id="readDate"></i>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -39,35 +51,121 @@ function randomiseBook(book) {
 
     alignments = ['end', 'start', 'center']
 
-    book.style.marginRight = `${getRandomInt(3,6)}px`
-    book.style.height = `${getRandomInt(250, 350)}px`
+
+    book.style.marginLeft = `${getRandomInt(0,3)}px`
+    book.style.marginRight = `${getRandomInt(0,3)}px`
     book.style.borderRadius = `${getRandomInt(0,2)}px`
     book.style.alignItems = `${alignments[getRandomInt(0,alignments.length)]}`
+    direction = ''
+    if (getRandomInt(0,2) == 1) {direction = '-'}
+    book.style.setProperty(
+        '--book-rotate',
+        `${direction}${getRandomArbitrary(0.000, 0.0005)}turn`
+    );
+     author.style.paddingBottom = `${getRandomInt(0,10)}px`
     /// book.style.justifyContent = `${alignments[getRandomInt(0,alignments.length)]}`
 
-    const minTitleSize = 8
-    const maxTitleSize = 19
+    const minTitleSize = 7
+    const bookSizeModifier = 0.43
+    const maxTitleSize = 40 * bookSizeModifier
 
-    bookWidth = parseInt(book.style.width)
-    titleSize = (bookWidth / getRandomArbitrary(3, 6)) * 1.1
-    if (titleSize < minTitleSize || bookWidth < 15) {titleSize = minTitleSize}
-    if (titleSize > maxTitleSize || bookWidth > 80) {titleSize = maxTitleSize}
+
+    bookWidth = book.dataset.pages
+    titleSize = Math.round((bookWidth / getRandomArbitrary(3, 6)) * 0.2)  * bookSizeModifier
+    console.log(titleSize)
+    if (titleSize < minTitleSize || bookWidth < 90) {titleSize = minTitleSize}
+    if (titleSize > maxTitleSize || bookWidth > 400) {titleSize = maxTitleSize}
     if (bookWidth < 15) { book.style.alignItems = 'center'}
 
-    authorSize = titleSize - getRandomInt(1,7)
+    authorSize = (titleSize - getRandomInt(0,5)) * bookSizeModifier
     if (authorSize < 7) {authorSize = 7}
 
     title.style.fontSize = `${titleSize}px`
     author.style.fontSize = `${authorSize}px`
 
+
+    const bookPxWidth = (bookWidth / 8) * bookSizeModifier
+    const bookPxHeight = getRandomInt(550,700) * bookSizeModifier
+
+    book.style.height = `${bookPxHeight}px`
+    book.style.width = `${bookPxWidth}px`
  }
+
+function addShelves() {
+    const wrapper = document.getElementById('bookshelfWrapper');
+    const books = Array.from(document.querySelectorAll('.bookSpine'));
+     console.log('called')
+     console.log(wrapper, books)
+    // Remove existing shelves first
+    document.querySelectorAll('.shelf').forEach(shelf => shelf.remove());
+
+    if (books.length === 0) return;
+
+    let currentBottom = books[0].getBoundingClientRect().bottom
+
+    books.forEach((book, index) => {
+        const bookBottom = book.getBoundingClientRect().bottom;
+        console.log(bookBottom, currentBottom)
+        // If book wrapped to a new line
+        if (bookBottom > currentBottom + 10) {
+            // Insert shelf before this book
+            const shelf = document.createElement('div');
+            shelf.className = 'shelf';
+            book.parentNode.insertBefore(shelf, book);
+
+            const newBottom = book.getBoundingClientRect().bottom;
+            currentBottom = newBottom;
+        }
+    });
+
+    // Add final shelf at the end
+    const finalShelf = document.createElement('div');
+    finalShelf.className = 'shelf';
+    const mapQuote = document.getElementById('mapquote')
+    mapQuote.parentNode.insertBefore(finalShelf, mapQuote)
+
+}
+
 
 const books = document.querySelectorAll('.bookSpine')
 
+const bookData = [
+    {% for book in books %}
+    {{ book|tojson|safe }}{% if not loop.last %},{% endif %}
+    {% endfor %}
+];
+const bookshelfWrapper = document.getElementById('bookshelfWrapper')
+let currentBook = 0
+
+function loadBook(bookDataObj) {
+
+    const bookAuthor = document.getElementById('bookAuthor')
+    const bookTitle = document.getElementById('bookTitle')
+    const readDate = document.getElementById('readDate')
+
+    bookTitle.innerText = bookDataObj['title']
+    bookAuthor.innerText = bookDataObj['author']
+    readDate.innerText = bookDataObj['readDate']
+ }
+
 books.forEach(book => {
-     randomiseBook(book)
+    randomiseBook(book)
+
+    book.addEventListener('mouseenter', e => {
+        const index = book.dataset.index
+        bookDataObj = bookData[index]
+        loadBook(bookDataObj)
+    })
  })
 
+// Add shelves after layout is done
+setTimeout(addShelves, 0);
+
+firstBook = bookData[0]
+loadBook(firstBook)
+
+// Re-add shelves on window resize
+window.addEventListener('resize', addShelves);
 
 </script>
 

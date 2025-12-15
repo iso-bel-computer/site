@@ -18,7 +18,7 @@ maxPagesToFetch = 10
 refreshAll = False
 bookData = []
 
-if refreshAll:
+if not refreshAll:
     try:
         with open(readingLog, 'r') as f:
             bookData = json.load(f)
@@ -43,7 +43,8 @@ while pageNo < maxPagesToFetch:
             textReplacements = ['title', '\n', 'num pages', 'isbn13', 'isbn', 'pp', 'date read', 'author', '*']
             reSubs = [r':.*', # this replaces anything following : or ( - title subtitles
                     r'^review', # replaces the word review, but only if at the beginning of a line
-                    r'\(.*']
+                    r'\(.*',
+                    r'(?<=\?).*']
             for string in textReplacements:
                 value = value.replace(string, '')
 
@@ -91,10 +92,12 @@ while pageNo < maxPagesToFetch:
             except Exception as e:
                 print(e)
                 return
+            finally:
+                os.remove('tmp')
 
         title = cleanValue(row.find(attrs={'class':"field title"}))
 
-        if bookInList(title) and not refreshAll:
+        if bookInList(title):
             break
 
         pages = int(cleanValue(row.find(class_="field num_pages")))
@@ -107,8 +110,21 @@ while pageNo < maxPagesToFetch:
         coverColours = getCoverColors(coverImgLink)
 
         print(title.ljust(80), str(pages).ljust(5), author.ljust(40), readDate.strftime('%d/%m/%Y').ljust(20), isbn.ljust(12), isbn13)
-        for color in coverColours:
-            bg_hex(f"{color}", color)
+        for i, color in enumerate(coverColours):
+            bg_hex(f"{i}                                             ", color)
+        coloursInput = False
+
+        while not coloursInput:
+            try:
+                mainColor = coverColours[int(input  ('Select main color    > '))]
+                bg_hex(f'Selected {mainColor}' + ' ' * 100, mainColor)
+                accentColor = coverColours[int(input('Select accent color  > '))]
+                bg_hex(f'Selected {accentColor}' + ' ' * 100, accentColor)
+                print('\n')
+                coloursInput = True
+            except Exception as e:
+                print(e)
+                print('Invalid entry. Try again')
 
         bookDataObj = {
             'title': title,
@@ -117,7 +133,9 @@ while pageNo < maxPagesToFetch:
             'isbn': isbn,
             'isbn13': isbn13,
             'readDate': readDate.strftime('%Y/%m/%d'),
-            'coverColours': coverColours
+            'coverColours': coverColours,
+            'mainColor': mainColor,
+            'accentColor': accentColor
         }
 
         bookData.append(bookDataObj)
