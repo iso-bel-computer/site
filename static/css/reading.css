@@ -11,22 +11,16 @@
 
     #bookshelfOuterWrapper {
         border-left: 1px dotted var(--site-accent-color);
-        width: 20%;
+        width: 25%;
         min-width: 300px;
         height: 100%;
         max-height: calc(100vh - var(--header-total-height));
         padding-right: 28px;
         padding-left: 12px;
-        background-color: #cfc6b4;
+        background-color: #00000035;
         border-right: 1px dotted var(--site-accent-color-transparent);
-        filter: brightness(0.93);
-        transition: filter 0.3s
     }
 
-        #bookshelfOuterWrapper:hover {
-            filter: brightness(1)
-
-        }
         #bookshelfWrapper {
             height: 100%;
             max-height: calc(96vh - var(--header-total-height));
@@ -41,10 +35,13 @@
             border-right: 1px solid var(--site-accent-color);
             border-left: 1px solid var(--site-accent-color);
             cursor: crosshair;
-            background: linear-gradient(#00000030, #00000070);
-            overflow-y: scroll;
-            overflow-x: visible;
+            filter: brightness(0.7);
+            transition: filter 1s
         }
+
+            #bookshelfWrapper:hover {
+                filter: brightness(1)
+            }
 
             #bookshelfWrapper::-webkit-scrollbar {
                 display: none;
@@ -71,14 +68,14 @@
                 --transition-time: 0.3s;
                 transition: transform var(--transition-time),
                             border var(--transition-time),
-                            filter var(--transition-time);
+                            filter var(--transition-time),
+                            margin var(--transition-time);
                 display: flex;
                 padding: 9px;
                 justify-content: space-between;
-                filter: brightness(0.90);
+                filter: brightness(0.85);
                 display: flex;
-                cursor: pointer;
-
+                cursor: grab;
 
             }
 
@@ -87,10 +84,16 @@
                 --book-rotate: 0turn !important;
                 --book-scale: 1.04;
                 filter: brightness(1);
-                z-index: 80;
-
+                z-index: 80 !important;
             }
 
+
+            .bookSpine:active {
+                transform: translateY(calc(var(--book-raise) * 2.5));
+                --book-scale: 1.06;
+                filter: brightness(1.12);
+                cursor: grabbing
+            }
             .bookSpine::after {
                 content: "";
                 position: absolute;
@@ -99,17 +102,23 @@
                 pointer-events: none;
 
                 box-shadow:
-                    -4px -2px 15px #00000095;
+                    0px 9px 13px #00000095;
             }
-
             .bookAuthor {
                 margin-top: 10px;
+                -webkit-user-select: none;  /* Safari */
+                -moz-user-select: none;     /* Firefox */
+                -ms-user-select: none;      /* IE10+/Edge */
+                user-select: none;          /* Standard */
+                text-align: right /* only really for when the text wraps */
             }
 
             .shelf {
                 width: 100%;
                 height: 14px;
-                background: linear-gradient(#382806, #1a1203);
+                border-top: 2px outset #24201b;
+                border-bottom: 2px outset #24201b;
+                background: linear-gradient(#302b24, #24201b);
                 flex-basis: 100%; /* Forces shelf to take full width */
                 margin-bottom: 25px;
                 z-index: 99999;
@@ -118,10 +127,15 @@
 
     #rightHandSideWrapper {
         height: fit-content;
-        width: 80%;
+        width: 75%;
         border-left: 1px inset var(--site-accent-color);
 
     }
         #bookInfo {
             padding-left: 25px;
         }
+
+            #bookInfo a {
+                color: black;
+                text-decoration-line: none;
+            }

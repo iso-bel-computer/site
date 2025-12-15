@@ -15,12 +15,12 @@
 }
 
 .bookSpine {
-    background: linear-gradient(#00000000, #00000010), url('{{ url_for("static", filename="resources/images/about/distressedPaperTexture.png") }}');
+    background: linear-gradient(#00000010, #00000045), url('{{ url_for("static", filename="resources/images/about/distressedPaperTexture.png") }}');
     background-position: center;
 }
 
 #bookshelfWrapper {
-    background: linear-gradient(#00000020, #00000055), url('{{ url_for("static", filename="resources/images/about/bookshelfBackground.png") }}');
+    background: linear-gradient(#00000050, #00000095), url('{{ url_for("static", filename="resources/images/about/bookshelfBackground.png") }}');
     background-position: center;
 }
 
@@ -50,7 +50,7 @@
         <div id="bookInfo">
             <h1 id='bookTitle'></h1>
             <h3 id="bookAuthor"></h3>
-            <i id="readDate"></i>
+            <i id="readDate"></i> - <i><a target="_blank" id="zlibLink">Z-Lib</a> - <a target="_blank" id="worldCatLink">WorldCat</a></i>
         </div>
     </div>
 </div>
@@ -74,7 +74,7 @@ function randomiseBook(book) {
     // randomizing basic attributes. these are obvious.
     book.style.zIndex = `${getRandomInt(3,80)}`
     book.style.border = `${getRandomInt(1,3)}px outset #00000080`
-    book.style.marginLeft = `${getRandomInt(0,4)}px`
+    book.style.marginRight = `${getRandomInt(0,4)}px`
     book.style.borderRadius = `${getRandomInt(0,4)}px`
 
     // setting very small book rotations
@@ -120,12 +120,12 @@ function setScalableBookAttributes(book) {
     if (titleSize < minTitleSize) {titleSize = minTitleSize}
     if (pages < 90) {titleSize = 8}
     if (titleSize > maxTitleSize || pages > 400) {titleSize = maxTitleSize}
-    if (pages < 90) { book.style.alignItems = 'center'}
+    if (pages < 150 || pages > 400) { book.style.alignItems = 'center'} // this is a safety against clipping text
+
+    title.style.fontSize = `${titleSize}px`
 
     authorSize = (titleSize - getRandomInt(0,5)) * bookSizeModifier
     if (authorSize < 7) {authorSize = 7}
-
-    title.style.fontSize = `${titleSize}px`
     author.style.fontSize = `${authorSize}px`
 
     // setting font weight
@@ -153,6 +153,15 @@ function setScalableBookAttributes(book) {
 
  }
 
+function finalizeTitles() {
+    books.forEach(book => {
+        if (book.offsetWidth > book.scrollWidth) {
+            book.style.fontSize =
+                ((parseFloat(getComputedStyle(book).fontSize)) - 20) + 'px';
+        }
+    });
+}
+
 function addShelves() {
     const wrapper = document.getElementById('bookshelfWrapper');
     const books = Array.from(document.querySelectorAll('.bookSpine'));
@@ -165,8 +174,8 @@ function addShelves() {
 
     books.forEach((book, index) => {
         const bookBottom = book.getBoundingClientRect().bottom;
-        // If book wrapped to a new line
-        if (bookBottom > currentBottom + 10) {
+        // If book wrapped to a new line -  30 is arbitrary to avoid extra with rotation etc
+        if (bookBottom > currentBottom + 30) {
             // Insert shelf before this book
             const shelf = document.createElement('div');
             shelf.className = 'shelf';
@@ -194,7 +203,6 @@ const bookData = [
     {% endfor %}
 ];
 const bookshelfWrapper = document.getElementById('bookshelfWrapper')
-let currentBook = 0
 
 function loadBook(bookDataObj) {
 
@@ -202,27 +210,53 @@ function loadBook(bookDataObj) {
     const bookTitle = document.getElementById('bookTitle')
     const readDate = document.getElementById('readDate')
 
+    const zLibEl = document.getElementById('zlibLink')
+    const worldCatEl = document.getElementById('worldCatLink')
+
     bookTitle.innerText = bookDataObj['title']
     bookAuthor.innerText = bookDataObj['author']
     readDate.innerText = bookDataObj['readDate']
+
+    query = bookDataObj['title'] + ' ' + bookDataObj['author'].replace('?','') // search title and author together. different sites handle spaces different so we hold off for now.
+
+    zLibLink = 'https://z-lib.fm/s/' + query.replace(' ','%20')
+    worldCatLink = 'https://search.worldcat.org/search?q=' + query.replace(' ','+')
+
+    zLibEl.href = zLibLink
+    worldCatEl.href = worldCatLink
  }
 
-books.forEach(book => {
-    randomiseBook(book)
-    setScalableBookAttributes(book)
 
-    book.addEventListener('mouseenter', e => {
-        const index = book.dataset.index
-        bookDataObj = bookData[index]
-        loadBook(bookDataObj)
+function init() {
+
+    books.forEach(book => {
+        randomiseBook(book)
+        setScalableBookAttributes(book)
+
+        book.addEventListener('mouseenter', e => {
+            const index = book.dataset.index
+            bookDataObj = bookData[index]
+            loadBook(bookDataObj)
+        })
+
+        firstBook = bookData[0]
+        loadBook(firstBook)    // Wait until layout/render finishes
+        });
+
+    requestAnimationFrame(() => {
+        addShelves();
+        finalizeTitles();
+        setTimeout(addShelves, 500)
+    });
+
+    const bookshelfWrapper = document.getElementById('bookshelfWrapper')
+    bookshelfWrapper.addEventListener('mouseenter', e => {
+        bookshelfWrapper.style.filter = 'brightness(1)' // once the user has interacted with the bookshelf, it doesnt dim again
     })
- })
 
-// Add shelves after layout is done
-setTimeout(addShelves, 0);
+ }
 
-firstBook = bookData[0]
-loadBook(firstBook)
+init()
 
 // Re-add shelves on window resize
 window.addEventListener('resize', addShelves);
