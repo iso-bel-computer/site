@@ -4,6 +4,7 @@ from flask import Flask, render_template
 import os
 import datetime
 from datetime import datetime
+import random
 
 os.chdir(os.path.dirname(__file__))  # change CWD to where flask_app.py lives
 
@@ -12,23 +13,20 @@ app = Flask(__name__)
 @app.route('/')
 def home():
     return render_template('base.html',
-                         current_date=datetime.now().strftime('%Y-%m-%d')
-                           )
-
-
-
-def getSuffix(day):
-    if day == 1 or day == 21 or day == 31:
-        return 'st'
-    elif day == 2 or day == 22:
-        return 'nd'
-    elif day == 3 or day == 23:
-        return 'rd'
-    else:
-        return 'th'
+                         current_date=datetime.now().strftime('%Y-%m-%d'))
 
 def getBlogPosts():
     posts = []
+
+    def getSuffix(day):
+        if day == 1 or day == 21 or day == 31:
+            return 'st'
+        elif day == 2 or day == 22:
+            return 'nd'
+        elif day == 3 or day == 23:
+            return 'rd'
+        else:
+            return 'th'
 
     # Get the directory where flask_app.py is located
     base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -62,7 +60,6 @@ def getBlogPosts():
             except:
                 print(f'Error processing {filename}')
     return sorted(posts, key=lambda x: x['date'], reverse=True)
-
 BLOGPOSTS = getBlogPosts()
 
 @app.route('/blog')
@@ -83,6 +80,7 @@ def art(category):
     if category not in files:
         abort(404)
 
+
     with open(files[category]) as f:
         artData = json.load(f)
         artData = sorted(
@@ -100,14 +98,45 @@ def art(category):
 
 with open('static/resources/data/reading.json', 'r') as f:
     bookData = json.load(f)
+    for book in bookData:
+        random.seed(book['pages'] * 1.4)
 
+        alingments = ['end', 'start', 'center']
+        directions = ['', '-']
+
+
+        randomNumbers = {
+
+            # these are NOT the final values. they're seeds for the stuff we dont have
+            # in the JSON but want to be consistent.
+            # i did it this way because JS doesn't have random.seed(). this stops books
+            # jumping all over the place when you reload etc.
+            # it does also impove performance slightly to do all the random generation once
+            # per server restart, rather on every page load. which i guess is nice.
+            # everything is a string bc why not do that conversion here as well, thats how css wants
+            # it at the end.
+
+            'zIndex':         random.randint(3,80),
+            'border':         str(random.randint(1,3)) + 'px outset #00000080',
+            'marginRight':    str(random.randint(0,4)) + 'px',
+            'borderRadius':   str(random.randint(0,4)) + 'px',
+            'alignItems':     str(alingments[random.randint(0,2)]),
+            'rotation':       str(directions[random.randint(0,1)]) + str(random.uniform(0,0.0021)) + 'turn',
+            'paddingTop':     str(random.randint(0,13)) + 'px',
+            'paddingBottom':  str(random.randint(0,10)) + 'px',
+            'titleSizeINT':   random.uniform(3,6),
+            'authorSizeINT':  random.randint(0,5),
+            'fontWeightINT':  random.uniform(0,9),
+            'heightINT':      random.randint(550,700),
+            'raiseAmountINT': random.uniform(3,4)
+        }
+
+        book['randomNumbers'] = randomNumbers
 @app.route('/about/reading')
 def readingReccs():
-
     return render_template('reading.html',
                            headerRouteDisplay = '~/about/reading',
                            books = bookData)
-
 
 if __name__ == '__main__':
     app.run(debug=True)

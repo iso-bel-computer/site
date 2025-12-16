@@ -15,12 +15,12 @@
 }
 
 .bookSpine {
-    background: linear-gradient(#00000010, #00000045), url('{{ url_for("static", filename="resources/images/about/distressedPaperTexture.png") }}');
+    background: linear-gradient(#00000000, #00000025), url('{{ url_for("static", filename="resources/images/about/distressedPaperTexture.png") }}');
     background-position: center;
 }
 
 #bookshelfWrapper {
-    background: linear-gradient(#00000050, #00000095), url('{{ url_for("static", filename="resources/images/about/bookshelfBackground.png") }}');
+    background: linear-gradient(#00000010, #00000050), url('{{ url_for("static", filename="resources/images/about/bookshelfBackground.png") }}');
     background-position: center;
 }
 
@@ -56,45 +56,31 @@
 </div>
 <script>
 
-function getRandomInt(min, max) {
-  const minCeiled = Math.ceil(min);
-  const maxFloored = Math.floor(max);
-  return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
-}
-
-function getRandomArbitrary(min, max) {
-  return Math.random() * (max - min) + min;
-}
-
 function randomiseBook(book) {
+
+    /// this used to randomise clientside. but now randomising serverside improves performance
+    /// and lets us use random.seed() to get consistent results.
+    /// if we want to release this as a static html generator we should bake this into the
+    /// goodreads scraper script instead.
 
     const title = book.querySelector('.bookTitle')
     const author = book.querySelector('.bookAuthor')
+    const r = bookData[book.dataset.index].randomNumbers
 
-    // randomizing basic attributes. these are obvious.
-    book.style.zIndex = `${getRandomInt(3,80)}`
-    book.style.border = `${getRandomInt(1,3)}px outset #00000080`
-    book.style.marginRight = `${getRandomInt(0,4)}px`
-    book.style.borderRadius = `${getRandomInt(0,4)}px`
+    book.style.zIndex          =  r.zIndex
+    book.style.border          =  r.border
+    book.style.marginRight     =  r.marginRight
+    book.style.borderRadius    =  r.borderRadius
+    book.style.alignItems      =  r.alignItems
+    title.style.paddingTop     =  r.paddingTop
+    author.style.paddingBottom =  r.paddingBottom
 
-    // setting very small book rotations
-    alignments = ['end', 'start', 'center']
-    book.style.alignItems = `${alignments[getRandomInt(0,alignments.length)]}`
-    let direction = ''
-    if (getRandomInt(0,2) == 1) {direction = '-'}
-    book.style.setProperty('--book-rotate', `${direction}${getRandomArbitrary(0.000, 0.0019)}turn`);
+    book.style.setProperty('--book-rotate', r.rotation)
 
-
-    // setting padding on the top and bottom
-    title.style.paddingTop = `${getRandomInt(0,13)}px`
-    author.style.paddingBottom = `${getRandomInt(0,10)}px`
-
-
-    // randomising font. we should have this be configurable soon.
     let fontType = 'Imperator, serif'
-     console.log(book.dataset.fonttype)
     if (book.dataset.fonttype == 'ss') {fontType = 'Gill Sans, sans-seri'}
     book.style.fontFamily = fontType
+
 }
 
 
@@ -102,6 +88,7 @@ function setScalableBookAttributes(book) {
 
     const title = book.querySelector('.bookTitle')
     const author = book.querySelector('.bookAuthor')
+    const r = bookData[book.dataset.index].randomNumbers
 
     const minTitleSize = 10
     const bookSizeModifier = 0.55
@@ -116,7 +103,7 @@ function setScalableBookAttributes(book) {
 
     // setting title and author size
 
-    titleSize = Math.round((pages / getRandomArbitrary(3, 6)) * 0.2)  * bookSizeModifier
+    titleSize = Math.round((pages / r.titleSizeINT * 0.2)  * bookSizeModifier)
     if (titleSize < minTitleSize) {titleSize = minTitleSize}
     if (pages < 90) {titleSize = 8}
     if (titleSize > maxTitleSize || pages > 400) {titleSize = maxTitleSize}
@@ -124,14 +111,13 @@ function setScalableBookAttributes(book) {
 
     title.style.fontSize = `${titleSize}px`
 
-    authorSize = (titleSize - getRandomInt(0,5)) * bookSizeModifier
+    authorSize = (titleSize - r.authorSizeINT) * bookSizeModifier
     if (authorSize < 7) {authorSize = 7}
     author.style.fontSize = `${authorSize}px`
 
     // setting font weight
 
-    fontWeight = getRandomArbitrary(0,9) * (pages / 3)
-    console.log(fontWeight, pages)
+    fontWeight = r.fontWeightINT * (pages / 3)
     if (fontWeight < minFontWeight) {fontWeight = minFontWeight }
     if (fontWeight > maxFontWeight) {fontWeight = maxFontWeight }
     fontWeight = Number(fontWeight)
@@ -140,15 +126,15 @@ function setScalableBookAttributes(book) {
     // setting height
 
     const bookPxWidth = (pages / 8) * bookSizeModifier
-    const bookPxHeight = getRandomInt(550,700) * bookSizeModifier
+    const bookPxHeight = r.heightINT * bookSizeModifier
 
     book.style.height = `${bookPxHeight}px`
     book.style.width = `${bookPxWidth}px`
 
      // setting raise amount
-    let raiseAmount = ((getRandomArbitrary(3, 4) / pages) * 600)
-    if (raiseAmount > maxBookRaise) {raiseAmount = maxBookRaise; console.log( 'capped max raise')}
-    if (raiseAmount < minBookRaise) {raiseAmount = minBookRaise; console.log( 'capped min raise')}
+    let raiseAmount = ((r.raiseAmountINT / pages) * 600)
+    if (raiseAmount > maxBookRaise) {raiseAmount = maxBookRaise;}
+    if (raiseAmount < minBookRaise) {raiseAmount = minBookRaise;}
     book.style.setProperty('--book-raise', `-${raiseAmount}px`);
 
  }
