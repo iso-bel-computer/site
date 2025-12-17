@@ -3,12 +3,13 @@
     display: flex;
     --bookshelf-inner-darkness: #24201b90;
     --bookshelf-outer-darkness: #302b2440;
-    --bookshelf-left-padding: 19px;
-    --bookshelf-left-side: 14px;
-    --bookshelf-right-side: 33px;
+    --bookshelf-left-padding: 1vw;
+    --bookshelf-left-side: 1vw;
+    --bookshelf-right-side: 2vw;
     --bookshelf-inner-width: 12vw;
     --bookshelf-total-width: calc(var(--bookshelf-right-side) + var(--bookshelf-left-side) + var(--bookshelf-inner-width));
-    --available-height: calc(100vh - var(--header-total-height) - 5vh)
+    --available-height: calc(100vh - var(--header-total-height) - 48px);
+    background-color: #00000009
 
 
 }
@@ -38,7 +39,6 @@
     }
 
     #bookshelfOuterWrapper {
-        min-width: 100px;
         width: 100%;
     }
 
@@ -74,7 +74,7 @@
                 text-align: right;
                 font-size: 8pt;
                 margin: 10px;
-                color: #ffffff70;
+                color: #ffffff40;
             }
 
             .bookSpine {
@@ -164,15 +164,19 @@
     }
 
 
-    #rightHandSideWrapper {
+    #rightHandSideWrapper { /* the 'index card' */
         height: fit-content;
-        width: fit-content;
+        width: 100%;
         border-left: 1px dotted  #302b2485;
+        border-right: 1px dotted  #302b2485;
+        border-bottom: 1px dotted  #302b2485;
         margin-left: 20px;
-        max-width: calc(80% - var(--bookshelf-total-width));
+        max-width: calc(92% - var(--bookshelf-total-width));
+        background-color: var(--site-background-color);
     }
         #bookInfo {
             padding-left: 20px;
+            padding-right: 20px;
             max-height: calc(100vh - var(--header-total-height));
             overflow: scroll;
         }
@@ -183,7 +187,8 @@
             }
 
         #bookTitle {
-            margin-bottom: 0px
+            margin-bottom: 0px;
+            margin-top:22px;
         }
         #bookAuthor {
             margin-top: 0px

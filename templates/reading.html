@@ -54,7 +54,11 @@ data-fonttype='{{ book["fontStyle"] }}'>
         <div id="bookInfo">
             <h1 id='bookTitle'></h1>
             <h3 id="bookAuthor"></h3>
-            <div id="supp"><i id="readDate"></i> - <i><a target="_blank" id="zlibLink">Z-Lib</a> - <a target="_blank" id="worldCatLink">WorldCat</a></i></div>
+            <div id="supp">
+                <i id="readDate"></i> &nbsp
+                <i><a target="_blank" id="zlibLink">🏴‍☠️</a>
+                <a target="_blank" id="worldCatLink">🌍</a></i>
+            </div>
             <section id='review'></section>
         </div>
     </div>
@@ -203,7 +207,7 @@ function loadBook(bookDataObj) {
 
     const bookAuthor = document.getElementById('bookAuthor')
     const bookTitle = document.getElementById('bookTitle')
-    const readDate = document.getElementById('readDate')
+    const readDateDiv = document.getElementById('readDate')
 
     const zLibEl = document.getElementById('zlibLink')
     const worldCatEl = document.getElementById('worldCatLink')
@@ -212,7 +216,11 @@ function loadBook(bookDataObj) {
 
     bookTitle.innerText = bookDataObj['title']
     bookAuthor.innerText = bookDataObj['author']
-    readDate.innerText = bookDataObj['readDate']
+    let readDate = bookDataObj['readDate']
+    const split = readDate.split('/')
+    readDateStr = 'Read ' + split[2] + '/' + split[1] + '/' + split[0]
+
+    readDateDiv.innerText = readDateStr
 
     query = bookDataObj['title'] + ' ' + bookDataObj['author'].replace('?','') // search title and author together. different sites handle spaces different so we hold off for now.
 
@@ -224,7 +232,7 @@ function loadBook(bookDataObj) {
 
 
     if (!bookDataObj['review']) {
-        review.innerHTML = '...'
+        review.innerHTML = 'no review found...'
     } else {
         review.innerHTML = bookDataObj['review']
     }
@@ -255,7 +263,7 @@ function init() {
 
     const bookshelfBrightnessFilter = document.getElementById('bookshelfBrightnessFilter')
     bookshelfBrightnessFilter.addEventListener('mouseenter', e => {
-        bookshelfBrightnessFilter.style.filter = 'brightness(1)' // once the user has interacted with the bookshelf, it doesnt dim again
+        bookshelfBrightnessFilter.style.filter = 'brightness(1.03)' // once the user has interacted with the bookshelf, it doesnt dim again
     })
 
  }
