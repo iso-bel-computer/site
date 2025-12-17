@@ -99,11 +99,11 @@ def art(category):
 with open('static/resources/data/reading.json', 'r') as f:
     bookData = json.load(f)
     for book in bookData:
-        random.seed(book['pages'] * 1.4)
+        random.seed(book['pages'] * 1)
 
         alingments = ['end', 'start', 'center']
         directions = ['', '-']
-
+        direction = directions[random.randint(0,1)]
 
         randomNumbers = {
 
@@ -118,17 +118,20 @@ with open('static/resources/data/reading.json', 'r') as f:
 
             'zIndex':         random.randint(3,80),
             'border':         str(random.randint(1,3)) + 'px outset #00000080',
-            'marginRight':    str(random.randint(0,4)) + 'px',
+            'marginRight':    str(random.randint(0,2)) + 'px',
             'borderRadius':   str(random.randint(0,4)) + 'px',
             'alignItems':     str(alingments[random.randint(0,2)]),
-            'rotation':       str(directions[random.randint(0,1)]) + str(random.uniform(0,0.0021)) + 'turn',
+            'rotation':       direction + str(random.uniform(0,0.0021)) + 'turn',
+            'rotationY':      str(random.uniform(-15,15)) + 'deg',
             'paddingTop':     str(random.randint(0,13)) + 'px',
             'paddingBottom':  str(random.randint(0,10)) + 'px',
+            'translateX':     str(random.uniform(-2,2)) + 'px',
             'titleSizeINT':   random.uniform(3,6),
             'authorSizeINT':  random.randint(0,5),
             'fontWeightINT':  random.uniform(0,9),
             'heightINT':      random.randint(550,700),
-            'raiseAmountINT': random.uniform(3,4)
+            'raiseAmountINT': random.uniform(3,4),
+            'brightness':     'brightness(' + str(random.uniform(0.8,1)) + ')',
         }
 
         book['randomNumbers'] = randomNumbers

@@ -1,46 +1,67 @@
 
 #content {
     display: flex;
+    --bookshelf-inner-darkness: #24201b90;
+    --bookshelf-outer-darkness: #302b2440;
+    --bookshelf-left-padding: 19px;
+    --bookshelf-left-side: 14px;
+    --bookshelf-right-side: 33px;
+    --bookshelf-inner-width: 12vw;
+    --bookshelf-total-width: calc(var(--bookshelf-right-side) + var(--bookshelf-left-side) + var(--bookshelf-inner-width));
+    --available-height: calc(100vh - var(--header-total-height))
+
+
 }
 
 
     #seperator {
-        width: 1px;
-        padding-right: 14px;
+        width: var(--bookshelf-left-padding);
+
+    }
+
+    #seperator2 {
+        background: linear-gradient(0.25turn, var(--bookshelf-outer-darkness), var(--bookshelf-inner-darkness)), #302b2470 ;
+        background-color: #302b2470;
+        border-left: 1px dotted #302b24;
+        height: var(--available-height);
+        width: var(--bookshelf-left-side);
+    }
+
+    #bookshelfBrightnessFilter {
+        filter: brightness(0.8);
+        transition: filter 0.3s;
+        cursor: crosshair;
+        width: var(--bookshelf-total-width);
+        display: flex;
     }
 
     #bookshelfOuterWrapper {
-        border-left: 1px dotted var(--site-accent-color);
-        width: 25%;
-        min-width: 300px;
-        max-height: calc(100vh - var(--header-total-height));
-        padding-right: 28px;
-        padding-left: 12px;
-        background-color: #00000035;
-        border-right: 1px dotted var(--site-accent-color-transparent);
+        min-width: 100px;
+        width: 100%;
     }
 
+
+
         #bookshelfWrapper {
-            max-height: calc(100vh - var(--header-total-height) - 70px);
+            max-height: calc(var(--available-height) - 50px);
+            width: 100%;
+            flex: 0 0 auto; /* prevents shrinking/growing in flex container */
             overflow: scroll;
             -ms-overflow-style: none;  /* IE and Edge */
             scrollbar-width: none;  /* Firefox */
             display: flex;
             align-items:  end;
             flex-wrap: wrap;
-            padding-top: 60px;
+            padding-top: 40px;
             padding-bottom: 10px;
-            border-right: 1px solid var(--site-accent-color);
-            border-left: 1px solid var(--site-accent-color);
-            cursor: crosshair;
-            filter: brightness(0.7);
-            transition: filter 1s
+            border-right: 1px solid #302b24;
+            border-left: 1px solid #302b24;
+
+            min-width: 100px;
+            background-color: #00000035;
+            transition: filter 0.5s
+
         }
-
-            #bookshelfWrapper:hover {
-                filter: brightness(1)
-            }
-
             #bookshelfWrapper::-webkit-scrollbar {
                 display: none;
             }
@@ -57,40 +78,50 @@
             .bookSpine {
                 writing-mode: vertical-rl;
                 text-orientation: mixed;
+                position: relative;
                 font-size: 9pt;
                 transform:
                     rotate(var(--book-rotate, 0turn))
                     scale(var(--book-scale, 1))
-                    translateY(3px);
+                    translateY(3px)
+                    perspective(800px)
+                    rotateY(var(--book-rotate-y))
+
+                ;
 
                 --transition-time: 0.3s;
-                transition: transform var(--transition-time),
+                transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1),
                             border var(--transition-time),
                             filter var(--transition-time),
-                            margin var(--transition-time);
+                            margin var(--transition-time)
+
+                ;
                 display: flex;
                 padding: 9px;
                 justify-content: space-between;
-                filter: brightness(0.85);
                 display: flex;
                 cursor: grab;
-                margin-top: 15px;
+                filter: brightness(var(--book-brightness));
+                margin-top: 30px;
+
             }
 
             .bookSpine:hover {
-                transform: translateY(var(--book-raise));
+                transform: translateY(var(--book-raise)) translateX(var(--book-translateX));
                 --book-rotate: 0turn !important;
+                --book-rotate-y: 0deg !important;
                 --book-scale: 1.04;
-                filter: brightness(1);
+                --book-brightness: calc(var(--book-brightness) + 0.1);
                 z-index: 80 !important;
             }
 
 
             .bookSpine:active {
-                transform: translateY(calc(var(--book-raise) * 2.5));
+                transform: translateY(calc(var(--book-raise) * 2)) translateX(var(--book-translateX));
                 --book-scale: 1.06;
-                filter: brightness(1.12);
-                cursor: grabbing
+                --book-brightness: calc(var(--book-brightness) + 0.2);
+                cursor: grabbing;
+                z-index: 101;
             }
             .bookSpine::after {
                 content: "";
@@ -118,21 +149,36 @@
                 border-bottom: 2px outset #24201b;
                 background: linear-gradient(#302b24, #24201b);
                 flex-basis: 100%; /* Forces shelf to take full width */
-                z-index: 99999;
-                box-shadow: 0 7px 10px rgba(0,0,0,.55);
+                z-index: 100;
+                box-shadow: 0 7px 10px rgba(0,0,0,.35);
             }
+
+    #seperator3 {
+        width: 1px;
+        background: linear-gradient(0.25turn, var(--bookshelf-inner-darkness), var(--bookshelf-outer-darkness));
+        padding-right: var(--bookshelf-right-side);
+        height: var(--available-height);
+        border-right: 1px dotted  #302b24;
+    }
+
 
     #rightHandSideWrapper {
         height: fit-content;
-        width: 75%;
-        border-left: 1px inset var(--site-accent-color);
-
+        width: fit-content;
+        border-left: 1px dotted  #302b2485;
+        margin-left: 20px;
+        max-width: calc(80% - var(--bookshelf-total-width));
     }
         #bookInfo {
-            padding-left: 25px;
+            padding-left: 20px;
+            max-height: calc(100vh - var(--header-total-height));
+            overflow: scroll;
         }
 
             #bookInfo a {
                 color: black;
                 text-decoration-line: none;
             }
+        #review {
+            padding-bottom: 20px;
+        }

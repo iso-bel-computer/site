@@ -94,3 +94,22 @@ nav a:hover {
     font-family: ImperatorBronze;
     src: url('/static/resources/fonts/ImperatorBronze.ttf')
 }
+
+.quote {
+    padding: 1vw;
+    width: fit-content;
+    z-axis: 10;
+    position: relative;
+    background-color: #00000009;
+    border: 1px dotted #00000020;
+    --corner-1px: borders solid var(--site-accent-color)
+}
+
+
+.quotecaption {
+    font-style: italic;
+    font-weight: bold;
+    text-align: right;
+    width: 100%;
+    margin-top: 5px;
+}

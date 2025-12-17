@@ -15,47 +15,51 @@
 }
 
 .bookSpine {
-    background: linear-gradient(#00000000, #00000025), url('{{ url_for("static", filename="resources/images/about/distressedPaperTexture.png") }}');
+    background: linear-gradient(#00000020, #00000055), url('{{ url_for("static", filename="resources/images/about/distressedPaperTexture.png") }}');
     background-position: center;
 }
 
 #bookshelfWrapper {
-    background: linear-gradient(#00000010, #00000050), url('{{ url_for("static", filename="resources/images/about/bookshelfBackground.png") }}');
-    background-position: center;
-}
+    background: linear-gradient( #00000030, #00000099), url('{{ url_for("static", filename="resources/images/about/bookshelfBackground.png") }}'), #302b2490;
+
+ }
 
 </style>
 
 <div id="content">
     <div id='seperator'></div>
+    <div id="bookshelfBrightnessFilter">
+    <div id='seperator2'></div>
     <div id="bookshelfOuterWrapper">
-        <div id="bookshelfWrapper">
-            {% for book in books %}
-            <div class='bookSpine' id="{{ book['title']|replace(' ','') }}" style='
-            background-color: {{ book["mainColor"] }};
-            color: {{ book["accentColor"] }};
-            padding-left: {{ book["pages"] / 45 }}px;
-            padding-right: {{ book["pages"] / 45 }}px'
-            data-index='{{ loop.index0 }}'
-            data-pages='{{ book["pages"] }}'
-            data-fonttype='{{ book["fontStyle"] }}'>
-                <span class="bookTitle">{{ book['title'] }}</span>
-                <span class="bookAuthor">{{ book['author'] }}</span>
-            </div>
-            {% endfor %}
-            <p id="mapquote">the map is not the territory...</p>
-        </div>
+<div id="bookshelfWrapper">
+{% for book in books %}
+<div class='bookSpine' id="{{ book['title']|replace(' ','') }}" style='
+background-color: {{ book["mainColor"] }};
+color: {{ book["accentColor"] }};
+padding-left: {{ book["pages"] / 45 }}px;
+padding-right: {{ book["pages"] / 45 }}px'
+data-index='{{ loop.index0 }}'
+data-pages='{{ book["pages"] }}'
+data-fonttype='{{ book["fontStyle"] }}'>
+<span class="bookTitle">{{ book['title'] }}</span>
+<span class="bookAuthor">{{ book['author'] }}</span>
+</div>
+{% endfor %}
+<p id="mapquote">the map is not the territory...</p>
+</div>
+</div>
+    <div id='seperator3'></div>
     </div>
     <div id="rightHandSideWrapper">
         <div id="bookInfo">
             <h1 id='bookTitle'></h1>
             <h3 id="bookAuthor"></h3>
             <i id="readDate"></i> - <i><a target="_blank" id="zlibLink">Z-Lib</a> - <a target="_blank" id="worldCatLink">WorldCat</a></i>
+            <section id='review'></section>
         </div>
     </div>
 </div>
 <script>
-
 function randomiseBook(book) {
 
     /// this used to randomise clientside. but now randomising serverside improves performance
@@ -72,11 +76,16 @@ function randomiseBook(book) {
     book.style.marginRight     =  r.marginRight
     book.style.borderRadius    =  r.borderRadius
     book.style.alignItems      =  r.alignItems
-    title.style.paddingTop     =  r.paddingTop
+    book.style.filter          =  r.brightness
+     title.style.paddingTop     =  r.paddingTop
     author.style.paddingBottom =  r.paddingBottom
 
-    book.style.setProperty('--book-rotate', r.rotation)
 
+
+    book.style.setProperty('--book-translateX', r.translateX)
+    book.style.setProperty('--book-rotate', r.rotation)
+    book.style.setProperty('--book-rotate-y', r.rotationY)
+    book.style.setProperty('--book-brightness', r.brightnessINT)
     let fontType = 'Imperator, serif'
     if (book.dataset.fonttype == 'ss') {fontType = 'Gill Sans, sans-seri'}
     book.style.fontFamily = fontType
@@ -85,13 +94,12 @@ function randomiseBook(book) {
 
 
 function setScalableBookAttributes(book) {
-
     const title = book.querySelector('.bookTitle')
     const author = book.querySelector('.bookAuthor')
     const r = bookData[book.dataset.index].randomNumbers
 
     const minTitleSize = 10
-    const bookSizeModifier = 0.55
+    const bookSizeModifier = 0.40
     const maxTitleSize = 40 * bookSizeModifier
 
     const minFontWeight = 300
@@ -122,7 +130,6 @@ function setScalableBookAttributes(book) {
     if (fontWeight > maxFontWeight) {fontWeight = maxFontWeight }
     fontWeight = Number(fontWeight)
     book.style.fontWeight = fontWeight
-
     // setting height
 
     const bookPxWidth = (pages / 8) * bookSizeModifier
@@ -136,6 +143,8 @@ function setScalableBookAttributes(book) {
     if (raiseAmount > maxBookRaise) {raiseAmount = maxBookRaise;}
     if (raiseAmount < minBookRaise) {raiseAmount = minBookRaise;}
     book.style.setProperty('--book-raise', `-${raiseAmount}px`);
+
+    book.style.boxShadow = `0 ${pages/10}px ${pages/8}px rgba(0,0,0,0.6)`;
 
  }
 
@@ -199,6 +208,8 @@ function loadBook(bookDataObj) {
     const zLibEl = document.getElementById('zlibLink')
     const worldCatEl = document.getElementById('worldCatLink')
 
+    const review = document.getElementById('review')
+
     bookTitle.innerText = bookDataObj['title']
     bookAuthor.innerText = bookDataObj['author']
     readDate.innerText = bookDataObj['readDate']
@@ -210,6 +221,13 @@ function loadBook(bookDataObj) {
 
     zLibEl.href = zLibLink
     worldCatEl.href = worldCatLink
+
+
+    if (!bookDataObj['review']) {
+        review.innerHTML = '...'
+    } else {
+        review.innerHTML = bookDataObj['review']
+    }
  }
 
 
@@ -235,9 +253,9 @@ function init() {
         setTimeout(addShelves, 500)
     });
 
-    const bookshelfWrapper = document.getElementById('bookshelfWrapper')
-    bookshelfWrapper.addEventListener('mouseenter', e => {
-        bookshelfWrapper.style.filter = 'brightness(1)' // once the user has interacted with the bookshelf, it doesnt dim again
+    const bookshelfBrightnessFilter = document.getElementById('bookshelfBrightnessFilter')
+    bookshelfBrightnessFilter.addEventListener('mouseenter', e => {
+        bookshelfBrightnessFilter.style.filter = 'brightness(1)' // once the user has interacted with the bookshelf, it doesnt dim again
     })
 
  }
