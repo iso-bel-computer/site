@@ -162,21 +162,6 @@ function finalizeTitles() {
 }
 
 function addShelves() {
-     console.log(window.innerWidth)
-
-    const seperator2 = document.getElementById('seperator2')
-    const seperator3 = document.getElementById('seperator3')
-
-     if (window.innerWidth < 900) {
-
-        seperator2.style.display = 'none'
-        seperator3.style.display = 'none'
-    }
-     else {
-
-        seperator2.style.display = 'block'
-        seperator3.style.display = 'block'
-     }
 
     const wrapper = document.getElementById('bookshelfWrapper');
     const books = Array.from(document.querySelectorAll('.bookSpine'));
@@ -208,6 +193,24 @@ function addShelves() {
     mapQuote.parentNode.insertBefore(finalShelf, mapQuote)
 
 }
+
+function hideSidesIfPhone() {
+     console.log(window.innerWidth)
+
+    const seperator2 = document.getElementById('seperator2')
+    const seperator3 = document.getElementById('seperator3')
+
+     if (window.innerWidth < 900) {
+
+        seperator2.style.display = 'none'
+        seperator3.style.display = 'none'
+    }
+     else {
+
+        seperator2.style.display = 'block'
+        seperator3.style.display = 'block'
+     }
+ }
 
 
 const books = document.querySelectorAll('.bookSpine')
@@ -267,12 +270,19 @@ function init() {
             loadBook(bookDataObj)
         })
 
+        book.addEventListener('touchstart', e => {
+            const index = book.dataset.index
+            bookDataObj = bookData[index]
+            loadBook(bookDataObj)
+        })
+
         firstBook = bookData[0]
         loadBook(firstBook)    // Wait until layout/render finishes
         });
 
     requestAnimationFrame(() => {
         addShelves();
+        hideSidesIfPhone();
         finalizeTitles();
         setTimeout(addShelves, 500)
     });
@@ -289,6 +299,7 @@ init()
 // Re-add shelves on window resize
 window.addEventListener('resize', addShelves);
 
+// window.addEventListener('resize', hideSidesIfPhone);
 </script>
 
 {% endblock %}
