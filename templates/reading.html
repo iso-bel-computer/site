@@ -264,13 +264,13 @@ function init() {
         randomiseBook(book)
         setScalableBookAttributes(book)
 
-        book.addEventListener('mouseenter', e => {
+        book.addEventListener('pointerenter', e => {
             const index = book.dataset.index
             bookDataObj = bookData[index]
             loadBook(bookDataObj)
         })
 
-        book.addEventListener('touchstart', e => {
+        book.addEventListener('pointerdown', e => {
             const index = book.dataset.index
             bookDataObj = bookData[index]
             loadBook(bookDataObj)
