@@ -17,14 +17,7 @@
 
     #seperator {
         width: var(--bookshelf-left-padding);
-    }
-
-    #seperator2 {
-        background: linear-gradient(0.25turn, var(--bookshelf-outer-darkness), var(--bookshelf-inner-darkness)), #302b2470 ;
-        background-color: #302b2470;
-        border-left: 1px dotted #302b24;
-        height: var(--available-height);
-        width: var(--bookshelf-left-side);
+        min-width: 15px;
     }
 
     #bookshelfBrightnessFilter {
@@ -37,10 +30,15 @@
         width: var(--bookshelf-total-width);
         display: flex;
     }
-
-    #bookshelfOuterWrapper {
-        width: 100%;
-    }
+        #seperator2 {
+                background: linear-gradient(0.25turn, var(--bookshelf-outer-darkness), var(--bookshelf-inner-darkness)), #302b2470 ;
+                background-color: #302b2470;
+                height: var(--available-height);
+                width: var(--bookshelf-left-side);
+            }
+        #bookshelfOuterWrapper {
+            width: 100%;
+        }
 
 
 
@@ -58,9 +56,8 @@
             padding-bottom: 10px;
             border-right: 1px solid #302b24;
             border-left: 1px solid #302b24;
-
             background-color: #00000035;
-            transition: filter 0.5s
+            transition: filter 0.5s;
 
         }
             #bookshelfWrapper::-webkit-scrollbar {
@@ -148,19 +145,19 @@
                 height: 14px;
                 border-top: 2px outset #24201b;
                 border-bottom: 2px outset #24201b;
-                background: linear-gradient(#302b24, #24201b);
                 flex-basis: 100%; /* Forces shelf to take full width */
                 z-index: 100;
+                corner-bottom-shape: notch;
+                border-radius: 3px;
                 box-shadow: 0 7px 10px rgba(0,0,0,.35);
             }
 
-    #seperator3 {
-        width: 1px;
-        background: linear-gradient(0.25turn, var(--bookshelf-inner-darkness), var(--bookshelf-outer-darkness));
-        padding-right: var(--bookshelf-right-side);
-        height: var(--available-height);
-        border-right: 1px dotted  #302b24;
-    }
+        #seperator3 {
+            width: 1px;
+            background: linear-gradient(0.25turn, var(--bookshelf-inner-darkness), var(--bookshelf-outer-darkness));
+            padding-right: var(--bookshelf-right-side);
+            height: var(--available-height);
+        }
 
 
     #rightHandSideWrapper { /* the 'index card' */
@@ -170,12 +167,13 @@
         border-right: 1px dotted  #302b2485;
         border-bottom: 1px dotted  #302b2485;
         margin-left: 20px;
-        max-width: calc(92% - var(--bookshelf-total-width));
+        max-width: calc(96% - var(--bookshelf-total-width));
+        margin-right: 15px;
         background-color: var(--site-background-color);
     }
         #bookInfo {
             padding-left: 20px;
-            padding-right: 20px;
+            padding-right: 45px;
             max-height: calc(100vh - var(--header-total-height));
             overflow: scroll;
         }
@@ -190,7 +188,8 @@
             margin-top:22px;
         }
         #bookAuthor {
-            margin-top: 0px
+            margin-top: 0px;
+            margin-bottom: 5px
         }
 
         #supp {
@@ -200,4 +199,5 @@
         }
         #review {
             padding-bottom: 20px;
+            padding-right: 1%;
         }

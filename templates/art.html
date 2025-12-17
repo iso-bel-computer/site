@@ -113,7 +113,7 @@ function loadImage() {
     if (imgDateParts['dd'] === 3 || imgDateParts['dd'] === 23) {date_appendage = 'rd'}
 
     months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-    imgDateMonth = months[imgDateParts['mm']]
+    imgDateMonth = months[imgDateParts['mm'] - 1]
     const imgDateStr = imgDateParts['dd'] +  date_appendage+ ' ' + imgDateMonth + ' 20' + imgDateParts['yy']
 
 

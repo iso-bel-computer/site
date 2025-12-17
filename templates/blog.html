@@ -22,9 +22,6 @@
 </div>
 {% endfor %}
 
-<div class='blogpost' style='display: flex; justify-content: center !important'>
-.
-</div>
 
 <script>
 
@@ -34,25 +31,20 @@ function togglePost(postId) {
     const content = container.querySelector('.blogcontent');
     const isVisible = content.style.display === 'block';
 
-
     // Toggle clicked post
-    if (!isVisible) {
+    // this should all be ported to the stylesheet with an 'active' class toggle.
+    // why did i do it this way anyway? am i stupid?
+    if (!title.classList.contains('open')) {
+        title.classList.add('open')
         content.style.display = 'block';
-        content.style.backgroundColor = '#00000007'
-        title.style.backgroundColor = '#142616'
-        title.style.color = 'white'
-        title.style.transform = 'none'
+        container.style.width = '80vw'
     }
     else {
+        title.classList.remove('open')
         content.style.display = 'none';
-        content.style.backgroundColor = '#00000000'
-        title.style.backgroundColor = '#00000000'
-        title.style.color = 'black'
-        title.style.transform = ''
+        container.style.width = '75vw'
     }
 }
-
-
 
 </script>
 

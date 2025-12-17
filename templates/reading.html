@@ -10,58 +10,70 @@
 <style>
 
 #imageWrapper {
-    background:  url('{{ url_for("static", filename="resources/images/core/galleryBG.png") }}');
+    background: url('{{ url_for("static", filename="resources/images/core/galleryBG.png") }}');
     background-position: center;
 }
 
 .bookSpine {
-    background: linear-gradient(#00000000, #00000045), url('{{ url_for("static", filename="resources/images/about/distressedPaperTexture.png") }}');
+    background: linear-gradient(#00000010, #00000060),
+        url('{{ url_for("static", filename="resources/images/about/distressedPaperTexture.png") }}');
     background-position: center;
 }
 
+.bookSpine:hover {
+    background: linear-gradient(#00000010, #00000035),
+        url('{{ url_for("static", filename="resources/images/about/distressedPaperTexture.png") }}');
+    background-position: center;
+}
 #bookshelfWrapper {
-    background: linear-gradient( #00000030, #00000099), url('{{ url_for("static", filename="resources/images/about/bookshelfBackground.png") }}'), #302b2490;
+    background: linear-gradient( #00000030, #00000099),
+        url('{{ url_for("static", filename="resources/images/about/bookshelfBackground.png") }}'), #302b2490;
 
  }
 
+.shelf {background:
+        url('{{ url_for("static", filename="resources/images/about/shelfTexture.png") }}'),
+             linear-gradient(#302b24, #24201b);
+ }
 </style>
 
 <div id="content">
     <div id='seperator'></div>
     <div id="bookshelfBrightnessFilter">
-    <div id='seperator2'></div>
-    <div id="bookshelfOuterWrapper">
-<div id="bookshelfWrapper">
-{% for book in books %}
-<div class='bookSpine' id="{{ book['title']|replace(' ','') }}" style='
-background-color: {{ book["mainColor"] }};
-color: {{ book["accentColor"] }};
-padding-left: {{ book["pages"] / 45 }}px;
-padding-right: {{ book["pages"] / 45 }}px'
-data-index='{{ loop.index0 }}'
-data-pages='{{ book["pages"] }}'
-data-fonttype='{{ book["fontStyle"] }}'>
-<span class="bookTitle">{{ book['title'] }}</span>
-<span class="bookAuthor">{{ book['author'] }}</span>
-</div>
-{% endfor %}
-<p id="mapquote">the map is not the territory...</p>
-</div>
-</div>
-    <div id='seperator3'></div>
+        <div id='seperator2'></div>
+        <div id="bookshelfOuterWrapper">
+    <div id="bookshelfWrapper">
+    {% for book in books %}
+    <div class='bookSpine' id="{{ book['title']|replace(' ','') }}" style='
+    background-color: {{ book["mainColor"] }};
+    color: {{ book["accentColor"] }};
+    padding-left: {{ book["pages"] / 45 }}px;
+    padding-right: {{ book["pages"] / 45 }}px'
+    data-index='{{ loop.index0 }}'
+    data-pages='{{ book["pages"] }}'
+    data-fonttype='{{ book["fontStyle"] }}'>
+    <span class="bookTitle">{{ book['title'] }}</span>
+    <span class="bookAuthor">{{ book['author'] }}</span>
+    </div>
+    {% endfor %}
+    <p id="mapquote">the map is not the territory...</p>
+    </div>
+    </div>
+        <div id='seperator3'></div>
     </div>
     <div id="rightHandSideWrapper">
         <div id="bookInfo">
             <h1 id='bookTitle'></h1>
-            <h3 id="bookAuthor"></h3>
+            <h3 id="bookAuthor">...</h3>
             <div id="supp">
-                <i id="readDate"></i> &nbsp
-                <i><a target="_blank" id="zlibLink">🏴‍☠️</a>
-                <a target="_blank" id="worldCatLink">🌍</a></i>
+                <i><a target="_blank" id="zlibLink">️</a>
+                <a target="_blank" id="worldCatLink"></a></i>
+                <i id="readDate"></i>
             </div>
             <section id='review'></section>
         </div>
     </div>
+
 </div>
 <script>
 function randomiseBook(book) {
@@ -85,7 +97,6 @@ function randomiseBook(book) {
     author.style.paddingBottom =  r.paddingBottom
 
 
-
     book.style.setProperty('--book-translateX', r.translateX)
     book.style.setProperty('--book-rotate', r.rotation)
     book.style.setProperty('--book-rotate-y', r.rotationY)
@@ -103,7 +114,7 @@ function setScalableBookAttributes(book) {
     const r = bookData[book.dataset.index].randomNumbers
 
     const minTitleSize = 10
-    const bookSizeModifier = 0.40
+    const bookSizeModifier = 0.38
     const maxTitleSize = 40 * bookSizeModifier
 
     const minFontWeight = 300
@@ -235,9 +246,24 @@ function loadBook(bookDataObj) {
 
     bookTitle.innerText = bookDataObj['title']
     bookAuthor.innerText = bookDataObj['author']
+
+    // faffy date processing
     let readDate = bookDataObj['readDate']
     const split = readDate.split('/')
-    readDateStr = 'Read ' + split[2] + '/' + split[1] + '/' + split[0]
+    split[2] = Number(split[2])
+    split[1] = Number(split[1])
+    split[0] = Number(split[0])
+
+    let date_appendage = 'th'
+    if (split[2] === 1 || split[2] === 21 || split[2] === 31) {date_appendage = 'st'}
+    if (split[2] === 2 || split[2] === 22)                    {date_appendage = 'nd'}
+    if (split[2] === 3 || split[2] === 23)                    {date_appendage = 'rd'}
+
+
+    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    imgDateMonth = months[split[1] - 1]
+    const imgDateStr = String(split[2]) +  date_appendage + ' ' + imgDateMonth + ' ' + String(split[0])
+    readDateStr = 'Completed ' + imgDateStr
 
     readDateDiv.innerText = readDateStr
 
@@ -247,8 +273,9 @@ function loadBook(bookDataObj) {
     worldCatLink = 'https://search.worldcat.org/search?q=' + query.replace(' ','+')
 
     zLibEl.href = zLibLink
+    zLibEl.innerText = '🏴'
     worldCatEl.href = worldCatLink
-
+    worldCatEl.innerHTML = '🌍&nbsp&nbsp-&nbsp'
 
     if (!bookDataObj['review']) {
         review.innerHTML = 'no review found...'
@@ -277,7 +304,7 @@ function init() {
         })
 
         firstBook = bookData[0]
-        loadBook(firstBook)    // Wait until layout/render finishes
+        // loadBook(firstBook)    // Wait until layout/render finishes
         });
 
     requestAnimationFrame(() => {
@@ -299,7 +326,7 @@ init()
 // Re-add shelves on window resize
 window.addEventListener('resize', addShelves);
 
-// window.addEventListener('resize', hideSidesIfPhone);
+window.addEventListener('resize', hideSidesIfPhone);
 </script>
 
 {% endblock %}

@@ -74,6 +74,14 @@ header a {
 
 }
 
+hr {
+    border-top: 1px solid #00000035;
+    border-bottom: none;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+
 nav a:hover {
     text-decoration: underline;
 }
