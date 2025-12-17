@@ -15,7 +15,7 @@
 }
 
 .bookSpine {
-    background: linear-gradient(#00000020, #00000055), url('{{ url_for("static", filename="resources/images/about/distressedPaperTexture.png") }}');
+    background: linear-gradient(#00000000, #00000045), url('{{ url_for("static", filename="resources/images/about/distressedPaperTexture.png") }}');
     background-position: center;
 }
 
@@ -54,7 +54,7 @@ data-fonttype='{{ book["fontStyle"] }}'>
         <div id="bookInfo">
             <h1 id='bookTitle'></h1>
             <h3 id="bookAuthor"></h3>
-            <i id="readDate"></i> - <i><a target="_blank" id="zlibLink">Z-Lib</a> - <a target="_blank" id="worldCatLink">WorldCat</a></i>
+            <div id="supp"><i id="readDate"></i> - <i><a target="_blank" id="zlibLink">Z-Lib</a> - <a target="_blank" id="worldCatLink">WorldCat</a></i></div>
             <section id='review'></section>
         </div>
     </div>

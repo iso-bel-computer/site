@@ -131,7 +131,7 @@ with open('static/resources/data/reading.json', 'r') as f:
             'fontWeightINT':  random.uniform(0,9),
             'heightINT':      random.randint(550,700),
             'raiseAmountINT': random.uniform(3,4),
-            'brightness':     'brightness(' + str(random.uniform(0.8,1)) + ')',
+            'brightness':     'brightness(' + str(random.uniform(0.9,1)) + ')',
         }
 
         book['randomNumbers'] = randomNumbers

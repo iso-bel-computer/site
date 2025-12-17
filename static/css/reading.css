@@ -8,7 +8,7 @@
     --bookshelf-right-side: 33px;
     --bookshelf-inner-width: 12vw;
     --bookshelf-total-width: calc(var(--bookshelf-right-side) + var(--bookshelf-left-side) + var(--bookshelf-inner-width));
-    --available-height: calc(100vh - var(--header-total-height))
+    --available-height: calc(100vh - var(--header-total-height) - 5vh)
 
 
 }
@@ -16,7 +16,6 @@
 
     #seperator {
         width: var(--bookshelf-left-padding);
-
     }
 
     #seperator2 {
@@ -28,6 +27,9 @@
     }
 
     #bookshelfBrightnessFilter {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border: 4px inset #302b2489;
         filter: brightness(0.8);
         transition: filter 0.3s;
         cursor: crosshair;
@@ -179,6 +181,19 @@
                 color: black;
                 text-decoration-line: none;
             }
+
+        #bookTitle {
+            margin-bottom: 0px
+        }
+        #bookAuthor {
+            margin-top: 0px
+        }
+
+        #supp {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid black;
+        }
         #review {
             padding-bottom: 20px;
         }
