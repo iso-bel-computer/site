@@ -6,7 +6,7 @@
     --bookshelf-left-padding: 1vw;
     --bookshelf-left-side: calc(1vw / 1);
     --bookshelf-right-side: calc(4vw / 2);
-    --bookshelf-inner-width: 12vw;
+    --bookshelf-inner-width: 35vw;
     --bookshelf-total-width: calc(var(--bookshelf-right-side) + var(--bookshelf-left-side) + var(--bookshelf-inner-width));
     --available-height: calc(100vh - var(--header-total-height) - 48px);
     background-color: #00000009
