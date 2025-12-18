@@ -13,6 +13,8 @@ body {
     --header-padding-topandtail: 8px;
     --header-height: 50px;
     --header-total-height: calc((var(--header-padding-topandtail) * 2) + var(--header-height));
+    --available-height: calc(100vh - var(--header-total-height));
+
 }
 
 

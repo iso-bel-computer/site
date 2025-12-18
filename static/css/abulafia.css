@@ -1,0 +1,21 @@
+:root {
+    --sidebar-width: 10vw;
+    --content-width: calc(100vw - var(--sidebar-width))
+}
+
+main {
+    display: flex;
+}
+
+#sidebar {
+    height: var(--available-height);
+    width: var(--sidebar-width);
+    background-color: black
+}
+
+#contentWrapper {
+    height: var(--available-height);
+    width: var(--content-width);
+    background-color: white;
+    overflow: scroll;
+}

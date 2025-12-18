@@ -5,6 +5,10 @@ import os
 import datetime
 from datetime import datetime
 import random
+import requests
+from urllib.parse import urlparse
+from dotenv import load_dotenv
+load_dotenv()
 
 os.chdir(os.path.dirname(__file__))  # change CWD to where flask_app.py lives
 
@@ -15,6 +19,8 @@ def home():
     return render_template('base.html',
                          current_date=datetime.now().strftime('%Y-%m-%d'))
 
+
+""" Blog Page """
 def getBlogPosts():
     posts = []
 
@@ -61,13 +67,15 @@ def getBlogPosts():
                 print(f'Error processing {filename}')
     return sorted(posts, key=lambda x: x['date'], reverse=True)
 BLOGPOSTS = getBlogPosts()
-
 @app.route('/blog')
 def blog():
     return render_template('blog.html',
                            headerRouteDisplay = '~/Blog',
                            posts=BLOGPOSTS)
 
+
+
+""" Art Pages """
 @app.route('/art/<category>')
 def art(category):
     category = category.lower()
@@ -95,6 +103,10 @@ def art(category):
         artData=artData,
         headerRoute=category
     )
+
+
+
+""" Reading Page """
 
 with open('static/resources/data/reading.json', 'r') as f:
     bookData = json.load(f)
@@ -140,6 +152,47 @@ def readingReccs():
     return render_template('reading.html',
                            headerRouteDisplay = '~/about/reading',
                            books = bookData)
+
+
+
+
+""" Abulafia Port """
+
+def companiesHouseFetch(rawQuery):
+    rawQuery = rawQuery.strip()
+    baseUrl = 'https://api.company-information.service.gov.uk/search/companies'
+
+    API_KEY = os.environ["COMPANIES_HOUSE_API_KEY"]
+    if not rawQuery:
+        return 'No search term inputted'
+
+    if len(rawQuery) > 100:
+        return 'Query too long'
+
+    import re
+    if not re.match(r"^[\w\s\-]+$", rawQuery):
+        return "Invalid characters in query"
+
+    query = rawQuery
+
+    response = requests.get(
+        baseUrl,
+        params={
+            "q": query,
+            "items_per_page": 20
+        },
+        auth=HTTPBasicAuth(API_KEY, ""),
+        timeout=5
+    )
+
+
+@app.route('/research/abulafia')
+def abulafia():
+    return render_template('abulafia.html',
+                           headerRouteDisplay = '~/research/abulafia')
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
