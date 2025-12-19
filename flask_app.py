@@ -2,6 +2,7 @@ import json
 from datetime import datetime
 from flask import Flask, render_template, jsonify, request, abort
 import os
+os.chdir(os.path.dirname(__file__))  # change CWD to where flask_app.py lives
 import datetime
 from datetime import datetime
 import random
@@ -11,7 +12,7 @@ from dotenv import load_dotenv
 load_dotenv()
 from requests.auth import HTTPBasicAuth
 
-os.chdir(os.path.dirname(__file__))  # change CWD to where flask_app.py lives
+print("API KEY PRESENT:", "COMPANIES_HOUSE_API_KEY" in os.environ)
 
 app = Flask(__name__)
 
@@ -87,7 +88,7 @@ def art(category):
     }
 
     if category not in files:
-        abort(404)
+        return "Not Found", 404
 
 
     with open(files[category]) as f:
