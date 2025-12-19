@@ -6,12 +6,11 @@
     --bookshelf-left-padding: 10px;
     --bookshelf-left-side: calc(1vw / 1);
     --bookshelf-right-side: calc(4vw / 2);
-    --bookshelf-inner-width: 35vw;
+    --bookshelf-inner-width: 25vw;
     --bookshelf-total-width: calc(var(--bookshelf-right-side) + var(--bookshelf-left-side) + var(--bookshelf-inner-width));
-    --available-height: calc(100vh - var(--header-total-height) - 48px);
     background-color: #00000009;
     --page-edge-padding: 16px;
-
+    max-height: var(--available-height)
 
 }
 
@@ -33,21 +32,26 @@
         background-color: #ccac89;
         width: var(--bookshelf-total-width);
         display: flex;
+
+            max-height: 85vh;
     }
         #seperator2 {
                 background: linear-gradient(0.25turn, var(--bookshelf-outer-darkness), var(--bookshelf-inner-darkness)), #302b2470 ;
                 background-color: #302b2470;
-                height: var(--available-height);
+                height: 100%;
                 width: var(--bookshelf-left-side);
             }
         #bookshelfOuterWrapper {
             width: 100%;
+            overflow: hidden;
+            max-height: 85vh;
         }
 
 
 
         #bookshelfWrapper {
-            max-height: calc(var(--available-height) - 50px);
+            max-height: 85vh;
+            height: 100%;
             width: 100%;
             flex: 0 0 auto; /* prevents shrinking/growing in flex container */
             overflow: scroll;
@@ -160,7 +164,7 @@
             width: 1px;
             background: linear-gradient(0.25turn, var(--bookshelf-inner-darkness), var(--bookshelf-outer-darkness));
             padding-right: var(--bookshelf-right-side);
-            height: var(--available-height);
+            height: 100%;
         }
 
 
@@ -173,12 +177,14 @@
         margin-left: 20px;
         max-width: calc(96% - var(--bookshelf-total-width));
         background-color: var(--site-background-color);
+
     }
         #bookInfo {
             padding-left: 20px;
             padding-right: 20px;
-            max-height: calc(100vh - var(--header-total-height));
+            max-height: calc(100vh - var(--header-total-height) - 20px);
             overflow: scroll;
+
         }
 
             #bookInfo a {

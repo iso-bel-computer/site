@@ -26,7 +26,7 @@
     background-position: center;
 }
 #bookshelfWrapper {
-    background: linear-gradient( #00000050, #00000099),
+    background: linear-gradient( #00000030, #00000099),
         url('{{ url_for("static", filename="resources/images/about/bookshelfBackground.png") }}'), #302b2490;
 
  }
@@ -66,15 +66,15 @@
             <h1 id='bookTitle'></h1>
             <h3 id="bookAuthor">...</h3>
             <div id="supp">
-                <i><a target="_blank" id="zlibLink" alt="Link to Z-Library search.">️</a>
-                <a target="_blank" id="worldCatLink" alt="Link to World Library Catalogue search"></a></i>
+                <i><a target="_blank" id="zlibLink">️</a>
+                <a target="_blank" id="worldCatLink"></a></i>
                 <i id="readDate"></i>
             </div>
             <section id='review'></section>
         </div>
     </div>
-    <div id='seperator4'></div>
 
+    <div id='seperator4'></div>
 </div>
 <script>
 function randomiseBook(book) {
@@ -97,7 +97,6 @@ function randomiseBook(book) {
      title.style.paddingTop     =  r.paddingTop
     author.style.paddingBottom =  r.paddingBottom
 
-
     book.style.setProperty('--book-translateX', r.translateX)
     book.style.setProperty('--book-rotate', r.rotation)
     book.style.setProperty('--book-rotate-y', r.rotationY)
@@ -105,6 +104,7 @@ function randomiseBook(book) {
     let fontType = 'Imperator, serif'
     if (book.dataset.fonttype == 'ss') {fontType = 'Gill Sans, sans-seri'}
     book.style.fontFamily = fontType
+
 
 }
 

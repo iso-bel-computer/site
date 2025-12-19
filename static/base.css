@@ -5,6 +5,7 @@ body {
     line-height: 1.17;
     --site-background-color: #DCD6C9;
     --site-accent-color: #142616;
+    --site-accent-color-transparent-lighter: #14261609;
     --site-accent-color-transparent: #14261625;
     --site-accent-color-transparent-darker: #14261650;
     background-color: var(--site-background-color);
@@ -27,14 +28,13 @@ header {
     position: sticky;
     padding-bottom: var(--header-padding-topandtail);
     padding-top: var(--header-padding-topandtail);
-    height: var(--header-height);
-    max-height: var(--header-height);
+    min-height: var(--header-height);
     top: 0;
     color: white;
     z-index: 100;
     background-color: var(--site-accent-color);
     filter: drop-shadow(0px 10px 10px #00000035);
-    backdrop-filter: blur(10px)xi;
+    backdrop-filter: blur(10px);
     outline: 1px solid black;
 }
 

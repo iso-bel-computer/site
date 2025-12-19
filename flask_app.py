@@ -1,6 +1,6 @@
 import json
 from datetime import datetime
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify, request, abort
 import os
 import datetime
 from datetime import datetime
@@ -9,6 +9,7 @@ import requests
 from urllib.parse import urlparse
 from dotenv import load_dotenv
 load_dotenv()
+from requests.auth import HTTPBasicAuth
 
 os.chdir(os.path.dirname(__file__))  # change CWD to where flask_app.py lives
 
@@ -154,37 +155,80 @@ def readingReccs():
                            books = bookData)
 
 
-
-
 """ Abulafia Port """
+@app.route('/research/abulafia/chsearch', methods=['GET'])
+def companiesHouseSearch():
 
-def companiesHouseFetch(rawQuery):
-    rawQuery = rawQuery.strip()
-    baseUrl = 'https://api.company-information.service.gov.uk/search/companies'
+    rawQuery = request.args.get("query", "").strip()
+    searchType = request.args.get("searchType",'').strip()
+
+    searchUrls = {
+        'companyList': 'https://api.company-information.service.gov.uk/search/companies',
+        'companyDetails': 'https://api.company-information.service.gov.uk/company/',
+        'officerList': 'https://api.company-information.service.gov.uk/company/'
+    }
+
+    baseUrl = searchUrls[searchType]
+
+
 
     API_KEY = os.environ["COMPANIES_HOUSE_API_KEY"]
+
     if not rawQuery:
-        return 'No search term inputted'
+        return jsonify({"error": "No search term provided"}), 400
 
     if len(rawQuery) > 100:
-        return 'Query too long'
+        return jsonify({"error": "Query too long"}), 400
 
     import re
     if not re.match(r"^[\w\s\-]+$", rawQuery):
-        return "Invalid characters in query"
+        return jsonify({"error": "Invalid characters in query"}), 400
 
     query = rawQuery
 
-    response = requests.get(
-        baseUrl,
-        params={
-            "q": query,
-            "items_per_page": 20
-        },
-        auth=HTTPBasicAuth(API_KEY, ""),
-        timeout=5
-    )
+    if searchType == 'companyList':
+        response = requests.get(
+            baseUrl,
+            params={
+                "q": query,
+                "items_per_page": 20
+            },
+            auth=HTTPBasicAuth(API_KEY, ""),
+            timeout=5
+        )
 
+    elif searchType == 'companyDetails':
+        response = requests.get(
+            baseUrl + query,
+            auth=HTTPBasicAuth(API_KEY, ""),
+            timeout=5
+        )
+
+    elif searchType == 'officerList':
+        officers = requests.get(
+            baseUrl + query + '/officers',
+            auth=HTTPBasicAuth(API_KEY, ""),
+            timeout=5
+        )
+
+        pwsc = requests.get(
+            baseUrl + query + '/persons-with-significant-control',
+            auth=HTTPBasicAuth(API_KEY, ""),
+            timeout=5
+        )
+
+        pwsc.raise_for_status()
+        officers.raise_for_status()
+
+        combined_data = {
+            'officers': officers.json(),
+            'pwsc': pwsc.json()
+        }
+
+        return jsonify(combined_data)
+
+    response.raise_for_status()
+    return jsonify(response.json())
 
 @app.route('/research/abulafia')
 def abulafia():

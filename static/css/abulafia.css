@@ -1,21 +1,246 @@
 :root {
     --sidebar-width: 10vw;
-    --content-width: calc(100vw - var(--sidebar-width))
+    --content-width: calc(100vw - var(--sidebar-width));
+    --content-padding: 15px;
+    --borders: 1px dotted #00000060
+}
+
+h1 {
+    all: unset;
+    font-size: 15pt;
+    font-weight: bold;
+}
+
+h3 {
+    all: unset;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 10pt
+}
+
+* {
+    box-sizing: border-box;
+
+}
+
+hr {
+    margin-top: 7px;
+    margin-bottom: 7px;
 }
 
 main {
     display: flex;
+    overflow: hidden;
+
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
 }
 
 #sidebar {
-    height: var(--available-height);
+    height: var(--available-height) ;
     width: var(--sidebar-width);
     background-color: black
 }
 
 #contentWrapper {
-    height: var(--available-height);
+    height: var(--available-height) ;
     width: var(--content-width);
-    background-color: white;
-    overflow: scroll;
+    padding: 15px;
+    display: flex;
+    background-color: var(--site-accent-color-transparent-lighter)
 }
+
+#column1 {
+    --column-1-width: 15%;
+    width: var(--column-1-width);
+    height: 100% ;
+    margin-right: 10px;
+    display: flex;
+    flex-direction: column;
+
+}
+
+
+    #query {
+        margin-bottom: 10px;
+        background-color: #00000000;
+        border: var(--borders);
+        padding: 4px;
+        width: 100%;
+        font-size: 10pt;
+        box-sizing: border-box;
+        font-family: 'Imperator', serif;
+        background-color: var(--site-background-color);
+        flex-shrink: 0;
+    }
+
+    #chSearchResults {
+        max-height: 90vh;
+        height: 100%;
+        width: 100%;
+        box-sizing: border-box;
+        overflow: scroll;
+        border: var(--borders);
+        padding: 4px;
+        flex: 1;
+
+        background-color: var(--site-background-color);
+    }
+
+        .searchResult {
+            all: unset;
+            display: block;
+            width: 100%;
+            cursor: pointer;
+            font-size: 10pt;
+            padding: 3px;
+            padding-bottom: 5px;
+            padding-top: 5px;
+            padding-right: 3px;
+            transition: background-color 0.1s, transform 0.1s;
+            border-bottom: 1px dotted var(--site-accent-color-transparent)
+        }
+
+        .companyStatusdissolved {
+            color: #00000060
+        }
+
+        .searchResult:hover {
+            background-color: #00000020;
+            color: white;
+            transform: translateX(4%)
+        }
+
+#column2 {
+
+    background-color: var(--site-background-color);
+    width: 45%;
+    max-width: 45%;
+    height: 100% ;
+    margin-right: 10px;
+
+}
+    #companyInfo {
+        border: var(--borders);
+        width: 100%;
+        height: 100% ;
+        padding: 10px;
+    }
+
+        .companyBasicDetails {
+            display: flex;
+            font-size: 9pt;
+            justify-content: space-between;
+        }
+
+        #companyStatus {
+            font-weight: bold;
+        }
+
+        .COMPANYSTATUS_active {
+            color: green
+        }
+
+        .COMPANYSTATUS_liquidation {
+            color: darkred
+        }
+
+        .COMPANYSTATUS_dissolved {
+            color: grey
+        }
+    #companyAlerts {
+        display: flex;
+    }
+
+        .alert {
+            font-size: 9pt;
+            width: fit-content;
+            margin-right: 5px;
+            background-color: #eb8c86;
+            padding: 3px;
+            border: 1px dotted black;
+            border-radius: 3px;
+            margin-top: 5px;
+        }
+
+    #companyAliasButton {
+        display: none;
+        cursor: pointer;
+        font-size: 9pt;
+    }
+
+    #companyPreviouslyKnownAs {
+        display: none;
+        padding-left: 1em;
+        padding-top: 0.2em
+    }
+
+        .previousName {
+            font-size: 8pt;
+        }
+
+        .previousNameDate {
+            font-size: 6pt;
+            padding-left: 5px;
+            margin-bottom: 5px
+        }
+
+    #companyAddress {
+        display: none
+
+    }
+
+    #companyPeopleDisplays {
+        display: flex;
+        height: fit-content;
+        max-height: 35%;
+        font-size: 8pt;
+    }
+        #companyPeopleDisplays table {
+            width: 100%;
+            margin-top: 5px;
+            border-collapse: collapse;
+        }
+
+        #companyPeopleDisplays td:last-child {
+            text-align: right;
+        }
+
+        .pwscofficerdivs {
+                max-height: 35vh;
+                padding: 3px;
+                width: 50%;
+                height: 100%;
+                border: 1px dotted #00000050;
+                overflow: scroll
+            }
+
+        #companyDirectors {
+            margin-right: 5px;
+        }
+
+        #companyPWSC {
+        }
+
+        .personResult { /* these are the individual rows */
+        }
+#column3 {
+
+    background-color: var(--site-background-color);
+    width: 40%;
+    height: 100% ;
+
+}
+    #personInfo {
+        border: var(--borders);
+        width: 100%;
+        height: 100% ;
+        padding: 4px;
+    }
