@@ -6,12 +6,10 @@ const helpers = {
             text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
         );
     },
-
     dateFormat(date, concise) {
         try {
-            split = date.split('-')
-            console.log(split, date)
-            dateParts = {
+            const split = date.split('-')
+            const dateParts = {
                 'dd': Number(split[2]),
                 'mm': Number(split[1]),
                 'yy': Number(split[0])
@@ -27,18 +25,36 @@ const helpers = {
                 months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
             }
 
-            imgDateMonth = months[dateParts['mm'] - 1]
+            const imgDateMonth = months[dateParts['mm'] - 1]
             const dateStr = dateParts['dd'] +  date_appendage+ ' ' + imgDateMonth + ' ' + dateParts['yy']
 
             return dateStr
         }
         catch {
-            console.error("Couldn't process date: ", date)
+            console.error('Could not format date: ', date)
             return date
         }
+    },
+    monthReturn(month) {
+        try {
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+            const result = months[month - 1]
+            return result
+        }
+        catch {
+            console.error('Could not format month: ', month)
+            return month
+        }
+    },
+
+    ageFormat(age) {
+        const now = Date.now()
+        const dob = new Date(age['year'], age['month'] + 1)
+        const diffTime = Math.abs(now - dob);
+        const diffYears = Math.floor((diffTime / (1000 * 60 * 60 * 24)) / 365 );
+        return diffYears
     }
 }
-
 
 async function searchForCompany(searchType, searchData) {
 
@@ -60,6 +76,15 @@ async function searchForCompany(searchType, searchData) {
         q = searchData // just passing the company number again
     }
 
+    else if (searchType === 'officerDetails') {
+        q = searchData.split('/')[2]
+    }
+
+    else {
+        console.error('Searchtype not found: ', searchType)
+        return
+    }
+
     try {
         const res = await fetch(
             `/research/abulafia/chsearch?query=${encodeURIComponent(q)}&searchType=${searchType}`
@@ -71,31 +96,38 @@ async function searchForCompany(searchType, searchData) {
 
         const data = await res.json();
 
-        if (searchType === 'companyList') {displaySearchResults(data)}
+        if (searchType === 'companyList') {
+            displaySearchResults(data)
+        }
+
         if (searchType === 'companyDetails') {
             displayCompany(data)
             searchForCompany('officerList', searchData) // we send another api call for the officer details
         }
+
         if (searchType === 'officerList') {
             displayOfficersAndPwsc(data)
         }
-        console.log(data)
+
+        if (searchType === 'officerDetails') {
+            displayOfficerDetails(data)
+        }
+
+        console.log('fetched data -', searchType, data)
 
     } catch (error) {
-        console.error('Search error:', error);
         searchResultsDiv.innerHTML = 'Error: ' + error.message;
     }
 
 }
-
 function displaySearchResults(data) {
     const searchResultsDiv = document.getElementById('chSearchResults')
-
+    console.log(data)
     const companies = data.items
     searchResultsDiv.innerHTML = '' // clear loading display
     companies.forEach(company => {
 
-        resultRow = document.createElement('button')
+        const resultRow = document.createElement('button')
         resultRow.classList.add('searchResult')
         resultRow.innerText = helpers.toTitleCase(company.title)
         resultRow.dataset.companyNumber = company.company_number
@@ -154,7 +186,7 @@ function displayCompany(data) {
 
         dom.previouslyKnown.innerHTML = ''
         if (data.previous_company_names) {
-            names = data.previous_company_names
+            const names = data.previous_company_names
             names.forEach(name => {
                 dom.previouslyKnown.insertAdjacentHTML('afterBegin', `<div class='previousName'>${name.name}</div><div class='previousNameDate'>${name.effective_from} - ${name.ceased_on}</div>`)
             })
@@ -192,7 +224,54 @@ function displayCompany(data) {
     displayAlerts(data)
 
 
-    console.log(data)
+}
+
+function tableConstructor(items) {
+
+    const table = document.createElement('table')
+
+    items.forEach(item => {
+
+        let row = document.createElement('tr')
+        row.classList.add('result')
+
+        let name = document.createElement('td')
+        name.innerText = item.name || "N/A"
+        name.classList.add('resultName')
+
+        // if its got this field it's a corporate appointment
+        // so we reassign name
+        if (item.appointed_to) {
+            name.innerText = item.appointed_to.company_name
+        }
+
+        // adding classes if it's an individual officer
+        if (item.links?.officer?.appointments) {
+            name.classList.add(item.links.officer.appointments)
+        }
+
+        // storing this just in case. it might have occupation data in?
+        if (item.links?.self) {
+            name.classList.add(item.links.self)
+        }
+
+        // greying out resigned directors / appts
+        if (item.resigned_on) {
+            row.classList.add('faded')
+        }
+
+        // this works for both individuals and appointments thank GOD
+        let dateAppointed = document.createElement('td')
+        dateAppointed.classList.add('resultDate')
+        dateAppointed.innerText = helpers.dateFormat(item.appointed_on, true) ?? helpers.dateFormat(item.notified_on, true) ?? 'N/A'
+
+        row.appendChild(name)
+        row.appendChild(dateAppointed)
+        table.appendChild(row)
+    })
+
+    return table
+
 }
 function displayOfficersAndPwsc(data) {
     const officers = data.officers
@@ -209,31 +288,17 @@ function displayOfficersAndPwsc(data) {
         header.innerHTML = label
         result.appendChild(header)
 
-        let table = document.createElement('table')
-        console.log(people, result)
+        people.sort((a, b) => new Date(b.appointed_on) - new Date(a.appointed_on))
+
+        // we farm the table construction out to a global function
+        // so we can reuse it for appointment displays etc
+        table = tableConstructor(people)
+
         if (people.length === 0) {
             noneFound = document.createElement('try')
             noneFound.innerText = `No ${label} found`
             table.appendChild(noneFound)
         }
-        people
-            .sort((a, b) => new Date(b.appointed_on) - new Date(a.appointed_on))
-            .forEach(person => {
-                if (!person.resigned_on) {
-                    let row = document.createElement('tr')
-                    row.classList.add('personResult')
-
-                    let name = document.createElement('td')
-                    name.innerText = person.name || "N/A"
-
-                    let dateAppointed = document.createElement('td')
-                    dateAppointed.innerText = helpers.dateFormat(person.appointed_on, true) ?? helpers.dateFormat(person.notified_on, true) ?? 'N/A'
-
-                    row.appendChild(name)
-                    row.appendChild(dateAppointed)
-                    table.appendChild(row)
-                }
-            })
 
         result.appendChild(table)
         return result
@@ -241,6 +306,23 @@ function displayOfficersAndPwsc(data) {
 
     dom.officers.replaceChildren(buildPeopleList(officers.items, 'Officers'))
     dom.pwsc.replaceChildren(buildPeopleList(pwsc.items, 'PwSC'))
+}
+function displayOfficerDetails(data) {
+    console.log(data)
+    const dom = {
+        'name': document.getElementById('personName'),
+        'age': document.getElementById('personAge'),
+        'nationality': document.getElementById('personNationality'),
+        'appointments': document.getElementById('personAppointments'),
+    }
+
+    dom.name.innerText = data.name
+
+    if (data.date_of_birth) { // some officers don't have dob (eg secretaries)
+        dom.age.innerText = `b. ${helpers.monthReturn(data.date_of_birth['month'] ?? '')} ${data.date_of_birth['year']} - ${helpers.ageFormat(data.date_of_birth)} y/o`
+    } else dom.age.innerText = 'N/A'
+
+    dom.appointments.replaceChildren(tableConstructor(data.items))
 }
 
 function init() {
@@ -267,6 +349,18 @@ function init() {
             }
         })
     }
+
+    function initCompanyOfficersListener() {
+        const peopleDisplays = document.getElementById('companyPeopleDisplays')
+        peopleDisplays.addEventListener('click', e => {
+            const clickedPerson = e.target.closest('.resultName')
+            if (!clickedPerson) {return}
+            const personUrl = clickedPerson.classList[1]
+            searchForCompany('officerDetails', personUrl)
+        })
+        return
+    }
+
     function initSearchBar() {
         const input = document.getElementById('query')
         input.addEventListener('keydown', e => { // initial company search
@@ -280,6 +374,7 @@ function init() {
     initSearchResultsListener()
     initAliasListener()
     initSearchBar()
+    initCompanyOfficersListener()
     debug()
 }
 

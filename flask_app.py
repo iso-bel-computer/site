@@ -166,7 +166,8 @@ def companiesHouseSearch():
     searchUrls = {
         'companyList': 'https://api.company-information.service.gov.uk/search/companies',
         'companyDetails': 'https://api.company-information.service.gov.uk/company/',
-        'officerList': 'https://api.company-information.service.gov.uk/company/'
+        'officerList': 'https://api.company-information.service.gov.uk/company/',
+        'officerDetails': 'https://api.company-information.service.gov.uk/officers/'
     }
 
     baseUrl = searchUrls[searchType]
@@ -228,7 +229,15 @@ def companiesHouseSearch():
 
         return jsonify(combined_data)
 
+    elif searchType == 'officerDetails':
+        response = requests.get(
+            baseUrl + query + '/appointments',
+            auth=HTTPBasicAuth(API_KEY, ""),
+            timeout=5
+        )
+
     response.raise_for_status()
+    print(response.json)
     return jsonify(response.json())
 
 @app.route('/research/abulafia')
