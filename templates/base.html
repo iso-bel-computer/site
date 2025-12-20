@@ -5,14 +5,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}ISO | BEL{% endblock %}</title>
         <link rel="stylesheet" href="{{url_for('static', filename='base.css')}}">
+        <script src="{{ url_for('static', filename='scripts/base.js') }}"></script>
         {% block extra_css %}{% endblock %}
+
         {% block extra_js %}{% endblock %}
         <style>
         header {
-              background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
-    url('{{ url_for("static", filename="resources/images/core/headerBG.png") }}');
-
-    background-position: center;
+              background:   linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                            url('{{ url_for("static", filename="resources/images/core/headerBG.png") }}');
+                            background-position: center;
         }
         </style>
     </head>
@@ -28,7 +29,9 @@
                         style="width: 100px"
                         alt='ISO_BEL'></a>
 
-                <input class='headerRouteDisplay' value='&nbsp{{ headerRouteDisplay }}'</input>
+                <form id='headerRouteForm' action="/go" method="POST">
+                    <input class='headerRouteDisplay' name='headerRouteInput' value='&nbsp{{ headerRouteDisplay }}'</input>
+                </form>
 
             </div>
 

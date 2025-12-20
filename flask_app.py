@@ -1,6 +1,6 @@
 import json
 from datetime import datetime
-from flask import Flask, render_template, jsonify, request, abort
+from flask import Flask, render_template, jsonify, request, abort, redirect
 import os
 os.chdir(os.path.dirname(__file__))  # change CWD to where flask_app.py lives
 import datetime
@@ -14,12 +14,49 @@ from requests.auth import HTTPBasicAuth
 
 print("API KEY PRESENT:", "COMPANIES_HOUSE_API_KEY" in os.environ)
 
+siteMap = [
+    '/',
+    '/blog',
+    '/about/reading',
+    '/art/photography',
+    '/art/prints',
+    '/art/drawing',
+    '/research/abulafia',
+    '/YWABM'
+]
+
+domain = 'https://1sobel.pythonanywhere.com/'
 app = Flask(__name__)
 
 @app.route('/')
 def home():
     return render_template('base.html',
                          current_date=datetime.now().strftime('%Y-%m-%d'))
+
+
+
+
+
+@app.route('/go', methods=['POST'])
+def go():
+
+    headerRouteInput = request.form.get('headerRouteInput', '').strip()
+
+    # Remove leading slash and tilde if user included it
+    if headerRouteInput.startswith('/'):
+        headerRouteInput = headerRouteInput[1:]
+    if headerRouteInput.startswith('~/'):
+        headerRouteInput = headerRouteInput[2:]
+
+    # Build the full URL
+    full_url = f'{domain}{headerRouteInput}'
+
+    return redirect(full_url)
+
+
+
+
+
 
 
 """ Blog Page """
@@ -72,6 +109,7 @@ BLOGPOSTS = getBlogPosts()
 @app.route('/blog')
 def blog():
     return render_template('blog.html',
+                           siteMap = siteMap,
                            headerRouteDisplay = '~/Blog',
                            posts=BLOGPOSTS)
 
@@ -102,6 +140,7 @@ def art(category):
     return render_template(
         'art.html',
         headerRouteDisplay='~/art/' + category,
+        siteMap = siteMap,
         artData=artData,
         headerRoute=category
     )
@@ -152,6 +191,7 @@ with open('static/resources/data/reading.json', 'r') as f:
 @app.route('/about/reading')
 def readingReccs():
     return render_template('reading.html',
+                           siteMap = siteMap,
                            headerRouteDisplay = '~/about/reading',
                            books = bookData)
 
@@ -159,7 +199,7 @@ def readingReccs():
 """ Abulafia Port """
 @app.route('/research/abulafia/chsearch', methods=['GET'])
 def companiesHouseSearch():
-
+    print('chsearchcalled')
     rawQuery = request.args.get("query", "").strip()
     searchType = request.args.get("searchType",'').strip()
 
@@ -167,12 +207,10 @@ def companiesHouseSearch():
         'companyList': 'https://api.company-information.service.gov.uk/search/companies',
         'companyDetails': 'https://api.company-information.service.gov.uk/company/',
         'officerList': 'https://api.company-information.service.gov.uk/company/',
-        'officerDetails': 'https://api.company-information.service.gov.uk/officers/'
+        'officerDetails': 'https://api.company-information.service.gov.uk/officers/',
     }
 
     baseUrl = searchUrls[searchType]
-
-
 
     API_KEY = os.environ["COMPANIES_HOUSE_API_KEY"]
 
@@ -182,11 +220,9 @@ def companiesHouseSearch():
     if len(rawQuery) > 100:
         return jsonify({"error": "Query too long"}), 400
 
-    import re
-    if not re.match(r"^[\w\s\-]+$", rawQuery):
-        return jsonify({"error": "Invalid characters in query"}), 400
 
     query = rawQuery
+
 
     if searchType == 'companyList':
         response = requests.get(
@@ -236,14 +272,24 @@ def companiesHouseSearch():
             timeout=5
         )
 
+    elif searchType == 'TESTofficerSelfDetails':
+        print(query)
+        queryArray = query.split('~')
+        response = requests.get(
+            baseUrl + queryArray[0] + '/appointments/' + queryArray[1],
+            auth=HTTPBasicAuth(API_KEY, ""),
+            timeout=5
+        )
+
     response.raise_for_status()
-    print(response.json)
     return jsonify(response.json())
 
 @app.route('/research/abulafia')
 def abulafia():
     return render_template('abulafia.html',
+                           siteMap = siteMap,
                            headerRouteDisplay = '~/research/abulafia')
+
 
 
 

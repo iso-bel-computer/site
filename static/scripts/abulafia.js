@@ -1,5 +1,4 @@
 const helpers = {
-    // helper function dumping ground
     toTitleCase(str) {
         return str.replace(
             /\w\S*/g,
@@ -46,7 +45,6 @@ const helpers = {
             return month
         }
     },
-
     ageFormat(age) {
         const now = Date.now()
         const dob = new Date(age['year'], age['month'] + 1)
@@ -55,7 +53,6 @@ const helpers = {
         return diffYears
     }
 }
-
 async function searchForCompany(searchType, searchData) {
 
     const searchResultsDiv = document.getElementById('chSearchResults')
@@ -66,20 +63,16 @@ async function searchForCompany(searchType, searchData) {
         searchResultsDiv.innerHTML = '<div class="loading">Loading...</div>' // clear previous results
         q = document.getElementById("query").value;
     }
-
     else if (searchType === 'companyDetails') {
         document.getElementById('companyName').innerHTML = '<div class="loading">Loading...</div>' // clear previous results
         q = searchData
     }
-
     else if (searchType === 'officerList') {
         q = searchData // just passing the company number again
     }
-
     else if (searchType === 'officerDetails') {
         q = searchData.split('/')[2]
     }
-
     else {
         console.error('Searchtype not found: ', searchType)
         return
@@ -95,34 +88,96 @@ async function searchForCompany(searchType, searchData) {
         }
 
         const data = await res.json();
-
+        console.log(data)
         if (searchType === 'companyList') {
             displaySearchResults(data)
         }
-
         if (searchType === 'companyDetails') {
             displayCompany(data)
             searchForCompany('officerList', searchData) // we send another api call for the officer details
         }
-
         if (searchType === 'officerList') {
             displayOfficersAndPwsc(data)
         }
-
         if (searchType === 'officerDetails') {
             displayOfficerDetails(data)
         }
-
-        console.log('fetched data -', searchType, data)
 
     } catch (error) {
         searchResultsDiv.innerHTML = 'Error: ' + error.message;
     }
 
 }
+
+function tableConstructor(items) {
+
+    const table = document.createElement('table')
+
+    items.forEach(item => {
+
+        let row = document.createElement('tr')
+        row.classList.add('result')
+
+        let name = document.createElement('td')
+        name.innerText = item.name || "N/A"
+        name.classList.add('resultName')
+
+        // if its got this field it's a corporate appointment
+        // so we reassign name
+        if (item.appointed_to) {
+            name.innerText = item.appointed_to.company_name
+        }
+
+        // adding classes if it's an individual officer
+        if (item.links?.officer?.appointments) {
+            name.classList.add(item.links.officer.appointments)
+        }
+
+        // storing this just in case. it might have occupation data in?
+        if (item.links?.self) {
+            name.classList.add(item.links.self)
+        }
+
+        // greying out resigned directors / appts
+        if (item.resigned_on) {
+            row.classList.add('faded')
+        }
+
+        // this works for both individuals and appointments thank GOD
+        let dateAppointed = document.createElement('td')
+        dateAppointed.classList.add('resultDate')
+        dateAppointed.innerText = helpers.dateFormat(item.appointed_on, true) ?? helpers.dateFormat(item.notified_on, true) ?? 'N/A'
+
+        row.appendChild(name)
+        row.appendChild(dateAppointed)
+        table.appendChild(row)
+    })
+
+    return table
+
+}
+function linkConstructor(query) {
+    const searches = [
+        //
+        // TODO - change linkedin to work for companies and individuals.
+        // will require passing extra params
+        // also should add a links individually to result rather than += the html
+        // as this destroys event listeners. not really a problem for a tags but could crop up later.
+        //
+        ['LinkedIn', 'https://www.linkedin.com/search/results/companies/?keywords=', '%20'],
+        ['Google',   'https://www.google.com/search?q=', '+'],
+    ]
+    const result = document.createElement('div')
+    searches.forEach(search => {
+        const q = query.replaceAll(' ', search[2]) // replace spaces with whatever the search uses
+        const link = search[1] + q // construct the link from the base url and urlified query
+        result.innerHTML += `<a href=${link} target="_blank">${search[0]}</a> ` // include the label
+    })
+    return result
+}
+
 function displaySearchResults(data) {
     const searchResultsDiv = document.getElementById('chSearchResults')
-    console.log(data)
     const companies = data.items
     searchResultsDiv.innerHTML = '' // clear loading display
     companies.forEach(company => {
@@ -151,9 +206,8 @@ function displayCompany(data) {
         'dateCreated': document.getElementById('companyDateCreated'),
         'dateDissolved': document.getElementById('companyDateDissolved'),
         'address': document.getElementById('companyAddress'),
+        'links': document.getElementById('companyLinks')
     }
-
-
     function displayBasicInfo(data) {
 
         nameSuffixes = ['LIMITED', 'PLC', 'LTD.', 'LTD', 'LLP']
@@ -219,60 +273,16 @@ function displayCompany(data) {
         })
 
     }
+    function displayLinks(data) {
+        dom.links.replaceChildren (linkConstructor(data.company_name.toLowerCase()))
+    }
 
     displayBasicInfo(data)
     displayAlerts(data)
-
-
-}
-
-function tableConstructor(items) {
-
-    const table = document.createElement('table')
-
-    items.forEach(item => {
-
-        let row = document.createElement('tr')
-        row.classList.add('result')
-
-        let name = document.createElement('td')
-        name.innerText = item.name || "N/A"
-        name.classList.add('resultName')
-
-        // if its got this field it's a corporate appointment
-        // so we reassign name
-        if (item.appointed_to) {
-            name.innerText = item.appointed_to.company_name
-        }
-
-        // adding classes if it's an individual officer
-        if (item.links?.officer?.appointments) {
-            name.classList.add(item.links.officer.appointments)
-        }
-
-        // storing this just in case. it might have occupation data in?
-        if (item.links?.self) {
-            name.classList.add(item.links.self)
-        }
-
-        // greying out resigned directors / appts
-        if (item.resigned_on) {
-            row.classList.add('faded')
-        }
-
-        // this works for both individuals and appointments thank GOD
-        let dateAppointed = document.createElement('td')
-        dateAppointed.classList.add('resultDate')
-        dateAppointed.innerText = helpers.dateFormat(item.appointed_on, true) ?? helpers.dateFormat(item.notified_on, true) ?? 'N/A'
-
-        row.appendChild(name)
-        row.appendChild(dateAppointed)
-        table.appendChild(row)
-    })
-
-    return table
+    displayLinks(data)
 
 }
+
 function displayOfficersAndPwsc(data) {
     const officers = data.officers
     const pwsc = data.pwsc
@@ -308,7 +318,6 @@ function displayOfficersAndPwsc(data) {
     dom.pwsc.replaceChildren(buildPeopleList(pwsc.items, 'PwSC'))
 }
 function displayOfficerDetails(data) {
-    console.log(data)
     const dom = {
         'name': document.getElementById('personName'),
         'age': document.getElementById('personAge'),
