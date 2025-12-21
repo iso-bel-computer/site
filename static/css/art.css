@@ -133,6 +133,8 @@
     padding-bottom: var(--thumbnail-vertical-padding);
     opacity: 0.3;
     background-color: #00000000;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 
     #thumbnailContainer:hover {

@@ -33,10 +33,22 @@
                         <input list='pages'
                                 class='headerRouteDisplay'
                                 name='headerRouteInput'
-                                onfocus="this.value=''"
+                                onfocus="this.value='~'"
                                 value='~{{ headerRouteDisplay }}'
                                 autocomplete='off'>
                         </input>
+<style>
+@keyframes blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+}
+
+.headerRouteDisplay::after {
+    content: '|';
+    animation: blink 1s step-end 3; /* Blink 3 times (3 seconds) then stop */
+}
+</style>
+
                         <datalist id="pages">
                         {% for url in siteMap %}
                             <option value='~{{ url }}'>
