@@ -15,7 +15,7 @@ from requests.auth import HTTPBasicAuth
 print("API KEY PRESENT:", "COMPANIES_HOUSE_API_KEY" in os.environ)
 
 siteMap = [
-    '/',
+    '', # not an empty string!!! this is the home route!!! dont remove u idiot!!
     '/blog',
     '/about/reading',
     '/art/photography',
@@ -25,13 +25,15 @@ siteMap = [
     '/YWABM'
 ]
 
-domain = 'https://1sobel.pythonanywhere.com/'
+domain = 'https://1sobel.pythonanywhere.com'
 app = Flask(__name__)
 
 @app.route('/')
 def home():
     return render_template('base.html',
-                         current_date=datetime.now().strftime('%Y-%m-%d'))
+                            siteMap = siteMap,
+                            domain = domain,
+                            current_date=datetime.now().strftime('%Y-%m-%d'))
 
 
 
@@ -43,15 +45,17 @@ def go():
     headerRouteInput = request.form.get('headerRouteInput', '').strip()
 
     # Remove leading slash and tilde if user included it
-    if headerRouteInput.startswith('/'):
+    if not headerRouteInput.startswith('/'):
         headerRouteInput = headerRouteInput[1:]
     if headerRouteInput.startswith('~/'):
         headerRouteInput = headerRouteInput[2:]
-
     # Build the full URL
     full_url = f'{domain}{headerRouteInput}'
 
     return redirect(full_url)
+
+
+
 
 
 
@@ -105,12 +109,14 @@ def getBlogPosts():
             except:
                 print(f'Error processing {filename}')
     return sorted(posts, key=lambda x: x['date'], reverse=True)
+
 BLOGPOSTS = getBlogPosts()
 @app.route('/blog')
 def blog():
     return render_template('blog.html',
                            siteMap = siteMap,
-                           headerRouteDisplay = '~/Blog',
+                           domain = domain,
+                           headerRouteDisplay = '/Blog',
                            posts=BLOGPOSTS)
 
 
@@ -139,8 +145,9 @@ def art(category):
 
     return render_template(
         'art.html',
-        headerRouteDisplay='~/art/' + category,
+        headerRouteDisplay='/art/' + category,
         siteMap = siteMap,
+        domain = domain,
         artData=artData,
         headerRoute=category
     )
@@ -192,7 +199,8 @@ with open('static/resources/data/reading.json', 'r') as f:
 def readingReccs():
     return render_template('reading.html',
                            siteMap = siteMap,
-                           headerRouteDisplay = '~/about/reading',
+                           domain = domain,
+                           headerRouteDisplay = '/about/reading',
                            books = bookData)
 
 
@@ -288,7 +296,8 @@ def companiesHouseSearch():
 def abulafia():
     return render_template('abulafia.html',
                            siteMap = siteMap,
-                           headerRouteDisplay = '~/research/abulafia')
+                           domain = domain,
+                           headerRouteDisplay = '/research/abulafia')
 
 
 

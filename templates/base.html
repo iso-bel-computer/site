@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}ISO | BEL{% endblock %}</title>
-        <link rel="stylesheet" href="{{url_for('static', filename='base.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/base.css')}}">
         <script src="{{ url_for('static', filename='scripts/base.js') }}"></script>
         {% block extra_css %}{% endblock %}
 
@@ -28,10 +28,21 @@
                     <img src="{{ url_for('static', filename='resources/images/core/ISOBEL_LOGO.svg') }}"
                         style="width: 100px"
                         alt='ISO_BEL'></a>
-
-                <form id='headerRouteForm' action="/go" method="POST">
-                    <input class='headerRouteDisplay' name='headerRouteInput' value='&nbsp{{ headerRouteDisplay }}'</input>
-                </form>
+                <div id='routeWrapper'>
+                    <form id='headerRouteForm' action="/go" method="POST">
+                        <input list='pages'
+                               class='headerRouteDisplay'
+                               name='headerRouteInput'
+                               value='~{{ headerRouteDisplay }}'
+                               autocomplete='off'>
+                        </input>
+                        <datalist id="pages">
+                        {% for url in siteMap %}
+                            <option value='~{{ url }}'>
+                        {% endfor %}
+                        </datalist>
+                    </form>
+                </div>
 
             </div>
 
