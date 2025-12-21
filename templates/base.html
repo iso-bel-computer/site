@@ -31,10 +31,11 @@
                 <div id='routeWrapper'>
                     <form id='headerRouteForm' action="/go" method="POST">
                         <input list='pages'
-                               class='headerRouteDisplay'
-                               name='headerRouteInput'
-                               value='~{{ headerRouteDisplay }}'
-                               autocomplete='off'>
+                                class='headerRouteDisplay'
+                                name='headerRouteInput'
+                                onfocus="this.value=''"
+                                value='~{{ headerRouteDisplay }}'
+                                autocomplete='off'>
                         </input>
                         <datalist id="pages">
                         {% for url in siteMap %}
