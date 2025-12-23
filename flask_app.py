@@ -1,21 +1,14 @@
-import json
-from datetime import datetime
 from flask import Flask, render_template, jsonify, request, abort, redirect
-import os
-os.chdir(os.path.dirname(__file__))  # change CWD to where flask_app.py lives
-import datetime
-from datetime import datetime
-import random
-import requests
-from urllib.parse import urlparse
-from dotenv import load_dotenv
-load_dotenv()
-from requests.auth import HTTPBasicAuth
+import json; from datetime import datetime; import os; import random; from dotenv import load_dotenv
+import requests; from requests.auth import HTTPBasicAuth; from urllib.parse import urlparse
 
-print("API KEY PRESENT:", "COMPANIES_HOUSE_API_KEY" in os.environ)
+load_dotenv()
+os.chdir(os.path.dirname(__file__))  # change CWD to where flask_app.py lives
+app = Flask(__name__)
+
 
 siteMap = [
-    '', # not an empty string!!! this is the home route!!! dont remove u idiot!!
+    '/', # not an empty string!!! this is the home route!!! dont remove u idiot!!
     '/blog',
     '/about/reading',
     '/art/photography',
@@ -26,20 +19,21 @@ siteMap = [
 ]
 
 domain = 'https://1sobel.pythonanywhere.com'
-app = Flask(__name__)
+
+
+
+"""
+Homepage & Redirect
+
+"""
 
 @app.route('/')
 def home():
     return render_template('base.html',
                             siteMap = siteMap,
-                            domain = domain,
                             current_date=datetime.now().strftime('%Y-%m-%d'))
 
-
-
-
-
-@app.route('/go', methods=['POST'])
+@app.route('/go', methods=['POST']) # this is the redirect for the header navigation
 def go():
 
     headerRouteInput = request.form.get('headerRouteInput', '').strip()
@@ -58,12 +52,10 @@ def go():
 
 
 
+"""
+Blog Page
 
-
-
-
-
-""" Blog Page """
+"""
 def getBlogPosts():
     posts = []
 
@@ -109,19 +101,22 @@ def getBlogPosts():
             except:
                 print(f'Error processing {filename}')
     return sorted(posts, key=lambda x: x['date'], reverse=True)
-
 BLOGPOSTS = getBlogPosts()
 @app.route('/blog')
 def blog():
     return render_template('blog.html',
                            siteMap = siteMap,
-                           domain = domain,
                            headerRouteDisplay = '/Blog',
                            posts=BLOGPOSTS)
 
 
 
-""" Art Pages """
+
+
+"""
+Art Pages
+
+"""
 @app.route('/art/<category>')
 def art(category):
     category = category.lower()
@@ -147,14 +142,18 @@ def art(category):
         'art.html',
         headerRouteDisplay='/art/' + category,
         siteMap = siteMap,
-        domain = domain,
         artData=artData,
         headerRoute=category
     )
 
 
 
-""" Reading Page """
+
+
+"""
+Reading Page
+
+"""
 
 with open('static/resources/data/reading.json', 'r') as f:
     bookData = json.load(f)
@@ -195,16 +194,25 @@ with open('static/resources/data/reading.json', 'r') as f:
         }
 
         book['randomNumbers'] = randomNumbers
+
 @app.route('/about/reading')
 def readingReccs():
     return render_template('reading.html',
                            siteMap = siteMap,
-                           domain = domain,
                            headerRouteDisplay = '/about/reading',
                            books = bookData)
 
 
-""" Abulafia Port """
+
+
+
+
+"""
+Abulafia Port
+
+"""
+
+
 @app.route('/research/abulafia/chsearch', methods=['GET'])
 def companiesHouseSearch():
     print('chsearchcalled')
@@ -296,11 +304,16 @@ def companiesHouseSearch():
 def abulafia():
     return render_template('abulafia.html',
                            siteMap = siteMap,
-                           domain = domain,
                            headerRouteDisplay = '/research/abulafia')
 
 
 
+
+
+"""
+Init
+
+"""
 
 
 if __name__ == '__main__':
