@@ -15,7 +15,7 @@ siteMap = [
     '/art/prints',
     '/art/drawing',
     '/research/abulafia',
-    '/YWABM'
+    '/projects/YWABM'
 ]
 
 domain = 'https://1sobel.pythonanywhere.com'
