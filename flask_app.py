@@ -8,18 +8,21 @@ app = Flask(__name__)
 
 
 siteMap = [
-    '/', # not an empty string!!! this is the home route!!! dont remove u idiot!!
-    '/blog',
-    '/about/reading',
+    '', # not an empty string!!! this is the home route!!! dont remove u idiot!!
+    '/projects/YWABM',
+    '/projects/isoante',
+    '/projects/paranoid',
+    '/research/abulafia',
+    '/research/councilcash',
+    '/research/verisimillitude',
     '/art/photography',
     '/art/prints',
     '/art/drawing',
-    '/research/abulafia',
-    '/projects/YWABM'
+    '/about/reading',
+    '/blog',
 ]
 
 domain = 'https://1sobel.pythonanywhere.com'
-
 
 
 """
@@ -29,7 +32,7 @@ Homepage & Redirect
 
 @app.route('/')
 def home():
-    return render_template('base.html',
+    return render_template('home.html',
                             siteMap = siteMap,
                             current_date=datetime.now().strftime('%Y-%m-%d'))
 
@@ -106,7 +109,7 @@ BLOGPOSTS = getBlogPosts()
 def blog():
     return render_template('blog.html',
                            siteMap = siteMap,
-                           headerRouteDisplay = '/Blog',
+                           headerRouteDisplay = '/blog',
                            posts=BLOGPOSTS)
 
 
@@ -317,4 +320,6 @@ Init
 
 
 if __name__ == '__main__':
+    domain = 'http://127.0.0.1:5000' # this makes the header navigation work
+                                     # while it's in debug mode
     app.run(debug=True)
