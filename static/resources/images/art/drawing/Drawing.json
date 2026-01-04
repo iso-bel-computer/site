@@ -642,5 +642,33 @@
     "date": "26-01-03",
     "description": "getting back at it. it's been like a month, and i'm v rusty",
     "contenttype": "Drawing"
+  },
+  {
+    "originalFileName": "26-01-04 | 17.49.41 | WhatsApp_Image_2026-01-04_at_17.48.59_(1).png",
+    "fileName": "175230_London-Drawing---Sarah_175230",
+    "originalDir": "/Users/dylanhemmings/Desktop/drawingstaging",
+    "originalPath": "/Users/dylanhemmings/Desktop/drawingstaging/26-01-04 | 17.49.41 | WhatsApp_Image_2026-01-04_at_17.48.59_(1).png",
+    "destinationDir": "/Users/dylanhemmings/05.Site/static/resources/images/art/drawing",
+    "previewFile": "175230_London-Drawing---Sarah_175230_PREVIEW.jpg",
+    "thumbnailFile": "175230_London-Drawing---Sarah_175230_THUMB.jpg",
+    "mainFile": "175230_London-Drawing---Sarah_175230.png",
+    "title": "London-Drawing---Sarah",
+    "date": "175230",
+    "description": "",
+    "contenttype": "Drawing"
+  },
+  {
+    "originalFileName": "26-01-04 | 17.49.41 | WhatsApp_Image_2026-01-04_at_17.48.59.png",
+    "fileName": "175230_Sarah---London-Drawing-(2)_175230",
+    "originalDir": "/Users/dylanhemmings/Desktop/drawingstaging",
+    "originalPath": "/Users/dylanhemmings/Desktop/drawingstaging/26-01-04 | 17.49.41 | WhatsApp_Image_2026-01-04_at_17.48.59.png",
+    "destinationDir": "/Users/dylanhemmings/05.Site/static/resources/images/art/drawing",
+    "previewFile": "175230_Sarah---London-Drawing-(2)_175230_PREVIEW.jpg",
+    "thumbnailFile": "175230_Sarah---London-Drawing-(2)_175230_THUMB.jpg",
+    "mainFile": "175230_Sarah---London-Drawing-(2)_175230.png",
+    "title": "Sarah---London-Drawing-(2)",
+    "date": "175230",
+    "description": "Back again. Really really happy with these two. I think the paper I was using yesterday was stopping me from blending the charhol very well? a bad workwoman etc.",
+    "contenttype": "Drawing"
   }
 ]
