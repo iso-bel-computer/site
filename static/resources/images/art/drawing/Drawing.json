@@ -614,5 +614,33 @@
     "date": "24-05-07",
     "description": "",
     "contenttype": "Drawing"
+  },
+  {
+    "originalFileName": "26-01-04 | 01.09.30 | IMG_3441.HEIC",
+    "fileName": "26-01-03_london-drawing---francois_011029",
+    "originalDir": "/Users/dylanhemmings/Desktop/drawingstaging",
+    "originalPath": "/Users/dylanhemmings/Desktop/drawingstaging/26-01-04 | 01.09.30 | IMG_3441.HEIC",
+    "destinationDir": "/Users/dylanhemmings/05.Site/static/resources/images/art/drawing",
+    "previewFile": "26-01-03_london-drawing---francois_011029_PREVIEW.jpg",
+    "thumbnailFile": "26-01-03_london-drawing---francois_011029_THUMB.jpg",
+    "mainFile": "26-01-03_london-drawing---francois_011029.png",
+    "title": "london-drawing---francois",
+    "date": "26-01-03",
+    "description": "getting back at it. it's been like a month, and i'm v rusty",
+    "contenttype": "Drawing"
+  },
+  {
+    "originalFileName": "26-01-04 | 01.09.40 | IMG_3440.HEIC",
+    "fileName": "26-01-03_london-drawing---francois-(2)_011029",
+    "originalDir": "/Users/dylanhemmings/Desktop/drawingstaging",
+    "originalPath": "/Users/dylanhemmings/Desktop/drawingstaging/26-01-04 | 01.09.40 | IMG_3440.HEIC",
+    "destinationDir": "/Users/dylanhemmings/05.Site/static/resources/images/art/drawing",
+    "previewFile": "26-01-03_london-drawing---francois-(2)_011029_PREVIEW.jpg",
+    "thumbnailFile": "26-01-03_london-drawing---francois-(2)_011029_THUMB.jpg",
+    "mainFile": "26-01-03_london-drawing---francois-(2)_011029.png",
+    "title": "london-drawing---francois-(2)",
+    "date": "26-01-03",
+    "description": "getting back at it. it's been like a month, and i'm v rusty",
+    "contenttype": "Drawing"
   }
 ]

@@ -5,5 +5,15 @@ main {
 }
 
 #homepageContent {
-    padding: 1em;
+    padding: 2em;
+    width: 80%;
+    background-color: #00000010;
+    min-height: -webkit-fill-available
+}
+
+
+#smalltext {
+    font-size: 9pt;
+    font-style: italic;
+    text-align: right;
 }
