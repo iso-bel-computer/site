@@ -110,5 +110,19 @@
     "date": "25-06-01",
     "description": "there is a policeman inside all our heads. he must be destroyed.",
     "contenttype": "Prints"
+  },
+  {
+    "originalFileName": "mumsnetpicturesubmission.png",
+    "fileName": "05-01-26_$-ECHO-'YOU-WILL-ALWAYS-BE-MINE'_023912",
+    "originalDir": "/Users/dylanhemmings/Desktop/printsstaging",
+    "originalPath": "/Users/dylanhemmings/Desktop/printsstaging/mumsnetpicturesubmission.png",
+    "destinationDir": "/Users/dylanhemmings/05.Site/static/resources/images/art/prints",
+    "previewFile": "05-01-26_$-ECHO-'YOU-WILL-ALWAYS-BE-MINE'_023912_PREVIEW.jpg",
+    "thumbnailFile": "05-01-26_$-ECHO-'YOU-WILL-ALWAYS-BE-MINE'_023912_THUMB.jpg",
+    "mainFile": "05-01-26_$-ECHO-'YOU-WILL-ALWAYS-BE-MINE'_023912.png",
+    "title": "$-ECHO-'YOU-WILL-ALWAYS-BE-MINE'",
+    "date": "05-01-26",
+    "description": "Scraped Mumsnet comments fed into a Markov Chain. Hatred enslaves the hater.",
+    "contenttype": "Prints"
   }
 ]
