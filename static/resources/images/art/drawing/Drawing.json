@@ -698,5 +698,19 @@
     "date": "26-01-07",
     "description": "",
     "contenttype": "Drawing"
+  },
+  {
+    "originalFileName": "26-01-09 | 15.24.48 | WhatsApp_Image_2026-01-09_at_15.24.39.jpeg",
+    "fileName": "26-01-07_London-Drawing---Laura-(3)_152502",
+    "originalDir": "/Users/dylanhemmings/Desktop/drawingstaging",
+    "originalPath": "/Users/dylanhemmings/Desktop/drawingstaging/26-01-09 | 15.24.48 | WhatsApp_Image_2026-01-09_at_15.24.39.jpeg",
+    "destinationDir": "/Users/dylanhemmings/05.Site/static/resources/images/art/drawing",
+    "previewFile": "26-01-07_London-Drawing---Laura-(3)_152502_PREVIEW.jpg",
+    "thumbnailFile": "26-01-07_London-Drawing---Laura-(3)_152502_THUMB.jpg",
+    "mainFile": "26-01-07_London-Drawing---Laura-(3)_152502.png",
+    "title": "London-Drawing---Laura-(3)",
+    "date": "26-01-07",
+    "description": "",
+    "contenttype": "Drawing"
   }
 ]
