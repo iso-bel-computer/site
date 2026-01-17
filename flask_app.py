@@ -30,11 +30,26 @@ Homepage & Redirect
 
 """
 
+def getHomepageWindows():
+    windows = []
+
+    # Get the directory where flask_app.py is located
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    windowsconfig = os.path.join(base_dir, 'templates/homepage/windows.json')
+
+    with open(windowsconfig) as f:
+        windows.extend(json.load(f))
+
+    print(windows)
+    return windows
+
+
+
 @app.route('/')
 def home():
     return render_template('home.html',
-                            siteMap = siteMap,
-                            current_date=datetime.now().strftime('%Y-%m-%d'))
+                            windows = getHomepageWindows(),
+                            sitemap = siteMap)
 
 @app.route('/go', methods=['POST']) # this is the redirect for the header navigation
 def go():

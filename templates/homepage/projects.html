@@ -1,0 +1,46 @@
+<style>
+    #folderwrapper {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        flex-wrap: wrap;
+    }
+    .folderfile {
+        width: 45px;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 4px;
+    }
+
+    .foldericon {
+        width: auto;
+        height: 35px;
+        margin-bottom: 1px;
+        cursor: pointer;
+    }
+
+    .folderlabel {
+        font-size: 6pt;
+        width: 100%;
+        overflow-wrap: break-word;
+    }
+
+</style>
+
+<div id='folderwrapper'>
+    <div class='folderfile'>
+        <a href='https://yumyum.gay' target='_blank'>
+            <img class="foldericon" title="A website I made for a friend's drag show, based in Leeds." src='{{ url_for("static", filename="resources/homepage/yumyum.png") }}'>
+        </a>
+        <div class='folderlabel'>yumyum.gay</div>
+    </div>
+
+    <div class='folderfile'>
+        <a href='http://1sobel.pythonanywhere.com/research/abulafia' target='_blank'>
+            <img class="foldericon" title="A general purpose research tool for company and public sector investigation." src='{{ url_for("static", filename="resources/homepage/abulafia.png") }}'>
+        </a>
+        <div class='folderlabel'>ABULAFIA</div>
+    </div>
+</div>

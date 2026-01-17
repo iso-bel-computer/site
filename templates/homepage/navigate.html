@@ -1,0 +1,16 @@
+<form id='headerRouteForm' action="/go" method="POST">
+    <input list='pages'
+            class='headerRouteDisplay'
+            id='headerRouteDisplay'
+            name='headerRouteInput'
+            onfocus="this.value='~/'"
+            value='~/{{ headerRouteDisplay }}'
+            autocomplete='off'>
+    </input>
+
+    <datalist id="pages">
+    {% for url in siteMap %}
+        <option value='~{{ url }}'>
+    {% endfor %}
+    </datalist>
+</form>

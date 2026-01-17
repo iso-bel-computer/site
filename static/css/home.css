@@ -1,19 +1,132 @@
 
+@font-face {
+    font-family: Imperator;
+    src: url('https://iso-bel.neocities.org/fonts/Imperator.ttf');
+}
+
+
 main {
+    display: flex
+}
+
+body {
+    margin: 0px;
+    background-color: #051207;
+}
+
+header {
+    display: none;
+}
+
+h1 {
+    margin: 0px;
+}
+
+h2 {
+    margin: 0px;
+    font-size: 10pt;
+}
+
+ul {
+    margin-top: 3px;
+    margin-bottom: 3px;
+    padding: none;
+    padding-left: 1.5em;
+}
+
+#imagewrapper {
+
+    width: 0%;
+    height: 0%;
+    justify-items: centre;
+    align-content: centre;
+
+}
+
+#backgroundimage {
+
+    filter: blur(3px);
+    width: 100vw;
+    z-index: 1
+
+}
+
+
+/* MAIN CONTENT */
+
+#content {
+
+    z-index: 2;
     display: flex;
-    justify-content: center;
-}
-
-#homepageContent {
-    padding: 2em;
-    width: 80%;
-    background-color: #00000010;
-    min-height: -webkit-fill-available
+    width: 100%;
 }
 
 
-#smalltext {
-    font-size: 9pt;
-    font-style: italic;
-    text-align: right;
-}
+    .xpwindow {
+        width: fit-content;
+        background-color: #BFB294;
+        border: 1px solid black;
+        border-top: 1px solid white;
+        border-left: 1px solid white;
+        height: fit-content;
+        padding: 2px;
+        font-size: 9pt;
+        position: absolute;
+        z-index: 1;
+        box-shadow: 10px 10px 5px #00000050;
+    }
+
+        .xpwindowheader {
+            color: white;
+            padding: 2px;
+            font-size: 8pt;
+            width: calc(100% - 4px);
+            height: fit-content;
+            background: linear-gradient(to right, #153d1a, #182e1b);
+            display: flex;
+            cursor: grab;
+            font-family: Arial;
+        }
+
+
+            .xpwindowheader:active {
+                cursor: grabbing;
+            }
+
+            .headercolumn1 {
+                width: 80%;
+                display: flex
+            }
+
+
+            .xpwindowheader img {
+                height: 12px;
+                margin-right: 2px;
+            }
+
+        .xpwindowcontent {
+            margin-top: 2px;
+            height: fit-content;
+            max-height: 90vh;
+            overflow: scroll;
+            padding: 4px;
+            background-color: #fff9ed;
+            border: 1px solid white;
+            border-top: 1px solid black;
+            border-left: 1px solid black;
+            min-height: 20px;
+            min-width: 200px;
+            resize: both;
+        }
+
+        /* INDIVIDUAL WINDOW STYLING */
+
+        .windowterminalcontent {
+            background-color: black;
+            font-family: 'Courier New', monospace !important;
+        }
+
+        .windowaboutcontent {
+            width: 250px;
+            height: 200px;
+        }

@@ -1,49 +1,149 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ISO | BEL</title>
+        <link rel="stylesheet" href="{{url_for('static', filename='css/base.css')}}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    </head>
+    <body>
+        <main>
 
-{% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
-{% endblock %}
+            <div id='imagewrapper'>
+                <img id='backgroundimage' src='{{ url_for("static", filename="resources/images/art/photography/previews/23-10-15_birds-on-a-wire_164242_PREVIEW.jpg") }}'>
+            </div>
+            <div id='content'>
+                <canvas id="canvas" style="width: 300px; height: 300px;"></canvas>
 
-{% block content %}
-<div id='homepageContent'>
-    <h2 style='margin-block-start: 0em'>
-        uh, this is your captain again.
-        <br>
-        you know, i've got a funny feeling i've seen this all before.
-    </h2>
-    <p >
-        Isobel Hemmings <i>has been reterritorialized.</i>
-    </p>
-    <p>
-        Izzy is interested in the ways that systems work, how they make themeselves illegible and their subjects legible, and how they can be improved and evaded.
-    </p>
-    <p>
-        She works in social housing policy, takes photos and makes darkroom and digital prints, draws, models, and codes in javascript & python. She lives in South London, and is a member of the <a href='https://london.permacomputing.net/posts/index.html'>London Permacomputing Club</a>. Since becoming trans, she has neglected her day job and CPD, and devoted her time to various analogue and digital bullshit. She's not sure why she's talking in the third person.
-    </p>
-    <h2>Projects and Research</h2>
-    <ul>
-        <li>Abulafia</li>
-        <li>Verisimillitude Bookcase</li>
-        <li>Council Cash</li>
-        <li>yumyum.gay</li>
-    </ul>
-    <h2>Art Pieces</h2>
-    <ul>
-        <li>$ ECHO 'YOU WILL ALWAYS BE MINE' </li>
-        <li>Just Because You're Paranoid Doesn't Mean They're Not Watching You</li>
-        <li>Isolation ⚧ Antebellum</li>
-    </ul>
-    <h2>Misc Art</h2>
-    <ul>
-        <li>Photography</li>
-        <li>Prints</li>
-        <li>Drawing</li>
-        <li>Writing</li>
-    </ul>
-    <p id='smalltext'>
-    I'm not actively looking for freelance work right now, but if you would like to hire me, I'm open for web design and writing projects, and life modelling gigs.
-    <br>
-    My email is in the header.
-    </p>
-</div>
-{% endblock %}
+
+                {% for win in windows %}
+
+                <div class='xpwindow window{{ win.classname }}' id='window{{ loop.index }}'>
+                    <div class='xpwindowheader window{{ win.classname }}header' id='window{{ loop.index }}header'>
+
+                        <div class='headercolumn1'>
+                            <img id='windowfolder' src='{{ url_for("static", filename="resources/homepage/" + win.icon) }}'>
+                            <div class='headerbartext'>~/{{ win.headertext }}</div>
+                        </div>
+
+                        <div class='headercolumn2'>
+                            <div class='headerbarbuttons'>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class='xpwindowcontent window{{ win.classname }}content'>
+
+                        {% include 'homepage/' + win.template %}
+
+                    </div>
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            <script>
+                const windowtemplates = {{ windows | tojson }}
+                console.log(windowtemplates)
+                const xpwindows = Array.from(document.getElementsByClassName('xpwindow'))
+                const titleBar = document.getElementById('headerbar1')
+                const canvas = document.getElementById("canvas");
+                const ctx = canvas.getContext("2d");
+
+                function focusWindow(e) {
+                    const element = e.currentTarget
+
+                    let largestZIndex = 2
+                    xpwindows.forEach(el => {
+
+                        if(Number(el.style.zIndex) > largestZIndex) {
+                            largestZIndex = Number(el.style.zIndex)
+                        }
+                    })
+
+                    element.style.zIndex = largestZIndex + 1
+                }
+
+                function dragElement(elmnt) {
+                    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+                    if (document.getElementById(elmnt.id + "header")) {
+                        // if present, the header is where you move the DIV from:
+                        document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+                    } else {
+                        // otherwise, move the DIV from anywhere inside the DIV:
+                        elmnt.onmousedown = dragMouseDown;
+                    }
+
+                    function dragMouseDown(e) {
+                        e = e || window.event;
+                        e.preventDefault();
+                        elmnt.style.opacity = 0.8
+                        // get the mouse cursor position at startup:
+                        pos3 = e.clientX;
+                        pos4 = e.clientY;
+                        document.onmouseup = closeDragElement;
+                        // call a function whenever the cursor moves:
+                        document.onmousemove = elementDrag;
+                    }
+
+                    function elementDrag(e) {
+                        e = e || window.event;
+                        e.preventDefault();
+
+                        // calculate the new cursor position:
+                        pos1 = pos3 - e.clientX;
+                        pos2 = pos4 - e.clientY;
+                        pos3 = e.clientX;
+                        pos4 = e.clientY;
+
+                        // set the element's new position. ignore if it's out of frame on the Y axis:
+                        if (e.clientY > 0) {elmnt.style.top = (elmnt.offsetTop - pos2) + "px";}
+                        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+
+                    }
+
+                    function closeDragElement() {
+                        // stop moving when mouse button is released:
+                        document.onmouseup = null;
+                        document.onmousemove = null;
+                        elmnt.style.opacity = 1
+                    }
+                }
+
+                xpwindows.forEach(element => {
+                    dragElement(element)
+                    element.addEventListener('mousedown', focusWindow)
+
+                    function randomisePosition() {
+
+                        function getRandomInt(max) {
+                            return Math.floor(Math.random() * max);
+                        }
+
+                        element.style.right = getRandomInt(window.innerWidth) + 'px'
+                        element.style.bottom = getRandomInt(window.innerHeight) + 'px'
+
+                        const position = element.getBoundingClientRect()
+                        if (position.top < 1 | position.left < 1 | position.right < 1 | position.bottom < 1)
+                            {console.log(element, 'rerolling'); randomisePosition()}
+                    }
+
+                    randomisePosition()
+                })
+
+
+                // Start a new Path
+                ctx.beginPath();
+                ctx.moveTo(20, 0);
+                ctx.lineTo(20, 150);
+
+                // Draw the Path
+                ctx.stroke();
+
+            </script>
+            </div>
+        </main>
+    </body>
+</html>

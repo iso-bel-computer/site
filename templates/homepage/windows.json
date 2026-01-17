@@ -1,0 +1,32 @@
+[
+    {
+        "icon": "folder.png",
+        "headertext": "announcement",
+        "template": "announcement.html",
+        "classname": "announcement"
+    },
+    {
+        "icon": "doc.png",
+        "headertext": "coolpeopleandsites.txt",
+        "template": "people.html",
+        "classname": "people"
+    },
+    {
+        "icon": "doc.png",
+        "headertext": "about.txt",
+        "template": "about.html",
+        "classname": "about"
+    },
+    {
+        "icon": "folder.png",
+        "headertext": "projects",
+        "template": "projects.html",
+        "classname": "projects"
+    },
+    {
+        "icon": "terminal.png",
+        "headertext": "go.sh",
+        "template": "navigate.html",
+        "classname": "terminal"
+    }
+]
