@@ -1,0 +1,21 @@
+<div id='randomQuote'>
+</div>
+
+<script>
+function randomQuote() {
+    fetch('{{ url_for("static", filename="resources/homepage/randomquotes.txt") }}')
+        .then(response => response.text())
+        .then(data => {
+            const quotes = data.trim().split('\n');
+            const quote = quotes[Math.floor(Math.random() * quotes.length)];
+            document.getElementById('randomQuote').innerHTML = quote;
+        })
+        .catch(err => {
+            console.error(err);
+            document.getElementById('randomQuote').innerHTML =
+                "Sites borked. Did you know that the word 'borked' comes from failed Supreme Court justice Robert Bork?";
+        });
+}
+
+document.addEventListener('DOMContentLoaded', randomQuote);
+</script>

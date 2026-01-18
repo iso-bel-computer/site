@@ -40,8 +40,10 @@ def getHomepageWindows():
     with open(windowsconfig) as f:
         windows.extend(json.load(f))
 
-    print(windows)
+    random.shuffle(windows)
+
     return windows
+
 
 
 

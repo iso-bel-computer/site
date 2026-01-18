@@ -14,8 +14,7 @@
                 <img id='backgroundimage' src='{{ url_for("static", filename="resources/images/art/photography/previews/23-10-15_birds-on-a-wire_164242_PREVIEW.jpg") }}'>
             </div>
             <div id='content'>
-                <canvas id="canvas" style="width: 300px; height: 300px;"></canvas>
-
+                <canvas id="canvas" style="width: 100vw; height: 100vh;"></canvas>
 
                 {% for win in windows %}
 
@@ -116,6 +115,7 @@
                     dragElement(element)
                     element.addEventListener('mousedown', focusWindow)
 
+                    let retryAttempts = 0
                     function randomisePosition() {
 
                         function getRandomInt(max) {
@@ -126,21 +126,78 @@
                         element.style.bottom = getRandomInt(window.innerHeight) + 'px'
 
                         const position = element.getBoundingClientRect()
-                        if (position.top < 1 | position.left < 1 | position.right < 1 | position.bottom < 1)
-                            {console.log(element, 'rerolling'); randomisePosition()}
+                        if (position.top < 1 | position.left < 1 | position.right < 1 | position.bottom < 1){
+                            retryAttempts = retryAttempts + 1
+                            /// this just stops it from freaking out whenever the view has
+                            /// got too small
+                            if (retryAttempts < 5) {
+                                randomisePosition()
+                            }
+                        }
                     }
 
                     randomisePosition()
                 })
 
+                /// cursor targeting logic
+                function resizeCanvas() {
+                    const dpr = window.devicePixelRatio || 1;
+                    const rect = canvas.getBoundingClientRect();
 
-                // Start a new Path
-                ctx.beginPath();
-                ctx.moveTo(20, 0);
-                ctx.lineTo(20, 150);
+                    canvas.width = rect.width * dpr;
+                    canvas.height = rect.height * dpr;
 
-                // Draw the Path
-                ctx.stroke();
+                    ctx.scale(dpr, dpr);
+                }
+
+                resizeCanvas();
+                window.addEventListener("resize", resizeCanvas);
+
+
+                document.addEventListener("mousemove", handleMouseMove);
+                function handleMouseMove(event) {
+                    console.log(window, event)
+                    const rect = canvas.getBoundingClientRect();
+                    const x = event.clientX - rect.left;
+                    const y = event.clientY - rect.top;
+                    const coordsdiv = document.getElementById('mousecoords')
+
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.strokeStyle = "rgba(0, 0, 0, 0.2)";
+
+                    const circleSize = 10
+
+                    // Vertical line
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    ctx.lineTo(x, y - circleSize);
+                    ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.moveTo(x, y + circleSize);
+                    ctx.lineTo(x, canvas.height);
+                    ctx.stroke();
+
+                    // Horizontal line
+                    ctx.beginPath();
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(x - circleSize, y);
+                    ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.moveTo(x + circleSize, y);
+                    ctx.lineTo(canvas.width, y);
+                    ctx.stroke();
+
+                    ctx.strokeStyle = "rgba(0, 0, 0, 0.2)";
+                    // circle
+                    ctx.beginPath();
+                    ctx.arc(x, y, circleSize + 1, 0, 2 * Math.PI);
+                    ctx.stroke();
+
+
+                    coordsdiv.innerHTML = x + ', ' + y
+                }
 
             </script>
             </div>

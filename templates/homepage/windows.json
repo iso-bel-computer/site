@@ -1,11 +1,5 @@
 [
     {
-        "icon": "folder.png",
-        "headertext": "announcement",
-        "template": "announcement.html",
-        "classname": "announcement"
-    },
-    {
         "icon": "doc.png",
         "headertext": "coolpeopleandsites.txt",
         "template": "people.html",
@@ -18,6 +12,24 @@
         "classname": "about"
     },
     {
+        "icon": "quote.png",
+        "headertext": "quote.txt",
+        "template": "quote.html",
+        "classname": "quote"
+    },
+    {
+        "icon": "internet.png",
+        "headertext": "guestbook.html",
+        "template": "guestbook.html",
+        "classname": "guestbook"
+    },
+    {
+        "icon": "mouse.png",
+        "headertext": "mouse.js",
+        "template": "mouse.html",
+        "classname": "mouse"
+    },
+    {
         "icon": "folder.png",
         "headertext": "projects",
         "template": "projects.html",
@@ -28,5 +40,11 @@
         "headertext": "go.sh",
         "template": "navigate.html",
         "classname": "terminal"
+    },
+    {
+        "icon": "alert.png",
+        "headertext": "announcement",
+        "template": "announcement.html",
+        "classname": "announcement"
     }
 ]

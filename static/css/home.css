@@ -6,7 +6,8 @@
 
 
 main {
-    display: flex
+    height: 100vh;
+    overflow: hidden;
 }
 
 body {
@@ -45,7 +46,6 @@ ul {
 
 #backgroundimage {
 
-    filter: blur(3px);
     width: 100vw;
     z-index: 1
 
@@ -129,4 +129,29 @@ ul {
         .windowaboutcontent {
             width: 250px;
             height: 200px;
+        }
+
+        .windowguestbookcontent {
+            padding: 0px;
+        }
+
+        .windowannouncementcontent {
+            width: 381px;
+        }
+
+        .windowquotecontent {
+            width: 200px;
+            height: fit-content;
+            min-height: none;
+        }
+
+        .windowquotecontent a {
+            color: black;
+            text-decoration: none;
+            font-style: italic;
+        }
+
+        .windowmousecontent {
+            min-width: fit-content !important;
+            min-height: fit-content !important
         }
