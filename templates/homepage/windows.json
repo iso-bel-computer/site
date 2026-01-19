@@ -42,6 +42,36 @@
         "classname": "terminal"
     },
     {
+        "icon": "webrings.png",
+        "headertext": "webrings.html",
+        "template": "webrings.html",
+        "classname": "webrings"
+    },
+    {
+        "icon": "ram.png",
+        "headertext": "underground.js",
+        "template": "traingame.html",
+        "classname": "traingame"
+    },
+    {
+        "icon": "folder.png",
+        "headertext": "art",
+        "template": "art.html",
+        "classname": "artfolder"
+    },
+    {
+        "icon": "folder.png",
+        "headertext": "art_pieces",
+        "template": "artpieces.html",
+        "classname": "artpieces"
+    },
+    {
+        "icon": "ram.png",
+        "headertext": "isopod.png",
+        "template": "isopod.html",
+        "classname": "isopod"
+    },
+    {
         "icon": "alert.png",
         "headertext": "announcement",
         "template": "announcement.html",

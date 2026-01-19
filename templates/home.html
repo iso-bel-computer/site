@@ -44,8 +44,11 @@
             </div>
 
             <script>
+                const STATE = {
+                    insideWindow: false,
+                    hoverWindow: null
+                }
                 const windowtemplates = {{ windows | tojson }}
-                console.log(windowtemplates)
                 const xpwindows = Array.from(document.getElementsByClassName('xpwindow'))
                 const titleBar = document.getElementById('headerbar1')
                 const canvas = document.getElementById("canvas");
@@ -78,7 +81,7 @@
                     function dragMouseDown(e) {
                         e = e || window.event;
                         e.preventDefault();
-                        elmnt.style.opacity = 0.8
+                        elmnt.style.opacity = 0.9
                         // get the mouse cursor position at startup:
                         pos3 = e.clientX;
                         pos4 = e.clientY;
@@ -90,7 +93,6 @@
                     function elementDrag(e) {
                         e = e || window.event;
                         e.preventDefault();
-
                         // calculate the new cursor position:
                         pos1 = pos3 - e.clientX;
                         pos2 = pos4 - e.clientY;
@@ -98,8 +100,13 @@
                         pos4 = e.clientY;
 
                         // set the element's new position. ignore if it's out of frame on the Y axis:
-                        if (e.clientY > 0) {elmnt.style.top = (elmnt.offsetTop - pos2) + "px";}
-                        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+                        if (e.clientY > 0 && e.clientY < window.innerHeight) {
+                            elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+                        }
+
+                        if (e.clientX > 10 && e.clientX < (window.innerWidth - 10)) {
+                            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+                        }
 
                     }
 
@@ -108,25 +115,35 @@
                         document.onmouseup = null;
                         document.onmousemove = null;
                         elmnt.style.opacity = 1
+                        handleMouseMove()
                     }
                 }
+
+                function getRandomInt(max) {
+                    return Math.floor(Math.random() * max);
+                }
+
 
                 xpwindows.forEach(element => {
                     dragElement(element)
                     element.addEventListener('mousedown', focusWindow)
+                    element.addEventListener('mouseenter', () => {
+                        STATE.insideWindow = true
+                        STATE.hoverWindow = element
+                    })
+                    element.addEventListener('mouseleave', () => {
+                        STATE.insideWindow = false
+                        STATE.hoverWindow = null
+                    })
 
                     let retryAttempts = 0
                     function randomisePosition() {
-
-                        function getRandomInt(max) {
-                            return Math.floor(Math.random() * max);
-                        }
-
-                        element.style.right = getRandomInt(window.innerWidth) + 'px'
-                        element.style.bottom = getRandomInt(window.innerHeight) + 'px'
+                        element.style.left = getRandomInt(window.innerWidth) + 'px'
+                        element.style.top = getRandomInt(window.innerHeight) + 'px'
 
                         const position = element.getBoundingClientRect()
-                        if (position.top < 1 | position.left < 1 | position.right < 1 | position.bottom < 1){
+                        console.log(element, position)
+                        if (position.top < 1 || position.left < 1 || position.right > window.innerWidth || position.bottom > window.innerHeight) {
                             retryAttempts = retryAttempts + 1
                             /// this just stops it from freaking out whenever the view has
                             /// got too small
@@ -154,50 +171,140 @@
                 window.addEventListener("resize", resizeCanvas);
 
 
+
                 document.addEventListener("mousemove", handleMouseMove);
                 function handleMouseMove(event) {
-                    console.log(window, event)
+
                     const rect = canvas.getBoundingClientRect();
                     const x = event.clientX - rect.left;
                     const y = event.clientY - rect.top;
                     const coordsdiv = document.getElementById('mousecoords')
 
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    ctx.strokeStyle = "rgba(0, 0, 0, 0.2)";
+                    if (!STATE.insideWindow) {
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        ctx.strokeStyle = "rgba(0, 0, 0, 0.5)";
 
-                    const circleSize = 10
+                        const circleSize = 30
 
-                    // Vertical line
-                    ctx.beginPath();
-                    ctx.moveTo(x, 0);
-                    ctx.lineTo(x, y - circleSize);
-                    ctx.stroke();
+                        // Vertical line
+                        ctx.beginPath();
+                        ctx.moveTo(x, 0);
+                        ctx.lineTo(x, y - circleSize);
+                        ctx.stroke();
 
-                    ctx.beginPath();
-                    ctx.moveTo(x, y + circleSize);
-                    ctx.lineTo(x, canvas.height);
-                    ctx.stroke();
+                        ctx.beginPath();
+                        ctx.moveTo(x, y + circleSize);
+                        ctx.lineTo(x, canvas.height);
+                        ctx.stroke();
 
-                    // Horizontal line
-                    ctx.beginPath();
-                    ctx.moveTo(0, y);
-                    ctx.lineTo(x - circleSize, y);
-                    ctx.stroke();
+                        // Horizontal line
+                        ctx.beginPath();
+                        ctx.moveTo(0, y);
+                        ctx.lineTo(x - circleSize, y);
+                        ctx.stroke();
 
-                    ctx.beginPath();
-                    ctx.moveTo(x + circleSize, y);
-                    ctx.lineTo(canvas.width, y);
-                    ctx.stroke();
+                        ctx.beginPath();
+                        ctx.moveTo(x + circleSize, y);
+                        ctx.lineTo(canvas.width, y);
+                        ctx.stroke();
 
-                    ctx.strokeStyle = "rgba(0, 0, 0, 0.2)";
-                    // circle
-                    ctx.beginPath();
-                    ctx.arc(x, y, circleSize + 1, 0, 2 * Math.PI);
-                    ctx.stroke();
+                        // circle
+                        ctx.beginPath();
+                        ctx.arc(x, y, circleSize + 5, 0, 2 * Math.PI);
+                        ctx.stroke();
 
+                        ctx.beginPath();
+                        ctx.arc(x, y, circleSize, 0, 2 * Math.PI);
+                        ctx.stroke();
+
+                        let shortestLine = Infinity
+                        let closestWindow = null
+                        let targetX = null
+                        let targetY = null
+                        let transparency = null
+
+                        xpwindows.forEach(wind => {
+                            const coords = wind.getBoundingClientRect()
+                            let destinationX = (coords.right - (coords.width / 2))
+                            let destinationY = (coords.bottom - (coords.height / 2))
+
+                            // Calculate the length of the line
+                            const dx = destinationX - x;
+                            const dy = destinationY - y;
+                            const lineLength = Math.sqrt(dx * dx + dy * dy);
+
+                            // Normalize line length: 0px -> 1, 1000px -> 0
+                            let normalized = 1 - lineLength / (window.innerHeight);
+                            normalized = Math.max(0, normalized); // clamp at 0
+
+
+                            if (lineLength < shortestLine) {
+                                closestWindow = wind;
+                                targetX = destinationX;
+                                targetY = destinationY;
+
+                                transparency = normalized
+                                shortestLine = lineLength
+                            }
+                        })
+
+                        transparency = transparency * 0.5
+                        ctx.strokeStyle = `rgba(0, 0, 0, ${transparency})`;
+
+
+                        ctx.beginPath();
+                        ctx.moveTo(x, y - circleSize - 5); // top point
+                        ctx.lineTo(targetX, targetY - 20);
+                        ctx.stroke();
+
+
+                        ctx.beginPath();
+                        ctx.moveTo(x, y + circleSize + 5); // bottom point
+                        ctx.lineTo(targetX, targetY + 20);
+                        ctx.stroke();
+
+                        ctx.beginPath();
+                        ctx.moveTo(x + circleSize + 5, y); // right point
+                        ctx.lineTo(targetX + 20, targetY);
+                        ctx.stroke();
+
+                        ctx.beginPath();
+                        ctx.moveTo(x - circleSize - 5, y); // left point
+                        ctx.lineTo(targetX - 20, targetY);
+                        ctx.stroke();
+                    }
+
+                    else {
+
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                        xpwindows.forEach(wind => {
+                            const coords = wind.getBoundingClientRect()
+                            destinationX = (coords.right - (coords.width / 2))
+                            destinationY = (coords.bottom - (coords.height / 2))
+
+                            // Calculate the length of the line
+                            const dx = destinationX - x;
+                            const dy = destinationY - y;
+                            const lineLength = Math.sqrt(dx * dx + dy * dy);
+
+                            // Normalize line length: 0px -> 1, 1000px -> 0
+                            let normalized = 1 - lineLength / (window.innerWidth * 0.5);
+                            normalized = Math.max(0, normalized); // clamp at 0
+
+                            const transparency = normalized
+                            ctx.strokeStyle = `rgba(255, 249, 237, ${transparency})`;
+                            ctx.beginPath();
+                            ctx.moveTo(x, y);
+                            ctx.lineTo(destinationX, destinationY);
+                            ctx.stroke();
+
+                        })
+                    }
 
                     coordsdiv.innerHTML = x + ', ' + y
                 }
+
 
             </script>
             </div>
