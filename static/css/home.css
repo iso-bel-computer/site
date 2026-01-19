@@ -166,11 +166,8 @@ a {
             z-index: 0
         }
 
-        .windowisopodheader {
-            width: 80px
-        }
         .windowisopodcontent {
-            width: 80px;
+            width: 50px;
             height: auto;
             resize: horizontal;
             min-width: fit-content !important;
