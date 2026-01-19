@@ -72,6 +72,12 @@
         "classname": "bookcase"
     },
     {
+        "icon": "book.png",
+        "headertext": "review.txt",
+        "template": "bookreview.html",
+        "classname": "bookreview"
+    },
+    {
         "icon": "ram.png",
         "headertext": "isopod.png",
         "template": "isopod.html",

@@ -175,11 +175,22 @@ a {
         }
 
         .windowbookcasecontent {
-            width: 100px;
+            width: 250px;
             padding: 2px;
-            height: 250px;
-            resize: none;
+            height: 350px;
             border: none;
+            min-width: 100px;
+        }
+
+        .windowbookreview {
+            z-index: 2;
+            display: none;
+        }
+
+        .windowbookreviewcontent {
+            width: 250px;
+            height: 200px;
+            padding: 6px;
         }
 
         /* FOLDERS */

@@ -9,6 +9,7 @@
 #imageWrapper {
     background: url('{{ url_for("static", filename="resources/images/core/galleryBG.png") }}');
     background-position: center;
+    max-height: none !important;
 }
 
 .bookSpine {
@@ -32,7 +33,7 @@
 #bookshelfWrapper {
     background: linear-gradient( #00000030, #00000099),
         url('{{ url_for("static", filename="resources/images/about/bookshelfBackground.png") }}'), #302b2490;
-
+    padding-top: 0px !important;
  }
 
 .shelf {background:
@@ -46,8 +47,13 @@
     margin: 0px !important;
     height: calc(100% - 8px) !important;
     width: calc(100% - 8px) !important;
+    max-height: none !important;
  }
 
+#bookshelfOuterWrapper {
+
+    max-height: none !important;
+ }
 
 </style>
         <div id="bookshelfBrightnessFilter">
@@ -63,9 +69,7 @@
                         data-pages='{{ book["pages"] }}'
                         data-fonttype='{{ book["fontStyle"] }}'>
                             <span class="bookTitle">
-                            <a href='http://1sobel.pythonanywhere.com/about/reading'>
                                 {{ book['title'] }}
-                            </a>
                             </span>
                             <span class="bookAuthor">{{ book['author'] }}</span>
                         </div>
@@ -214,11 +218,88 @@ const bookData = [
 ];
 const bookshelfWrapper = document.getElementById('bookshelfWrapper')
 
+
+function loadBook(bookDataObj) {
+
+    const bookAuthor = document.getElementById('bookAuthor')
+    const bookTitle = document.getElementById('bookTitle')
+    const readDateDiv = document.getElementById('readDate')
+
+    const zLibEl = document.getElementById('zlibLink')
+    const worldCatEl = document.getElementById('worldCatLink')
+
+    const review = document.getElementById('review')
+
+    bookTitle.innerText = bookDataObj['title']
+    bookAuthor.innerText = bookDataObj['author']
+
+    // faffy date processing
+    let readDate = bookDataObj['readDate']
+    const split = readDate.split('/')
+    split[2] = Number(split[2])
+    split[1] = Number(split[1])
+    split[0] = Number(split[0])
+
+    let date_appendage = 'th'
+    if (split[2] === 1 || split[2] === 21 || split[2] === 31) {date_appendage = 'st'}
+    if (split[2] === 2 || split[2] === 22)                    {date_appendage = 'nd'}
+    if (split[2] === 3 || split[2] === 23)                    {date_appendage = 'rd'}
+
+
+    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    imgDateMonth = months[split[1] - 1]
+    const imgDateStr = String(split[2]) +  date_appendage + ' ' + imgDateMonth + ' ' + String(split[0])
+    readDateStr = 'Completed ' + imgDateStr
+
+    readDateDiv.innerText = readDateStr
+
+    query = bookDataObj['title'] + ' ' + bookDataObj['author'].replace('?','') // search title and author together. different sites handle spaces different so we hold off for now.
+
+    zLibLink = 'https://z-lib.fm/s/' + query.replace(' ','%20')
+    worldCatLink = 'https://search.worldcat.org/search?q=' + query.replace(' ','+')
+
+    zLibEl.href = zLibLink
+    zLibEl.innerText = '🏴'
+    worldCatEl.href = worldCatLink
+    worldCatEl.innerHTML = '🌍&nbsp&nbsp-&nbsp'
+
+    if (!bookDataObj['review']) {
+        review.innerHTML = 'no review found...'
+    } else {
+        review.innerHTML = bookDataObj['review']
+    }
+ }
+
 function init() {
 
     books.forEach(book => {
         randomiseBook(book)
         setScalableBookAttributes(book)
+
+
+
+        book.addEventListener('pointerdown', e => {
+            const index = book.dataset.index
+            bookDataObj = bookData[index]
+            loadBook(bookDataObj)
+        })
+
+        book.addEventListener('click', e => {
+            const index = book.dataset.index
+            bookDataObj = bookData[index]
+
+            const bookWindow = document.getElementsByClassName('windowbookcase')[0]
+            const reviewWindow = document.getElementsByClassName('windowbookreview')[0]
+            const coords = bookWindow.getBoundingClientRect()
+
+            console.log(reviewWindow.style.display)
+            if (reviewWindow.style.display === 'none' || !reviewWindow.style.display) {
+                reviewWindow.style.display = 'block'
+                reviewWindow.style.top = `${coords.top}px`
+                reviewWindow.style.left = `${coords.right + 10}px`
+            }
+            loadBook(bookDataObj)
+        })
 
     });
 
@@ -239,5 +320,13 @@ init()
 
 // Re-add shelves on window resize
 window.addEventListener('resize', addShelves);
+
+const bookWindow = document.getElementsByClassName('windowbookcase')[0]
+function bookshelfWindowSize() {
+    addShelves()
+}
+bookshelfWindowSize()
+new ResizeObserver(bookshelfWindowSize).observe(bookWindow)
+
 document.getElementById('bookshelfWrapper').addEventListener('mouseenter', addShelves)
 </script>
