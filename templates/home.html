@@ -223,10 +223,10 @@
                     ctx.stroke();
                 }
 
-                function drawDashedLine(startX, startY, endX, endY) {
+                function drawDashedLine(startX, startY, endX, endY, stroke, gap) {
 
                     ctx.beginPath();
-                    ctx.setLineDash([1, 2]);
+                    ctx.setLineDash([stroke, gap]);
                     ctx.moveTo(startX, startY);
                     ctx.lineTo(endX, endY);
                     ctx.stroke();
@@ -281,7 +281,7 @@
                                 const lineLength = Math.sqrt(dx * dx + dy * dy);
 
                                 // Normalize line length: 0px -> 1, 1000px -> 0
-                                let normalized = 1 - lineLength / (window.innerHeight);
+                                let normalized = 1 - lineLength / 1000;
                                 normalized = Math.max(0, normalized); // clamp at 0
 
 
@@ -303,15 +303,30 @@
                             checkCoords(coords.right, coords.bottom)
                         })
 
-                        transparency = transparency * 0.5
-                        ctx.strokeStyle = `rgba(0, 0, 0, ${transparency})`;
+                        t1 = transparency * 0.5
+                        ctx.strokeStyle = `rgba(0, 0, 0, ${t1})`;
 
                         const offset = 12
 
-                        drawDashedLine(x, y - circleSize, targetX, targetY - offset) // top
-                        drawDashedLine(x, y + circleSize, targetX, targetY + offset) // bottom
-                        drawDashedLine(x - circleSize, y, targetX - offset, targetY) // left
-                        drawDashedLine(x + circleSize, y, targetX + offset, targetY) // right
+                        drawDashedLine(x, y - circleSize, targetX, targetY - offset, 1, 2) // top
+                        drawDashedLine(x, y + circleSize, targetX, targetY + offset, 1, 2) // bottom
+                        drawDashedLine(x - circleSize, y, targetX - offset, targetY, 1, 2) // left
+                        drawDashedLine(x + circleSize, y, targetX + offset, targetY, 1, 2) // right
+
+                        t2 = transparency * 0.5
+                        ctx.strokeStyle = `rgba(0, 0, 0, ${t1})`;
+
+
+                        drawDashedLine(x, y - circleSize, targetX, targetY - offset, 15, 20) // top
+                        drawDashedLine(x, y + circleSize, targetX, targetY + offset, 15, 20) // bottom
+                        drawDashedLine(x - circleSize, y, targetX - offset, targetY, 15, 20) // left
+                        drawDashedLine(x + circleSize, y, targetX + offset, targetY, 15, 20) // right
+
+
+                        ctx.font = "8px serif";
+                        ctx.fillText(shortestLine.toFixed(3), x + 3, largerCircle + y + 8);
+                        ctx.fillText(x, x + 3, largerCircle + y + 16);
+                        ctx.fillText(y, x + 3, largerCircle + y + 24);
 
                     }
 
