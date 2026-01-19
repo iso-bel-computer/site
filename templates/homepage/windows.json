@@ -66,6 +66,12 @@
         "classname": "artpieces"
     },
     {
+        "icon": "book.png",
+        "headertext": "bookcase.js",
+        "template": "bookcase.html",
+        "classname": "bookcase"
+    },
+    {
         "icon": "ram.png",
         "headertext": "isopod.png",
         "template": "isopod.html",

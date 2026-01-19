@@ -1,0 +1,243 @@
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reading.css') }}">
+
+
+<!-- THIS IS A HORRIBLE IMPLEMENTATION!!!! I REALLY SHOULD HAVE A DROP IN SYSTEM I CAN USE WHEREVER!!! IF I UPDATE THE MAIN PAGE THIS WILL NOT UPDATE!! -->
+<!-- ABANDON HOPE ALL YE WHO ENTER!!!!! -->
+<style>
+
+#imageWrapper {
+    background: url('{{ url_for("static", filename="resources/images/core/galleryBG.png") }}');
+    background-position: center;
+}
+
+.bookSpine {
+    background: linear-gradient(#00000010, #00000060),
+        url('{{ url_for("static", filename="resources/images/about/distressedPaperTexture.png") }}');
+    background-position: center;
+}
+.bookSpine a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.bookTitle {
+    cursor: pointer
+ }
+.bookSpine:hover {
+    background: linear-gradient(#00000010, #00000035),
+        url('{{ url_for("static", filename="resources/images/about/distressedPaperTexture.png") }}');
+    background-position: center;
+}
+#bookshelfWrapper {
+    background: linear-gradient( #00000030, #00000099),
+        url('{{ url_for("static", filename="resources/images/about/bookshelfBackground.png") }}'), #302b2490;
+
+ }
+
+.shelf {background:
+        url('{{ url_for("static", filename="resources/images/about/shelfTexture.png") }}'),
+             linear-gradient(#302b24, #24201b);
+ }
+
+
+
+#bookshelfBrightnessFilter {
+    margin: 0px !important;
+    height: calc(100% - 8px) !important;
+    width: calc(100% - 8px) !important;
+ }
+
+
+</style>
+        <div id="bookshelfBrightnessFilter">
+            <div id="bookshelfOuterWrapper">
+                <div id="bookshelfWrapper">
+                    {% for book in books %}
+                        <div class='bookSpine' id="{{ book['title']|replace(' ','') }}" style='
+                        background-color: {{ book["mainColor"] }};
+                        color: {{ book["accentColor"] }} !important;
+                        padding-left: {{ book["pages"] / 45 }}px;
+                        padding-right: {{ book["pages"] / 45 }}px'
+                        data-index='{{ loop.index0 }}'
+                        data-pages='{{ book["pages"] }}'
+                        data-fonttype='{{ book["fontStyle"] }}'>
+                            <span class="bookTitle">
+                            <a href='http://1sobel.pythonanywhere.com/about/reading'>
+                                {{ book['title'] }}
+                            </a>
+                            </span>
+                            <span class="bookAuthor">{{ book['author'] }}</span>
+                        </div>
+                    {% endfor %}
+                    <p id="mapquote">the map is not the territory...</p>
+                </div>
+            </div>
+        </div>
+<script>
+function randomiseBook(book) {
+
+    /// this used to randomise clientside. but now randomising serverside improves performance
+    /// and lets us use random.seed() to get consistent results.
+    /// if we want to release this as a static html generator we should bake this into the
+    /// goodreads scraper script instead.
+
+    const title = book.querySelector('.bookTitle')
+    const author = book.querySelector('.bookAuthor')
+    const r = bookData[book.dataset.index].randomNumbers
+
+    book.style.zIndex          =  r.zIndex
+    book.style.border          =  r.border
+    book.style.marginRight     =  r.marginRight
+    book.style.borderRadius    =  r.borderRadius
+    book.style.alignItems      =  r.alignItems
+    book.style.filter          =  r.brightness
+     title.style.paddingTop     =  r.paddingTop
+    author.style.paddingBottom =  r.paddingBottom
+
+    book.style.setProperty('--book-translateX', r.translateX)
+    book.style.setProperty('--book-rotate', r.rotation)
+    book.style.setProperty('--book-rotate-y', r.rotationY)
+    book.style.setProperty('--book-brightness', r.brightnessINT)
+    let fontType = 'Imperator, serif'
+    if (book.dataset.fonttype == 'ss') {fontType = 'Gill Sans, sans-seri'}
+    book.style.fontFamily = fontType
+
+
+}
+
+
+function setScalableBookAttributes(book) {
+    const title = book.querySelector('.bookTitle')
+    const author = book.querySelector('.bookAuthor')
+    const r = bookData[book.dataset.index].randomNumbers
+
+    const minTitleSize = 9
+    const bookSizeModifier = 0.30
+    const maxTitleSize = 40 * bookSizeModifier
+
+    const minFontWeight = 300
+    const maxFontWeight = 600
+
+    const maxBookRaise = 35
+    const minBookRaise = 5
+    pages = book.dataset.pages
+
+    // setting title and author size
+
+    titleSize = Math.round((pages / r.titleSizeINT * 0.2)  * bookSizeModifier)
+    if (titleSize < minTitleSize) {titleSize = minTitleSize}
+    if (pages < 90) {titleSize = 8}
+    if (titleSize > maxTitleSize || pages > 400) {titleSize = maxTitleSize}
+    if (pages < 150 || pages > 400) { book.style.alignItems = 'center'} // this is a safety against clipping text
+
+    title.style.fontSize = `${titleSize}px`
+
+    authorSize = (titleSize - r.authorSizeINT) * bookSizeModifier
+    if (authorSize < 7) {authorSize = 7}
+    author.style.fontSize = `${authorSize}px`
+
+    // setting font weight
+
+    fontWeight = r.fontWeightINT * (pages / 3)
+    if (fontWeight < minFontWeight) {fontWeight = minFontWeight }
+    if (fontWeight > maxFontWeight) {fontWeight = maxFontWeight }
+    fontWeight = Number(fontWeight)
+    book.style.fontWeight = fontWeight
+    // setting height
+
+    const bookPxWidth = (pages / 8) * bookSizeModifier
+    const bookPxHeight = r.heightINT * bookSizeModifier
+
+    book.style.height = `${bookPxHeight}px`
+    book.style.width = `${bookPxWidth}px`
+
+     // setting raise amount
+    let raiseAmount = ((r.raiseAmountINT / pages) * 600)
+    if (raiseAmount > maxBookRaise) {raiseAmount = maxBookRaise;}
+    if (raiseAmount < minBookRaise) {raiseAmount = minBookRaise;}
+    book.style.setProperty('--book-raise', `-${raiseAmount}px`);
+
+    book.style.boxShadow = `0 ${pages/10}px ${pages/8}px rgba(0,0,0,0.6)`;
+
+ }
+
+function finalizeTitles() {
+    books.forEach(book => {
+        if (book.offsetWidth > book.scrollWidth) {
+            book.style.fontSize =
+                ((parseFloat(getComputedStyle(book).fontSize)) - 20) + 'px';
+        }
+    });
+}
+
+function addShelves() {
+     console.log('addshelves called')
+    const wrapper = document.getElementById('bookshelfWrapper');
+    const books = Array.from(document.querySelectorAll('.bookSpine'));
+    // Remove existing shelves first
+    document.querySelectorAll('.shelf').forEach(shelf => shelf.remove());
+
+    if (books.length === 0) return;
+
+    let currentBottom = books[0].getBoundingClientRect().bottom
+
+    books.forEach((book, index) => {
+        const bookBottom = book.getBoundingClientRect().bottom;
+        // If book wrapped to a new line -  30 is arbitrary to avoid extra with rotation etc
+        if (bookBottom > currentBottom + 30) {
+            // Insert shelf before this book
+            const shelf = document.createElement('div');
+            shelf.className = 'shelf';
+            book.parentNode.insertBefore(shelf, book);
+
+            const newBottom = book.getBoundingClientRect().bottom;
+            currentBottom = newBottom;
+        }
+    });
+
+    // Add final shelf at the end
+    const finalShelf = document.createElement('div');
+    finalShelf.className = 'shelf';
+    const mapQuote = document.getElementById('mapquote')
+    mapQuote.parentNode.insertBefore(finalShelf, mapQuote)
+
+}
+
+
+const books = document.querySelectorAll('.bookSpine')
+
+const bookData = [
+    {% for book in books %}
+    {{ book|tojson|safe }}{% if not loop.last %},{% endif %}
+    {% endfor %}
+];
+const bookshelfWrapper = document.getElementById('bookshelfWrapper')
+
+function init() {
+
+    books.forEach(book => {
+        randomiseBook(book)
+        setScalableBookAttributes(book)
+
+    });
+
+    requestAnimationFrame(() => {
+        addShelves();
+        finalizeTitles();
+        setTimeout(addShelves, 500)
+    });
+
+    const bookshelfBrightnessFilter = document.getElementById('bookshelfBrightnessFilter')
+    bookshelfBrightnessFilter.addEventListener('mouseenter', e => {
+        bookshelfBrightnessFilter.style.filter = 'brightness(1.03)' // once the user has interacted with the bookshelf, it doesnt dim again
+    })
+
+ }
+
+init()
+
+// Re-add shelves on window resize
+window.addEventListener('resize', addShelves);
+document.getElementById('bookshelfWrapper').addEventListener('mouseenter', addShelves)
+</script>

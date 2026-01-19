@@ -45,6 +45,10 @@ ul {
 
 }
 
+a {
+    text-decoration: none
+}
+
 #backgroundimage {
 
     width: 100vw;
@@ -75,7 +79,7 @@ ul {
         font-size: 9pt;
         position: absolute;
         z-index: 1;
-        box-shadow: 10px 10px 5px #00000050;
+        box-shadow: 5px 5px 5px #00000050;
     }
 
         .xpwindowheader {
@@ -163,10 +167,20 @@ ul {
         }
 
         .windowisopodcontent {
+            width: 80px;
+            height: auto;
+            resize: horizontal;
             min-width: fit-content !important;
-            min-height: fit-content !important
+            min-height: fit-content !important;
         }
 
+        .windowbookcasecontent {
+            width: 100px;
+            padding: 2px;
+            height: 250px;
+            resize: none;
+            border: none;
+        }
 
         /* FOLDERS */
 

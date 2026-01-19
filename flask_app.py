@@ -24,6 +24,61 @@ siteMap = [
 
 domain = 'https://1sobel.pythonanywhere.com'
 
+"""
+Reading Page
+
+"""
+
+with open('static/resources/data/reading.json', 'r') as f:
+    bookData = json.load(f)
+    for book in bookData:
+        random.seed(book['pages'] * 1)
+
+        #alingments = ['end', 'start', 'center']
+        alingments = ['center']
+        directions = ['', '-']
+        direction = directions[random.randint(0,1)]
+
+        randomNumbers = {
+
+            # these are NOT the final values. they're seeds for the stuff we dont have
+            # in the JSON but want to be consistent.
+            # i did it this way because JS doesn't have random.seed(). this stops books
+            # jumping all over the place when you reload etc.
+            # it does also impove performance slightly to do all the random generation once
+            # per server restart, rather on every page load. which i guess is nice.
+            # everything is a string bc why not do that conversion here as well, thats how css wants
+            # it at the end.
+
+            'zIndex':         random.randint(3,80),
+            'border':         str(random.randint(1,3)) + 'px outset #00000080',
+            'marginRight':    str(random.randint(0,2)) + 'px',
+            'borderRadius':   str(random.randint(0,4)) + 'px',
+            'alignItems':     str(alingments[random.randint(0,0)]),
+            'rotation':       direction + str(random.uniform(0,0.0021)) + 'turn',
+            'rotationY':      str(random.uniform(-15,15)) + 'deg',
+            'paddingTop':     str(random.randint(0,13)) + 'px',
+            'paddingBottom':  str(random.randint(0,10)) + 'px',
+            'translateX':     str(random.uniform(-2,2)) + 'px',
+            'titleSizeINT':   random.uniform(3,6),
+            'authorSizeINT':  random.randint(0,5),
+            'fontWeightINT':  random.uniform(0,9),
+            'heightINT':      random.randint(550,700),
+            'raiseAmountINT': random.uniform(3,4),
+            'brightness':     'brightness(' + str(random.uniform(0.9,1)) + ')',
+        }
+
+        book['randomNumbers'] = randomNumbers
+
+@app.route('/about/reading')
+def readingReccs():
+    return render_template('reading.html',
+                           siteMap = siteMap,
+                           headerRouteDisplay = '/about/reading',
+                           books = bookData)
+
+
+
 
 """
 Homepage & Redirect
@@ -51,7 +106,8 @@ def getHomepageWindows():
 def home():
     return render_template('home.html',
                             windows = getHomepageWindows(),
-                            sitemap = siteMap)
+                            sitemap = siteMap,
+                            books = bookData)
 
 @app.route('/go', methods=['POST']) # this is the redirect for the header navigation
 def go():
@@ -167,61 +223,6 @@ def art(category):
     )
 
 
-
-
-
-"""
-Reading Page
-
-"""
-
-with open('static/resources/data/reading.json', 'r') as f:
-    bookData = json.load(f)
-    for book in bookData:
-        random.seed(book['pages'] * 1)
-
-        #alingments = ['end', 'start', 'center']
-        alingments = ['center']
-        directions = ['', '-']
-        direction = directions[random.randint(0,1)]
-
-        randomNumbers = {
-
-            # these are NOT the final values. they're seeds for the stuff we dont have
-            # in the JSON but want to be consistent.
-            # i did it this way because JS doesn't have random.seed(). this stops books
-            # jumping all over the place when you reload etc.
-            # it does also impove performance slightly to do all the random generation once
-            # per server restart, rather on every page load. which i guess is nice.
-            # everything is a string bc why not do that conversion here as well, thats how css wants
-            # it at the end.
-
-            'zIndex':         random.randint(3,80),
-            'border':         str(random.randint(1,3)) + 'px outset #00000080',
-            'marginRight':    str(random.randint(0,2)) + 'px',
-            'borderRadius':   str(random.randint(0,4)) + 'px',
-            'alignItems':     str(alingments[random.randint(0,0)]),
-            'rotation':       direction + str(random.uniform(0,0.0021)) + 'turn',
-            'rotationY':      str(random.uniform(-15,15)) + 'deg',
-            'paddingTop':     str(random.randint(0,13)) + 'px',
-            'paddingBottom':  str(random.randint(0,10)) + 'px',
-            'translateX':     str(random.uniform(-2,2)) + 'px',
-            'titleSizeINT':   random.uniform(3,6),
-            'authorSizeINT':  random.randint(0,5),
-            'fontWeightINT':  random.uniform(0,9),
-            'heightINT':      random.randint(550,700),
-            'raiseAmountINT': random.uniform(3,4),
-            'brightness':     'brightness(' + str(random.uniform(0.9,1)) + ')',
-        }
-
-        book['randomNumbers'] = randomNumbers
-
-@app.route('/about/reading')
-def readingReccs():
-    return render_template('reading.html',
-                           siteMap = siteMap,
-                           headerRouteDisplay = '/about/reading',
-                           books = bookData)
 
 
 

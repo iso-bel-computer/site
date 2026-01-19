@@ -53,6 +53,13 @@
                 const titleBar = document.getElementById('headerbar1')
                 const canvas = document.getElementById("canvas");
                 const ctx = canvas.getContext("2d");
+                function getRandomInt(max) {
+                    return Math.floor(Math.random() * max);
+                }
+
+                ///
+                /// drag window logic
+                ///
 
                 function focusWindow(e) {
                     const element = e.currentTarget
@@ -119,44 +126,52 @@
                     }
                 }
 
-                function getRandomInt(max) {
-                    return Math.floor(Math.random() * max);
-                }
+                ////
+                //// distributing windows and adding event listeners on page load
+                ////
 
+                function init() {
 
-                xpwindows.forEach(element => {
-                    dragElement(element)
-                    element.addEventListener('mousedown', focusWindow)
-                    element.addEventListener('mouseenter', () => {
-                        STATE.insideWindow = true
-                        STATE.hoverWindow = element
-                    })
-                    element.addEventListener('mouseleave', () => {
-                        STATE.insideWindow = false
-                        STATE.hoverWindow = null
-                    })
+                    xpwindows.forEach(element => {
+                        dragElement(element)
+                        element.addEventListener('mousedown', focusWindow)
+                        element.addEventListener('mouseenter', () => {
+                            STATE.insideWindow = true
+                            STATE.hoverWindow = element
+                        })
+                        element.addEventListener('mouseleave', () => {
+                            STATE.insideWindow = false
+                            STATE.hoverWindow = null
+                        })
 
-                    let retryAttempts = 0
-                    function randomisePosition() {
-                        element.style.left = getRandomInt(window.innerWidth) + 'px'
-                        element.style.top = getRandomInt(window.innerHeight) + 'px'
+                        let retryAttempts = 0
+                        function randomisePosition() {
+                            element.style.left = getRandomInt(window.innerWidth) + 'px'
+                            element.style.top = getRandomInt(window.innerHeight) + 'px'
 
-                        const position = element.getBoundingClientRect()
-                        console.log(element, position)
-                        if (position.top < 1 || position.left < 1 || position.right > window.innerWidth || position.bottom > window.innerHeight) {
-                            retryAttempts = retryAttempts + 1
-                            /// this just stops it from freaking out whenever the view has
-                            /// got too small
-                            if (retryAttempts < 5) {
-                                randomisePosition()
+                            const position = element.getBoundingClientRect()
+                            console.log(element, position)
+                            if (position.top < 1 || position.left < 1 || position.right > window.innerWidth || position.bottom > window.innerHeight) {
+                                retryAttempts = retryAttempts + 1
+                                /// this just stops it from freaking out whenever the view has
+                                /// got too small
+                                if (retryAttempts < 5) {
+                                    randomisePosition()
+                                }
                             }
                         }
-                    }
 
-                    randomisePosition()
-                })
+                        randomisePosition()
+                    })
 
+                }
+
+                init()
+
+                ////
                 /// cursor targeting logic
+                ////
+
                 function resizeCanvas() {
                     const dpr = window.devicePixelRatio || 1;
                     const rect = canvas.getBoundingClientRect();
@@ -172,51 +187,80 @@
 
 
 
-                document.addEventListener("mousemove", handleMouseMove);
-                function handleMouseMove(event) {
+                let mouseX = 0;
+                let mouseY = 0;
+                let needsRedraw = false;
+
+                document.addEventListener("mousemove", e => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                    needsRedraw = true;
+                });
+
+                function animationLoop() {
+                    if (needsRedraw) {
+                        handleMouseMoveInternal(mouseX, mouseY);
+                        needsRedraw = false;
+                    }
+                    requestAnimationFrame(animationLoop);
+                }
+
+                function drawCircle(x, y, radius) {
+
+                    // circle
+                    ctx.beginPath();
+                    ctx.setLineDash([]);
+                    ctx.arc(x, y, radius, 0, 2 * Math.PI);
+                    ctx.stroke();
+                }
+
+                function drawLine(startX, startY, endX, endY) {
+
+                    ctx.beginPath();
+                    ctx.setLineDash([]);
+                    ctx.moveTo(startX, startY);
+                    ctx.lineTo(endX, endY);
+                    ctx.stroke();
+                }
+
+                function drawDashedLine(startX, startY, endX, endY) {
+
+                    ctx.beginPath();
+                    ctx.setLineDash([1, 2]);
+                    ctx.moveTo(startX, startY);
+                    ctx.lineTo(endX, endY);
+                    ctx.stroke();
+                }
+                requestAnimationFrame(animationLoop);
+                function handleMouseMoveInternal(x, y) {
 
                     const rect = canvas.getBoundingClientRect();
-                    const x = event.clientX - rect.left;
-                    const y = event.clientY - rect.top;
                     const coordsdiv = document.getElementById('mousecoords')
 
                     if (!STATE.insideWindow) {
+
+                        // LOGIC FOR WHEN MOUSE IS NOT OVER A WINDOW
+
                         ctx.clearRect(0, 0, canvas.width, canvas.height);
                         ctx.strokeStyle = "rgba(0, 0, 0, 0.5)";
 
-                        const circleSize = 30
+                        const circleSize = 20
+                        const largerCircle = circleSize + 4
 
                         // Vertical line
-                        ctx.beginPath();
-                        ctx.moveTo(x, 0);
-                        ctx.lineTo(x, y - circleSize);
-                        ctx.stroke();
-
-                        ctx.beginPath();
-                        ctx.moveTo(x, y + circleSize);
-                        ctx.lineTo(x, canvas.height);
-                        ctx.stroke();
+                        drawLine(x, 0, x, y - circleSize)
+                        drawLine(x, y + circleSize, x, canvas.height)
 
                         // Horizontal line
-                        ctx.beginPath();
-                        ctx.moveTo(0, y);
-                        ctx.lineTo(x - circleSize, y);
-                        ctx.stroke();
+                        drawLine(0, y, x - circleSize,y)
+                        drawLine(x + circleSize, y, canvas.width, y)
 
-                        ctx.beginPath();
-                        ctx.moveTo(x + circleSize, y);
-                        ctx.lineTo(canvas.width, y);
-                        ctx.stroke();
+                        // targeting circles
+                        drawCircle(x, y, circleSize)
+                        drawCircle(x, y, largerCircle)
 
-                        // circle
-                        ctx.beginPath();
-                        ctx.arc(x, y, circleSize + 5, 0, 2 * Math.PI);
-                        ctx.stroke();
 
-                        ctx.beginPath();
-                        ctx.arc(x, y, circleSize, 0, 2 * Math.PI);
-                        ctx.stroke();
-
+                        // finding the closest window
                         let shortestLine = Infinity
                         let closestWindow = null
                         let targetX = null
@@ -228,53 +272,51 @@
                             let destinationX = (coords.right - (coords.width / 2))
                             let destinationY = (coords.bottom - (coords.height / 2))
 
-                            // Calculate the length of the line
-                            const dx = destinationX - x;
-                            const dy = destinationY - y;
-                            const lineLength = Math.sqrt(dx * dx + dy * dy);
+                            function checkCoords(coordsx, coordsy) {
 
-                            // Normalize line length: 0px -> 1, 1000px -> 0
-                            let normalized = 1 - lineLength / (window.innerHeight);
-                            normalized = Math.max(0, normalized); // clamp at 0
+                                // Calculate the length of the line
+                                const dx = coordsx - x;
+                                const dy = coordsy - y;
+                                const lineLength = Math.sqrt(dx * dx + dy * dy);
+
+                                // Normalize line length: 0px -> 1, 1000px -> 0
+                                let normalized = 1 - lineLength / (window.innerHeight);
+                                normalized = Math.max(0, normalized); // clamp at 0
 
 
-                            if (lineLength < shortestLine) {
-                                closestWindow = wind;
-                                targetX = destinationX;
-                                targetY = destinationY;
+                                if (lineLength < shortestLine) {
+                                    closestWindow = wind;
+                                    targetX = destinationX;
+                                    targetY = destinationY;
 
-                                transparency = normalized
-                                shortestLine = lineLength
+                                    transparency = normalized
+                                    shortestLine = lineLength
+                                }
+
                             }
+
+                            /// check all four corners
+                            checkCoords(coords.left, coords.top)
+                            checkCoords(coords.right, coords.top)
+                            checkCoords(coords.left, coords.bottom)
+                            checkCoords(coords.right, coords.bottom)
                         })
 
                         transparency = transparency * 0.5
                         ctx.strokeStyle = `rgba(0, 0, 0, ${transparency})`;
 
+                        const offset = 12
 
-                        ctx.beginPath();
-                        ctx.moveTo(x, y - circleSize - 5); // top point
-                        ctx.lineTo(targetX, targetY - 20);
-                        ctx.stroke();
+                        drawDashedLine(x, y - circleSize, targetX, targetY - offset) // top
+                        drawDashedLine(x, y + circleSize, targetX, targetY + offset) // bottom
+                        drawDashedLine(x - circleSize, y, targetX - offset, targetY) // left
+                        drawDashedLine(x + circleSize, y, targetX + offset, targetY) // right
 
-
-                        ctx.beginPath();
-                        ctx.moveTo(x, y + circleSize + 5); // bottom point
-                        ctx.lineTo(targetX, targetY + 20);
-                        ctx.stroke();
-
-                        ctx.beginPath();
-                        ctx.moveTo(x + circleSize + 5, y); // right point
-                        ctx.lineTo(targetX + 20, targetY);
-                        ctx.stroke();
-
-                        ctx.beginPath();
-                        ctx.moveTo(x - circleSize - 5, y); // left point
-                        ctx.lineTo(targetX - 20, targetY);
-                        ctx.stroke();
                     }
 
                     else {
+
+                        // LOGIC FOR WHEN MOUSE IS OVER A WINDOW
 
                         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -291,17 +333,15 @@
                             // Normalize line length: 0px -> 1, 1000px -> 0
                             let normalized = 1 - lineLength / (window.innerWidth * 0.5);
                             normalized = Math.max(0, normalized); // clamp at 0
-
                             const transparency = normalized
+
                             ctx.strokeStyle = `rgba(255, 249, 237, ${transparency})`;
-                            ctx.beginPath();
-                            ctx.moveTo(x, y);
-                            ctx.lineTo(destinationX, destinationY);
-                            ctx.stroke();
+                            drawLine(x, y, destinationX, destinationY)
 
                         })
                     }
 
+                    // Update mouse.js window with numbers
                     coordsdiv.innerHTML = x + ', ' + y
                 }
 
