@@ -18,7 +18,7 @@
 
                 {% for win in windows %}
 
-                <div class='xpwindow window{{ win.classname }}' id='window{{ loop.index }}'>
+                <div class='xpwindow window{{ win.classname }}' id='window{{ loop.index }}' data-name='{{ win.headertext }}'>
                     <div class='xpwindowheader window{{ win.classname }}header' id='window{{ loop.index }}header'>
 
                         <div class='headercolumn1'>
@@ -231,34 +231,44 @@
                     ctx.lineTo(endX, endY);
                     ctx.stroke();
                 }
+
+                function drawLineFromCircleToPoint(centerX, centerY, radius, targetX, targetY) {
+                    const dx = targetX - centerX;
+                    const dy = targetY - centerY;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance === 0) return; // Prevent division by zero
+
+                    const endX = centerX + (dx / distance) * radius;
+                    const endY = centerY + (dy / distance) * radius;
+
+                    drawLine(centerX, centerY, endX, endY);
+                }
+
+                function setStyle(r,g,b,a) {
+
+                    ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
+                }
+
+                function clearCanvas() {
+
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+
+
                 requestAnimationFrame(animationLoop);
+
+                let prevTarget = null
+                let flashFrames = 0
                 function handleMouseMoveInternal(x, y) {
 
                     const rect = canvas.getBoundingClientRect();
                     const coordsdiv = document.getElementById('mousecoords')
 
-                    if (!STATE.insideWindow) {
+                    if (!STATE.insideWindow) { // LOGIC FOR WHEN MOUSE IS NOT OVER A WINDOW
 
-                        // LOGIC FOR WHEN MOUSE IS NOT OVER A WINDOW
 
-                        ctx.clearRect(0, 0, canvas.width, canvas.height);
-                        ctx.strokeStyle = "rgba(0, 0, 0, 0.5)";
-
-                        const circleSize = 20
-                        const largerCircle = circleSize + 4
-
-                        // Vertical line
-                        drawLine(x, 0, x, y - circleSize)
-                        drawLine(x, y + circleSize, x, canvas.height)
-
-                        // Horizontal line
-                        drawLine(0, y, x - circleSize,y)
-                        drawLine(x + circleSize, y, canvas.width, y)
-
-                        // targeting circles
-                        drawCircle(x, y, circleSize)
-                        drawCircle(x, y, largerCircle)
-
+                        clearCanvas()
 
                         // finding the closest window
                         let shortestLine = Infinity
@@ -272,6 +282,7 @@
                             const coords = wind.getBoundingClientRect()
                             let destinationX = (coords.right - (coords.width / 2))
                             let destinationY = (coords.bottom - (coords.height / 2))
+
 
                             function checkCoords(coordsx, coordsy) {
 
@@ -289,7 +300,6 @@
                                     closestWindow = wind;
                                     targetX = destinationX;
                                     targetY = destinationY;
-
                                     transparency = normalized
                                     shortestLine = lineLength
                                 }
@@ -303,30 +313,101 @@
                             checkCoords(coords.right, coords.bottom)
                         })
 
-                        t1 = transparency * 0.5
-                        ctx.strokeStyle = `rgba(0, 0, 0, ${t1})`;
+                        const c = closestWindow.getBoundingClientRect()
+                        const windowName = closestWindow?.dataset.name || "???"
 
-                        const offset = 12
+                        const circleSize = 20
+                        let largerCircle = circleSize + 3
 
-                        drawDashedLine(x, y - circleSize, targetX, targetY - offset, 1, 2) // top
-                        drawDashedLine(x, y + circleSize, targetX, targetY + offset, 1, 2) // bottom
-                        drawDashedLine(x - circleSize, y, targetX - offset, targetY, 1, 2) // left
-                        drawDashedLine(x + circleSize, y, targetX + offset, targetY, 1, 2) // right
+                        // DRAWING TRACKING LINES
 
-                        t2 = transparency * 0.5
-                        ctx.strokeStyle = `rgba(0, 0, 0, ${t1})`;
+                        if (closestWindow !== prevTarget) {
+                            prevTarget = closestWindow;
+                            flashFrames = 0; // reset flash timer
+                        }
+
+                        if (flashFrames < 3) {
+                            ctx.fillStyle = "rgba(255,255,255,0.25)";
+                            flashFrames++;
+                        } else {
+                            ctx.fillStyle = "rgba(255,255,255,0.09)";
+                        }
+
+                        // circle
+                        ctx.beginPath();
+                        ctx.setLineDash([]);
+                        ctx.arc(x, y, circleSize, 0, 2 * Math.PI);
+                        ctx.fill();
+                        ctx.fillStyle = "rgb(0,0,0,1)";
 
 
-                        drawDashedLine(x, y - circleSize, targetX, targetY - offset, 15, 20) // top
-                        drawDashedLine(x, y + circleSize, targetX, targetY + offset, 15, 20) // bottom
-                        drawDashedLine(x - circleSize, y, targetX - offset, targetY, 15, 20) // left
-                        drawDashedLine(x + circleSize, y, targetX + offset, targetY, 15, 20) // right
+                        setStyle(0, 0, 0, 0.75)
 
+                        drawLine(x, 0, x, y - largerCircle)  // VERTICAL TRACKING LINE
+                        drawLine(x, y + largerCircle, x, canvas.height)
 
-                        ctx.font = "8px serif";
-                        ctx.fillText(shortestLine.toFixed(3), x + 3, largerCircle + y + 8);
-                        ctx.fillText(x, x + 3, largerCircle + y + 16);
-                        ctx.fillText(y, x + 3, largerCircle + y + 24);
+                        drawLine(0, y, x - largerCircle,y)   // HORIZONTAL TRACKING LINE
+                        drawLine(x + largerCircle, y, canvas.width, y)
+
+                        // DRAWING CONNECTING LINES TO TARGET
+
+                        const offset = -2
+
+                        setStyle(0, 0, 0, transparency * 0.4)
+
+                        drawDashedLine(x, y, c.left - offset, c.top - offset, 1, 2)
+                        drawDashedLine(x, y, c.right + offset, c.top - offset, 1, 2)
+                        drawDashedLine(x, y, c.left - offset, c.bottom + offset, 1, 2)
+                        drawDashedLine(x, y, c.right + offset, c.bottom + offset, 1, 2)
+
+                        const s = 4
+                        const g = 25
+
+                        drawDashedLine(x, y, c.left - offset, c.top - offset, s, g)
+                        drawDashedLine(x, y, c.right + offset, c.top - offset, s, g)
+                        drawDashedLine(x, y, c.left - offset, c.bottom + offset, s, g)
+                        drawDashedLine(x, y, c.right + offset, c.bottom + offset, s, g)
+
+                        // DRAWING TARGETING LINE FROM CENTER OF MOUSE
+
+                        setStyle(255,255,255,transparency * 0.5)
+                        drawLineFromCircleToPoint(x, y, circleSize, targetX, targetY);
+
+                        // DRAWING CROSSHAIR
+
+                        setStyle(0, 0, 0, 1)
+                        const mod = 15
+                        drawLine(x, y - (circleSize - mod), x, y + (circleSize - mod))
+                        drawLine(x - (circleSize - mod), y, x + (circleSize - mod), y)
+
+                        // DRAWING CIRCLES AROUND MOUSE
+
+                        setStyle(0, 0, 0, 0.75)
+
+                        drawCircle(x, y, circleSize)
+                        drawCircle(x, y, largerCircle)
+
+                        // DRAWING TEXT ON BOTTOM RIGHT
+
+                        setStyle(0, 0, 0, transparency)
+                        const TEXT_CONFIG = {
+                            offsetX: 4,
+                            startY: largerCircle + 8,
+                            lineHeight: 8,
+                            font: "9px serif"
+                        };
+
+                        const lines = [
+                            `~/${windowName}`,
+                            shortestLine.toFixed(3),
+                            `${x}, ${y}` // Combined coordinates on one line?
+                        ];
+
+                        ctx.font = TEXT_CONFIG.font;
+                        lines.forEach((text, i) => {
+                            const yPos = y + TEXT_CONFIG.startY + (i * TEXT_CONFIG.lineHeight);
+                            ctx.fillText(text, x + TEXT_CONFIG.offsetX, yPos);
+                        });
 
                     }
 
@@ -348,7 +429,7 @@
                             const lineLength = Math.sqrt(dx * dx + dy * dy);
 
                             // Normalize line length: 0px -> 1, 1000px -> 0
-                            let normalized = 1 - lineLength / (window.innerWidth * 0.5);
+                            let normalized = 1 - lineLength / (window.innerWidth * 0.75);
                             normalized = Math.max(0, normalized); // clamp at 0
                             const transparency = normalized
 
@@ -362,6 +443,13 @@
                     coordsdiv.innerHTML = x + ', ' + y
                 }
 
+
+                document.addEventListener("mouseout", (event) => {
+                if (!event.relatedTarget && !event.toElement) {
+                    // Mouse left the window
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+                });
 
             </script>
             </div>

@@ -65,10 +65,12 @@ a {
     z-index: 2;
     display: flex;
     width: 100%;
+    cursor: none;
 }
 
 
     .xpwindow {
+        cursor: crosshair;
         width: fit-content;
         background-color: #BFB294;
         border: 1px solid black;

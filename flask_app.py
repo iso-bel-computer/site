@@ -106,7 +106,7 @@ def getHomepageWindows():
 def home():
     return render_template('home.html',
                             windows = getHomepageWindows(),
-                            sitemap = siteMap,
+                            siteMap = siteMap,
                             books = bookData)
 
 @app.route('/go', methods=['POST']) # this is the redirect for the header navigation
