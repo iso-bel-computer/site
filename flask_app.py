@@ -234,101 +234,84 @@ Abulafia Port
 
 """
 
+API_KEY = os.environ["COMPANIES_HOUSE_API_KEY"]
+AUTH = HTTPBasicAuth(API_KEY, "")
+CH_URL = 'https://api.company-information.service.gov.uk/'
+TIMEOUT = 5
 
-@app.route('/research/abulafia/chsearch', methods=['GET'])
-def companiesHouseSearch():
-    print('chsearchcalled')
-    rawQuery = request.args.get("query", "").strip()
-    searchType = request.args.get("searchType",'').strip()
-
-    searchUrls = {
-        'companyList': 'https://api.company-information.service.gov.uk/search/companies',
-        'companyDetails': 'https://api.company-information.service.gov.uk/company/',
-        'officerList': 'https://api.company-information.service.gov.uk/company/',
-        'officerDetails': 'https://api.company-information.service.gov.uk/officers/',
-    }
-
-    baseUrl = searchUrls[searchType]
-
-    API_KEY = os.environ["COMPANIES_HOUSE_API_KEY"]
-
-    if not rawQuery:
+@app.route('/research/abulafia/fetchcompanylist', methods=['GET'])
+def fetchCompanyList():
+    query = request.args.get("query", "").strip()
+    if not query:
         return jsonify({"error": "No search term provided"}), 400
-
-    if len(rawQuery) > 100:
+    if len(query) > 100:
         return jsonify({"error": "Query too long"}), 400
 
-
-    query = rawQuery
-
-
-    if searchType == 'companyList':
-        response = requests.get(
-            baseUrl,
-            params={
-                "q": query,
-                "items_per_page": 20
-            },
-            auth=HTTPBasicAuth(API_KEY, ""),
-            timeout=5
-        )
-
-    elif searchType == 'companyDetails':
-        response = requests.get(
-            baseUrl + query,
-            auth=HTTPBasicAuth(API_KEY, ""),
-            timeout=5
-        )
-
-    elif searchType == 'officerList':
-        officers = requests.get(
-            baseUrl + query + '/officers',
-            auth=HTTPBasicAuth(API_KEY, ""),
-            timeout=5
-        )
-
-        pwsc = requests.get(
-            baseUrl + query + '/persons-with-significant-control',
-            auth=HTTPBasicAuth(API_KEY, ""),
-            timeout=5
-        )
-
-        pwsc.raise_for_status()
-        officers.raise_for_status()
-
-        combined_data = {
-            'officers': officers.json(),
-            'pwsc': pwsc.json()
-        }
-
-        return jsonify(combined_data)
-
-    elif searchType == 'officerDetails':
-        response = requests.get(
-            baseUrl + query + '/appointments',
-            auth=HTTPBasicAuth(API_KEY, ""),
-            timeout=5
-        )
-
-    elif searchType == 'TESTofficerSelfDetails':
-        print(query)
-        queryArray = query.split('~')
-        response = requests.get(
-            baseUrl + queryArray[0] + '/appointments/' + queryArray[1],
-            auth=HTTPBasicAuth(API_KEY, ""),
-            timeout=5
-        )
-
+    params = {
+        "q": query,
+        "items_per_page": 20
+    }
+    response = requests.get(
+        CH_URL + 'search/companies',
+        params=params,
+        auth=AUTH,
+        timeout=TIMEOUT
+    )
     response.raise_for_status()
     return jsonify(response.json())
+
+@app.route('/research/abulafia/fetchcompanydetails', methods=['GET'])
+def fetchCompanyDetails():
+    companyNumber = request.args.get("companyNumber", "").strip()
+    if not companyNumber:
+        return jsonify({"error": "No company number provided"}), 400
+
+    response = requests.get(
+        CH_URL + f'company/{companyNumber}',
+        auth=AUTH,
+        timeout=TIMEOUT
+    )
+    response.raise_for_status()
+    return jsonify(response.json())
+
+@app.route('/research/abulafia/fetchofficerlist', methods=['GET'])
+def fetchOfficerList():
+
+    companyNumber = request.args.get("companyNumber", "").strip()
+    index = request.args.get("index", "0").strip()
+    if not companyNumber:
+        return jsonify({"error": "No company number provided"}), 400
+
+    response = requests.get(
+        CH_URL + f'company/{companyNumber}/officers?start_index={index}',
+        auth=AUTH,
+        timeout=TIMEOUT
+    )
+    print(f'company/{companyNumber}/officers?start_index={index}')
+    response.raise_for_status()
+    return jsonify(response.json())
+
+@app.route('/research/abulafia/fetchofficerdetails', methods=['GET'])
+def fetchOfficerDetails():
+    companyNumber = request.args.get("companyNumber", "").strip()
+    appointmentId = request.args.get("appointmentId", "").strip()
+    if not companyNumber or not appointmentId:
+        return jsonify({"error": "Missing required parameters"}), 400
+
+    response = requests.get(
+        CH_URL + f'company/{companyNumber}/appointments/{appointmentId}',
+        auth=AUTH,
+        timeout=TIMEOUT
+    )
+    response.raise_for_status()
+    return jsonify(response.json())
+
 
 @app.route('/research/abulafia')
 def abulafia():
     return render_template('abulafia.html',
                            siteMap = siteMap,
                            headerRouteDisplay = '/research/abulafia')
-
-
 
 
 

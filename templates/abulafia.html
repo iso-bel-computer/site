@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="{{ url_for('static', filename='scripts/abulafia.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='scripts/abulafia/main.js') }}"></script>
 {% endblock %}
 
 
@@ -15,43 +15,15 @@
     </nav>
     <div id="contentWrapper">
         <div id='column1'>
-            <input id="query" type="text">
+            <input id="companySearch" type="text">
             <div id="chSearchResults"></div>
         </div>
         <div id='column2'>
             <div id='companyInfo'>
-                <h1 id='companyName'></h1>
-                <div id='companyAliasButton'>Aliases ▸</div>
-                <div id='companyPreviouslyKnownAs'></div>
-                <hr id='companyInfoLine'>
-                <div class='companyBasicDetails'>
-                    <div id='companySIC'></div>
-                    <div id='companyNumber'></div>
-                </div>
-                <div class='companyBasicDetails'>
-                    <div id='companyType'></div>
-                    <div id='companyStatus'></div>
-                </div>
-                <div class='companyBasicDetails'>
-                    <div id='companyDateCreated'></div>
-                    <div id='companyDateDissolved'></div>
-                </div>
-                <div id='companyAlerts'></div>
-                <hr id='companyInfoLine'>
-                <div id='companyAddress'></div>
-                <div id='companyPeopleDisplays'>
-                    <div id='companyDirectors' class='pwscofficerdivs'></div>
-                    <div id='companyPWSC' class='pwscofficerdivs'></div>
-                </div>
-                <div id='companyLinks'></div>
             </div>
         </div>
         <div id='column3'>
             <div id='personInfo'>
-                <h1 id='personName'></h1>
-                <div id='personAge'></div>
-                <div id='personNationality'></div>
-                <div id='personAppointments' class='otherAppointments'></div>
             </div>
         </div>
     </div>

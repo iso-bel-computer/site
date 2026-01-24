@@ -69,7 +69,7 @@ main {
 }
 
 
-    #query {
+    #companySearch {
         margin-bottom: 10px;
         background-color: #00000000;
         border: var(--borders);
@@ -109,10 +109,7 @@ main {
             border-bottom: 1px dotted var(--site-accent-color-transparent)
         }
 
-        .companyStatusdissolved {
-            color: #00000060
-        }
-        .faded {
+        .inactive {
             color: #00000060
         }
 

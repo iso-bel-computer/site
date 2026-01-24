@@ -1,113 +1,4 @@
-const helpers = {
-    toTitleCase(str) {
-        return str.replace(
-            /\w\S*/g,
-            text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
-        );
-    },
-    dateFormat(date, concise) {
-        try {
-            const split = date.split('-')
-            const dateParts = {
-                'dd': Number(split[2]),
-                'mm': Number(split[1]),
-                'yy': Number(split[0])
-            }
 
-            let date_appendage = 'th'
-            if (dateParts['dd'] === 1 || dateParts['dd'] === 21 || dateParts['dd'] === 31) {date_appendage = 'st'}
-            if (dateParts['dd'] === 2 || dateParts['dd'] === 22) {date_appendage = 'nd'}
-            if (dateParts['dd'] === 3 || dateParts['dd'] === 23) {date_appendage = 'rd'}
-
-            let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-            if (concise) {
-                months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-            }
-
-            const imgDateMonth = months[dateParts['mm'] - 1]
-            const dateStr = dateParts['dd'] +  date_appendage+ ' ' + imgDateMonth + ' ' + dateParts['yy']
-
-            return dateStr
-        }
-        catch {
-            console.error('Could not format date: ', date)
-            return date
-        }
-    },
-    monthReturn(month) {
-        try {
-            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-            const result = months[month - 1]
-            return result
-        }
-        catch {
-            console.error('Could not format month: ', month)
-            return month
-        }
-    },
-    ageFormat(age) {
-        const now = Date.now()
-        const dob = new Date(age['year'], age['month'] + 1)
-        const diffTime = Math.abs(now - dob);
-        const diffYears = Math.floor((diffTime / (1000 * 60 * 60 * 24)) / 365 );
-        return diffYears
-    }
-}
-async function searchForCompany(searchType, searchData) {
-
-    const searchResultsDiv = document.getElementById('chSearchResults')
-
-    let q
-
-    if (searchType === 'companyList') { /// defining what we want to search to the server
-        searchResultsDiv.innerHTML = '<div class="loading">Loading...</div>' // clear previous results
-        q = document.getElementById("query").value;
-    }
-    else if (searchType === 'companyDetails') {
-        document.getElementById('companyName').innerHTML = '<div class="loading">Loading...</div>' // clear previous results
-        q = searchData
-    }
-    else if (searchType === 'officerList') {
-        q = searchData // just passing the company number again
-    }
-    else if (searchType === 'officerDetails') {
-        q = searchData.split('/')[2]
-    }
-    else {
-        console.error('Searchtype not found: ', searchType)
-        return
-    }
-
-    try {
-        const res = await fetch(
-            `/research/abulafia/chsearch?query=${encodeURIComponent(q)}&searchType=${searchType}`
-        );
-
-        if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
-        }
-
-        const data = await res.json();
-        console.log(data)
-        if (searchType === 'companyList') {
-            displaySearchResults(data)
-        }
-        if (searchType === 'companyDetails') {
-            displayCompany(data)
-            searchForCompany('officerList', searchData) // we send another api call for the officer details
-        }
-        if (searchType === 'officerList') {
-            displayOfficersAndPwsc(data)
-        }
-        if (searchType === 'officerDetails') {
-            displayOfficerDetails(data)
-        }
-
-    } catch (error) {
-        searchResultsDiv.innerHTML = 'Error: ' + error.message;
-    }
-
-}
 
 function tableConstructor(items) {
 
@@ -176,20 +67,6 @@ function linkConstructor(query) {
     return result
 }
 
-function displaySearchResults(data) {
-    const searchResultsDiv = document.getElementById('chSearchResults')
-    const companies = data.items
-    searchResultsDiv.innerHTML = '' // clear loading display
-    companies.forEach(company => {
-
-        const resultRow = document.createElement('button')
-        resultRow.classList.add('searchResult')
-        resultRow.innerText = helpers.toTitleCase(company.title)
-        resultRow.dataset.companyNumber = company.company_number
-        searchResultsDiv.appendChild(resultRow)
-
-    })
-}
 function displayCompany(data) {
 
     const dom = {
@@ -279,7 +156,7 @@ function displayCompany(data) {
 
     displayBasicInfo(data)
     displayAlerts(data)
-    displayLinks(data)
+   // displayLinks(data)
 
 }
 
@@ -337,13 +214,6 @@ function displayOfficerDetails(data) {
 function init() {
 
     function initSearchResultsListener() {
-        const searchResultsDiv = document.getElementById('chSearchResults')
-        searchResultsDiv.addEventListener('click', e => {
-            const clickedCompany = e.target.closest('.searchResult')
-            if (!clickedCompany) {return}
-            const companyNumber = clickedCompany.dataset.companyNumber
-            searchForCompany('companyDetails', companyNumber)
-        })
     }
     function initAliasListener() {
         const aliasDiv = document.getElementById('companyPreviouslyKnownAs')
