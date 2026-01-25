@@ -1,4 +1,5 @@
 import { Company } from "./company.js";
+import { Window } from "./windowsystem.js";
 
 export class UI {
 
@@ -8,36 +9,37 @@ export class UI {
         this.api = api
         this.state = state
 
-        this.companySearchBar = this.element.querySelector('#companySearch')
-        this.searchResults = this.element.querySelector('#chSearchResults')
-        this.companyDisplay = this.element.querySelector('#companyInfo')
-        this.personDisplay = this.element.querySelector('#personInfo')
+        this.searchResultsWindow = this.createSearchWindow()
+        this.element.appendChild(this.searchResultsWindow.element)
+        this.searchResultsWindow.position(10,10)
 
-        this.addEventListeners()
 
-    }
-
-    addEventListeners() {
-        this.searchBarEventListener()
-        this.searchResultsEventListener()
 
     }
 
-    searchBarEventListener() {
+    createSearchWindow() {
 
-        this.companySearchBar.addEventListener('keydown', async e => { // initial company search
+        const searchWindow = new Window('Search')
+
+        const searchBar = document.createElement('input')
+        searchBar.id = 'companySearch'
+        searchWindow.addContent(searchBar)
+
+        const searchResults = document.createElement('div')
+        searchResults.id = 'chSearchResults'
+        searchWindow.addContent(searchResults)
+
+        searchBar.addEventListener('keydown', async e => { // initial company search
             if (e.key === 'Enter') {
-                const query = this.companySearchBar.value
+
+                const query = searchBar.value
                 const results = await this.api.fetchCompanyList(query)
-                this.displaySearchResults(results.items)
+
+                searchResults.innerHTML = this.formatSearchResults(results.items)
             }
         })
 
-    }
-
-    searchResultsEventListener() {
-
-        this.searchResults.addEventListener('click', async e => {
+        searchResults.addEventListener('click', async e => {
 
             const clickedCompany = e.target.closest('.searchResult')
             if (!clickedCompany) {return}
@@ -54,12 +56,16 @@ export class UI {
 
 
         })
+
+        return searchWindow
     }
 
     /* Everything above this comment runs on init */
 
-    displaySearchResults(results) {
+    formatSearchResults(results) {
 
+
+        const div = document.createElement('div')
         results.forEach(result => {
 
             const row = document.createElement('button')
@@ -69,44 +75,17 @@ export class UI {
             row.dataset.companyNumber = result.company_number
             row.classList.add('company-status', result.company_status === 'active' ? 'active' : 'inactive')
 
-            this.searchResults.appendChild(row)
+            div.appendChild(row)
 
         })
+
+        return div
     }
 
     displayCompany(company) {
 
-        this.companyDisplay.innerHTML = ''
-
-        // Company header
-        const header = document.createElement('div');
-        header.classList.add('company-header');
-
-        const name = document.createElement('h2');
-        name.textContent = company.name;
-        header.appendChild(name);
-
-        const status = document.createElement('span');
-        status.classList.add('company-status', company.isActive ? 'active' : 'inactive');
-        status.textContent = company.companyStatus;
-        header.appendChild(status);
-
-        this.companyDisplay.appendChild(header);
-
-        // Company details
-        const details = document.createElement('div');
-        details.classList.add('company-details');
-
-        const companyNumber = document.createElement('p');
-        companyNumber.innerHTML = `<strong>Company Number:</strong> ${company.companyNumber}`;
-        details.appendChild(companyNumber);
-
-        const dateCreated = document.createElement('p');
-        dateCreated.innerHTML = `<strong>Date Created:</strong> ${company.dateCreated.toLocaleDateString()}`;
-        details.appendChild(dateCreated);
-
-        this.companyDisplay.appendChild(details);
-
+        const companyWindow = new Window()
+        this.companyDisplay.appendChild(companyWindow)
 
     }
 
