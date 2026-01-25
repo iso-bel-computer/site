@@ -1,4 +1,4 @@
-
+import os
 from flask import Flask, render_template, jsonify, request, abort, redirect
 import json; from datetime import datetime; import random; from dotenv import load_dotenv
 import requests; from requests.auth import HTTPBasicAuth; from urllib.parse import urlparse
