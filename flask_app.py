@@ -307,7 +307,6 @@ def fetchOfficerList():
         print(f'company/{companyNumber}/officers?start_index={index}')
         response.raise_for_status()
         return jsonify(response.json())
-
     except Exception:
         print(Exception)
 
