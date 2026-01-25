@@ -241,70 +241,83 @@ TIMEOUT = 5
 
 @app.route('/research/abulafia/fetchcompanylist', methods=['GET'])
 def fetchCompanyList():
-    query = request.args.get("query", "").strip()
-    if not query:
-        return jsonify({"error": "No search term provided"}), 400
-    if len(query) > 100:
-        return jsonify({"error": "Query too long"}), 400
+    try:
+        query = request.args.get("query", "").strip()
+        if not query:
+            return jsonify({"error": "No search term provided"}), 400
+        if len(query) > 100:
+            return jsonify({"error": "Query too long"}), 400
 
-    params = {
-        "q": query,
-        "items_per_page": 20
-    }
-    response = requests.get(
-        CH_URL + 'search/companies',
-        params=params,
-        auth=AUTH,
-        timeout=TIMEOUT
-    )
-    response.raise_for_status()
-    return jsonify(response.json())
+        params = {
+            "q": query,
+            "items_per_page": 20
+        }
+        response = requests.get(
+            CH_URL + 'search/companies',
+            params=params,
+            auth=AUTH,
+            timeout=TIMEOUT
+        )
+        response.raise_for_status()
+        return jsonify(response.json())
+    except Exception:
+        print(Exception)
 
 @app.route('/research/abulafia/fetchcompanydetails', methods=['GET'])
 def fetchCompanyDetails():
-    companyNumber = request.args.get("companyNumber", "").strip()
-    if not companyNumber:
-        return jsonify({"error": "No company number provided"}), 400
+    try:
+        companyNumber = request.args.get("companyNumber", "").strip()
+        if not companyNumber:
+            return jsonify({"error": "No company number provided"}), 400
 
-    response = requests.get(
-        CH_URL + f'company/{companyNumber}',
-        auth=AUTH,
-        timeout=TIMEOUT
-    )
-    response.raise_for_status()
-    return jsonify(response.json())
+        response = requests.get(
+            CH_URL + f'company/{companyNumber}',
+            auth=AUTH,
+            timeout=TIMEOUT
+        )
+        response.raise_for_status()
+        return jsonify(response.json())
+    except Exception:
+        print(Exception)
 
 @app.route('/research/abulafia/fetchofficerlist', methods=['GET'])
 def fetchOfficerList():
+    try:
+        companyNumber = request.args.get("companyNumber", "").strip()
+        index = request.args.get("index", "0").strip()
+        if not companyNumber:
+            return jsonify({"error": "No company number provided"}), 400
 
-    companyNumber = request.args.get("companyNumber", "").strip()
-    index = request.args.get("index", "0").strip()
-    if not companyNumber:
-        return jsonify({"error": "No company number provided"}), 400
-
-    response = requests.get(
-        CH_URL + f'company/{companyNumber}/officers?start_index={index}',
-        auth=AUTH,
-        timeout=TIMEOUT
-    )
-    print(f'company/{companyNumber}/officers?start_index={index}')
-    response.raise_for_status()
+        response = requests.get(
+            CH_URL + f'company/{companyNumber}/officers?start_index={index}',
+            auth=AUTH,
+            timeout=TIMEOUT
+        )
+        print(f'company/{companyNumber}/officers?start_index={index}')
+        response.raise_for_status()
     return jsonify(response.json())
+
+    except Exception:
+        print(Exception)
 
 @app.route('/research/abulafia/fetchofficerdetails', methods=['GET'])
 def fetchOfficerDetails():
-    companyNumber = request.args.get("companyNumber", "").strip()
-    appointmentId = request.args.get("appointmentId", "").strip()
-    if not companyNumber or not appointmentId:
-        return jsonify({"error": "Missing required parameters"}), 400
+    try:
+        companyNumber = request.args.get("companyNumber", "").strip()
+        appointmentId = request.args.get("appointmentId", "").strip()
+        if not companyNumber or not appointmentId:
+            return jsonify({"error": "Missing required parameters"}), 400
 
-    response = requests.get(
-        CH_URL + f'company/{companyNumber}/appointments/{appointmentId}',
-        auth=AUTH,
-        timeout=TIMEOUT
-    )
-    response.raise_for_status()
-    return jsonify(response.json())
+        response = requests.get(
+            CH_URL + f'company/{companyNumber}/appointments/{appointmentId}',
+            auth=AUTH,
+            timeout=TIMEOUT
+        )
+        response.raise_for_status()
+        return jsonify(response.json())
+    except Exception:
+        print(Exception)
+
 
 
 @app.route('/research/abulafia')
