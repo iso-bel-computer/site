@@ -1,14 +1,3 @@
-import os; import sys;
-
-# Set environment variables here
-os.environ['COMPANIES_HOUSE_API_KEY'] = 'cede43d9-f791-46df-ac00-8efbec44f039'
-
-path = '/site'
-if path not in sys.path:
-    sys.path.append(path)
-
-from flask_app import app as application  # noqa
-
 
 from flask import Flask, render_template, jsonify, request, abort, redirect
 import json; from datetime import datetime; import random; from dotenv import load_dotenv
@@ -245,7 +234,7 @@ def art(category):
 Abulafia Port
 
 """
-
+API_KEY = os.getenv("COMPANIES_HOUSE_API_KEY")
 AUTH = HTTPBasicAuth(API_KEY, "")
 CH_URL = 'https://api.company-information.service.gov.uk/'
 TIMEOUT = 5
