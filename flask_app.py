@@ -234,7 +234,7 @@ Abulafia Port
 
 """
 
-os.environ['COMPANIES_HOUSE_API_KEY'] = 'your_api_key_here'
+os.environ["COMPANIES_HOUSE_API_KEY"] = API_KEY
 AUTH = HTTPBasicAuth(API_KEY, "")
 CH_URL = 'https://api.company-information.service.gov.uk/'
 TIMEOUT = 5
