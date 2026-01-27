@@ -334,6 +334,6 @@ Init
 
 
 if __name__ == '__main__':
-    domain = 'http://127.0.0.1:5000' # this makes the header navigation work
+    domain = 'http://www.iso-bel.computer' # this makes the header navigation work
                                      # while it's in debug mode
     app.run(debug=True)

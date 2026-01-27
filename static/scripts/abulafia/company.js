@@ -1,3 +1,5 @@
+import { Officer } from "./officer.js";
+
 export class Company {
 
     constructor(apiResponse, api) {
@@ -7,19 +9,26 @@ export class Company {
 
         this.name =          apiResponse.company_name
         this.companyNumber = apiResponse.company_number
-        this.companyStatus = apiResponse.company_status
-        this.isActive =      (this.companyStatus === 'active')
+        this.status =        apiResponse.company_status
+        this.isActive =      (this.status === 'active')
 
-        this.dateCreated =   new Date(apiResponse.date_of_creation)
+        const parts = apiResponse.date_of_creation.split('-')
+        this.dateCreated =   new Date(parts[0], parts[1], parts[2])
+        this.dateDissolved = apiResponse.date_of_cessation ? new Date(apiResponse.date_of_cessation) : null
 
-        if (!this.isActive) {
-            this.dateDissolved = new Date(apiResponse.date_of_cessation)
-        } else this.dateDissolved = null
+        this.hasCharges =    apiResponse.has_charges
+
+        this.hasInsolvencyHistory =       apiResponse.has_insolvency_history
+        this.isLiquidated =               apiResponse.has_been_liquidated
+        this.hasUndeliverableAddress =    apiResponse.undeliverable_offfice_address
+        this.hasDisputedAddress =         apiResponse.registered_office_is_in_dispute
+        this.hasSecretPscs =              apiResponse.has_super_secure_pscs
+        this.hasOverdueAccounts =         apiResponse.accounts.overdue
 
 
 
         this.accounts =      apiResponse.accounts
-        this.address =       apiResponse.registered_officer_address
+        this.address =       apiResponse.registered_office_address
 
 
 
@@ -46,8 +55,17 @@ export class Company {
 
         }
 
-        this.officers = officerData
+        const officerObjects = []
+
+        officerData.forEach(officer => {
+            const obj = new Officer(officer)
+            officerObjects.push(obj)
+        })
+
+        this.officers = officerObjects
     }
+
+
 
 
 

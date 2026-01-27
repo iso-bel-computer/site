@@ -1,5 +1,5 @@
 import { Company } from "./company.js";
-import { Window } from "./windowsystem.js";
+// import { Window } from "./windowsystem.js";
 
 export class UI {
 
@@ -9,36 +9,32 @@ export class UI {
         this.api = api
         this.state = state
 
-        this.searchResultsWindow = this.createSearchWindow()
-        this.element.appendChild(this.searchResultsWindow.element)
-        this.searchResultsWindow.position(10,10)
-
-
+        this.searchArea = this.initSearchArea()
+        this.companyDisplay = this.initCompanyDisplay()
 
     }
 
-    createSearchWindow() {
+    initSearchArea() {
 
-        const searchWindow = new Window('Search')
+        const searchArea = document.getElementById('searchArea')
+        const searchBar = searchArea.querySelector('#companySearch')
+        const searchResults = searchArea.querySelector('#searchResults')
+        const activeOnlyCheckbox = searchArea.querySelector('#showOnlyActiveCompanies')
 
-        const searchBar = document.createElement('input')
-        searchBar.id = 'companySearch'
-        searchWindow.addContent(searchBar)
-
-        const searchResults = document.createElement('div')
-        searchResults.id = 'chSearchResults'
-        searchWindow.addContent(searchResults)
-
+        // calling to display results of search query
         searchBar.addEventListener('keydown', async e => { // initial company search
             if (e.key === 'Enter') {
 
                 const query = searchBar.value
                 const results = await this.api.fetchCompanyList(query)
 
-                searchResults.innerHTML = this.formatSearchResults(results.items)
+                searchResults.innerHTML = ''
+                searchResults.appendChild(this.formatSearchResults(results.items))
+
             }
         })
 
+        // setting up to load a company when a result is selected
         searchResults.addEventListener('click', async e => {
 
             const clickedCompany = e.target.closest('.searchResult')
@@ -52,18 +48,56 @@ export class UI {
             this.displayCompany(company)
 
             await company.loadOfficers()
-            this.displayCompanyOfficers(company)
-
+            this.displayCompanyOfficers(company.officers)
 
         })
 
-        return searchWindow
+        // toggling active search results
+        activeOnlyCheckbox.addEventListener('change', (e) => {
+            document.body.classList.toggle(
+                'show-inactive',
+                e.target.checked
+            )
+        });
+
+        return searchArea
+    }
+
+
+    initCompanyDisplay() {
+
+        const companyDisplay = document.getElementById('companyDisplay')
+        const officerLists = companyDisplay.querySelectorAll('.officerResults')
+
+        officerLists.forEach(list => {
+            list.addEventListener('click', async e => {
+
+                const clickedOfficer = e.target.closest('.officerResult')
+                if (!clickedOfficer) {return}
+
+                const companyNumber = this.state.currentlySelectedCompany.companyNumber
+                const appointmentId
+                const companyData = await this.api.fetchCompanyDetails(companyNumber)
+                const company = new Company(companyData, this.api)
+
+                this.state.currentlySelectedCompany = company
+                this.displayCompany(company)
+
+                await company.loadOfficers()
+                this.displayCompanyOfficers(company.officers)
+
+            })
+        })
+
+        return companyDisplay
+
     }
 
     /* Everything above this comment runs on init */
 
     formatSearchResults(results) {
 
+        // this displays the search results from a query in a table
 
         const div = document.createElement('div')
         results.forEach(result => {
@@ -73,7 +107,7 @@ export class UI {
             row.classList.add('searchResult')
             row.innerText = this.toTitleCase(result.title)
             row.dataset.companyNumber = result.company_number
-            row.classList.add('company-status', result.company_status === 'active' ? 'active' : 'inactive')
+            row.classList.add(result.company_status === 'active' ? 'activecompany' : 'inactivecompany')
 
             div.appendChild(row)
 
@@ -84,12 +118,70 @@ export class UI {
 
     displayCompany(company) {
 
-        const companyWindow = new Window()
-        this.companyDisplay.appendChild(companyWindow)
+        console.log(company)
+
+        const name = this.companyDisplay.querySelector('#cName')
+        name.innerText = company.name
+
+        const status = this.companyDisplay.querySelector('#cStatus')
+        status.innerText = this.toTitleCase(company.status)
+        status.classList.add(company.status === 'active' ? 'activecompany' : 'inactivecompany')
+
+        const number = this.companyDisplay.querySelector('#cNumber')
+        number.innerText = 'Company Number: ' + company.companyNumber
+
+        const dateEst = this.companyDisplay.querySelector('#cDateEst')
+        dateEst.innerText = 'Est: ' + company.dateCreated.toDateString()
+
+        const dateDissolved = this.companyDisplay.querySelector('#cDateDissolved')
+        if (!company.isActive) {
+            dateDissolved.innerText = 'Dissolved: ' + company.dateDissolved
+        }
+
+        const address = this.companyDisplay.querySelector('#cAddress')
+        address.innerHTML = company.address.address_line_1 + '<br>' + company.address.locality + '<br>' + company.address.postal_code
+        if (company.hasDisputedAddress) {
+            address.innerHTML += '<br> ! DISPUTED !'
+        }
+
+
+        const activelabel = document.getElementById('cActiveOfficerLabel')
+        activelabel.innerHTML = '<h3>Active Officers</h3>'
+        const inactivelabel = document.getElementById('cPreviousOfficerLabel')
+        inactivelabel.innerHTML = '<h3>Past Officers</h3>'
+        const active = document.getElementById('cActiveOfficers')
+        active.innerHTML = '<h3>Loading...</h3>'
+        const inactive = document.getElementById('cPreviousOfficers')
+        inactive.innerHTML = '<h3>Loading...</h3>'
+
+
 
     }
 
-    displayCompanyOfficers() {
+    displayCompanyOfficers(officers) {
+
+        const active = document.getElementById('cActiveOfficers')
+        const inactive = document.getElementById('cPreviousOfficers')
+
+        active.innerHTML = ''
+        inactive.innerHTML = ''
+        officers.forEach(officer => {
+
+            const row = document.createElement('button')
+
+            row.innerText = officer.name
+            row.classList.add('officerResult')
+            row.dataset.companyNumber = result.company_number
+
+            if (officer.active) {
+
+                active.appendChild(row)
+            } else {
+                inactive.appendChild(row)
+            }
+
+
+        })
 
     }
 

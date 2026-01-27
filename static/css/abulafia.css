@@ -1,4 +1,17 @@
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+main {
+    height: 100vh;
+    overflow: hidden;
+    padding: 5px;
+}
+
+
 header {
     display: none
 }
@@ -7,72 +20,116 @@ header {
 #contentWrapper {
     height: 100vh;
     width: 100vw;
+    display: flex
 }
 
-input {
-    border-radius: 0px;
-    width: -fill-available;
-    border: 1px solid black
 
-
-}
-
-.xpwindow {
-    cursor: crosshair;
-    width: fit-content;
-    background-color: #BFB294;
-    border: 1px solid black;
-    border-top: 1px solid white;
-    border-left: 1px solid white;
-    height: fit-content;
-    padding: 2px;
+label {
     font-size: 9pt;
-    position: absolute;
-    z-index: 1;
-    box-shadow: 5px 5px 5px #00000050;
-    min-width: fit-content;
+}
+
+#flex {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+#flexcolumn {
+    display: flex;
+    flex-direction: column;
+}
+
+.topLevelUi {
+    padding: 7px;
+    border: 1px dotted black;
+    background-color: #00000010;
+    border-radius: 7px;
 
 }
 
-    .xpwindowheader {
-        color: white;
-        padding: 2px;
-        font-size: 8pt;
-        width: calc(100% - 4px);
-        height: fit-content;
-        background: linear-gradient(to right, #153d1a, #182e1b);
+    #searchArea {
+
+        height: 100%;
+        width: 15vw;
+        margin-right: 5px;
         display: flex;
-        cursor: grab;
-        font-family: Arial;
+        flex-direction: column;
+
     }
 
 
-        .xpwindowheader:active {
-            cursor: grabbing;
-        }
+    .checkboxWrapper {
+        display: flex;
+        align-items: center;
+        margin-top: 4px;
+        margin-bottom: 4px;
+        justify-content: space-between;
+    }
 
-        .headercolumn1 {
-            width: 80%;
-            display: flex
-        }
 
+    #companySearch {
+        border-radius: 0px;
+        width: 100%;
+        border: 1px solid black;
+        padding: 2px;
 
-        .xpwindowheader img {
-            height: 12px;
-            margin-right: 2px;
-        }
+    }
 
-    .xpwindowcontent {
-        margin-top: 2px;
-        height: fit-content;
+    #searchResults {
+        height: 100%;
         overflow: scroll;
-        padding: 4px;
-        background-color: #fff9ed;
-        border: 1px solid white;
-        border-top: 1px solid black;
-        border-left: 1px solid black;
-        max-height: 100vh;
-        min-height: 20px;
-        min-width: 50px;
-        resize: both;
+        flex: 1;
+        overflow-y: auto;
+
+    }
+
+    .searchResult {
+        text-align: left;
+        width: 100%;
+        border: 0px;
+        background-color: none;
+        transition: transform 0.1s ease-in;
+        margin-bottom: 2px;
+        background-color: #00000000;
+        border-bottom: 1px dotted black;
+    }
+
+    .searchResult:hover {
+        color: white;
+        cursor: pointer;
+        transform: translateX(5px)
+    }
+
+    .inactivecompany {
+        display: none;
+    }
+
+    /* when checkbox is ON, show them */
+    .show-inactive .inactivecompany {
+        display: block;
+        color: grey
+    }
+
+    #companyDisplay {
+
+        width: 40%
+
+    }
+
+    .officerResults {
+        width: 100%;
+        overflow: scroll;
+        max-height: 30vh;
+
+    }
+
+    .officerResult {
+
+        text-align: left;
+        width: 100%;
+        border: 0px;
+        background-color: none;
+        transition: transform 0.1s ease-in;
+        margin-bottom: 2px;
+        background-color: #00000000;
+        border-bottom: 1px dotted black;
     }
