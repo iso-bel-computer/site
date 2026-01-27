@@ -48,12 +48,6 @@
         "classname": "webrings"
     },
     {
-        "icon": "ram.png",
-        "headertext": "underground.js",
-        "template": "traingame.html",
-        "classname": "traingame"
-    },
-    {
         "icon": "folder.png",
         "headertext": "art",
         "template": "art.html",
