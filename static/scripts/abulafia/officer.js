@@ -17,6 +17,8 @@ export class Officer {
             this.resignedOn = null
             this.active = true
         }
+
+        this.officerAppointmentLink = apiResponse?.links?.officer?.appointments
     }
 
 

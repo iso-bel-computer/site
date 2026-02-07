@@ -52,7 +52,10 @@ a {
 #backgroundimage {
 
     width: 100vw;
-    z-index: 1
+    z-index: 1;
+    background-size:     contain;                      /* <------ */
+    background-repeat:   repeat;
+    background-position: center center;              /* optional, center the image */
 
 }
 

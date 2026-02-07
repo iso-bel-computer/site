@@ -44,16 +44,17 @@ export class API {
         )
 
         const officerList = await response.json()
+        console.log(officerList)
 
         return officerList
     }
 
-    async fetchOfficerDetails(companyNumber, appointmentId) {
+    async fetchOfficerDetails(officerAppointmentLink) {
 
         await this.throttle()
 
         const response = await fetch(
-            `/research/abulafia/fetchofficerdetails?companyNumber=${encodeURIComponent(companyNumber)}&appointmentId=${encodeURIComponent(appointmentId)}`
+            `/research/abulafia/fetchofficerdetails?link=${encodeURIComponent(officerAppointmentLink)}`
         )
 
         const officerDetails = await response.json()

@@ -1,4 +1,5 @@
 import { Company } from "./company.js";
+import { Officer } from "./officer.js";
 // import { Window } from "./windowsystem.js";
 
 export class UI {
@@ -75,16 +76,16 @@ export class UI {
                 const clickedOfficer = e.target.closest('.officerResult')
                 if (!clickedOfficer) {return}
 
-                const companyNumber = this.state.currentlySelectedCompany.companyNumber
-                const appointmentId
-                const companyData = await this.api.fetchCompanyDetails(companyNumber)
-                const company = new Company(companyData, this.api)
+                const officerAppointmentLink = clickedOfficer.dataset.officerAppointmentLink
+                const parts = officerAppointmentLink.split('/')
+                const officerNumber = parts[2]
 
-                this.state.currentlySelectedCompany = company
-                this.displayCompany(company)
+                const officerDetails = await this.api.fetchOfficerDetails(officerNumber)
 
-                await company.loadOfficers()
-                this.displayCompanyOfficers(company.officers)
+                const officer = new Officer(officerDetails)
+
+                this.displayOfficer(officer)
+
 
             })
         })
@@ -171,7 +172,7 @@ export class UI {
 
             row.innerText = officer.name
             row.classList.add('officerResult')
-            row.dataset.companyNumber = result.company_number
+            row.dataset.officerAppointmentLink = officer.officerAppointmentLink
 
             if (officer.active) {
 
@@ -185,6 +186,10 @@ export class UI {
 
     }
 
+    displayOfficer(officer) {
+
+        console.log(officer)
+    }
 
     //// Helper Functions
 

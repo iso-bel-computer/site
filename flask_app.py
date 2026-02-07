@@ -302,13 +302,12 @@ def fetchOfficerList():
 @app.route('/research/abulafia/fetchofficerdetails', methods=['GET'])
 def fetchOfficerDetails():
     try:
-        companyNumber = request.args.get("companyNumber", "").strip()
-        appointmentId = request.args.get("appointmentId", "").strip()
-        if not companyNumber or not appointmentId:
+        officerAppointmentLink = request.args.get("link", "0").strip()
+        if not officerAppointmentLink:
             return jsonify({"error": "Missing required parameters"}), 400
 
         response = requests.get(
-            CH_URL + f'company/{companyNumber}/appointments/{appointmentId}',
+            CH_URL + '/officers/' + officerAppointmentLink + '/appointments',
             auth=AUTH,
             timeout=TIMEOUT
         )
