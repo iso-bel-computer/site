@@ -1,5 +1,18 @@
 [
     {
+        "title": "Minima Moralia",
+        "pages": 272,
+        "author": "Theodor Adorno",
+        "isbn": "1844670511",
+        "isbn13": "1782695656",
+        "readDate": "2026/02/08",
+        "coverColours": [],
+        "mainColor": "#000000",
+        "accentColor": "#ce4627",
+        "fontStyle": "ss",
+        "review": ""
+    },
+    {
         "title": "The King In Yellow",
         "pages": 160,
         "author": "Robert W. Chambers",
