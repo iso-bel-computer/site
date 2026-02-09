@@ -325,6 +325,11 @@ def abulafia():
                            headerRouteDisplay = '/research/abulafia')
 
 
+@app.route('/research/policydash')
+def abulafia():
+    return render_template('policydash.html',
+                           siteMap = siteMap,
+                           headerRouteDisplay = '/research/policydash')
 
 """
 Init
