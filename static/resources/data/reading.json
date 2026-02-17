@@ -1,11 +1,24 @@
 [
     {
+        "title": "The Argonauts",
+        "pages": 181,
+        "author": "Maggie Nelson",
+        "isbn": "0993414915",
+        "isbn13": "9780993414916",
+        "readDate": "2026/02/17",
+        "coverColours": [],
+        "mainColor": "#345a73",
+        "accentColor": "#ffffff",
+        "fontStyle": "s",
+        "review": ""
+    },
+    {
         "title": "Minima Moralia",
         "pages": 272,
         "author": "Theodor Adorno",
         "isbn": "1844670511",
         "isbn13": "1782695656",
-        "readDate": "2026/02/08",
+        "readDate": "2026/02/09",
         "coverColours": [],
         "mainColor": "#000000",
         "accentColor": "#ce4627",
