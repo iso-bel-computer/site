@@ -20,7 +20,8 @@ siteMap = [
     '/art/prints',
     '/art/drawing',
     '/about/reading',
-    '/blog',
+    '/writing/poetry'
+    '/writing/blog',
 ]
 
 domain = 'https://www.iso-bel.computer'
@@ -179,7 +180,7 @@ def getBlogPosts():
                 print(f'Error processing {filename}')
     return sorted(posts, key=lambda x: x['date'], reverse=True)
 BLOGPOSTS = getBlogPosts()
-@app.route('/blog')
+@app.route('/writing/blog')
 def blog():
     return render_template('blog.html',
                            siteMap = siteMap,
