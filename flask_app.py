@@ -20,7 +20,7 @@ siteMap = [
     '/art/prints',
     '/art/drawing',
     '/about/reading',
-    '/writing/poetry'
+    '/writing/poetry',
     '/writing/blog',
 ]
 
