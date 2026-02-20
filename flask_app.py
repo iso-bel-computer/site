@@ -224,8 +224,27 @@ def art(category):
     )
 
 
+"""
+Poetry
 
+"""
 
+@app.route('/writing/poetry')
+def poetry():
+    return render_template('poetry.html',
+                           siteMap = siteMap,
+                           headerRouteDisplay = '/htmlworkshop')
+
+"""
+HTML Workshop
+
+"""
+
+@app.route('/htmlworkshop')
+def htmlworkshop():
+    return render_template('htmlworkshop.html',
+                           siteMap = siteMap,
+                           headerRouteDisplay = '/htmlworkshop')
 
 
 

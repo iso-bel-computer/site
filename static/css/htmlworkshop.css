@@ -1,0 +1,212 @@
+table {
+  border: 1px solid black;
+  border-collapse: collapse;
+  width: 100%;
+    font-size: 11pt
+}
+
+.smallexampletable {
+}
+
+pre {
+    margin: 0px;
+}
+
+td, th {
+    padding:5px;
+    max-width: 33%;
+    width: 33%;
+    border-bottom: 1px solid black;
+    overflow: hidden;
+}
+
+th {
+    padding: 5px;
+    background-color: var(--site-accent-color-transparent)
+
+}
+
+h3 {
+    text-decoration: underline;
+    font-size: 20pt;
+}
+
+button {
+    font-size: 20pt;
+    background-color: #00000000;
+    border: none;
+    padding: 0px;
+    width: 100%;
+    font-family: 'Imperator';
+    padding: 5px;
+}
+
+button:hover {
+    cursor: pointer
+}
+
+.buttonactive {
+    background-color: var(--site-accent-color-transparent);
+    border: 1px dotted #00000050;
+}
+
+main {
+    padding-top: 10px;
+    margin-left: 5vw;
+    margin-right: 5vw;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-left: 1px dashed black;
+    border-right: 1px dashed black;
+    min-height: 100vh;
+    background-color: #00000007;
+    font-size: 13pt;
+}
+
+.content {
+    display: none;
+    padding-bottom: 10px;
+}
+
+.collapsible {
+    display: block;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 5px;
+}
+
+.example1 {
+    text-decoration: underline;
+    color: red;
+}
+
+.example2 {
+    color: red;
+}
+.example3 {
+    color: green;
+}
+
+.example4 {
+    width: fit-content;
+    border-radius: 5px;
+    background-color: red;
+    cursor: revert;
+    border: 1px solid black
+}
+.example4:hover {
+    background-color: green;
+}
+
+.example4:active {
+    background-color: white;
+}
+
+.example5 {
+    text-decoration: underline;
+}
+
+.oneOfManyHeaders {
+    font-size: 8pt;
+}
+
+.box {
+    padding: 5px;
+    color: white;
+}
+
+#greenBox {
+    background-color: green;
+}
+#blueBox {
+    background-color: blue;
+}
+
+#example-1 {
+    color: green
+}
+
+#example-2 {
+    font-size: 30pt;
+}
+
+#example-3 {
+    border: 1px solid black;
+}
+
+#example-4 {
+    border-bottom: 2px dashed green;
+}
+
+#example-5 {
+    padding: 15px;
+    border: 1px solid black
+}
+#example-6 {
+    margin-left: 15px;
+    border: 1px solid black
+}
+
+#example-7 {
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+#example-8 {
+    background-color: lightblue;
+}
+
+#example-9 {
+    filter: drop-shadow(5px 5px 5px black)
+}
+
+#example-10 {
+    border: 1px solid black;
+    width: 50px;
+    height: 250px;
+}
+
+#example-11 {
+    height: 150px;
+    overflow: scroll
+}
+
+#example-12 {
+    font-family: 'Brush Script MT'
+}
+
+#example-13 {
+    background-color: lightgreen;
+    transform: rotate(5deg);
+}
+
+#example-14 {
+    text-align: center;
+}
+
+#example-14:hover {
+    transform: scale(1.8)
+}
+
+#example-15 {
+    text-align: center;
+    transition: transform 1s ease-in-out;
+}
+
+#example-15:hover {
+    transform: rotate(360deg);
+}
+
+#example-16 {
+    text-align: right
+}
+
+#example-17 {
+    background-color: lightpink;
+    opacity: 0.4
+}
+
+#example-18 {
+    border: 1px solid black;
+    resize: both;
+}

@@ -5,7 +5,7 @@ body {
     line-height: 1.17;
     --site-background-color: #DCD6C9;
     --site-accent-color: #142616;
-    --site-accent-color-transparent-lighter: #14261609;
+    : #14261609;
     --site-accent-color-transparent: #14261625;
     --site-accent-color-transparent-darker: #14261650;
     background-color: var(--site-background-color);

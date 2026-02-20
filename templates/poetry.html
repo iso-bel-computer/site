@@ -1,0 +1,267 @@
+
+{% extends "base.html" %}
+
+{% block extra_css %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/poetry.css') }}">
+
+{% endblock %}
+
+{% block content %}
+
+<div id='poetryWrapper'>
+    <div id='poemDisplaySquare'>
+        <div id='poem'>
+            <h1>4d acoustics</h1>
+            <p>
+                Recurring infernos determine environs<br>
+                Inspectors arretez in-vivo.<br>
+                Refrains regaine ground &, co-sined, arc around<br>
+                Xor to a point.<br>
+                <i>"We are Lost! Saved! Lost! Saved!"</i>
+            </p>
+            <p>
+                You can't go home again<br>
+                &nbsp&nbsp&nbsp&nbspcan't see home again<br>
+                &nbsp&nbsp&nbsp&nbspcan't picture home again<br>
+            </p>
+            <p>
+                When at home, you are transformed<br>
+                &nbsp&nbsp&nbsp&nbsp(It will have come when you least expect).<br>
+                A copy of a copy (re)produced;<br>
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbspdone over;<br>
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspdouble stamped.<br>
+                The CC FWD FYI,<br>
+                The OC RTS. (Referent Expunged).
+            </p>
+            <p>
+                Audiophile full stack acquired,<br>
+                Retroflectors input to RCA.<br>
+                I lay myself in her coma<br>
+                I've got a second date in 2061<br>
+                (One ventures from home on the thread of a tune).<br>
+                Come down Halley's daughter, (when you're ready),<br>
+                Come back for me.
+            </p>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+
+
+
+
+
+const poetryWrapper = document.getElementById('poetryWrapper')
+const poetryDiv = document.getElementById('poemDisplaySquare')
+const poem = document.getElementById('poem')
+
+
+
+function setMods() {
+    plusorminus1 = Math.random() < 0.5 ? -1 : 1; // decides if we want the movement positive or negative
+    plusorminus2 = Math.random() < 0.5 ? -1 : 1; // decides if we want the movement positive or negative
+    plusorminus3 = Math.random() < 0.5 ? -1 : 1; // for h, s, and l in turn
+    plusorminus4 = Math.random() < 0.5 ? -1 : 1; // for h, s, and l in turn
+    plusorminus5 = Math.random() < 0.5 ? -1 : 1; // for h, s, and l in turn
+    plusorminus6 = Math.random() < 0.5 ? -1 : 1; // for h, s, and l in turn
+    plusorminus7 = Math.random() < 0.5 ? -1 : 1; // for h, s, and l in turn
+ }
+
+setMods()
+
+
+
+let h = 221
+let s = 17
+let l = 87
+let h2 = 221
+let s2 = 17
+let l2 = 87
+
+setInterval(function() {
+
+    const now = new Date()
+    const secs = now.getSeconds()
+    const millisecs = now.getMilliseconds()
+
+    const msps = (secs * 1000) + millisecs // milliseconds elapsed in the minute
+
+    if (secs === 0) {setMods()} // reset every minute
+
+    const mod = 0.05
+
+
+     ///console.log('hsl: ', Math.trunc(h),Math.trunc(s), Math.trunc(l))
+     ///console.log('hsl2: ', Math.trunc(h2),Math.trunc(s2), Math.trunc(l2))
+
+
+    newh = (h  + mod * plusorminus1)
+    news = (s  + mod * plusorminus2)
+
+    newh2 = (h2  + mod * plusorminus4) // this is hacky but the global scope here is doing my nut in
+    news2 = (s2  + mod * plusorminus5)
+
+    h = newh
+    s = news
+
+    h2 = newh2
+    s2 = news2
+
+    const deg = 45 + ((mod * plusorminus7) * 10)
+
+    const bgDarknessMod = 0.5
+    const bgSatMod = 1
+
+    // console.log(mod, h,s,l)
+    poetryDiv.style.backgroundImage = `linear-gradient(${deg}deg, hsl(${h}, ${s}%, ${l}%), hsl(${h2}, ${s2}%, ${l2}%)`
+    poetryWrapper.style.backgroundImage = `linear-gradient(${deg + 90}deg, hsl(${h}, ${s / bgSatMod}%, ${l * bgDarknessMod}%), hsl(${h2}, ${s2 / bgSatMod}%, ${l2 * bgDarknessMod}%)`
+}, 50)
+
+
+
+let mouseX = 0, mouseY = 0
+let prevInverse = 0
+document.addEventListener("mousemove", e => {
+    let x = e.clientX
+    let y = e.clientY
+
+    const divRect = poetryDiv.getBoundingClientRect()
+    const centreX = divRect.left + ((divRect.right - divRect.left) / 2)
+    const centreY = divRect.top  + ((divRect.bottom - divRect.top) / 2)
+
+    const xDistance = Math.abs(x - centreX)
+    const yDistance = Math.abs(y - centreY)
+
+
+    const distance = Math.sqrt(xDistance * xDistance) + Math.sqrt(yDistance * yDistance)
+
+    let inverse = 1100 - (distance / 2)
+    inverse = (100/1100) * inverse
+
+
+    l = inverse
+    l2 = inverse
+
+
+
+     console.log(l, l2)
+
+
+
+    mouseX = x
+    mouseY = y
+
+})
+
+function isMouseOverDiv() {
+    const rect = poetryDiv.getBoundingClientRect()
+    return mouseX >= rect.left && mouseX <= rect.right && mouseY >= rect.top && mouseY <= rect.bottom
+}
+
+
+function isWidthMax() {
+    const maxWidth = parseFloat(getComputedStyle(poetryDiv).maxWidth);
+    return poetryDiv.offsetWidth >= maxWidth;
+}
+
+function isHeightMax() {
+    const maxHeight = parseFloat(getComputedStyle(poetryDiv).maxHeight);
+    return poetryDiv.offsetHeight >= maxHeight;
+}
+
+function isHeightMin() {
+
+    const minHeight = parseFloat(getComputedStyle(poetryDiv).minHeight);
+    return poetryDiv.offsetHeight <= minHeight;
+ }
+
+function isWidthMin() {
+
+    const minWidth = parseFloat(getComputedStyle(poetryDiv).minWidth);
+    return poetryDiv.offsetWidth <= minWidth;
+ }
+
+
+setInterval(function() {
+    const growRate = 0.015
+    const shrinkRate = 1
+    if (isMouseOverDiv()) {
+
+
+
+        if (!isHeightMax()) {
+
+            let growAmount = poetryDiv.offsetHeight * growRate
+            if (growAmount > 3) {growAmount = 3}
+            poetryDiv.style.height = (poetryDiv.offsetHeight + growAmount) + 'px'
+            poem.style.top  = (parseFloat(poem.style.top  || 0) + (growAmount / 2)) + 'px'
+        }
+        if (!isWidthMax()) {
+
+            let growAmount = poetryDiv.offsetWidth * growRate
+            if (growAmount > 3) {growAmount = 3}
+            poetryDiv.style.width  = (poetryDiv.offsetWidth  + growAmount) + 'px'
+            poem.style.left = (parseFloat(poem.style.left || 0) + (growAmount / 2)) + 'px'
+        }
+        return
+
+
+    } else {
+
+        if (!isWidthMin()) {
+
+            poetryDiv.style.width  = (poetryDiv.offsetWidth  - shrinkRate) + 'px'
+            poem.style.left = (parseFloat(poem.style.left || 0) - (shrinkRate / 2)) + 'px'
+        }
+
+        if (!isHeightMin()) {
+
+            poetryDiv.style.height = (poetryDiv.offsetHeight - shrinkRate) + 'px'
+            poem.style.top  = (parseFloat(poem.style.top  || 0) - (shrinkRate / 2)) + 'px'
+        }
+        return
+
+    }
+}, 65)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener("mousemove", e => {
+
+     const mouseX = e.clientX;
+     const mouseY = e.clientY;
+
+     const Xdiff =   poem.offsetWidth / window.innerWidth
+     const Ydiff =   poem.offsetHeight / window.innerHeight
+
+     const inverseX = (window.innerWidth  - mouseX) * Xdiff
+     const inverseY = (window.innerHeight - mouseY) * Ydiff
+
+     const movementMagnification = 4 /// increases the amount the poem moves by
+
+     const poemLeft = (inverseX - poem.offsetWidth  / 2) * (movementMagnification / 2)
+     const poemTop  = (inverseY - poem.offsetHeight / 2) * movementMagnification
+
+     poem.style.left = `${poemLeft}px`
+     poem.style.top  = `${poemTop}px`
+
+
+})
+</script>
+
+{% endblock %}
