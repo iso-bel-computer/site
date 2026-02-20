@@ -486,13 +486,7 @@ setInterval(function() {
 
 
 
-
-
-
-
-
-
-document.addEventListener("mousemove", e => {
+function handleMouseMove(e) {
 
     mouseX = e.clientX
     mouseY = e.clientY
@@ -503,7 +497,21 @@ document.addEventListener("mousemove", e => {
     const inverseY = (window.innerHeight - mouseY) * Ydiff;
     poem.style.left = `${(inverseX - poem.offsetWidth / 2) + 40}px`;
     poem.style.top  = `${(inverseY - poem.offsetHeight / 1.5) }px`;
+ }
+
+
+
+
+
+document.addEventListener("mousemove", e => {
+     handleMouseMove(e)
 });
+
+document.addEventListener("touchmove", e => {
+     handleMouseMove(e)
+});
+
+
 
 
 const forward = document.getElementById('forward')
