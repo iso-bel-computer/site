@@ -244,7 +244,7 @@ let deg = 45
 const goldenh = 45
 const goldens = 72
 const goldenl = 89
-
+let cherenkov = 0
 let transform = 1
 //const goldenh = 134
 //const goldens = 17
@@ -297,6 +297,7 @@ function animateGradient() {
     const effectiveLightDistance = 400 * transform
     let inverse = (100 / effectiveLightDistance) * (effectiveLightDistance - distance / 2);
     if (inverse < 0) {inverse = 0}
+    cherenkov = inverse * 1.5
 
     const t = (inverse / 100)  // normalize 0–100 → 0–1
 
@@ -381,6 +382,16 @@ function drawStatic() {
         const staticStartX = randomInt(-10, canvas.offsetWidth)
         const staticStartY = randomInt(-10, canvas.offsetHeight)
         const staticEndX = staticStartX  + randomInt(1,3)
+        const staticEndY = staticStartY
+        drawLine(staticStartX, staticStartY, staticEndX, staticEndY,)
+
+    }
+    ctx.strokeStyle = `hsl(0 0% 0% / 0.25)`;
+    const radiation = cherenkov * cherenkov
+    for (let i = 0; i < radiation; i++) {
+        const staticStartX = randomInt(-10, canvas.offsetWidth)
+        const staticStartY = randomInt(-10, canvas.offsetHeight)
+        const staticEndX = staticStartX + 1
         const staticEndY = staticStartY
         drawLine(staticStartX, staticStartY, staticEndX, staticEndY,)
 
