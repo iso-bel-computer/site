@@ -10,12 +10,10 @@ app = Flask(__name__)
 
 siteMap = [
     '', # not an empty string!!! this is the home route!!! dont remove u idiot!!
-    '/projects/YWABM',
-    '/projects/isoante',
-    '/projects/paranoid',
+    '/projects/YWABM - UNDER CONSTRUCTION',
+    '/projects/isoante - UNDER CONSTRUCTION',
+    '/projects/paranoid - UNDER CONSTRUCTION',
     '/research/abulafia',
-    '/research/councilcash',
-    '/research/verisimillitude',
     '/art/photography',
     '/art/prints',
     '/art/drawing',
@@ -184,7 +182,7 @@ BLOGPOSTS = getBlogPosts()
 def blog():
     return render_template('blog.html',
                            siteMap = siteMap,
-                           headerRouteDisplay = '/blog',
+                           headerRouteDisplay = '/writing/blog',
                            posts=BLOGPOSTS)
 
 
