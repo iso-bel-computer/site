@@ -2,11 +2,16 @@ header {
     display: none
 }
 
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
 main {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: black
+    background-color: black;
 }
 
 #poetryWrapper {
@@ -19,15 +24,17 @@ main {
 
 
 #poemDisplaySquare {
-    min-width: 5vh;
-    min-height: 5vh;
-    max-width: calc(100vw - 2vh);
-    max-height: 98vh;
-    font-size: 55pt;
+    min-width: 55vw;
+    min-height: 2vh;
+    max-width: 94vh;
+    max-height: 94vh;
+    font-size: 14pt;
     overflow: hidden;
     cursor: crosshair;
     box-sizing: border-box;
+    box-shadow: 0px 5px 5px #00000020;
     position: relative;
+    border: 2px inset black;
 }
 
 
@@ -36,6 +43,60 @@ main {
 
     position: absolute;
     white-space: nowrap;
-    color: #373d4a;
-    filter: drop-shadow(0px 0px 3px #00000050);
+    color: hsl(45,72%,89%);
+}
+
+button {
+    position: absolute;
+    width: calc((100vw - 96vh) / 2);
+    height: 100vh;
+    font-size:200pt;
+    display: flex;
+    color: white;
+    background-color: #00000000;
+    align-items: end;
+    overflow: visible;
+    border: none;
+    opacity: 0;
+    padding: 0px;
+
+}
+/* Move only the text */
+button span {
+    position: relative;
+    pointer-events: none;
+    line-height: 1;
+    bottom: -5vh;
+    font-family: 'Imperator'
+
+}
+
+button:hover {
+    opacity: 0.4
+}
+
+button:active {
+    opacity: 1
+}
+
+#back {
+    top: 0vh;
+    left: 0vw;
+    justify-items: left;
+    align-items: start;
+}
+
+
+#forward {
+    bottom: 0vh;
+    right: 0vw;
+    justify-content: flex-end;
+    text-align: right;
+
+}
+
+
+#canvas {
+    width: 0px;
+    height: 0px;
 }

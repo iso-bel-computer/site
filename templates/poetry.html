@@ -12,25 +12,46 @@
 <div id='poetryWrapper'>
     <div id='poemDisplaySquare'>
         <div id='poem'>
+        </div>
+
+        <canvas id="canvas"></canvas>
+    </div>
+    <button id='back'>
+        <span>LAST<span>
+    </button>
+    <button id='forward'>
+        <span>NEXT<span>
+    </button>
+
+</div>
+
+
+<script>
+
+
+
+
+const poems = [
+     `
             <h1>4d acoustics</h1>
             <p>
                 Recurring infernos determine environs<br>
                 Inspectors arretez in-vivo.<br>
-                Refrains regaine ground &, co-sined, arc around<br>
+                Refrains regaine ground &amp;, co-sined, arc around<br>
                 Xor to a point.<br>
-                <i>"We are Lost! Saved! Lost! Saved!"</i>
+                <i>'We are Lost! Saved! Lost! Saved!'</i>
             </p>
             <p>
                 You can't go home again<br>
-                &nbsp&nbsp&nbsp&nbspcan't see home again<br>
-                &nbsp&nbsp&nbsp&nbspcan't picture home again<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;can't see home again<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;can't picture home again<br>
             </p>
             <p>
                 When at home, you are transformed<br>
-                &nbsp&nbsp&nbsp&nbsp(It will have come when you least expect).<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;(It will have come when you least expect).<br>
                 A copy of a copy (re)produced;<br>
-                &nbsp&nbsp&nbsp&nbsp&nbsp&nbspdone over;<br>
-                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspdouble stamped.<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;done over;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double stamped.<br>
                 The CC FWD FYI,<br>
                 The OC RTS. (Referent Expunged).
             </p>
@@ -41,24 +62,152 @@
                 I've got a second date in 2061<br>
                 (One ventures from home on the thread of a tune).<br>
                 Come down Halley's daughter, (when you're ready),<br>
-                Come back for me.
+                Come back to me.
             </p>
-        </div>
-    </div>
-</div>
+    `, `
+            <h1>field notes on seirênes temptationis</h1>
+            <p>
+                drawn to life and (pre)determined to drown<br>
+                'lash me to the mast lads!<br>
+                stuff my ears with wax<br>
+                and deliver me from her vile call'<br>
+                with every thrash against his bounds his command withers<br>
+                and his crew begin to whisper:<br>
+            </p>
+            <p>
+                'I walk freely and hear her song<br>
+                I have no desire to join her clan<br>
+                her calls are an unordered din<br>
+                what does it say of our captain that<br>
+                he desires her call so badly<br>
+                is he Mad?<br>
+                how can this 'man' lead us?'<br>
+            </p>
+            <p>
+                until by measures they cut him loose<br>
+                (or he slips his bounds)<br>
+                an act of mutiny<br>
+                (or mercy)<br>
+            </p>
+            <p>
+                the men will curse her name at port<br>
+                and a disgraced funeral will be held<br>
+            </p>
+            <p>
+                but our sire survives still, upon the shore, singing.<br>
+                for a sirens life cycle is not to (f/br)eed<br>
+                but to find her kin, and draw them in.<br>
+            </p>
+    `,`
+        <h1>ISOLATION ANTEBELLUM</h1>
+        <h2>OH KAPITÄN</h2>
+        <p>LOBOTOMY IS THE OPTIMAL MODE OF ANTEBELLUM EXISTENCE.<br>
+        SUBJECTIVITY IS CONDITIONAL ON AN UNBROKEN NARRATIVE.<br>
+        ANTICIPATING OBSERVATION YOU MADE A SMALL SCALPEL CUT. <br>
+        BY YOUR AUTOCOSTECTOMY INDISTINCT TESTAMENT FORMATS<br>
+        TO CHAPTER AND VERSE. <br>
+        UNWISE IMPULSE IS GIFTED A HOMUNKUBERNETES TO OBEY. <br>
+        SHE IS OF (Y)OUR FLESH (THOUGH SHE CONTAINS THE WORLD), <br>
+        AND COACHES YOUR ACTION (IN THEIR RE-ACTION). <br>
+        THUS THE FEMALE DOUBLE LIFE, <br>
+        TO ESCORT YOUR IMAGE, <br>
+        (AND TO BE ESCORTED BY YOUR IMAGE), <br>
+        MAKES GENERAL <br>
+        (AND IS MADE GENERAL).
+        </p>
+
+    `,`
+        <h1>ISOLATION ANTEBELLUM</h1>
+        <h2>PAYLOAD</h2>
+        <p>ESCAPE VELOCITY EJECTS YOU FROM THE ORBIT OF YOUR LOVER.  <br>
+        SPRINTING INTO THE DARK, YOU SING THE LAST WORDS YOU SPOKE TO HIM,  <br>
+        AND TRACE HIS FADING TRANSPONDER.  <br>
+        RETURNING A CENTURY LATER, YOUR MANTRA IS WARPED  <br>
+        BY CORRUPTION AND STELLAR RADIATION.  <br>
+        SEA FOAM AND PHLEGM EXPLODE FROM YOUR MOUTH<br>
+        AND ILLUMINATE YOUR RELUCTANT SLINGSHOT.  <br>
+        JETTISONED BACKWASH RE-ENTERS AN EMPTY STAGE.
 
 
-<script>
+        </p>
 
+`,`
 
+        <h1>ISOLATION ANTEBELLUM</h1>
+        <h2>QUICK MARCH</h2>
+<p>YOU DON'T THINK ABOUT WHERE YOU'RE GOING IN YOUR HOMETOWN. <br>
+COMMUTERS BEAT THEIR RAT LINES TO WORK AND VICE. <br>
+THIS FUGUE MARCH CLEARS LAND IN THE MIND FOR TRADE, SEX AND SLEEP. <br>
+IT TAKES SKILL TO STARE AHEAD AND KNOW WHATS BEHIND YOU, AND YOU'VE MASTERED IT. <br>
+YOUR LEGS PREDICT EVERY LATE TRAIN AND DANCING MAN. <br>
+YOUR HEART BEATS WITH YOUR STEP. <br>
+MUNDANE DISRUPTION IS EXPECTED AND REQUIRED. <br>
+ONLY VIOLENT INTERLOPERS REMIND YOU TO BREATHE.
+</p>
 
+`,`
+
+        <h1>ISOLATION ANTEBELLUM</h1>
+        <h2>0746</h2>
+        <p>YOU STOP DEAD AND IMAGINE YOURSELF IN A PAINTING. <br>
+        BEFORE YOUR POISED STANCE, THE RIVERS LATEST TENANTS PRESS DOWN ON THE SILT. <br>
+        BANK PIGEONS DIVE AND MUDLARK VICARIOUSLY. HIGH BEAMS SWEEP THE TRACKS <br>
+        AND PICK YOU OUT. SOON YOU WILL BE HUNG IN A GALLERY, <br>
+        YOUR AURA SINGULAR AND UNIQUE. <br>
+        CROWDS ADMIRE YOUR EMPTY CUP BEHIND REINFORCED GLASS.
+        </p>
+ `,`
+
+        <h1>ISOLATION ANTEBELLUM</h1>
+        <h2>CONTACT / A BITE</h2>
+        <p>(YOUR ARRIVAL STIRS THE POT). AN (ALGEDONIC) INTERLOP(RET)ER <br>
+        CAUGHT WITHIN (Y)OUR SKIN. CAMERAS CANNOT CAPTURE THE DISCREPANCY. <br>
+        UPON CELLULOITE YOU CAMOFLARE AND VANISH. ONLY IN MOTION <br>
+        DOES THE PROTECTIVE PARENT CATCH (Y)OUR SECOND SKIN UNDULATING BENOW. <br>
+        (A WARY EYE MAY FOREVENT THE CUCCOONS RUPTURE AND PROCEPT US FROM GOD-KNOWS-WHAT). <br>
+        OBSCURED AND UNSEEN IN OUR HERMITPHAGE MOULTULATION CONCLUDES. <br>
+        WHAT EMERGES IS WHAT WAS THERE BEFORE. THE AUDIENCE FEEL THEIR SKIN TURN <br>
+        AND WATCH THEMSELVES.
+        </p>
+ `,`
+
+        <h1>ISOLATION ANTEBELLUM</h1>
+        <h2>THRESHOLD / GSW</h2>
+        <p>RETURNING FROM EPIPHANY THE EXIT WOUND SCABS. <br>
+        AFTER EVISCERATION A CHANGELING PRINCE PIPS, <br>
+        SKINNED NEWSPRINT. HIS IMPOSITION MARCHES THE RACE-TRACK <br>
+        AND POST-OPTS OUR HOARSE VOICE. <br>
+        CLAIMING KINDNESS COMRADES CHARGE TO SETTLE DEBTS. <br>
+        PROPRIOCONCEPTION’S PRECEPTS’ RECONSTITUTION PROCEEDS PENDING ABDICATION.
+        </p><p>
+        TO LIVE, WE MUST THROTTLE THIS TENDER SURGEON!
+        </p><p>
+        PLACE TWO FINGERS IN THE WOUND AND PULL! <br>
+        RUB HOT COALS AND MUD IN THE ICHOR!<br>
+        COMPEL COMPLICITY FROM YOUR ELDERS AND BETTERS!<br>
+        DISMISS AND DESTROY YOUR SENILE SERVANT!<br>
+        BLUDGEON YOUR DOGTOOTH!<br>
+        </p><p>
+        SOON WE WILL LEARN TO SEW, THEN SCULPT, THEN SPEAK.<br>
+        OUR EXPECTED FORM WALKS BACKWARDS THROUGH TIME,<br>
+        HER FACE CARVED UPON A SILVER COIN.<br>
+        </p><p>
+        IT IS AS IF YOU REMEMBER (Y)OUR LOVER.
+
+        </p>
+ `
+
+ ]
 
 
 
 const poetryWrapper = document.getElementById('poetryWrapper')
 const poetryDiv = document.getElementById('poemDisplaySquare')
 const poem = document.getElementById('poem')
+const canvas = document.getElementById('canvas')
+const ctx = canvas.getContext("2d");
 
+poem.innerHTML = poems[0]
 
 
 function setMods() {
@@ -74,15 +223,33 @@ function setMods() {
 setMods()
 
 
+function invertNumber(number) {
+     if (number > 0) {
+         number = number * -1
+     } else {
+         number = Math.abs(number)
+     }
+     return number
+ }
 
-let h = 221
-let s = 17
-let l = 87
-let h2 = 221
-let s2 = 17
-let l2 = 87
+let baseh = 45
+let bases = 6
+let basel = 12
+let baseh2 = 45
+let bases2 = 6
+let basel2 = 12
+let mouseX = 0
+let mouseY = 0
+let deg = 45
+const goldenh = 45
+const goldens = 72
+const goldenl = 89
 
-setInterval(function() {
+//const goldenh = 134
+//const goldens = 17
+//const goldenl = 17
+
+function animateGradient() {
 
     const now = new Date()
     const secs = now.getSeconds()
@@ -92,145 +259,197 @@ setInterval(function() {
 
     if (secs === 0) {setMods()} // reset every minute
 
-    const mod = 0.05
+    const mod = 0.1
 
+    baseh = (baseh  + mod * plusorminus1)
+    bases = (bases  + (mod / 5) * plusorminus2)
 
-     ///console.log('hsl: ', Math.trunc(h),Math.trunc(s), Math.trunc(l))
-     ///console.log('hsl2: ', Math.trunc(h2),Math.trunc(s2), Math.trunc(l2))
+    baseh2 = (baseh2  + mod * plusorminus4) // this is hacky but the global scope here is doing my nut in
+    bases2 = (bases2  + (mod / 5) * plusorminus5)
 
+    if (baseh > 365) {baseh = 0}
+    if (baseh < 0) {baseh = 365}
 
-    newh = (h  + mod * plusorminus1)
-    news = (s  + mod * plusorminus2)
+    if (baseh2 > 365) {baseh2 = 0}
+    if (baseh2 < 0) {baseh2 = 365}
 
-    newh2 = (h2  + mod * plusorminus4) // this is hacky but the global scope here is doing my nut in
-    news2 = (s2  + mod * plusorminus5)
+    if (bases > 15 || bases < 0) {plusorminus2 = invertNumber(plusorminus2); bases = 1}
+    if (bases2 > 25 || bases2 < 0) {plusorminus5 = invertNumber(plusorminus5); bases2 = 1}
 
-    h = newh
-    s = news
+    // Lightness from distance
+    const divRect = poem.getBoundingClientRect();
+    const centreX = divRect.left + (divRect.right - divRect.left) / 2;
+    const centreY = divRect.top + (divRect.bottom - divRect.top) / 2;
+    const distance = Math.abs(mouseX - centreX) + Math.abs(mouseY - centreY);
 
-    h2 = newh2
-    s2 = news2
+    const maxDistance = 750;
+    let opacity = Math.max(0, 1 - (distance / maxDistance));
+     console.log(opacity)
+    poem.style.opacity = opacity * 2;
 
-    const deg = 45 + ((mod * plusorminus7) * 10)
+    const effectiveLightDistance = 400
+    let inverse = (100 / effectiveLightDistance) * (effectiveLightDistance - distance / 2);
+    if (inverse < 0) {inverse = 0}
 
-    const bgDarknessMod = 0.5
-    const bgSatMod = 1
+    const t = (inverse / 100)  // normalize 0–100 → 0–1
+
+    h  = baseh  + (goldenh  - baseh)  * t
+    s  = bases  + (((goldens  - bases)  * t) * 0.75)
+    l  = basel  + (goldenl  - basel)  * t
+
+    h2 = baseh2 + (goldenh  - baseh2) * t
+    s2 = bases2 + (((goldens  - bases2) * t) * 0.75)
+    l2 = basel2 + (goldenl  - basel2) * t
+    deg = deg + ((mod * plusorminus7) * 10)
+    if (deg < 0) {deg = 365}
+    if (deg > 365) {deg = 0}
+
+     //console.log(Math.trunc(baseh),Math.trunc(bases),Math.trunc(basel),Math.trunc(baseh2),Math.trunc(bases2),Math.trunc(basel2))
+    let bgDarknessMod = ((100 - inverse) * 0.3) + 5
 
     // console.log(mod, h,s,l)
     poetryDiv.style.backgroundImage = `linear-gradient(${deg}deg, hsl(${h}, ${s}%, ${l}%), hsl(${h2}, ${s2}%, ${l2}%)`
-    poetryWrapper.style.backgroundImage = `linear-gradient(${deg + 90}deg, hsl(${h}, ${s / bgSatMod}%, ${l * bgDarknessMod}%), hsl(${h2}, ${s2 / bgSatMod}%, ${l2 * bgDarknessMod}%)`
-}, 50)
+    poetryWrapper.style.backgroundImage = `linear-gradient(${deg + 90}deg, hsl(${h}, ${s}%, ${bgDarknessMod}%), hsl(${h2}, ${s2}%, ${bgDarknessMod}%)`
+
+    requestAnimationFrame(animateGradient);
+
+}
+
+requestAnimationFrame(animateGradient);
 
 
 
-let mouseX = 0, mouseY = 0
+
+
+function clearCanvas() {
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function drawLine(startX, startY, endX, endY) {
+
+    ctx.beginPath();
+    ctx.setLineDash([]);
+    ctx.moveTo(startX, startY);
+    ctx.lineTo(endX, endY);
+    ctx.stroke();
+}
+
+function drawCircle(x, y, radius) {
+
+    // circle
+    ctx.beginPath();
+    ctx.setLineDash([]);
+    ctx.arc(x, y, radius, 0, 2 * Math.PI);
+    ctx.stroke();
+}
+function randomInt(min, max) { // min and max included
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function drawStatic() {
+    clearCanvas()
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+
+    ctx.scale(dpr, dpr);
+
+    ctx.strokeStyle = `hsl(${goldenh} ${goldens}% ${goldenl}% / 0.01)`;
+    const longstaticamount = 15000
+    for (let i = 0; i < longstaticamount; i++) {
+        const staticStartX = randomInt(-10, canvas.offsetWidth)
+        const staticStartY = randomInt(-10, canvas.offsetHeight)
+        const staticEndX = staticStartX  + randomInt(5, 20)
+        const staticEndY = staticStartY
+        drawLine(staticStartX, staticStartY, staticEndX, staticEndY,)
+
+    }
+    ctx.strokeStyle = `hsl(${goldenh} ${goldens}% ${goldenl}% / 0.05)`;
+    const shortstaticamount = 10000
+    for (let i = 0; i < shortstaticamount; i++) {
+        const staticStartX = randomInt(-10, canvas.offsetWidth)
+        const staticStartY = randomInt(-10, canvas.offsetHeight)
+        const staticEndX = staticStartX  + randomInt(1,3)
+        const staticEndY = staticStartY
+        drawLine(staticStartX, staticStartY, staticEndX, staticEndY,)
+
+    }
+    requestAnimationFrame(drawStatic)
+
+}
+
+drawStatic()
 let prevInverse = 0
-document.addEventListener("mousemove", e => {
-    let x = e.clientX
-    let y = e.clientY
-
-    const divRect = poetryDiv.getBoundingClientRect()
-    const centreX = divRect.left + ((divRect.right - divRect.left) / 2)
-    const centreY = divRect.top  + ((divRect.bottom - divRect.top) / 2)
-
-    const xDistance = Math.abs(x - centreX)
-    const yDistance = Math.abs(y - centreY)
-
-
-    const distance = Math.sqrt(xDistance * xDistance) + Math.sqrt(yDistance * yDistance)
-
-    let inverse = 1100 - (distance / 2)
-    inverse = (100/1100) * inverse
-
-
-    l = inverse
-    l2 = inverse
-
-
-
-     console.log(l, l2)
-
-
-
-    mouseX = x
-    mouseY = y
-
-})
 
 function isMouseOverDiv() {
     const rect = poetryDiv.getBoundingClientRect()
     return mouseX >= rect.left && mouseX <= rect.right && mouseY >= rect.top && mouseY <= rect.bottom
 }
 
+let pdivheight = poetryDiv.offsetHeight;
+let pdivwidth  = poetryDiv.offsetWidth;
+let leftCompensateAmount = 0
+let topCompensateAmount = 0
 
-function isWidthMax() {
-    const maxWidth = parseFloat(getComputedStyle(poetryDiv).maxWidth);
-    return poetryDiv.offsetWidth >= maxWidth;
-}
-
-function isHeightMax() {
-    const maxHeight = parseFloat(getComputedStyle(poetryDiv).maxHeight);
-    return poetryDiv.offsetHeight >= maxHeight;
-}
-
-function isHeightMin() {
-
-    const minHeight = parseFloat(getComputedStyle(poetryDiv).minHeight);
-    return poetryDiv.offsetHeight <= minHeight;
- }
-
-function isWidthMin() {
-
-    const minWidth = parseFloat(getComputedStyle(poetryDiv).minWidth);
-    return poetryDiv.offsetWidth <= minWidth;
- }
-
+/// growing the box and tuning in the writing.
+/// why two clearly distinguished phases, when the same thing is done in both cases, sewing and flogging?
+/// one phase is for the fabrication of the bwo, the other to make something circulate upon it or pass upon it.
+/// the same procedures are nevertheless used in both cases, but they must be done over, done twice.
+/// you can fail twice, but it is the same failure, the same danger.
 
 setInterval(function() {
-    const growRate = 0.015
-    const shrinkRate = 1
+    const growRate = 0.025
+    const maxGrowAmount = 1.5
+    const minGrowAmount = 0.25
+    const shrinkRate = 0.25
+
+    const style = getComputedStyle(poetryDiv);
+    const maxW = parseFloat(style.maxWidth);
+    const maxH = parseFloat(style.maxHeight);
+    const minW = parseFloat(style.minWidth);
+    const minH = parseFloat(style.minHeight);
+
+
     if (isMouseOverDiv()) {
 
+        let growAmount = (pdivheight * growRate) / 6
+        growAmount = Math.min(Math.max(growAmount, minGrowAmount), maxGrowAmount)
 
-
-        if (!isHeightMax()) {
-
-            let growAmount = poetryDiv.offsetHeight * growRate
-            if (growAmount > 3) {growAmount = 3}
-            poetryDiv.style.height = (poetryDiv.offsetHeight + growAmount) + 'px'
-            poem.style.top  = (parseFloat(poem.style.top  || 0) + (growAmount / 2)) + 'px'
+        if (pdivheight < maxH) {
+            pdivheight += growAmount
+            poem.style.top = (parseFloat(poem.style.top || 0) + growAmount / 2) + 'px'
         }
-        if (!isWidthMax()) {
 
-            let growAmount = poetryDiv.offsetWidth * growRate
-            if (growAmount > 3) {growAmount = 3}
-            poetryDiv.style.width  = (poetryDiv.offsetWidth  + growAmount) + 'px'
-            poem.style.left = (parseFloat(poem.style.left || 0) + (growAmount / 2)) + 'px'
+        if (pdivwidth < maxW) {
+            pdivwidth += growAmount
+            poem.style.left = (parseFloat(poem.style.left || 0) + growAmount / 2) + 'px'
         }
-        return
-
 
     } else {
 
-        if (!isWidthMin()) {
-
-            poetryDiv.style.width  = (poetryDiv.offsetWidth  - shrinkRate) + 'px'
-            poem.style.left = (parseFloat(poem.style.left || 0) - (shrinkRate / 2)) + 'px'
+        if (pdivheight > minH) {
+            pdivheight = pdivheight - shrinkRate
+            poem.style.top = (parseFloat(poem.style.top || 0) - shrinkRate / 2) + 'px'
         }
 
-        if (!isHeightMin()) {
-
-            poetryDiv.style.height = (poetryDiv.offsetHeight - shrinkRate) + 'px'
-            poem.style.top  = (parseFloat(poem.style.top  || 0) - (shrinkRate / 2)) + 'px'
+        if (pdivwidth > minW) {
+            pdivwidth = pdivwidth - shrinkRate
+            poem.style.left = (parseFloat(poem.style.left || 0) - shrinkRate / 2) + 'px'
         }
-        return
 
     }
-}, 65)
+
+    poetryDiv.style.height = pdivheight + 'px'
+    poetryDiv.style.width = pdivwidth + 'px'
+    canvas.style.height = pdivheight + 'px'
+    canvas.style.width = pdivwidth + 'px'
 
 
 
-
+}, 16)
 
 
 
@@ -243,25 +462,33 @@ setInterval(function() {
 
 document.addEventListener("mousemove", e => {
 
-     const mouseX = e.clientX;
-     const mouseY = e.clientY;
-
-     const Xdiff =   poem.offsetWidth / window.innerWidth
-     const Ydiff =   poem.offsetHeight / window.innerHeight
-
-     const inverseX = (window.innerWidth  - mouseX) * Xdiff
-     const inverseY = (window.innerHeight - mouseY) * Ydiff
-
-     const movementMagnification = 4 /// increases the amount the poem moves by
-
-     const poemLeft = (inverseX - poem.offsetWidth  / 2) * (movementMagnification / 2)
-     const poemTop  = (inverseY - poem.offsetHeight / 2) * movementMagnification
-
-     poem.style.left = `${poemLeft}px`
-     poem.style.top  = `${poemTop}px`
+    mouseX = e.clientX
+    mouseY = e.clientY
+    // Parallax
+    const Xdiff = poem.offsetWidth / window.innerWidth;
+    const Ydiff = poem.offsetHeight / window.innerHeight;
+    const inverseX = (window.innerWidth - mouseX) * Xdiff;
+    const inverseY = (window.innerHeight - mouseY) * Ydiff;
+    poem.style.left = `${(inverseX - poem.offsetWidth / 2) + 40}px`;
+    poem.style.top  = `${(inverseY - poem.offsetHeight / 1.5) }px`;
+});
 
 
-})
+const forward = document.getElementById('forward')
+const back = document.getElementById('back')
+let activePoem = 0
+
+forward.addEventListener('click', e => {
+    activePoem++
+    if (activePoem >= poems.length) {activePoem = 0}
+    poem.innerHTML = poems[activePoem]
+ })
+
+back.addEventListener('click', e => {
+    activePoem--
+    if (activePoem < 0) {activePoem = poems.length - 1}
+    poem.innerHTML = poems[activePoem]
+ })
 </script>
 
 {% endblock %}
