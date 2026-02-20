@@ -356,48 +356,58 @@ function randomInt(min, max) { // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function drawStatic() {
-    clearCanvas()
+function resizeCanvas() {
     const dpr = window.devicePixelRatio || 1;
     const rect = canvas.getBoundingClientRect();
-
     canvas.width = rect.width * dpr;
     canvas.height = rect.height * dpr;
-
     ctx.scale(dpr, dpr);
+}
 
-    ctx.strokeStyle = `hsl(${goldenh} ${goldens}% ${goldenl}% / 0.01)`;
-    const longstaticamount = 15000
+window.addEventListener('resize', resizeCanvas);
+
+let staticDrawn = 0
+function drawStatic() {
+    clearCanvas();
+
+    const w = canvas.offsetWidth;
+    const h = canvas.offsetHeight;
+
+    const radiation = clamp((((cherenkov * cherenkov) / 1200000) * (canvas.width * canvas.height)), 0, 70000);
+    const longstaticamount = 5000;
+    const shortstaticamount = 3000;
+
+    ctx.strokeStyle = `hsl(${goldenh} ${goldens}% ${goldenl}% / 0.015)`;
+    ctx.beginPath();
     for (let i = 0; i < longstaticamount; i++) {
-        const staticStartX = randomInt(-10, canvas.offsetWidth)
-        const staticStartY = randomInt(-10, canvas.offsetHeight)
-        const staticEndX = staticStartX  + randomInt(5, 20)
-        const staticEndY = staticStartY
-        drawLine(staticStartX, staticStartY, staticEndX, staticEndY,)
-
+        const x = randomInt(-10, w);
+        const y = randomInt(-10, h);
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + randomInt(5, 20), y);
     }
-    ctx.strokeStyle = `hsl(${goldenh} ${goldens}% ${goldenl}% / 0.05)`;
-    const shortstaticamount = 10000
+    ctx.stroke();
+
+    ctx.strokeStyle = `hsl(${goldenh} ${goldens}% ${goldenl}% / 0.1)`;
+    ctx.beginPath();
     for (let i = 0; i < shortstaticamount; i++) {
-        const staticStartX = randomInt(-10, canvas.offsetWidth)
-        const staticStartY = randomInt(-10, canvas.offsetHeight)
-        const staticEndX = staticStartX  + randomInt(1,3)
-        const staticEndY = staticStartY
-        drawLine(staticStartX, staticStartY, staticEndX, staticEndY,)
-
+        const x = randomInt(-10, w);
+        const y = randomInt(-10, h);
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + randomInt(1, 3), y);
     }
-    ctx.strokeStyle = `hsl(0 0% 0% / 0.25)`;
-    const radiation = cherenkov * cherenkov
+    ctx.stroke();
+
+    ctx.strokeStyle = `hsl(0 0% 0% / 0.2)`;
+    ctx.beginPath();
     for (let i = 0; i < radiation; i++) {
-        const staticStartX = randomInt(-10, canvas.offsetWidth)
-        const staticStartY = randomInt(-10, canvas.offsetHeight)
-        const staticEndX = staticStartX + 1
-        const staticEndY = staticStartY
-        drawLine(staticStartX, staticStartY, staticEndX, staticEndY,)
-
+        const x = randomInt(-10, w);
+        const y = randomInt(-10, h);
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + 1, y);
     }
-    requestAnimationFrame(drawStatic)
+    ctx.stroke();
 
+    requestAnimationFrame(drawStatic);
 }
 
 drawStatic()
@@ -466,6 +476,7 @@ setInterval(function() {
     poetryDiv.style.width = pdivwidth + 'px'
     canvas.style.height = pdivheight + 'px'
     canvas.style.width = pdivwidth + 'px'
+    resizeCanvas()
 
     poetryDiv.style.border = `3px inset hsl(${h},${s}%,${l + 2}%) `
 
