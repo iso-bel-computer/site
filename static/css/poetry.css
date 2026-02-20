@@ -24,15 +24,14 @@ main {
 
 
 #poemDisplaySquare {
-    min-width: 55vw;
-    min-height: 2vh;
+    min-width: 35vw;
+    min-height: 1vh;
     max-width: 94vh;
     max-height: 94vh;
     font-size: 14pt;
     overflow: hidden;
     cursor: crosshair;
     box-sizing: border-box;
-    box-shadow: 0px 5px 5px #00000020;
     position: relative;
     border: 2px inset black;
 }

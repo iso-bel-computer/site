@@ -50,16 +50,16 @@ const poems = [
                 When at home, you are transformed<br>
                 &nbsp;&nbsp;&nbsp;&nbsp;(It will have come when you least expect).<br>
                 A copy of a copy (re)produced;<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;done over;<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double stamped.<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double stamped;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;done twice.<br>
                 The CC FWD FYI,<br>
-                The OC RTS. (Referent Expunged).
+                The OC RTS. (Referent Exiled).
             </p>
             <p>
                 Audiophile full stack acquired,<br>
                 Retroflectors input to RCA.<br>
                 I lay myself in her coma<br>
-                I've got a second date in 2061<br>
+                I've got a second date in '61<br>
                 (One ventures from home on the thread of a tune).<br>
                 Come down Halley's daughter, (when you're ready),<br>
                 Come back to me.
@@ -248,6 +248,13 @@ const goldenl = 89
 //const goldenh = 134
 //const goldens = 17
 //const goldenl = 17
+function clamp(num, min, max) {
+  return num <= min
+    ? min
+    : num >= max
+      ? max
+      : num
+}
 
 function animateGradient() {
 
@@ -274,7 +281,7 @@ function animateGradient() {
     if (baseh2 < 0) {baseh2 = 365}
 
     if (bases > 15 || bases < 0) {plusorminus2 = invertNumber(plusorminus2); bases = 1}
-    if (bases2 > 25 || bases2 < 0) {plusorminus5 = invertNumber(plusorminus5); bases2 = 1}
+    if (bases2 > 15 || bases2 < 0) {plusorminus5 = invertNumber(plusorminus5); bases2 = 1}
 
     // Lightness from distance
     const divRect = poem.getBoundingClientRect();
@@ -282,7 +289,7 @@ function animateGradient() {
     const centreY = divRect.top + (divRect.bottom - divRect.top) / 2;
     const distance = Math.abs(mouseX - centreX) + Math.abs(mouseY - centreY);
 
-    const maxDistance = 750;
+    const maxDistance = clamp(poetryDiv.offsetHeight, 250, 99999);
     let opacity = Math.max(0, 1 - (distance / maxDistance));
      console.log(opacity)
     poem.style.opacity = opacity * 2;
@@ -300,16 +307,17 @@ function animateGradient() {
     h2 = baseh2 + (goldenh  - baseh2) * t
     s2 = bases2 + (((goldens  - bases2) * t) * 0.75)
     l2 = basel2 + (goldenl  - basel2) * t
-    deg = deg + ((mod * plusorminus7) * 10)
+    deg = deg + ((mod * plusorminus7))
     if (deg < 0) {deg = 365}
     if (deg > 365) {deg = 0}
 
      //console.log(Math.trunc(baseh),Math.trunc(bases),Math.trunc(basel),Math.trunc(baseh2),Math.trunc(bases2),Math.trunc(basel2))
     let bgDarknessMod = ((100 - inverse) * 0.3) + 5
+    let bgSatMod = 0.75
 
     // console.log(mod, h,s,l)
     poetryDiv.style.backgroundImage = `linear-gradient(${deg}deg, hsl(${h}, ${s}%, ${l}%), hsl(${h2}, ${s2}%, ${l2}%)`
-    poetryWrapper.style.backgroundImage = `linear-gradient(${deg + 90}deg, hsl(${h}, ${s}%, ${bgDarknessMod}%), hsl(${h2}, ${s2}%, ${bgDarknessMod}%)`
+    poetryWrapper.style.backgroundImage = `linear-gradient(${deg + 90}deg, hsl(${h}, ${s * bgSatMod}%, ${bgDarknessMod}%), hsl(${h2}, ${s2 * bgSatMod}%, ${bgDarknessMod}%)`
 
     requestAnimationFrame(animateGradient);
 
@@ -395,6 +403,7 @@ let leftCompensateAmount = 0
 let topCompensateAmount = 0
 
 /// growing the box and tuning in the writing.
+/// the bwo is what remains when you take everything away. let intensity = 0
 /// why two clearly distinguished phases, when the same thing is done in both cases, sewing and flogging?
 /// one phase is for the fabrication of the bwo, the other to make something circulate upon it or pass upon it.
 /// the same procedures are nevertheless used in both cases, but they must be done over, done twice.
