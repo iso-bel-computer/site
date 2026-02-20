@@ -245,6 +245,7 @@ const goldenh = 45
 const goldens = 72
 const goldenl = 89
 
+let transform = 1
 //const goldenh = 134
 //const goldens = 17
 //const goldenl = 17
@@ -289,12 +290,11 @@ function animateGradient() {
     const centreY = divRect.top + (divRect.bottom - divRect.top) / 2;
     const distance = Math.abs(mouseX - centreX) + Math.abs(mouseY - centreY);
 
-    const maxDistance = clamp(poetryDiv.offsetHeight, 250, 99999);
+    const maxDistance = clamp(poetryDiv.offsetHeight * transform, 100, 99999);
     let opacity = Math.max(0, 1 - (distance / maxDistance));
-     console.log(opacity)
     poem.style.opacity = opacity * 2;
 
-    const effectiveLightDistance = 400
+    const effectiveLightDistance = 400 * transform
     let inverse = (100 / effectiveLightDistance) * (effectiveLightDistance - distance / 2);
     if (inverse < 0) {inverse = 0}
 
@@ -312,7 +312,7 @@ function animateGradient() {
     if (deg > 365) {deg = 0}
 
      //console.log(Math.trunc(baseh),Math.trunc(bases),Math.trunc(basel),Math.trunc(baseh2),Math.trunc(bases2),Math.trunc(basel2))
-    let bgDarknessMod = ((100 - inverse) * 0.3) + 5
+    let bgDarknessMod = ((100 - inverse) * 0.25) + 2
     let bgSatMod = 0.75
 
     // console.log(mod, h,s,l)
@@ -456,6 +456,7 @@ setInterval(function() {
     canvas.style.height = pdivheight + 'px'
     canvas.style.width = pdivwidth + 'px'
 
+    poetryDiv.style.border = `3px inset hsl(${h},${s}%,${l + 2}%) `
 
 
 }, 16)
@@ -498,6 +499,19 @@ back.addEventListener('click', e => {
     if (activePoem < 0) {activePoem = poems.length - 1}
     poem.innerHTML = poems[activePoem]
  })
+
+document.getElementById('poetryWrapper').addEventListener('wheel', e => {
+  e.preventDefault()
+})
+
+
+poetryDiv.addEventListener('wheel', e => {
+    e.preventDefault()
+
+    transform = clamp(transform + e.deltaY * -0.0002, 0.5, 1)
+    poem.style.transform = `scale(${(transform)})`
+
+})
 </script>
 
 {% endblock %}

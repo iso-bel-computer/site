@@ -25,7 +25,7 @@ main {
 
 #poemDisplaySquare {
     min-width: 35vw;
-    min-height: 1vh;
+    min-height: 2vh;
     max-width: 94vh;
     max-height: 94vh;
     font-size: 14pt;
@@ -33,7 +33,6 @@ main {
     cursor: crosshair;
     box-sizing: border-box;
     position: relative;
-    border: 2px inset black;
 }
 
 
