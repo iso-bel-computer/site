@@ -1,9 +1,8 @@
 
 window.addEventListener("load", () => {
     const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    const isNarrow = window.innerWidth < 768;
 
-    if (isTouch && isNarrow) {
+    if (isTouch) {
         const warning = document.createElement("div");
         warning.innerText = "This site isn't designed for mobile.";
         warning.style.position = "fixed";
