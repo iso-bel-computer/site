@@ -6,7 +6,16 @@
 {% endblock %}
 
 {% block content %}
-<h1>Permacomputing Workshop - HTML & CSS 🌳💻💕</h1>
+<style>
+
+main {
+    background:  url('{{ url_for("static", filename="resources/images/core/galleryBG.png") }}');
+    background-position: center;
+}
+
+
+</style>
+<h1><u>Permacomputing Workshop - HTML & CSS </u>🌳💻💕</h1>
 <button class='collapsible'>What are websites made of?</button>
 <div class='content'>
     <p>At its very core, every web page is made of a HTML file. A HTML file is just a text file, written in 'Hypertext Markup Language'. </p>
@@ -527,34 +536,28 @@ button:active {
 <button class='collapsible'>Websites for inspiration</button>
 <div class='content'>
 
-    <p>Here are a few personal websites I've found and really enjoyed. Have a look at them! Dig around in their HTML and stylesheets! Get inspired!</p>
-    <ul>
-        <li><a href='https://isobelsweb.com'>Isobel's Web</a> - No relation! A lovely musician who uses neocities for her portfolio site.</li>
-        <li><a href='https://georgecore.neocities.org'>Georgecore</a> - A mutual on neocities, their site is styled like a choose your own adventure book through a medieval castle? v cool</li>
-        <li><a href='https://wreckofthepequod.uk'>Wreck of the Pequod</a> - Movie reviews styled like teletext??</li>
-    </ul>
+    <p>There are a load of indie web directories out there to find personal sites - i like <a href='https://a-website-is-a-room.net'>this one</a> a lot </p>. When starting out with indie web design, I found it really helpful to go through different sites, look at their html and css, and try to get a sense of how they made things look a certain way.   
+    <p>Webrings are also a cute nostalgic way to find personal sites - this page has the most comprehensive list of webrings i've found - <a href='https://brisray.com/web/webring-list.htm'>link</a>.</p>
+    <p>These two are good if you want to get inspiration for a personal site - <a href='https://nuthead.neocities.org/ring/'>null webring</a> and <a href='https://baccyflap.com/noai/'>no AI webring</a>.
 </div>
 
-<button class='collapsible'>Fun indie web tools</button>
+<button class='collapsible'>Indie / personal web resources</button>
 <div class='content'>
+    <p>If you need to understand any bit of HTML / CSS better, the best place to check is the MDN docs - <a href='https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties'>here's</a> their page on CSS properties.</p>
     <p>Here are a handful of the absolute tonne of little lightweight tools and utilities that are out there to give your site additional functionality.</p>
     <ul>
         <li><a href='https://petrapixel.neocities.org/layout-generator/'>Petrapixel Layout Generator</a> - if you're struggling with a blank page, you can use this to customise a html template, which you can then edit directly!</li>
         <li><a href='https://atabook.org'>Atabook</a> - a free guestbook for your site visitors to leave comments on.</li>
         <li><a href='https://status.cafe'>Status Cafe</a> - a little twitter-style status page. you can note down what you're thinking and it'll immediately appear on your site!</li>
         <li><a href='https://pollcode.com'>Pollcode</a> - lets you run polls on your site for your visitors to answer</li>
-        <li><a href='https://brisray.com/web/webring-list.htm'>Webring List</a> - webrings are an old fashioned way of finding new personal websites. this is the best collection of them i've found.</li>
+        <li><a href='https://tilde.club/~april/bloggable/'>Bloggable</a> - a tiny CMS to run a blog</li>
+        <li><a href='https://freefrontend.com/css-music-players/'>css music players</a> - that site (free frontend) also has a lot of good html / css examples to break apart and play around with</li>
         <li><a href='https://virtualobserver.moe/ayano/comment-widget'>Comment widget</a> - lets you add a comments section to a page! (you do need a paid neocities acct for this one to work sorry :(()))</li>
-        <li><a href='https://tamanotchi.world'>Tamanotchi</a> - a little tamagochi clone you can customise and keep on your site </li>
+        <li><a href='https://discourse.32bit.cafe/t/resources-list-for-the-personal-web/49'>32bit cafe</a> - this site has a lot of good resources for starting out with your own websites</li>
     </ul>
 
 </div>
 
-<button class='collapsible'>Keep experimenting!!</button>
-<div class='content'>
-
-    <img style='height: 400px' src='{{ url_for("static", filename="resources/images/htmlworkshop/mypassion.png") }}' >
-</div>
 
 <script>
 

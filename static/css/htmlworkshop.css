@@ -35,31 +35,52 @@ button {
     font-size: 20pt;
     background-color: #00000000;
     border: none;
-    padding: 0px;
     width: 100%;
     font-family: 'Imperator';
     padding: 5px;
+    transition: transform 0.15s ease-in-out, padding 0.15s ease-in-out;
+    border-bottom: 1px dotted #00000030
 }
 
 button:hover {
-    cursor: pointer
+    cursor: pointer;
+    color: #5b751e !important;
+    transform: translateX(7px)
 }
 
 .buttonactive {
-    background-color: var(--site-accent-color-transparent);
+    background-color: #5b751e;
+    color: #DEC1AA !important;
+    font-weight: bold;
+    padding: 10px;
     border: 1px dotted #00000050;
 }
 
+.buttonactive:hover {
+
+    color: #DEC1AA !important;
+
+}
+body {
+    background-color: #DEC1AA;
+}
+
+li {
+
+    margin-bottom: 6px;
+
+}
 main {
     padding-top: 10px;
-    margin-left: 5vw;
     margin-right: 5vw;
-    padding-left: 10px;
+    padding-left: 20px;
     padding-right: 10px;
-    border-left: 1px dashed black;
-    border-right: 1px dashed black;
+    border-right: 3px double #5b751e;
     min-height: 100vh;
-    background-color: #00000007;
+    background-color: #ffffff30;
+    color: #cfcfcd;
+
+    box-shadow: 5px 0px 5px #00000012;
     font-size: 13pt;
 }
 

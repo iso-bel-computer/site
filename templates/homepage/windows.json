@@ -82,5 +82,11 @@
         "headertext": "announcement",
         "template": "announcement.html",
         "classname": "announcement"
+    },
+    {
+        "icon": "alert.png",
+        "headertext": "lost?",
+        "template": "htmlworkshop.html",
+        "classname": "htmlworkshop"
     }
 ]
