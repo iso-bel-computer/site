@@ -50,7 +50,7 @@ button:hover {
 
 .buttonactive {
     background-color: #5b751e;
-    color: #DEC1AA !important;
+    color: #f2e8df !important;
     font-weight: bold;
     padding: 10px;
     border: 1px dotted #00000050;
@@ -58,11 +58,11 @@ button:hover {
 
 .buttonactive:hover {
 
-    color: #DEC1AA !important;
+    color: #f2e8df !important;
 
 }
 body {
-    background-color: #DEC1AA;
+    background-color: #f2e8df ;
 }
 
 li {
