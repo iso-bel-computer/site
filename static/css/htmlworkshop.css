@@ -12,6 +12,10 @@ pre {
     margin: 0px;
 }
 
+main img {
+    border: 1px solid black;
+}
+
 td, th {
     padding:5px;
     max-width: 33%;
@@ -35,17 +39,17 @@ button {
     font-size: 20pt;
     background-color: #00000000;
     border: none;
-    width: 100%;
     font-family: 'Imperator';
     padding: 5px;
-    transition: transform 0.15s ease-in-out, padding 0.15s ease-in-out;
+    transition: transform 0.2s ease-in-out, padding 0.1s ease-in-out;
     border-bottom: 1px dotted #00000030
 }
 
 button:hover {
     cursor: pointer;
     color: #5b751e !important;
-    transform: translateX(7px)
+    transform: translateX(7px);
+    border-radius: 5px;
 }
 
 .buttonactive {
@@ -53,7 +57,8 @@ button:hover {
     color: #f2e8df !important;
     font-weight: bold;
     padding: 10px;
-    border: 1px dotted #00000050;
+    border: 2px dotted #00000050;
+    border-radius: 5px;
 }
 
 .buttonactive:hover {
@@ -91,7 +96,7 @@ main {
 
 .collapsible {
     display: block;
-    width: 100%;
+    width: 97%;
     text-align: left;
     margin-bottom: 5px;
 }
