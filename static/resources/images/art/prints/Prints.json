@@ -124,5 +124,19 @@
     "date": "05-01-26",
     "description": "Scraped Mumsnet comments fed into a Markov Chain. Hatred enslaves the hater.",
     "contenttype": "Prints"
+  },
+  {
+    "originalFileName": "mumsnetpicturesubmission.png",
+    "fileName": "26-01-26_$-echo-YOU-WILL-ALWAYS-BE-MINE_232916",
+    "originalDir": "/Users/dylanhemmings/Desktop/printsstaging",
+    "originalPath": "/Users/dylanhemmings/Desktop/printsstaging/mumsnetpicturesubmission.png",
+    "destinationDir": "/Users/dylanhemmings/05.Site/static/resources/images/art/prints",
+    "previewFile": "26-01-26_$-echo-YOU-WILL-ALWAYS-BE-MINE_232916_PREVIEW.jpg",
+    "thumbnailFile": "26-01-26_$-echo-YOU-WILL-ALWAYS-BE-MINE_232916_THUMB.jpg",
+    "mainFile": "26-01-26_$-echo-YOU-WILL-ALWAYS-BE-MINE_232916.png",
+    "title": "$-echo-YOU-WILL-ALWAYS-BE-MINE",
+    "date": "26-01-26",
+    "description": "Scraped Mumsnet comments fed into a Markov chain. Ten years of wasted time speaks with one voice. Hatred enslaves the hater. ",
+    "contenttype": "Prints"
   }
 ]
