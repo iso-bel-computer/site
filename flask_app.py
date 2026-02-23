@@ -245,6 +245,11 @@ def htmlworkshop():
                            siteMap = siteMap,
                            headerRouteDisplay = '/htmlworkshop')
 
+@app.route('/htmlworkshop/demo')
+def demo():
+    return render_template('demo.html')
+
+
 
 
 
