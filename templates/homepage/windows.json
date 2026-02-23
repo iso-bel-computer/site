@@ -78,9 +78,9 @@
         "classname": "announcement"
     },
     {
-        "icon": "alert.png",
-        "headertext": "lost?",
-        "template": "htmlworkshop.html",
-        "classname": "htmlworkshop"
+        "icon": "quote.png",
+        "headertext": "quote.txt",
+        "template": "quote.html",
+        "classname": "quote"
     }
 ]
