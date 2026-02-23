@@ -43,7 +43,9 @@ button {
     font-family: 'Imperator';
     padding: 5px;
     transition: transform 0.2s ease-in-out, padding 0.1s ease-in-out;
-    border-bottom: 1px dotted #00000030
+    border-bottom: 1px dotted #00000030;
+    position: sticky;
+    margin-bottom: 1px;
 }
 
 button:hover {
@@ -60,7 +62,9 @@ button:hover {
     font-weight: bold;
     padding: 10px;
     border: 2px dotted #00000050;
+    top: calc((var(--header-padding-topandtail) * 2) + var(--header-height));
     border-radius: 5px;
+    z-index: 5;
 }
 
 .buttonactive:hover {
