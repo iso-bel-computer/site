@@ -12,12 +12,6 @@
         "classname": "about"
     },
     {
-        "icon": "quote.png",
-        "headertext": "quote.txt",
-        "template": "quote.html",
-        "classname": "quote"
-    },
-    {
         "icon": "internet.png",
         "headertext": "guestbook.html",
         "template": "guestbook.html",
