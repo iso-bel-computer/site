@@ -17,13 +17,13 @@ header {
 }
 
 #tableDiv {
-    max-height: 95vh;
-    width: 50%;
+    max-height: 98vh;
+    width: 30vw !important;
     overflow: scroll;
 }
 #tableDiv2 {
-    max-height: 95vh;
-    width: 75%;
+    max-height: 98vh;
+    width: fit-content !important;
     overflow: scroll;
 }
 td {
@@ -98,8 +98,8 @@ table {
 }
 
 #atStationTable {
-    width: 20%;
-    font-size: 3pt;
+    width: 100%;
+    font-size: 5pt;
     filter: saturate(0.7) brightness(0.9);
 }
 

@@ -55,9 +55,6 @@ export class Train extends Emitter {
         // this means we're not capturing when a train is sitting in a tunnel. but that's not the end of the world.
         // we can start editing the sound of the lines according to service status at some point maybe
 
-        const beepSound = document.getElementById('beep-sound');
-
-    beepSound.play();
         this.inTransit = false
         this.timeSinceDeparture = null
         this.recentArrival = true
