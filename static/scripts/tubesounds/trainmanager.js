@@ -126,9 +126,6 @@ export class trainManager {
                         atStationFrag.append(row);
                     }
                 }
-                row.addEventListener('click', () => {
-                    console.log(train.previousStations)
-                })
 
             })
 
