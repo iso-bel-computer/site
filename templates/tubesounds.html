@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tubesounds.css') }}">
+{% endblock %}
+
+{% block extra_js %}
+<script type='module' src="{{ url_for('static', filename='scripts/tubesounds/main.js') }}"></script>
+<style>
+
+@font-face {
+    font-family: Underground;
+    src: url("{{ url_for('static', filename='resources/fonts/LondonUndergroundRegular.ttf') }}");
+}
+
+table {
+    border-collapse: collapse;
+    font-family: 'Underground'
+
+}
+</style>
+{% endblock %}
+{% block content %}
+
+<div id='debugDiv'></div>
+
+{% endblock %}

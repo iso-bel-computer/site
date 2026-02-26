@@ -242,13 +242,19 @@ HTML Workshop
 @app.route('/htmlworkshop')
 def htmlworkshop():
     return render_template('htmlworkshop.html',
-                           siteMap = siteMap,
-                           headerRouteDisplay = '/htmlworkshop')
+                           sitemap = siteMap,
+                           headerroutedisplay = '/htmlworkshop')
 
-@app.route('/htmlworkshop/demo')
-def demo():
-    return render_template('demo.html')
+"""
+Tube sounds
 
+"""
+
+@app.route('/tubesounds')
+def tubesounds():
+    return render_template('tubesounds.html',
+                           sitemap = siteMap,
+                           headerroutedisplay = '/tubesounds')
 
 
 
