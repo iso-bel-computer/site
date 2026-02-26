@@ -6,7 +6,7 @@ export class apiManager {
         this.trainManager = trainManager
         this.lines = ['circle', 'district', 'central', 'bakerloo', 'northern', 'victoria', 'jubilee', 'metropolitan', 'piccadilly', 'hammersmith-city', 'waterloo-city']
 
-        this.apiRefreshInterval = 11000 // refresh data every 15 seconds
+        this.apiRefreshInterval = 5000 // refresh data every 15 seconds
         this.refresh = this.refresh.bind(this)  // Bind the correct context to refresh
         this.refresh()
         setInterval(() => this.refresh(), this.apiRefreshInterval)
@@ -41,6 +41,7 @@ export class apiManager {
             })
 
             this.trainManager.updateData(batches)
+            this.trainManager.garbageCollectTrains(batches)
 
         } catch (err) {
             console.error(err)

@@ -1,6 +1,8 @@
-td {
-    padding: 5px;
+body {
+    margin: 0px;
+    background-color: black;
 }
+
 
 header {
     display: none
@@ -8,22 +10,33 @@ header {
 #debugDiv {
     display: flex;
     align-items: flex-start;
+    justify-content: center;
     background-color: black;
 
-}
-
-table {
-    padding: 20px;
-    font-size: 8pt;
-    filter: saturate(0.7);
-
     width: 100%;
-    height: auto
 }
 
-.atStation {
-
-    filter: saturate(0.5) brightness(0.8);
+#tableDiv {
+    max-height: 95vh;
+    width: 50%;
+    overflow: scroll;
+}
+#tableDiv2 {
+    max-height: 95vh;
+    width: 75%;
+    overflow: scroll;
+}
+td {
+    padding: 5px;
+    filter: saturate(0.7) brightness(0.8);
+}
+table {
+    font-size: 6pt;
+    margin: 10px;
+    border: 1px dotted #ffffff80;
+    width: 100%;
+    max-height: 50vh;
+    overflow: scroll
 }
 
 
@@ -66,4 +79,34 @@ table {
 
     background-color: black;
     color: white
+}
+
+#inTransitTable {
+    margin-right: 0px;
+    font-size: 5pt;
+}
+
+.idCell {
+    width: min-content;
+    width: 20px;
+}
+
+.timeCell {
+    padding-right: 15px;
+    text-align: right;
+    width: 40px;
+}
+
+#atStationTable {
+    width: 20%;
+    font-size: 3pt;
+    filter: saturate(0.7) brightness(0.9);
+}
+
+.rowFlash {
+    opacity: 1 !important;
+    filter: saturate(1) brightness(1) !important;
+    color: red !important;
+    font-weight: bold !important;
+    background-color: red !important;
 }

@@ -1,24 +1,23 @@
 import { Train } from './trainclass.js';
-import { getRandomInt } from './helpers.js';
 import { compare } from './helpers.js';
+import { compareTimeToDeparture } from './helpers.js';
 
 export class trainManager {
 
     constructor() {
-        this.trains = []
+        this.trains = [];
+        this.trainOrderNeedsUpdate = true
     }
+
 
     updateData(batches) { // data comes through in batches from the api manager
                           // grouped by vehicle ID
 
+        this.trainOrderNeedsUpdate = true
         for (const vehicleId in batches) {
 
             const trainData = batches[vehicleId]
             const nextStation = trainData[0]
-            nextStation.timeToStation = nextStation.timeToStation + getRandomInt(0, 10) // tfl data tends to cluster numbers
-                                                                                       // this hopefully spreads them out
-                                                                                       // to improve the rhythm
-
             const existingRecord = this.findTrain(vehicleId)
 
             if (!existingRecord) { // exclude any trains which are taking more than 10 mins to destination
@@ -28,17 +27,33 @@ export class trainManager {
                 if (nextStation.timeToStation < 600) {
 
                     const newTrain = new Train(nextStation)
+                    //newTrain.on('arrival', (data) => {
+                    //    this.audioManager.scheduleSnare()
+                    //});
+                    newTrain.on('arrival', () => {
+                        this.trainOrderNeedsUpdate = true
+                    });
+                    newTrain.on('departure', () => {
+                        this.trainOrderNeedsUpdate = true
+                    });
                     this.trains.push(newTrain)
                 }
             }
-
             else {
-
-                existingRecord.apiUpdate(nextStation)
-
+                existingRecord.apiUpdate(trainData)
             }
-
         }
+
+
+
+
+    }
+
+
+    updateTrainsInTransit(inTransit, atStation) {
+        const total = inTransit + atStation;
+        const percent = (inTransit / (total || 1)) * 100;
+
 
     }
 
@@ -48,48 +63,102 @@ export class trainManager {
     }
 
     debugDisplay() {
-        const debugDiv = document.getElementById('debugDiv')
-        debugDiv.innerHTML = ''
-        const inTransitTrains = document.createElement('table')
-        const atStationTrains = document.createElement('table')
+        const inTransitTrains = document.getElementById('inTransitTable')
+        const atStationTrains = document.getElementById('atStationTable')
+
+        const inTransitFrag = document.createDocumentFragment();
+        const atStationFrag = document.createDocumentFragment();
 
 
-        this.trains.sort(compare)
-        this.trains.forEach(train => {
-            const row = document.createElement('tr')
-            row.innerHTML += `<td><b>${train.id}</b></td>`
-            row.innerHTML += ` <td><i>${train.line}</i></td>`
+        if (this.trainOrderNeedsUpdate) {
 
-            if (train.inTransit) {
-                if (train.timeToStation > 60) {
+            this.trains.sort(compare)
+            this.trains.sort(compareTimeToDeparture)
+            this.trainOrderNeedsUpdate = false
 
-                    const mins = Math.trunc(train.timeToStation / 60)
-                    const secs = train.timeToStation - (mins * 60)
-                    row.innerHTML += `<td>${mins}m ${secs}</td>`
+            this.trains.forEach(train => {
+                let content = ''
+                const row = document.createElement('tr')
+                content += `<td class='idCell'><b>${train.id}</b></td>`
+
+                if (train.inTransit) {
+
+                    content += `<td class='timeCell' id='${train.id}'>${train.timeToStation.toFixed(2)}</td>`
+                    content += `<td>Approaching ${train.nextStation}</td>`
+
+                    row.innerHTML = content
+
+                    row.classList.add('inTransit')
+                    const opacity = (100 - (train.timeToStation) / 2) / 100
+
+                    row.style.opacity = opacity
+                    row.style.filter = 'saturate(${opacity})'
+                    if (train.timeSinceDeparture && train.timeSinceDeparture < 0.2) {
+                        // flash recent departures
+                        // so viewer can see they're changing from one table to the other
+                        row.classList.add('rowFlash')
+                    }
+
                 } else {
+                    const content = `<td>At ${train.currentStation}
+                    <td id='${train.id}'>Departing ${train.timeToDeparture ? train.timeToDeparture.toFixed(2) : 'soon'}</td>
 
-                    row.innerHTML += `<td>${train.timeToStation}s</td>`
+                    </td>`
+                    row.innerHTML = content
+                    row.classList.add('atStation')
+
+                    const maxTime = 60;
+                    let opacity = 1
+                    if (train.timeToDeparture) {
+                        opacity = 1.1 - ((train.timeToDeparture / maxTime) * 0.3);
+                    } else opacity = 0.5
+
+                    row.style.opacity = opacity
                 }
-                row.innerHTML += `<td>Approaching ${train.cleanStationName(train.nextStation)}</td>`
-                row.classList.add('inTransit')
-            } else {
-                row.innerHTML += `<td>At ${train.cleanStationName(train.currentStation)}</td>`
-                row.classList.add('atStation')
-            }
 
 
-            row.classList.add(train.line)
+                row.classList.add(train.line)
 
-            if (train.inTransit) {
+                if (row.style.opacity > 0) {
+                    if (train.inTransit) {
+                        inTransitFrag.append(row);
+                    } else {
+                        atStationFrag.append(row);
+                    }
+                }
+                row.addEventListener('click', () => {
+                    console.log(train.previousStations)
+                })
 
-                inTransitTrains.append(row)
-            } else {
-                atStationTrains.append(row)
-            }
-        })
+            })
 
-        debugDiv.appendChild(inTransitTrains)
-        debugDiv.appendChild(atStationTrains)
+            inTransitTable.replaceChildren(inTransitFrag);
+            atStationTable.replaceChildren(atStationFrag);
+        } else {
+            this.trains.forEach(train => {
+
+                try {
+
+                    const timeCell = document.getElementById(train.id)
+                    if (train.inTransit) {
+                        timeCell.innerText = train.timeToStation.toFixed(2)
+
+                        if (train.timeSinceDeparture && train.timeSinceDeparture > 0.2) {
+                            const row = timeCell.parentElement
+                            row.classList.remove('rowFlash')
+                        }
+                    }
+
+                    else {
+                        timeCell.innerText = `Departing ${train.timeToDeparture ? train.timeToDeparture.toFixed(2) : 'soon'}`
+
+                    }
+                } catch {
+                    null // this is to stop it freaking out abt the rows we've not inserted bc
+                         // they're too far away
+                }
+            })
+        }
     }
 
     getTrainData() {
@@ -109,6 +178,8 @@ export class trainManager {
             }
         })
 
+
+        this.updateTrainsInTransit(trainsInTransit, trainsAtStation)
         return {
             'trainsInTransit': trainsInTransit,
             'trainsAtStation': trainsAtStation,
@@ -116,9 +187,24 @@ export class trainManager {
         }
     }
 
-    tickAllTrains() {
+    garbageCollectTrains(batches) {
+        const activeIds = Object.keys(batches);
+
+        this.trains = this.trains.filter(train => {
+            const isStillActive = activeIds.includes(train.id);
+
+            if (!isStillActive) {
+                console.log(`Garbage Collection: Removing train ${train.id}`);
+            }
+
+            return isStillActive;
+        });
+
+    }
+
+    tickAllTrains(delta) {
         this.trains.forEach(train => {
-            train.tick()
+            train.tick(delta)
         })
 
     }

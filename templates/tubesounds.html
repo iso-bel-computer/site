@@ -1,27 +1,39 @@
-{% extends "base.html" %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/tubesounds.css') }}">
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ISO | BEL</title>
+        <link rel="stylesheet" href="{{url_for('static', filename='css/tubesounds.css')}}">
+    </head>
+    <body>
+        <style>
 
-{% block extra_js %}
-<script type='module' src="{{ url_for('static', filename='scripts/tubesounds/main.js') }}"></script>
-<style>
+        @font-face {
+            font-family: Underground;
+            src: url("{{url_for('static', filename='resources/fonts/LondonUndergroundRegular.ttf')}}");
+        }
 
-@font-face {
-    font-family: Underground;
-    src: url("{{ url_for('static', filename='resources/fonts/LondonUndergroundRegular.ttf') }}");
-}
+        table {
+            border-collapse: collapse;
+            font-family: 'Underground'
 
-table {
-    border-collapse: collapse;
-    font-family: 'Underground'
+        }
+        </style>
+        <div id='debugDiv'>
+            <div id='tableDiv'>
+                <table id='inTransitTable'></table>
+            </div>
+            <div id='tableDiv2'>
+                <table id='atStationTable'></table>
 
-}
-</style>
-{% endblock %}
-{% block content %}
+            </div>
+        </div>
 
-<div id='debugDiv'></div>
+        <audio id="beep-sound" src="{{url_for('static', filename='resources/tubesounds/beepdeclined.mp3')}}"></audio>
+        <script src="https://unpkg.com/@strudel/web@1.0.3"></script>
 
-{% endblock %}
+        <script type='module' src="{{url_for('static', filename='scripts/tubesounds/main.js')}}"></script>
+    </body>
+</html>
