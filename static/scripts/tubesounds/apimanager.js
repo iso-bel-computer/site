@@ -18,6 +18,7 @@ export class apiManager {
         const batches = []
 
         try {
+
             const responses = await Promise.all(
                 this.lines.map(line =>
                     fetch(`https://api.tfl.gov.uk/Line/${line}/Arrivals?app_key=60ca78e2c67c4537922a0daf322bb78f`)

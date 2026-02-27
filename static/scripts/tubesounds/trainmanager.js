@@ -4,9 +4,10 @@ import { compareTimeToDeparture } from './helpers.js';
 
 export class trainManager {
 
-    constructor() {
+    constructor(sound) {
         this.trains = [];
         this.trainOrderNeedsUpdate = true
+        this.sound = sound
     }
 
 
@@ -27,15 +28,22 @@ export class trainManager {
                 if (nextStation.timeToStation < 600) {
 
                     const newTrain = new Train(nextStation)
-                    //newTrain.on('arrival', (data) => {
-                    //    this.audioManager.scheduleSnare()
-                    //});
+
                     newTrain.on('arrival', () => {
                         this.trainOrderNeedsUpdate = true
+                        if (this.sound) {
+
+                            this.sound.playArrivalSynth(newTrain.line)
+                        }
                     });
+
                     newTrain.on('departure', () => {
                         this.trainOrderNeedsUpdate = true
+                        if (this.sound) {
+                            this.sound.playDepartureSynth(newTrain.line)
+                        }
                     });
+
                     this.trains.push(newTrain)
                 }
             }
@@ -162,13 +170,21 @@ export class trainManager {
         let trainsInTransit = 0
         let trainsAtStation = 0
         let recentArrivals = 0
+        let bpm = 0
 
         this.trains.forEach(train => {
+
             if (train.inTransit) {
                 trainsInTransit++
+                let bpmaddition = (1 / (train.timeToStation)) * 10
+                if (bpmaddition > 10) {bpmaddition = 10}
+                bpm = bpm + bpmaddition
             } else {
                 trainsAtStation++
             }
+
+
+
             if (train.recentArrival) {
                 recentArrivals++
                 train.recentArrival = false
@@ -180,7 +196,8 @@ export class trainManager {
         return {
             'trainsInTransit': trainsInTransit,
             'trainsAtStation': trainsAtStation,
-            'recentArrivals':  recentArrivals
+            'recentArrivals':  recentArrivals,
+            'bpm': bpm
         }
     }
 

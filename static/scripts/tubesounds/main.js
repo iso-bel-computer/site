@@ -1,7 +1,9 @@
 import { apiManager } from './apimanager.js';
 import { trainManager } from './trainmanager.js';
+import { soundManager } from './soundManager.js';
 
-const trains = new trainManager()
+const sound = new soundManager()
+const trains = new trainManager(sound)
 const api = new apiManager(trains)
 
 
@@ -24,18 +26,22 @@ function updateUI() {
 function updateData() {
 
     const trainOverviewData = trains.getTrainData()
-    console.log('Trains in Transit: ', trainOverviewData.trainsInTransit, 'Trains at Station: ', trainOverviewData.trainsAtStation, '% of Trains in Transit: ', Math.trunc(100 / (trains.trains.length) * trainOverviewData.trainsInTransit), 'Recent arrivals: ', trainOverviewData.recentArrivals )
+    //console.log('Trains in Transit: ', trainOverviewData.trainsInTransit, 'Trains at Station: ', trainOverviewData.trainsAtStation, '% of Trains in Transit: ', Math.trunc(100 / (trains.trains.length) * trainOverviewData.trainsInTransit), 'Recent arrivals: ', trainOverviewData.recentArrivals )
+    sound.updateLoopBPM(trainOverviewData.bpm )
 }
 
 updateUI()
 
-document.body.addEventListener("click", async () => {
-    console.log('strudel init')
-    initStrudel()
+alert('hi!! you gotta click on the page once for the sound to play. i dont make the rules.')
 
+document.body.addEventListener("click", async () => {
+
+    await Tone.start()
+    sound.init = true
+    sound.playArrivalSynth('circl')
 })
 
 
 setInterval(tick, 10)
 
-setInterval(updateData, 1000)
+setInterval(updateData, 500)
