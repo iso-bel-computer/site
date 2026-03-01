@@ -10,7 +10,7 @@ export class Train extends Emitter {
         this.previousStations = []
         this.currentStation = ''
         this.nextStation = this.cleanStationName(nextStation.stationName)
-        this.timeToStation = (nextStation.timeToStation) + (Math.random() * 5)
+        this.timeToStation = (nextStation.timeToStation) + (Math.random() * 10)
         this.inTransit = true
         this.recentArrival = false // this flags the arrival for the event manager to pick up
 
@@ -94,7 +94,7 @@ export class Train extends Emitter {
             this.nextStation = this.cleanStationName(nextStation.stationName)
             if (nextStation.timeToStation > 60) {
                 // if tfl are telling us it's arriving imminently, we just let it play out on our simulation end
-                this.timeToStation = nextStation.timeToStation + (Math.random())
+                this.timeToStation = nextStation.timeToStation + (Math.random() * 10)
             } else if (nextStation.timeToStation < this.timeToStation) {
                 this.timeToStation = nextStation.timeToStation + (Math.random())
             }

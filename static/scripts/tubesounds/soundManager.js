@@ -3,56 +3,61 @@ export class soundManager {
     constructor() {
         this.init = false;
         this.lastBPM = 30
+        this.kickLoop = null
+        this.loopVelocity = 0.3
+        this.stationAudioData = stationData // passed from backend by tag on html
 
-        const chorus = new Tone.Chorus({
+        this.chorus = new Tone.Chorus({
             frequency: 3,
             delayTime: 2.5,
             depth: 0.7,
-            wet: 0.5
+            wet: 0
         }).start();
 
-        const reverb = new Tone.Reverb({
+        this.reverb = new Tone.Reverb({
             decay: 10,      // very long tail
             preDelay: 0.1,  // gap before reflections start, adds sense of distance
-            wet: 0.6
+            wet: 0
         });
 
-        const tunnelDelay = new Tone.FeedbackDelay({
+        this.tunnelDelay = new Tone.FeedbackDelay({
             delayTime: 0.08,   // short delay, like reflections off close walls
             feedback: 0.4,     // how much feeds back
-            wet: 0.3
+            wet: 0
         });
 
-        chorus.connect(tunnelDelay);
-        tunnelDelay.connect(reverb)
-        reverb.connect(Tone.Destination);
+        this.chorus.connect(this.tunnelDelay);
+        this.tunnelDelay.connect(this.reverb)
+        this.reverb.connect(Tone.Destination);
 
-        const plopConfig = {
+        this.plopConfig = {
             oscillator: { type: "sine" },
             envelope: { attack: 0.001, decay: 0.3, sustain: 0, release: 0.1 }
         };
 
-        const lfo = new Tone.LFO({
-            frequency: "16n",
+        this.lfo = new Tone.LFO({
+            frequency: "1n",
             min: 0.8,
             max: 1
-        }).connect(reverb.wet);
+        }).connect(this.reverb.wet);
 
-        lfo.start();
+        this.lfo.start();
 
-        const lines = ['waterloo-city', 'hammersmith-city', 'metropolitan', 'central',
+        this.lines = ['waterloo-city', 'hammersmith-city', 'metropolitan', 'central',
                     'district', 'circle', 'bakerloo', 'northern', 'victoria', 'jubilee'];
 
         this.arrivalSynths = {};
-        lines.forEach(line => {
-            const synth = new Tone.PolySynth(Tone.Synth, plopConfig);
-            synth.connect(chorus); // each synth feeds into the shared effects chain
+        this.arrivalPanners = {};
+        this.lines.forEach(line => {
+            const synth = new Tone.PolySynth(Tone.Synth, this.plopConfig);
+            this.arrivalPanners[line] = new Tone.Panner(0).connect(this.reverb); // panner → reverb
+            synth.connect(this.arrivalPanners[line]); // synth → panner
             this.arrivalSynths[line] = synth;
         });
 
         this.startLoop();
     }
-    playArrivalSynth(line) {
+    playArrivalSynth(line, station) {
         if (!this.init) return;
 
         const lineChords = {
@@ -70,10 +75,15 @@ export class soundManager {
 
         const synth = this.arrivalSynths[line];
         const chord = lineChords[line];
+        let pan = this.stationAudioData[station].pan
+        if (pan === undefined) {pan = 1}
+        console.log(pan)
+        const normalizedPan = (parseFloat(pan) / 50) - 1;
         if (!synth || !chord) return;
 
+        this.arrivalPanners[line].pan.value = normalizedPan;
         synth.volume.value = -16 + Math.random() * 6;
-        synth.triggerAttackRelease(chord, "4n", Tone.Transport.nextSubdivision("16n"));
+        synth.triggerAttackRelease(chord, "4n", Tone.Transport.nextSubdivision("16n"), 0.5);
     }
     playDepartureSynth(line) {
 
@@ -97,88 +107,72 @@ export class soundManager {
         if (!synth || !note) return;
 
         synth.volume.value = -8 + Math.random() * 4;
-        synth.triggerAttackRelease(note, "12n", Tone.Transport.nextSubdivision("16n"));
+        synth.triggerAttackRelease(note, "12n", Tone.Transport.nextSubdivision("16n"), 0.5);
 
     }
 
     startLoop() {
+        if (this.kickLoop) return; // prevent duplicates
 
-        console.log('playing loop')
 
-        // create two monophonic synths
-        const synthA = new Tone.FMSynth({
-            harmonicity: 1.5,
-            modulationIndex: 10,
+
+        this.kick = new Tone.MembraneSynth({
+            pitchDecay: 0.02,   // shorter = punchier
+            octaves: 6,         // strong pitch drop
             oscillator: { type: "sine" },
             envelope: {
-                attack: 0.01,
-                decay: 0.2,
-                sustain: 0.4,
-                release: 0.8
-            },
-            modulation: { type: "square" },
-            modulationEnvelope: {
-                attack: 0.01,
-                decay: 0.2,
-                sustain: 0.2,
-                release: 0.8
+                attack: 0.001,
+                decay: 0.4,
+                sustain: 0,
+                release: 0.1
             }
+        })
+
+        this.kickdistortion = new Tone.Distortion(0.4);
+        this.kickcompressor = new Tone.Compressor({
+            threshold: -10,
+            ratio: 4,
+            attack: 0.01,
+            release: 0.2
         });
 
-        const synthB = new Tone.AMSynth({
-            harmonicity: 2,
-            oscillator: { type: "sawtooth" },
-            envelope: {
-                attack: 0.005,
-                decay: 0.1,
-                sustain: 0.3,
-                release: 0.5
-            }
-        });
-        const filter = new Tone.Filter(400, "lowpass");
-        const reverb = new Tone.Reverb({
-            decay: 15,
-            wet: 0.3
-        });
+        this.kick.chain(this.kickdistortion, this.kickcompressor, Tone.Destination);
 
-        Tone.Transport.scheduleRepeat((time) => {
-            filter.frequency.rampTo(
-                Math.random() * 800 + 200,
-                2
-            );
-        }, "2n");
-
-        synthA.chain(filter, reverb, Tone.Destination);
-        synthB.chain(filter, reverb, Tone.Destination);
-
-        //play a note every quarter-note
-        const loopA = new Tone.Loop((time) => {
-            synthA.triggerAttackRelease("C1", "8n", time);
+        this.kickLoop = new Tone.Loop((time) => {
+            this.kick.triggerAttackRelease("C1", "8n", time);
         }, "4n").start(0);
-        //play another note every off quarter-note, by starting it "8n"
-        const loopB = new Tone.Loop((time) => {
-            synthB.triggerAttackRelease("E1", "8n", time);
-        }, "4n").start("8n");
-        const loopC = new Tone.Loop((time) => {
-            synthB.triggerAttackRelease("G1", "8n", time);
-        }, "4n").start("16n");
 
-        // all loops start when the Transport is started
-        Tone.getTransport().start();
+        this.transport = Tone.getTransport();
+        if (this.transport.state !== "started") {
+            this.transport.start();
+        }
+        this.transport.bpm.rampTo(130, 1);
     }
 
-    updateLoopBPM(bpm) {
+    updateBPM(bpm) {
 
-        const maxBPM = 180
-        const minBPM = 30
+        const maxBPM = 150
+        const minBPM = 80
         if (bpm < minBPM) {bpm = minBPM}
         if (bpm > maxBPM) {bpm = maxBPM}
 
         if (bpm < this.lastBPM) {bpm = (this.lastBPM + bpm) / 2}
 
+        this.transport.bpm.rampTo(bpm, 1);
+
         console.log(bpm)
 
-        Tone.getTransport().bpm.rampTo(bpm, 1);
+    }
 
+    updateKickDrive(drive) {
+
+        const trainsForMaxDrive = 150
+        const normalized = Math.min(
+            Math.max(drive / trainsForMaxDrive, 0),
+            1
+        );
+        // Map BPM to velocity (0.3 → 1)
+        this.loopVelocity = 0.1 + (normalized * 0.7);
+        console.log(drive)
     }
 }

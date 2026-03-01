@@ -242,7 +242,7 @@ HTML Workshop
 @app.route('/htmlworkshop')
 def htmlworkshop():
     return render_template('htmlworkshop.html',
-                           sitemap = siteMap,
+                           siteMap = siteMap,
                            headerroutedisplay = '/htmlworkshop')
 
 """
@@ -250,9 +250,17 @@ Tube sounds
 
 """
 
+
+with open('static/resources/tubesounds/stationData.json', 'r') as f:
+
+    stationData = json.load(f)
+    print(stationData)
+
 @app.route('/tubesounds')
 def tubesounds():
+
     return render_template('tubesounds.html',
+                           stationData = stationData,
                            sitemap = siteMap,
                            headerroutedisplay = '/tubesounds')
 

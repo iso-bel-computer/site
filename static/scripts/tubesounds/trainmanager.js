@@ -29,11 +29,11 @@ export class trainManager {
 
                     const newTrain = new Train(nextStation)
 
-                    newTrain.on('arrival', () => {
+                    newTrain.on('arrival', (eventData) => {
                         this.trainOrderNeedsUpdate = true
                         if (this.sound) {
 
-                            this.sound.playArrivalSynth(newTrain.line)
+                            this.sound.playArrivalSynth(eventData.line, eventData.station)
                         }
                     });
 
