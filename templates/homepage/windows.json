@@ -78,6 +78,12 @@
         "classname": "announcement"
     },
     {
+        "icon": "contact.png",
+        "headertext": "contact.eml",
+        "template": "contact.html",
+        "classname": "contact"
+    },
+    {
         "icon": "quote.png",
         "headertext": "quote.txt",
         "template": "quote.html",
