@@ -178,7 +178,7 @@
                         <span class='webring-links'>
                             <a href='https://garlic.garden/onionring/'>what is this?</a> |
                             <a href='https://permacomputing.net'>wiki</a> |
-                            <a>random</a> |
+                            <a id='permaRandom'>random</a> |
                             <a href='https://www.iso-bel.computer/permacomputingwebring'>index / join</a>
                         </span>
                     </td>
@@ -200,6 +200,7 @@
             if (!response.ok) {throw new Error(`Response status: ${response.status}`);}
             const json = await response.json();
             const sites = json.sites
+             console.log(json,sites)
             let thisIndex = null;
 
             // go through the site list to see if this site is on it and find its position
@@ -214,7 +215,7 @@
                 otherSites = sites.slice(); //create a copy of the sites list
                 otherSites.splice(thisIndex, 1); //remove the current site so we don't just land on it again
                 randomIndex = Math.floor(Math.random() * otherSites.length);
-                location.href = otherSites[randomIndex];
+                return otherSites[randomIndex];
             }
 
             if (thisIndex == null) {
@@ -224,6 +225,7 @@
                 const nextIndex = (thisIndex+1 >= sites.length) ? 0 : thisIndex+1;
                 widget.querySelector('#permaPrev').href = previousIndex
                 widget.querySelector('#permaNext').href = nextIndex
+                widget.querySelector('#permaRandom').href = randomSite()
 
             }
             </script>
