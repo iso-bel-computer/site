@@ -243,6 +243,11 @@ Permacomputing Webring
 def submiturl():
     try:
         url = request.args.get("url", "").strip()
+
+        # Auto-add https:// if missing
+        if not url.startswith(("http://", "https://")):
+            url = "https://" + url
+
         from urllib.parse import urlparse
 
         parsed = urlparse(url)
