@@ -26,3 +26,5 @@ var indexPage = 'https://www.iso-bel.computer/permacomputingwebring';
 
 //should the widget include a random button?
 var useRandom = true;
+
+var useLargeWidget = true
