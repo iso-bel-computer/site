@@ -42,3 +42,9 @@
 #londonpermacomputring.webring-links {
   font-size:small;
 }
+
+#webringcode {
+    width: 400px;
+    height: 150px;
+    overflow: scroll;
+}

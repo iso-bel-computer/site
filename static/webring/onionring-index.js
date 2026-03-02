@@ -6,6 +6,7 @@
 //this file builds the list of sites in the ring for displaying on your index page
 
 var tag = document.getElementById('index');
+var code = document.getElementById('webringcode')
 regex = /^https:\/\/|\/$/g; //strips the https:// and trailing slash off the urls for aesthetic purposes
 
 list = "";
@@ -18,3 +19,5 @@ tag.insertAdjacentHTML('afterbegin', `
 ${list}
 </ul>
 `);
+
+code.innerText = '<div id="londonpermacomputring"><script type="text/javascript" src="https://www.iso-bel.computer/static/webring/onionring-variables.js"></script><script type="text/javascript" src="https://www.iso-bel.computer/static/webring/onionring-widget.js"></script></div><link rel="stylesheet" href="https://www.iso-bel.computer/static/webring/onionring.css">'
