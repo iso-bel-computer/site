@@ -13,6 +13,7 @@
 
 #londonpermacomputring table {
   margin: 0 auto; /* centers the widget */
+  background-color: white;
   border: 1px solid #FF0000;
 }
 
