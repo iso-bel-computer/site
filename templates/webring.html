@@ -17,11 +17,20 @@
              main {
                  font-family: 'Tahoma'
              }
+             #header {
+                 width: 100%;
+                 padding: 15px;
+                 background-color: #ffffff
+             }
              .section {
                  width: 50%;
                  padding: 15px;
                  overflow: scroll;
                  height: -webkit-fill-available
+             }
+             #leftsection {
+
+                 background-color: #ffffff90
              }
             .webringcodewrapper {
 
@@ -32,7 +41,8 @@
                  margin: 0px
              }
              h1 {
-                 margin-left: 15px
+                 margin: 0px;
+
              }
              h2 {
                  margin: 0px;
@@ -41,7 +51,8 @@
 
                  background-color: white;
                  border: 1px solid #108c5e;
-                 padding: 3px
+                 padding: 3px;
+                 margin-bottom: 5px;
              }
              button {
                  background-color: white;
@@ -58,9 +69,9 @@
                 color: #108c5e;
             }
 
-             #gradient {
+             main {
 
-                background-image: linear-gradient(to bottom right, #108c5e10, lightgreen);
+                background-image: linear-gradient(to bottom right, #108c5e50, #0b874150);
 
              }
              .hide {
@@ -69,9 +80,11 @@
 
 
             </style>
+            <div id='header'>
             <h1><u>London Permacomputing Webring</u>  <img src='https://www.iso-bel.computer/static/webring/flower.png'><img src='https://www.iso-bel.computer/static/webring/flower.png'></h1>
+            </div>
             <div style='display: flex'>
-                <div class='section' style='border-right: 1px solid black; border-top: 1px solid black'>
+                <div class='section' id='leftsection' style='border-right: 1px solid black; border-top: 1px solid black'>
                 <h2>Site Index</h2>
                 <div id='index'>
                 <script type="text/javascript" src="https://www.iso-bel.computer/static/webring/onionring-variables.js"></script>
