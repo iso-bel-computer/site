@@ -59,7 +59,7 @@ else {
   <table>
     <tr>
       <td class='webring-prev'><a href='${sites[previousIndex]}'>← previous</a></td>
-      <td class='webring-info'><img src='https://www.iso-bel.computer/static/webring/flower.png'>I'm part of the <a href='https://london.permacomputing.net/posts/index.html'>${ringName}</a> Webring!</br>We meet on Mondays at 6:30, @ SET Social, Peckham<br>
+      <td class='webring-info'><img src='https://www.iso-bel.computer/static/webring/flower.png'> I'm part of the <a href='https://london.permacomputing.net/posts/index.html'>${ringName}</a> Webring!</br>We meet on Mondays at 6:30, @ SET Social, Peckham <img src='https://www.iso-bel.computer/static/webring/flower.png'><br>
       <span class='webring-links'>
         ${randomText}
         ${indexText}
