@@ -63,7 +63,7 @@ else {
             <tr>
             <td class='webring-prev'><a href='${sites[previousIndex]}'>←</a></td>
             <td class='webring-info'><img src='https://www.iso-bel.computer/static/webring/flower.png'><img src='https://www.iso-bel.computer/static/webring/flower.png'><img src='https://www.iso-bel.computer/static/webring/flower.png'><br><a href='https://london.permacomputing.net/posts/index.html'>${ringName}</a> Webring<br>
-            <span class='webring-links'>
+            <span class='webring-links'>what is this?</a> | <a href='https://permacomputing.net'>wiki |
                 ${randomText}
                 ${indexText}
                 </td></span>
