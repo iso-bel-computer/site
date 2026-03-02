@@ -239,6 +239,28 @@ Permacomputing Webring
 
 """
 
+@app.route('/webringsubmiturl')
+def submiturl():
+    try:
+        url = request.args.get("url", "").strip()
+
+        if not url:
+            return jsonify({"response": "No search term provided"}), 400
+        if len(url) > 100:
+            return jsonify({"response": "URL too long"}), 400
+
+        with open('static/webring/submittedurls.txt', 'a') as f:
+            f.write(url)
+
+        return jsonify({"response":"URL submitted :)"}), 200
+
+
+
+    except Exception:
+
+        return jsonify({"response": "Unknown Error. Sorry :("}), 400
+
+
 @app.route('/permacomputingwebring')
 def webring():
     return render_template('webring.html',
@@ -249,6 +271,7 @@ def webring():
 HTML Workshop
 
 """
+
 
 @app.route('/htmlworkshop')
 def htmlworkshop():
