@@ -16,17 +16,19 @@
 
             <h1>Join the webring</h1>
             <p>To join, just copy the code for one of the widgets to a page on your site (preferably your homepage), and then input that site here. You'll be manually added asap :).</p>
-            <input id='urlbox' type='text'><button id='submit'>Submit</button>
+            <input id='urlbox' type='text'><button id='submit'>Submit</button><div id='response'></div>
 
             <script>
              const urlBox = document.getElementById('urlbox')
              const submitButton = document.getElementById('submit')
+             const responsediv = document.getElementById('response')
 
              submitButton.addEventListener('click', async function() {
                  const submission = encodeURIComponent(urlBox.value)
                  const response = await fetch(`/webringsubmiturl?url=${submission}`)
                  const json = await response.json()
-                 console.log(json)
+                 responsediv.innerText = json.response
+
              })
 
 
