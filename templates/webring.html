@@ -9,15 +9,57 @@
     <body>
         <main>
             <style>
+             body {
+                 margin: 0px
+             }
+             main {
+                 font-family: 'Tahoma'
+             }
              .section {
                  width: 50%;
-                 padding: 10px;
-                 overflow: scroll
+                 padding: 15px;
+                 overflow: scroll;
+                 height: -webkit-fill-available
              }
+            .webringcodewrapper {
+
+                border: 1px dotted #00000050
+             }
+
+             pre {
+                 margin: 0px
+             }
+             h1 {
+                 margin-left: 15px
+             }
+             h2 {
+                 margin: 0px;
+             }
+             button {
+                 background-color: white;
+                 border: 1px solid #108c5e;
+             }
+             button:hover {
+                 cursor: pointer
+             }
+
+            img {
+                height: 1em;
+                width: auto;
+                color: #108c5e;
+            }
+
+             #gradient {
+
+                background-image: linear-gradient(to bottom right, #108c5e10, lightgreen);
+
+             }
+
+
             </style>
-            <h1>London Permacomputing Club Webring</h1>
+            <h1><u>London Permacomputing Webring</u>  <img src='https://www.iso-bel.computer/static/webring/flower.png'><img src='https://www.iso-bel.computer/static/webring/flower.png'></h1>
             <div style='display: flex'>
-                <div class='section'>
+                <div class='section' style='border-right: 1px solid black; border-top: 1px solid black'>
                 <h2>Site Index</h2>
                 <div id='index'>
                 <script type="text/javascript" src="https://www.iso-bel.computer/static/webring/onionring-variables.js"></script>
@@ -29,7 +71,7 @@
                 <p>To join, just copy the code for one of the widgets to a page on your site (preferably your homepage), and then input that site here. You'll be manually added asap :).</p>
                 <div style='flex'>
                     <div>
-                        <input id='urlbox' type='text' style='margin-right: 5px'><button id='submit' style='margin-right: 5px'>Submit</button></div><div id='response'></div>
+                        <input id='urlbox' placeholder='https://london.permacomputing.net' type='text' style='margin-right: 5px; width: 300px'><button id='submit' style='margin-right: 5px'>Submit</button></div><div id='response'></div>
                     </div>
                     <script>
                     const urlBox = document.getElementById('urlbox')
@@ -48,17 +90,24 @@
 
                     </script>
 
+                <h2 style='margin-top: 5px'>Code</h2>
+                <ul>
+                    <li><a href="https://www.iso-bel.computer/static/webring/onionring-widget.js">View widget code</a></li>
+                    <li><a href='https://www.iso-bel.computer/static/webring/onionring-variables.js'>View variables code</a></li>
+                    <li><a href='https://www.iso-bel.computer/static/webring/onionring-index.js'>View index code</a></li>
+                    <li><a href="https://www.iso-bel.computer/static/webring/onionring.css">View css</a></li>
                 </div>
-            <div class='section'>
+            <div class='section' id='gradient' style='border-top: 1px solid black'>
 
             <table>
-                <tr><td style='text-align: left'>
+                <tr><td>
             <div id='londonpermacomputring'>
             <script>let useLargeWidget = true</script>
             <script type="text/javascript" src="https://www.iso-bel.computer/static/webring/onionring-widget.js"></script>
             </div>
             <link rel="stylesheet" href="https://www.iso-bel.computer/static/webring/onionring.css">
             </td></tr><tr><td>
+                <div class='webringcodewrapper'>
             <pre id='londonpermacomputingwebringcode'>
                 {{ '
 <div id="londonpermacomputring">
@@ -68,6 +117,7 @@
 </div>
 <link rel="stylesheet" href="https://www.iso-bel.computer/static/webring/onionring.css">' | e }}
             </pre>
+            </div>
             </td></tr><tr><td style='text-align: left'>
 
             <div id='londonpermacomputring'>
@@ -83,6 +133,7 @@
             </table>
             </div>
             </td></tr><tr><td>
+            <div class='webringcodewrapper'>
             <pre id='londonpermacomputingwebringcode'>
                 {{ '
 <div id="londonpermacomputring">
@@ -92,6 +143,7 @@
 </div>
 <link rel="stylesheet" href="https://www.iso-bel.computer/static/webring/onionring.css">' | e }}
             </pre>
+            </div>
             </td></tr>
             </table>
             </div>

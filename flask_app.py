@@ -245,7 +245,7 @@ def submiturl():
         url = request.args.get("url", "").strip()
 
         if not url:
-            return jsonify({"response": "No search term provided"}), 400
+            return jsonify({"response": "No url provided :("}), 400
         # Auto-add https:// if missing
         if not url.startswith(("http://", "https://")):
             url = "https://" + url
