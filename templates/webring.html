@@ -23,9 +23,9 @@
              const submitButton = document.getElementById('submit')
 
              submitButton.addEventListener('click', async function() {
-                 const submission = encodeURIComponent(urlBox.innerText)
+                 const submission = encodeURIComponent(urlBox.value)
                  const response = await fetch(`/webringsubmiturl?url=${submission}`)
-                 const json = await response.json
+                 const json = await response.json()
                  console.log(json)
              })
 
@@ -62,7 +62,7 @@
                 <td class='webring-info'><img src='https://www.iso-bel.computer/static/webring/flower.png'><img src='https://www.iso-bel.computer/static/webring/flower.png'><img src='https://www.iso-bel.computer/static/webring/flower.png'><br><a href='https://london.permacomputing.net/posts/index.html'>London Permacomputing</a> Webring<br>
                     <a>random</a> |
                     <a>index / join</a>
-                    </td></span>
+                    </td>
                 <td class='webring-next'>→</td>
                 </tr>
             </table>

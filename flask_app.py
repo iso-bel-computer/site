@@ -243,6 +243,11 @@ Permacomputing Webring
 def submiturl():
     try:
         url = request.args.get("url", "").strip()
+        from urllib.parse import urlparse
+
+        parsed = urlparse(url)
+        if not parsed.scheme or not parsed.netloc:
+            return jsonify({"response": "Invalid URL"}), 400
 
         if not url:
             return jsonify({"response": "No search term provided"}), 400
@@ -250,15 +255,15 @@ def submiturl():
             return jsonify({"response": "URL too long"}), 400
 
         with open('static/webring/submittedurls.txt', 'a') as f:
-            f.write(url)
+            f.write(url + "\n")
 
         return jsonify({"response":"URL submitted :)"}), 200
 
 
 
-    except Exception:
-
-        return jsonify({"response": "Unknown Error. Sorry :("}), 400
+    except Exception as e:
+        print(e)
+        return jsonify({"response": "Server error"}), 500
 
 
 @app.route('/permacomputingwebring')
