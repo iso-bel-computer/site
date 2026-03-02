@@ -17,6 +17,11 @@
   border: 1px solid #FF0000;
 }
 
+#londonpermacomputring img {
+    height: 1.5em;
+    width: auto;
+}
+
 #londonpermacomputring table tr td {
   padding: 15px; /* creates some space between the links and text inside the widget */
 }
