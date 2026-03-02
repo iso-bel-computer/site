@@ -63,7 +63,7 @@ else {
       <span class='webring-links'>
         ${randomText}
         ${indexText}
-        <a href='https://garlic.garden/onionring/'>what is this?</a></span></td>
+        <a href='https://garlic.garden/onionring/'>what is this?</a> | <a href='https://permacomputing.net'>Wiki</span></td>
       <td class='webring-next'><a href='${sites[nextIndex]}'>next →</a></td>
     </tr>
   </table>
