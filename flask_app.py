@@ -244,11 +244,11 @@ def submiturl():
     try:
         url = request.args.get("url", "").strip()
 
+        if not url:
+            return jsonify({"response": "No search term provided"}), 400
         # Auto-add https:// if missing
         if not url.startswith(("http://", "https://")):
             url = "https://" + url
-
-        from urllib.parse import urlparse
 
         parsed = urlparse(url)
         if not parsed.scheme or not parsed.netloc:
@@ -257,9 +257,7 @@ def submiturl():
         if "." not in parsed.netloc:
             return jsonify({"response": "Invalid domain"}), 400
 
-        if not url:
-            return jsonify({"response": "No search term provided"}), 400
-        if len(url) > 100:
+        if len(url) > 150:
             return jsonify({"response": "URL too long"}), 400
 
         with open('static/webring/submittedurls.txt', 'a') as f:
