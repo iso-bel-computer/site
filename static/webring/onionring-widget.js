@@ -55,39 +55,4 @@ else {
   }
 
 
-  if (!useLargeWidget) {
-
-        //this is the code that displays the widget - EDIT THIS if you want to change the structure
-        tag.insertAdjacentHTML('afterbegin', `
-        <table>
-            <tr>
-            <td class='webring-prev'><a href='${sites[previousIndex]}'>←</a></td>
-            <td class='webring-info'><img src='https://www.iso-bel.computer/static/webring/flower.png'><img src='https://www.iso-bel.computer/static/webring/flower.png'><img src='https://www.iso-bel.computer/static/webring/flower.png'><br><a href='https://london.permacomputing.net/posts/index.html'>${ringName}</a> Webring<br>
-            <span class='webring-links'>
-                ${randomText}
-                ${indexText}
-                </td></span>
-            <td class='webring-next'><a href='${sites[nextIndex]}'>→</a></td>
-            </tr>
-        </table>
-        `);
-        }
-  else {
-
-        //this is the code that displays the widget - EDIT THIS if you want to change the structure
-        tag.insertAdjacentHTML('afterbegin', `
-        <table>
-            <tr>
-            <td class='webring-prev'><a href='${sites[previousIndex]}'>←</a></td>
-            <td class='webring-info'><img src='https://www.iso-bel.computer/static/webring/flower.png'><img src='https://www.iso-bel.computer/static/webring/flower.png'><img src='https://www.iso-bel.computer/static/webring/flower.png'><br>I'm in the <a href='https://london.permacomputing.net/posts/index.html'>${ringName}</a> Club! </br>We meet on Mondays at 6:30, @ <a href='https://www.openstreetmap.org/way/72032052'>SET Social, Peckham</a><br>
-            <span class='webring-links'>
-                <a href='https://garlic.garden/onionring/'>what is this?</a> | <a href='https://permacomputing.net'>wiki</a> |
-                ${randomText}
-                ${indexText}</span></td>
-            <td class='webring-next'><a href='${sites[nextIndex]}'>→</a></td>
-            </tr>
-        </table>
-        `);
-
-  }
 }

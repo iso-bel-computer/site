@@ -133,16 +133,134 @@
                  })
                 </script>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             <div class='section' id='gradient' style='border-top: 1px solid black'>
 
             <table>
                 <tr><td>
             <div id='londonpermacomputring'>
-            <script>let useLargeWidget = true</script>
-            <script type="text/javascript" src="https://www.iso-bel.computer/static/webring/onionring-widget.js"></script>
+
+            <table>
+                <tr>
+                    <td class='webring-prev'><a id='permaPrev'>←</a></td>
+                    <td class='webring-info'>
+                        <img src='https://www.iso-bel.computer/static/webring/flower.png'><img src='https://www.iso-bel.computer/static/webring/flower.png'><img src='https://www.iso-bel.computer/static/webring/flower.png'>
+                        <br>I'm in the <a href='https://london.permacomputing.net/posts/index.html'>London Permacomputing</a> Club!
+                        <br>We meet on Mondays at 6:30, @ <a href='https://www.openstreetmap.org/way/72032052'>SET Social, Peckham</a><br>
+                        <span class='webring-links'>
+                            <a href='https://garlic.garden/onionring/'>what is this?</a> |
+                            <a href='https://permacomputing.net'>wiki</a> |
+                            <a href='javascript:void(0)' onclick='randomSite()'>random</a> |
+                            <a href='https://www.iso-bel.computer/permacomputingwebring'>index / join</a>
+                        </span>
+                    </td>
+                    <td class='webring-next'><a id='permaNext'>→</a></td>
+                </tr>
+            </table>
+
             </div>
+
+
+            <script>
+            const widget = document.getElementById('londonpermacomputring')
+
+            const thisSite = window.location.href; //get the url of the site we're currently on
+            const response = await fetch('https://www.iso-bel.computer/static/webring/');
+            if (!response.ok) {throw new Error(`Response status: ${response.status}`);}
+            const sites = await response.json().sites;
+            let thisIndex = null;
+
+            // go through the site list to see if this site is on it and find its position
+            for (i = 0; i < sites.length; i++) {
+                if (thisSite.startsWith(sites[i])) { //we use startswith so this will match any subdirectory, users can put the widget on multiple pages
+                    thisIndex = i;
+                    break; //when we've found the site, we don't need to search any more, so stop the loop
+                }
+            }
+
+            function randomSite() {
+                otherSites = sites.slice(); //create a copy of the sites list
+                otherSites.splice(thisIndex, 1); //remove the current site so we don't just land on it again
+                randomIndex = Math.floor(Math.random() * otherSites.length);
+                location.href = otherSites[randomIndex];
+            }
+
+            if (thisIndex == null) {
+                widget.innerHTML = `<table><tr><td>This site isn't part of the London Permacomputing webring - yet...</td></tr></table>`;
+            } else {
+                previousIndex = (thisIndex-1 < 0) ? sites.length-1 : thisIndex-1;
+                nextIndex = (thisIndex+1 >= sites.length) ? 0 : thisIndex+1;
+                widget.querySelector('#permaPrev').href = previousIndex
+                widget.querySelector('#permaNext').href = nextIndex
+
+            }
+
+
+            </script>
             <link rel="stylesheet" href="https://www.iso-bel.computer/static/webring/onionring.css">
-            </td></tr><tr><td>
+            </td></tr>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <tr><td>
+
+
+
+
+
+
+
                 <div class='webringcodewrapper'>
             <pre id='londonpermacomputingwebringcode'>
                 {{ '
