@@ -20,4 +20,3 @@ ${list}
 </ul>
 `);
 
-code.innerText = '<div id="londonpermacomputring"><script type="text/javascript" src="https://www.iso-bel.computer/static/webring/onionring-variables.js"></script><script type="text/javascript" src="https://www.iso-bel.computer/static/webring/onionring-widget.js"></script></div><link rel="stylesheet" href="https://www.iso-bel.computer/static/webring/onionring.css">'
