@@ -54,7 +54,25 @@ else {
     randomText = `<a href='javascript:void(0)' onclick='randomSite()'>random</a> | `;
   }
 
-  if (useLargeWidget) {
+
+  if (!useLargeWidget) {
+
+        //this is the code that displays the widget - EDIT THIS if you want to change the structure
+        tag.insertAdjacentHTML('afterbegin', `
+        <table>
+            <tr>
+            <td class='webring-prev'><a href='${sites[previousIndex]}'>←</a></td>
+            <td class='webring-info'><img src='https://www.iso-bel.computer/static/webring/flower.png'><img src='https://www.iso-bel.computer/static/webring/flower.png'><img src='https://www.iso-bel.computer/static/webring/flower.png'><br><a href='https://london.permacomputing.net/posts/index.html'>${ringName}</a> Webring<br>
+            <span class='webring-links'>
+                ${randomText}
+                ${indexText}
+                </td></span>
+            <td class='webring-next'><a href='${sites[nextIndex]}'>→</a></td>
+            </tr>
+        </table>
+        `);
+        }
+  else {
 
         //this is the code that displays the widget - EDIT THIS if you want to change the structure
         tag.insertAdjacentHTML('afterbegin', `
@@ -71,22 +89,5 @@ else {
         </table>
         `);
 
-        }
-  else {
-
-        //this is the code that displays the widget - EDIT THIS if you want to change the structure
-        tag.insertAdjacentHTML('afterbegin', `
-        <table>
-            <tr>
-            <td class='webring-prev'><a href='${sites[previousIndex]}'>←</a></td>
-            <td class='webring-info'><img src='https://www.iso-bel.computer/static/webring/flower.png'><img src='https://www.iso-bel.computer/static/webring/flower.png'><img src='https://www.iso-bel.computer/static/webring/flower.png'><br><a href='https://london.permacomputing.net/posts/index.html'>${ringName}</a> Webring<br>
-            <span class='webring-links'>
-                ${randomText}
-                ${indexText}
-                </td></span>
-            <td class='webring-next'><a href='${sites[nextIndex]}'>→</a></td>
-            </tr>
-        </table>
-        `);
   }
   }

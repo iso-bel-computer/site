@@ -1,2 +1,2 @@
 
-const useLargeWidget = true
+let useLargeWidget = true
