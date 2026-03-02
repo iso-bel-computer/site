@@ -13,8 +13,8 @@
 
 #londonpermacomputring table {
   margin: 0 auto; /* centers the widget */
-  background-color: #5b751e;
-  color: white;
+  background-color: white;
+  border: 1px solid #FF0000;
 }
 
 #londonpermacomputring table tr td {

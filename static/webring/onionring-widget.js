@@ -45,7 +45,7 @@ else {
   indexText = ""
   //if you've chosen to include an index, this builds the link to that
   if (useIndex) {
-    indexText = `<a href='${indexPage}'>index</a> | `;
+    indexText = `<a href='${indexPage}'>index / join</a> | `;
   }
 
   randomText = ""
@@ -59,7 +59,7 @@ else {
   <table>
     <tr>
       <td class='webring-prev'><a href='${sites[previousIndex]}'>← previous</a></td>
-      <td class='webring-info'>I'm part of the ${ringName} Webring!</br>We meet on Mondays at 6:30, at SET Social, Peckham<br>
+      <td class='webring-info'>I'm part of the <a href='https://london.permacomputing.net/posts/index.html'>${ringName}</a> Webring!</br>We meet on Mondays at 6:30, @ SET Social, Peckham<br>
       <span class='webring-links'>
         ${randomText}
         ${indexText}
