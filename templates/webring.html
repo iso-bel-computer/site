@@ -35,9 +35,16 @@
              h2 {
                  margin: 0px;
              }
+             input {
+
+                 background-color: white;
+                 border: 1px solid #108c5e;
+                 padding: 3px
+             }
              button {
                  background-color: white;
                  border: 1px solid #108c5e;
+                 padding: 3px
              }
              button:hover {
                  cursor: pointer
@@ -53,6 +60,9 @@
 
                 background-image: linear-gradient(to bottom right, #108c5e10, lightgreen);
 
+             }
+             .hide {
+                 display: none
              }
 
 
@@ -90,13 +100,20 @@
 
                     </script>
 
-                <h2 style='margin-top: 5px'>Code</h2>
-                <ul>
+                <h2 id='codeTitle' style='margin-top: 5px; cursor: pointer'>Code ↧</h2>
+                <ul id='codeList' class='hide'>
                     <li><a href="https://www.iso-bel.computer/static/webring/onionring-widget.js">View widget code</a></li>
                     <li><a href='https://www.iso-bel.computer/static/webring/onionring-variables.js'>View variables code</a></li>
                     <li><a href='https://www.iso-bel.computer/static/webring/onionring-index.js'>View index code</a></li>
                     <li><a href="https://www.iso-bel.computer/static/webring/onionring.css">View css</a></li>
                 </div>
+                <script>
+                 const codeTitle = document.getElementById('codeTitle')
+                 codeTitle.addEventListener('click', function() {
+                    document.getElementById('codeList').classList.toggle('hide')
+                 })
+                </script>
+
             <div class='section' id='gradient' style='border-top: 1px solid black'>
 
             <table>
