@@ -254,6 +254,9 @@ def submiturl():
         if not parsed.scheme or not parsed.netloc:
             return jsonify({"response": "Invalid URL"}), 400
 
+        if "." not in parsed.netloc:
+            return jsonify({"response": "Invalid domain"}), 400
+
         if not url:
             return jsonify({"response": "No search term provided"}), 400
         if len(url) > 100:
