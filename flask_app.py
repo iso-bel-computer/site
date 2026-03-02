@@ -235,6 +235,17 @@ def poetry():
                            headerRouteDisplay = '/htmlworkshop')
 
 """
+Permacomputing Webring
+
+"""
+
+@app.route('/permacomputingwebring')
+def webring():
+    return render_template('webring.html',
+                           siteMap = siteMap,
+                           headerroutedisplay = '/permacomputingwebring')
+
+"""
 HTML Workshop
 
 """

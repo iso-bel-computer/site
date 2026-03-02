@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='webring/onionring.css') }}">
+{% endblock %}
+
+{% block content %}
+<div id='index'>
+<script type="text/javascript" src="https://www.iso-bel.computer/static/webring/onionring-variables.js"></script>
+<script type="text/javascript" src="https://www.iso-bel.computer/static/webring/onionring-index.js"></script>
+</div>
+
+<div id='webringid'>
+<script type="text/javascript" src="https://www.iso-bel.computer/static/webring/onionring-variables.js"></script>
+<script type="text/javascript" src="https://www.iso-bel.computer/static/webring/onionring-widget.js"></script>
+</div>
+<link rel="stylesheet" href="https://www.iso-bel.computer/static/webring/onionring.css">
+
+
+
+{% endblock %}
