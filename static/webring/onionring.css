@@ -12,9 +12,9 @@
 }
 
 #londonpermacomputring table {
-  background-color: #ffffff; /* makes the background pure white */
   margin: 0 auto; /* centers the widget */
   background-color: #5b751e;
+  color: white;
 }
 
 #londonpermacomputring table tr td {
