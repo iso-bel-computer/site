@@ -220,8 +220,8 @@
             if (thisIndex == null) {
                 widget.innerHTML = `<table><tr><td>This site isn't part of the London Permacomputing webring - yet...</td></tr></table>`;
             } else {
-                previousIndex = (thisIndex-1 < 0) ? sites.length-1 : thisIndex-1;
-                nextIndex = (thisIndex+1 >= sites.length) ? 0 : thisIndex+1;
+                const previousIndex = (thisIndex-1 < 0) ? sites.length-1 : thisIndex-1;
+                const nextIndex = (thisIndex+1 >= sites.length) ? 0 : thisIndex+1;
                 widget.querySelector('#permaPrev').href = previousIndex
                 widget.querySelector('#permaNext').href = nextIndex
 
