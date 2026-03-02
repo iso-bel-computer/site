@@ -10,7 +10,7 @@ var code = document.getElementById('webringcode')
 regex = /(^https:\/\/|\/$)(^www\.$)/g; //strips the https:// and trailing slash off the urls for aesthetic purposes
 list = "";
 for (i = 0; i < sites.length; i++) {
-  list += `<li><a href='${sites[i]}'>${sites[i].replace(regex, "")}</a></li>`;
+  list += `<li><a href='${sites[i]}'>${sites[i].replace(/^https?:\/\/(www\.)?|\/$/g, "")}</a></li>`;
 }
 
 tag.insertAdjacentHTML('afterbegin', `
