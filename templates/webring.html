@@ -23,7 +23,7 @@
              const submitButton = document.getElementById('submit')
 
              submitButton.addEventListener('click', async function() {
-                 const submission = urlBox.innerText.encodeURIComponent()
+                 const submission = encodeURIComponent(urlBox.innerText)
                  const response = await fetch(`/webringsubmiturl?url=${submission}`)
                  const json = await response.json
                  console.log(json)
