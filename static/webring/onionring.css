@@ -8,13 +8,13 @@
 #londonpermacomputring {
   margin: 0 auto;
   padding: 8px; /* creates some space around the widget */
-  background-color: #5b751e;
 
 }
 
 #londonpermacomputring table {
   background-color: #ffffff; /* makes the background pure white */
   margin: 0 auto; /* centers the widget */
+  background-color: #5b751e;
 }
 
 #londonpermacomputring table tr td {
