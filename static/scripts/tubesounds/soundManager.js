@@ -75,15 +75,14 @@ export class soundManager {
 
         const synth = this.arrivalSynths[line];
         const chord = lineChords[line];
-        let pan = this.stationAudioData[station].pan
+        let pan = this.stationAudioData[station]?.pan
         if (pan === undefined) {pan = 1}
-        console.log(pan)
         const normalizedPan = (parseFloat(pan) / 50) - 1;
         if (!synth || !chord) return;
 
         this.arrivalPanners[line].pan.value = normalizedPan;
         synth.volume.value = -16 + Math.random() * 6;
-        synth.triggerAttackRelease(chord, "4n", Tone.Transport.nextSubdivision("16n"), 0.5);
+        synth.triggerAttackRelease(chord, "4n", Tone.Transport.nextSubdivision("16n") + 0.05, 0.5);
     }
     playDepartureSynth(line) {
 
@@ -107,7 +106,7 @@ export class soundManager {
         if (!synth || !note) return;
 
         synth.volume.value = -8 + Math.random() * 4;
-        synth.triggerAttackRelease(note, "12n", Tone.Transport.nextSubdivision("16n"), 0.5);
+        synth.triggerAttackRelease(note, "12n", Tone.Transport.nextSubdivision("16n") + 0.05, 0.5);
 
     }
 
@@ -158,9 +157,8 @@ export class soundManager {
 
         if (bpm < this.lastBPM) {bpm = (this.lastBPM + bpm) / 2}
 
-        this.transport.bpm.rampTo(bpm, 1);
+        this.transport.bpm.rampTo(bpm, 10);
 
-        console.log(bpm)
 
     }
 
@@ -173,6 +171,5 @@ export class soundManager {
         );
         // Map BPM to velocity (0.3 → 1)
         this.loopVelocity = 0.1 + (normalized * 0.7);
-        console.log(drive)
     }
 }

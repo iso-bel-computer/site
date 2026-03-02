@@ -1,5 +1,18 @@
 [
     {
+        "title": "The Trial",
+        "pages": 220,
+        "author": "Franz Kafka",
+        "isbn": "0141182903",
+        "isbn13": "978-0141182902",
+        "readDate": "2026/03/01",
+        "coverColours": [],
+        "mainColor": "#fff3ee",
+        "accentColor": "#b6aba6",
+        "fontStyle": "s",
+        "review": ""
+    },
+    {
         "title": "The Argonauts",
         "pages": 181,
         "author": "Maggie Nelson",

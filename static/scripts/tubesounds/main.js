@@ -2,6 +2,7 @@ import { apiManager } from './apimanager.js';
 import { trainManager } from './trainmanager.js';
 import { soundManager } from './soundManager.js';
 
+
 const sound = new soundManager()
 const trains = new trainManager(sound)
 const api = new apiManager(trains)
@@ -35,14 +36,14 @@ updateUI()
 
 alert('hi!! you gotta click on the page once for the sound to play. i dont make the rules.')
 
-document.body.addEventListener("click", async () => {
 
-    await Tone.start()
-    sound.init = true
-    sound.playArrivalSynth('circl')
-})
+    document.body.addEventListener("click", async () => {
+        await Tone.start()
+        sound.init = true
+        sound.startLoop()
 
+    })
 
 setInterval(tick, 10)
 
-setInterval(updateData, 500)
+setInterval(updateData, 2000)
