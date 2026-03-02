@@ -18,35 +18,36 @@
             </style>
             <h1>London Permacomputing Club Webring</h1>
             <div class='section'>
-            <div id='index'>
-            <script type="text/javascript" src="https://www.iso-bel.computer/static/webring/onionring-variables.js"></script>
-            <script type="text/javascript" src="https://www.iso-bel.computer/static/webring/onionring-index.js"></script>
-            </div>
+                <div id='index'>
+                <script type="text/javascript" src="https://www.iso-bel.computer/static/webring/onionring-variables.js"></script>
+                <script type="text/javascript" src="https://www.iso-bel.computer/static/webring/onionring-index.js"></script>
+                </div>
 
-            <h1>Join the webring</h1>
-            <p>This webring is for everyone who comes to the London Permacomputing meetings!</p>
-            <p>To join, just copy the code for one of the widgets to a page on your site (preferably your homepage), and then input that site here. You'll be manually added asap :).</p>
-            <div style='flex'>
-                <div>
-                    <input id='urlbox' type='text' style='margin-right: 5px'><button id='submit' style='margin-right: 5px'>Submit</button></div><div id='response'></div>
-            </div>
-            <script>
-             const urlBox = document.getElementById('urlbox')
-             const submitButton = document.getElementById('submit')
-             const responsediv = document.getElementById('response')
+                <h1>Join the webring</h1>
+                <p>This webring is for everyone who comes to the London Permacomputing meetings!</p>
+                <p>To join, just copy the code for one of the widgets to a page on your site (preferably your homepage), and then input that site here. You'll be manually added asap :).</p>
+                <div style='flex'>
+                    <div>
+                        <input id='urlbox' type='text' style='margin-right: 5px'><button id='submit' style='margin-right: 5px'>Submit</button></div><div id='response'></div>
+                    </div>
+                    <script>
+                    const urlBox = document.getElementById('urlbox')
+                    const submitButton = document.getElementById('submit')
+                    const responsediv = document.getElementById('response')
 
-             submitButton.addEventListener('click', async function() {
-                 const submission = encodeURIComponent(urlBox.value)
-                 const response = await fetch(`/webringsubmiturl?url=${submission}`)
-                 const json = await response.json()
-                 responsediv.innerText = json.response
+                    submitButton.addEventListener('click', async function() {
+                        const submission = encodeURIComponent(urlBox.value)
+                        const response = await fetch(`/webringsubmiturl?url=${submission}`)
+                        const json = await response.json()
+                        responsediv.innerText = json.response
 
-             })
+                    })
 
 
 
-            </script>
+                    </script>
 
+                </div>
             </div>
             <div class='section'>
 
