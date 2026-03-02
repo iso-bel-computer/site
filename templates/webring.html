@@ -191,9 +191,12 @@
 
             <script>
             const widget = document.getElementById('londonpermacomputring')
+            async function getSites() {
+                 return await fetch('https://www.iso-bel.computer/static/webring/');
+             }
 
             const thisSite = window.location.href; //get the url of the site we're currently on
-            const response = await fetch('https://www.iso-bel.computer/static/webring/');
+            const response = await getSites()
             if (!response.ok) {throw new Error(`Response status: ${response.status}`);}
             const sites = await response.json().sites;
             let thisIndex = null;
