@@ -188,12 +188,9 @@
 
             </div>
 
-
             <script type='module'>
             const widget = document.getElementById('londonpermacomputring')
-            async function getSites() {
-                 return await fetch('https://www.iso-bel.computer/static/webring/sites.json');
-             }
+            async function getSites() {return await fetch('https://www.iso-bel.computer/static/webring/sites.json');}
 
             const thisSite = window.location.href; //get the url of the site we're currently on
             const response = await getSites()
@@ -211,10 +208,8 @@
             }
 
             function randomSite() {
-                otherSites = sites.slice(); //create a copy of the sites list
-                otherSites.splice(thisIndex, 1); //remove the current site so we don't just land on it again
-                randomIndex = Math.floor(Math.random() * otherSites.length);
-                return otherSites[randomIndex];
+                randomIndex = Math.floor(Math.random() * sites.length);
+                return sites[randomIndex];
             }
 
             if (thisIndex == null) {
@@ -225,7 +220,6 @@
                 widget.querySelector('#permaPrev').href = sites[previousIndex]
                 widget.querySelector('#permaNext').href = sites[nextIndex]
                 widget.querySelector('#permaRandom').href = randomSite()
-
             }
             </script>
             <link rel="stylesheet" href="https://www.iso-bel.computer/static/webring/onionring.css">
