@@ -125,26 +125,9 @@
                         const response = await fetch(`/webringsubmiturl?url=${submission}`)
                         const json = await response.json()
                         responsediv.innerText = json.response
-
                     })
-
-
-
                     </script>
 
-                <h2 id='codeTitle' style='margin-top: 5px; cursor: pointer'>View Code ↧</h2>
-                <ul id='codeList' class='hide'>
-                    <li><a href="https://www.iso-bel.computer/static/webring/onionring-widget.js">View widget code</a></li>
-                    <li><a href='https://www.iso-bel.computer/static/webring/onionring-variables.js'>View variables code</a></li>
-                    <li><a href='https://www.iso-bel.computer/static/webring/onionring-index.js'>View index code</a></li>
-                    <li><a href="https://www.iso-bel.computer/static/webring/onionring.css">View css</a></li>
-                </div>
-                <script>
-                 const codeTitle = document.getElementById('codeTitle')
-                 codeTitle.addEventListener('click', function() {
-                    document.getElementById('codeList').classList.toggle('hide')
-                 })
-                </script>
 
 
 
@@ -406,30 +389,115 @@ if (thisIndex == null) {
 " | e }}
             </pre>
             </div>
-            </td></tr><tr><td style='text-align: left'>
+            </td></tr>
+            <tr><td style='text-align: left'>
 
             <div id='londonpermacomputring'>
             <table>
                 <tr>
-                <td class='webring-prev'>←</td>
-                <td class='webring-info'><img src='https://www.iso-bel.computer/static/webring/flower.png'><img src='https://www.iso-bel.computer/static/webring/flower.png'><img src='https://www.iso-bel.computer/static/webring/flower.png'><br><a href='https://london.permacomputing.net/posts/index.html'>London Permacomputing</a> Webring<br>
-                    <a>random</a> |
-                    <a>index / join</a>
+                    <td class='webring-prev'>←</td>
+                    <td class='webring-info'>
+                        <img src='https://www.iso-bel.computer/static/webring/flower.png'><img src='https://www.iso-bel.computer/static/webring/flower.png'><img src='https://www.iso-bel.computer/static/webring/flower.png'><br><a href='https://london.permacomputing.net/posts/index.html'>London Permacomputing</a> Webring<br>
+                        <a href='#' id='permaRandom'>random</a> |
+                        <a href='https://www.iso-bel.computer/permacomputingwebring'>index / join</a>
                     </td>
-                <td class='webring-next'>→</td>
+                    <td class='webring-next'>→</td>
                 </tr>
             </table>
             </div>
             </td></tr><tr><td>
             <div class='webringcodewrapper'>
             <pre id='londonpermacomputingwebringcode'>
-                {{ '
-<div id="londonpermacomputring">
-<script>let useLargeWidget = false</script>
-<script type="text/javascript" src="https://www.iso-bel.computer/static/webring/onionring-variables.js"></script>
-<script type="text/javascript" src="https://www.iso-bel.computer/static/webring/onionring-widget.js"></script>
+                {{ "" | e }}
+<table>
+    <tr>
+        <td class='webring-prev'><a id='permaPrev'>←</a></td>
+        <td class='webring-info'>
+            <img src='https://www.iso-bel.computer/static/webring/flower.png'><img src='https://www.iso-bel.computer/static/webring/flower.png'><img src='https://www.iso-bel.computer/static/webring/flower.png'>
+            <br><a href='https://london.permacomputing.net'>London Permacomputing</a> Webring<br>
+            <span class='webring-links'>
+                <a href='#' id='permaRandom'>random</a> |
+                <a href='https://www.iso-bel.computer/permacomputingwebring'>index / join</a>
+            </span>
+        </td>
+        <td class='webring-next'><a id='permaNext'>→</a></td>
+    </tr>
+</table>
+
 </div>
-<link rel="stylesheet" href="https://www.iso-bel.computer/static/webring/onionring.css">' | e }}
+
+<script type='module'>
+const widget = document.getElementById('londonpermacomputring')
+async function getSites() {return await fetch('https://www.iso-bel.computer/static/webring/sites.json');}
+
+const thisSite = window.location.href; //get the url of the site we're currently on
+const response = await getSites()
+if (!response.ok) {throw new Error(`Response status: ${response.status}`);}
+const json = await response.json();
+const sites = json.sites
+let thisIndex = null;
+
+// go through the site list to see if this site is on it and find its position
+for (i = 0; i < sites.length; i++) {
+    if (thisSite.startsWith(sites[i])) { //we use startswith so this will match any subdirectory, users can put the widget on multiple pages
+        thisIndex = i;
+        break; //when we've found the site, we don't need to search any more, so stop the loop
+    }
+}
+
+function randomSite() {
+    const randomIndex = Math.floor(Math.random() * sites.length);
+    widget.querySelector('#permaRandom').href = sites[randomIndex]
+}
+
+if (thisIndex == null) {
+    widget.innerHTML = `<table><tr><td>This site isn't part of the London Permacomputing webring - yet...</td></tr></table>`;
+} else {
+    const previousIndex = (thisIndex-1 < 0) ? sites.length-1 : thisIndex-1;
+    const nextIndex = (thisIndex+1 >= sites.length) ? 0 : thisIndex+1;
+    widget.querySelector('#permaPrev').href = sites[previousIndex]
+    widget.querySelector('#permaNext').href = sites[nextIndex]
+    widget.querySelector('#permaRandom').addEventListener('click', randomSite)
+    randomSite()
+}
+</script>
+<style>
+#londonpermacomputring {
+    margin: 0 auto;
+    padding: 8px;
+}
+
+#londonpermacomputring table {
+    margin: 0 auto;
+    background-color: #ffffff70;
+    border: 1px solid #00AA00;
+}
+
+#londonpermacomputring img {
+    height: 1.5em;
+    width: auto;
+}
+
+#londonpermacomputring table tr td {
+    padding: 10px;
+}
+
+#londonpermacomputring.webring-prev {
+    text-align:right;
+}
+
+#londonpermacomputring.webring-info {
+    text-align:center;
+}
+
+#londonpermacomputring.webring-next {
+    text-align:left;
+}
+
+#londonpermacomputring.webring-links {
+    font-size:small;
+}
+</style>
             </pre>
             </div>
             </td></tr>
