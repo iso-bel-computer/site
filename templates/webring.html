@@ -209,7 +209,7 @@
 
             function randomSite() {
                 const randomIndex = Math.floor(Math.random() * sites.length);
-                return sites[randomIndex];
+                widget.querySelector('#permaRandom').href = sites[randomIndex]
             }
 
             if (thisIndex == null) {
@@ -219,7 +219,7 @@
                 const nextIndex = (thisIndex+1 >= sites.length) ? 0 : thisIndex+1;
                 widget.querySelector('#permaPrev').href = sites[previousIndex]
                 widget.querySelector('#permaNext').href = sites[nextIndex]
-                widget.querySelector('#permaRandom').href = randomSite()
+                widget.querySelector('#permaRandom').addEventListener('click', randomSite)
             }
             </script>
             <link rel="stylesheet" href="https://www.iso-bel.computer/static/webring/onionring.css">
