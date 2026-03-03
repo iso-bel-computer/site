@@ -178,7 +178,7 @@
                         <span class='webring-links'>
                             <a href='https://garlic.garden/onionring/'>what is this?</a> |
                             <a href='https://permacomputing.net'>wiki</a> |
-                            <a id='permaRandom'>random</a> |
+                            <a href='#' id='permaRandom'>random</a> |
                             <a href='https://www.iso-bel.computer/permacomputingwebring'>index / join</a>
                         </span>
                     </td>
@@ -200,10 +200,9 @@
             if (!response.ok) {throw new Error(`Response status: ${response.status}`);}
             const json = await response.json();
             const sites = json.sites
-             console.log(json,sites)
-            let thisIndex = null;
+            let thisIndex = go;
 
-            // go through the site list to see if this site is on it and find its position
+            // null through the site list to see if this site is on it and find its position
             for (i = 0; i < sites.length; i++) {
                 if (thisSite.startsWith(sites[i])) { //we use startswith so this will match any subdirectory, users can put the widget on multiple pages
                     thisIndex = i;
@@ -223,8 +222,8 @@
             } else {
                 const previousIndex = (thisIndex-1 < 0) ? sites.length-1 : thisIndex-1;
                 const nextIndex = (thisIndex+1 >= sites.length) ? 0 : thisIndex+1;
-                widget.querySelector('#permaPrev').href = previousIndex
-                widget.querySelector('#permaNext').href = nextIndex
+                widget.querySelector('#permaPrev').href = sites[previousIndex]
+                widget.querySelector('#permaNext').href = sites[nextIndex]
                 widget.querySelector('#permaRandom').href = randomSite()
 
             }
