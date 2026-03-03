@@ -200,9 +200,9 @@
             if (!response.ok) {throw new Error(`Response status: ${response.status}`);}
             const json = await response.json();
             const sites = json.sites
-            let thisIndex = go;
+            let thisIndex = null;
 
-            // null through the site list to see if this site is on it and find its position
+            // go through the site list to see if this site is on it and find its position
             for (i = 0; i < sites.length; i++) {
                 if (thisSite.startsWith(sites[i])) { //we use startswith so this will match any subdirectory, users can put the widget on multiple pages
                     thisIndex = i;
