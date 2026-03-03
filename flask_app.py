@@ -289,6 +289,10 @@ def htmlworkshop():
     return render_template('htmlworkshop.html',
                            siteMap = siteMap,
                            headerroutedisplay = '/htmlworkshop')
+@app.route('/demo')
+def demo():
+    return render_template('demo.html')
+
 
 """
 Tube sounds
