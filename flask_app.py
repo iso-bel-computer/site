@@ -2,12 +2,13 @@ import os
 from flask import Flask, render_template, jsonify, request, abort, redirect
 import json; from datetime import datetime; import random; from dotenv import load_dotenv
 import requests; from requests.auth import HTTPBasicAuth; from urllib.parse import urlparse
+from flask_cors import CORS
 
 load_dotenv()
 os.chdir(os.path.dirname(__file__))  # change CWD to where flask_app.py lives
 app = Flask(__name__)
 
-
+CORS(app, resources={r"/static/webring/*": {"origins": "*"}})
 siteMap = [
     '', # not an empty string!!! this is the home route!!! dont remove u idiot!!
     '/projects/YWABM - UNDER CONSTRUCTION',
