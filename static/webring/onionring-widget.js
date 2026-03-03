@@ -56,7 +56,7 @@ else {
                     <a href='https://www.iso-bel.computer/permacomputingwebring'>index / join</a>
                 </span>
             </td>
-            <td class='webring-next'><a id='permaNext' href='$sites[nextIndex]'>→</a></td>
+            <td class='webring-next'><a id='permaNext' href='${sites[nextIndex]}'>→</a></td>
         </tr>
     </table>
 </div>
