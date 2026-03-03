@@ -9,6 +9,7 @@
 var sites = [
     'https://london.permacomputing.net',
     'https://www.iso-bel.computer',
+    "https://cheng.organic",
     "https://synte.codeberg.page"
 ];
 
