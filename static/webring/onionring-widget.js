@@ -42,17 +42,26 @@ else {
   previousIndex = (thisIndex-1 < 0) ? sites.length-1 : thisIndex-1;
   nextIndex = (thisIndex+1 >= sites.length) ? 0 : thisIndex+1;
 
-  indexText = ""
-  //if you've chosen to include an index, this builds the link to that
-  if (useIndex) {
-    indexText = `<a href='${indexPage}'>index / join </a>`;
+
+    tag.innerHTML = `
+<div id='londonpermacomputring'>
+    <table>
+        <tr>
+            <td class='webring-prev'><a id='permaPrev' href='${sites[previousIndex]}'>←</a></td>
+            <td class='webring-info'>
+                <img src='https://www.iso-bel.computer/static/webring/flower.png'><img src='https://www.iso-bel.computer/static/webring/flower.png'><img src='https://www.iso-bel.computer/static/webring/flower.png'>
+                <br><a href='https://london.permacomputing.net'>London Permacomputing</a> Webring<br>
+                <span class='webring-links'>
+                    <a href='javascript:void(0)' onclick='randomSite()'>random</a> |
+                    <a href='https://www.iso-bel.computer/permacomputingwebring'>index / join</a>
+                </span>
+            </td>
+            <td class='webring-next'><a id='permaNext' href='$sites[nextIndex]'>→</a></td>
+        </tr>
+    </table>
+</div>
+`
+
   }
 
-  randomText = ""
-  //if you've chosen to include a random button, this builds the link that does that
-  if (useRandom) {
-    randomText = `<a href='javascript:void(0)' onclick='randomSite()'>random</a> | `;
-  }
 
-
-}
