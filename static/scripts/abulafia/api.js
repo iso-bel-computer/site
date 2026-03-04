@@ -44,7 +44,6 @@ export class API {
         )
 
         const officerList = await response.json()
-        console.log(officerList)
 
         return officerList
     }

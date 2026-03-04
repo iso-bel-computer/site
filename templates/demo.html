@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Demo Page</title>
+        <title>London Trans Pride 2026</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/demo.css') }}">
@@ -11,106 +11,106 @@
     </head>
 
     <body>
-        <h1>Demo</h1>
-        <p>Demo text</p>
 
-        <div id='example1'>
-            <div class='box'></div>
-            <div class='box'></div>
+        <header>
+            <nav>
+                <a>Home</a>
+                <a>About</a>
+                <a>March</a>
+                <a>FAQ</a>
+                <a style='border-right: none'>Volunteer</a>
+            </nav>
+        </header>
 
-        </div>
+        <main>
+            <nav id='sidebar'>
 
-<div id='londonpermacomputring'>
-<table style='border: 1px solid #00AA0010;background-color: #ffffff00;'>
-    <tr>
-        <td class='webring-prev'><a id='permaPrev'>←</a></td>
-        <td class='webring-info'>
-            <img src='https://www.iso-bel.computer/static/webring/flower.png'><img src='https://www.iso-bel.computer/static/webring/flower.png'><img src='https://www.iso-bel.computer/static/webring/flower.png'>
-            <br><a href='https://london.permacomputing.net'>London Permacomputing</a> Webring<br>
-            <span class='webring-links'>
-                <a href='#' id='permaRandom'>random</a> |
-                <a href='https://www.iso-bel.computer/permacomputingwebring'>index / join</a>
-            </span>
-        </td>
-        <td class='webring-next'><a id='permaNext'>→</a></td>
-    </tr>
-</table>
-</div>
+            <div id='donationWidget' class="gfm-embed" data-url="https://www.gofundme.com/f/london-trans-pride-2025/widget/medium?sharesheet=undefined&attribution_id=sl:b04ada1c-d0b0-41ed-83f5-793c62c328bd"></div><script defer src="https://www.gofundme.com/static/js/embed.js"></script>
+            </nav>
+            <div id='content'>
+            <h1>LONDON TRANS+ PRIDE 2026 STARTS IN</h1>
+            <div id='countdown'></div>
+            <script>
+            const marchStart = new Date('2026-07-26T13:00:00')
+            const countdownDiv = document.getElementById('countdown')
+            setInterval(function() {
 
-</div>
+                const now = Date.now()
 
-<script type='module'>
-const widget = document.getElementById('londonpermacomputring')
-async function getSites() {return await fetch('https://www.iso-bel.computer/static/webring/sites.json');}
+                // get total seconds between the times
+                let delta = Math.abs(marchStart - now) / 1000;
 
-const thisSite = window.location.href; //get the url of the site we're currently on
-const response = await getSites()
-if (!response.ok) {throw new Error(`Response status: ${response.status}`);}
-const json = await response.json();
-const sites = json.sites
-let thisIndex = null;
+                // calculate (and subtract) whole days
+                const days = Math.floor(delta / 86400);
+                delta -= days * 86400;
 
-// go through the site list to see if this site is on it and find its position
-for (let i = 0; i < sites.length; i++) {
-    if (thisSite.startsWith(sites[i])) { //we use startswith so this will match any subdirectory, users can put the widget on multiple pages
-        thisIndex = i;
-        break; //when we've found the site, we don't need to search any more, so stop the loop
-    }
-}
+                // calculate (and subtract) whole hours
+                const hours = Math.floor(delta / 3600) % 24;
+                delta -= hours * 3600;
 
-function randomSite() {
-    const randomIndex = Math.floor(Math.random() * sites.length);
-    widget.querySelector('#permaRandom').href = sites[randomIndex]
-}
+                // calculate (and subtract) whole minutes
+                const  minutes = Math.floor(delta / 60) % 60;
+                delta -= minutes * 60;
 
-if (thisIndex == null) {
-    widget.innerHTML = `<table><tr><td>This site isn't part of the London Permacomputing webring - yet...</td></tr></table>`;
-} else {
-    const previousIndex = (thisIndex-1 < 0) ? sites.length-1 : thisIndex-1;
-    const nextIndex = (thisIndex+1 >= sites.length) ? 0 : thisIndex+1;
-    widget.querySelector('#permaPrev').href = sites[previousIndex]
-    widget.querySelector('#permaNext').href = sites[nextIndex]
-    widget.querySelector('#permaRandom').addEventListener('click', randomSite)
-    randomSite()
-}
-</script>
-<style>
-#londonpermacomputring {
-    margin: 0 auto;
-    padding: 8px;
-}
+                const seconds = Math.floor(delta)
 
-#londonpermacomputring table {
-    margin: 0 auto;
-    background-color: #ffffff00;
-    border: 1px solid #00AA0010;
-}
 
-#londonpermacomputring img {
-    height: 1.5em;
-    width: auto;
-}
+                countdownDiv.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`
 
-#londonpermacomputring table tr td {
-    padding: 10px;
-}
+            }, 1000)
 
-#londonpermacomputring.webring-prev {
-    text-align:right;
-}
+            </script>
+            <h2>Saturday 26th July | 1:00pm @ Langham Place</h2>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            </div>
+            <script>
 
-#londonpermacomputring.webring-info {
-    text-align:center;
-}
+            const contentDiv = document.querySelector('main')
+            let deg = 0
+            let mid = 50
+            let pole = 1
+            setInterval(function() {
+                 if (deg > 365) {deg = 0}
+                 if (mid > 65) {pole = -1}
+                 if (mid < 35) {pole = 1}
+                 contentDiv.style.backgroundImage = `linear-gradient(${deg}deg,rgba(91, 206, 250, 0.3) 0%, rgba(245, 169, 184, 0.3) ${mid}%, rgba(255, 255, 255, 0.3) 100%)`
+                 mid = mid + (1 * pole)
+                 deg++
+                                                    console.log('hello')
+             }, 2000)
 
-#londonpermacomputring.webring-next {
-    text-align:left;
-}
+            </script>
+        </main>
 
-#londonpermacomputring.webring-links {
-    font-size:small;
-}
-</style>
-
+        <footer>
+            <div>© London Trans+ Pride 2026<br>If this website isn't accessible to you or you've noticed an accessibility issue, <br>please email our access team at access@londontranspride.org to let us know.</div>
+        </footer>
     </body>
 </html>

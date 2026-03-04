@@ -1,6 +1,5 @@
 export class Officer {
     constructor(apiResponse) {
-        console.log(apiResponse)
 
         this.name = apiResponse.name
         this.dob = apiResponse.date_of_birth
@@ -19,7 +18,12 @@ export class Officer {
         }
 
         this.officerAppointmentLink = apiResponse?.links?.officer?.appointments
+
+        this.appointments = null
     }
 
+    addDetails(details) {
+        this.appointments = details.items
+    }
 
 }

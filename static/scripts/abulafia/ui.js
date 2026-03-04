@@ -12,6 +12,7 @@ export class UI {
 
         this.searchArea = this.initSearchArea()
         this.companyDisplay = this.initCompanyDisplay()
+        this.officerDisplay = this.initOfficerDisplay()
 
     }
 
@@ -68,30 +69,34 @@ export class UI {
     initCompanyDisplay() {
 
         const companyDisplay = document.getElementById('companyDisplay')
-        const officerLists = companyDisplay.querySelectorAll('.officerResults')
 
-        officerLists.forEach(list => {
-            list.addEventListener('click', async e => {
+        companyDisplay.addEventListener('click', async e => {
 
-                const clickedOfficer = e.target.closest('.officerResult')
-                if (!clickedOfficer) {return}
+            const clickedOfficer = e.target.closest('.officerResult')
+            if (!clickedOfficer) {return}
 
-                const officerAppointmentLink = clickedOfficer.dataset.officerAppointmentLink
-                const parts = officerAppointmentLink.split('/')
-                const officerNumber = parts[2]
+            const personNumber = clickedOfficer.classList[1]
+            const officer = this.state.currentlyViewingOfficers.find(o => o.personNumber === personNumber)
+            const parts = officer.officerAppointmentLink.split('/')
+            const personNo = parts[2]
 
-                const officerDetails = await this.api.fetchOfficerDetails(officerNumber)
+            const officerDetails = await this.api.fetchOfficerDetails(personNo)
 
-                const officer = new Officer(officerDetails)
+            officer.addDetails(officerDetails)
 
-                this.displayOfficer(officer)
+            this.displayOfficer(officer)
 
 
-            })
         })
 
         return companyDisplay
 
+    }
+
+    initOfficerDisplay() {
+
+        const officerDisplay = document.getElementById('officerDisplay')
+        return officerDisplay
     }
 
     /* Everything above this comment runs on init */
@@ -119,44 +124,31 @@ export class UI {
 
     displayCompany(company) {
 
-        console.log(company)
 
-        const name = this.companyDisplay.querySelector('#cName')
-        name.innerText = company.name
+        const status = (company.status === 'active' ? 'activecompany' : 'inactivecompany')
+        const dissolved = !company.isActive ? `Dissolved: ${company.dateDissolved}</div>` : ``;
+        const address = company.address.address_line_1 + '<br>' + company.address.locality + '<br>' + company.address.postal_code
+        if (company.hasDisputedAddress) {address += '<br> ! DISPUTED !'}
 
-        const status = this.companyDisplay.querySelector('#cStatus')
-        status.innerText = this.toTitleCase(company.status)
-        status.classList.add(company.status === 'active' ? 'activecompany' : 'inactivecompany')
-
-        const number = this.companyDisplay.querySelector('#cNumber')
-        number.innerText = 'Company Number: ' + company.companyNumber
-
-        const dateEst = this.companyDisplay.querySelector('#cDateEst')
-        dateEst.innerText = 'Est: ' + company.dateCreated.toDateString()
-
-        const dateDissolved = this.companyDisplay.querySelector('#cDateDissolved')
-        if (!company.isActive) {
-            dateDissolved.innerText = 'Dissolved: ' + company.dateDissolved
-        }
-
-        const address = this.companyDisplay.querySelector('#cAddress')
-        address.innerHTML = company.address.address_line_1 + '<br>' + company.address.locality + '<br>' + company.address.postal_code
-        if (company.hasDisputedAddress) {
-            address.innerHTML += '<br> ! DISPUTED !'
-        }
-
-
-        const activelabel = document.getElementById('cActiveOfficerLabel')
-        activelabel.innerHTML = '<h3>Active Officers</h3>'
-        const inactivelabel = document.getElementById('cPreviousOfficerLabel')
-        inactivelabel.innerHTML = '<h3>Past Officers</h3>'
-        const active = document.getElementById('cActiveOfficers')
-        active.innerHTML = '<h3>Loading...</h3>'
-        const inactive = document.getElementById('cPreviousOfficers')
-        inactive.innerHTML = '<h3>Loading...</h3>'
-
-
-
+        this.companyDisplay.innerHTML = `
+            <h1 id='cName'>${company.name}</h1>
+            <span id='cStatus' class='${status}'>${company.status}</span><br>
+            <span id='cNumber'>Company Number: ${company.companyNumber}</span>
+            <div id='cDateEst'>Est: ${company.dateCreated.toDateString()}</div>
+            <div id='cDateDissolved'>${dissolved}</div>
+            <div id='cAddress'>${address}</div>
+            <div class='flex'>
+                <div class='flexColumn'>
+                    <h3 id='cActiveOfficerLabel'>Active Officers</h3>
+                    <div id='cActiveOfficers' class='officerResults'>Loading...</div>
+                </div>
+                <div class='flexColumn'>
+                    <h3 id='cPreviousOfficerLabel'>Past Officers</h3>
+                    <div id='cPreviousOfficers' class='officerResults'>Loading...</div>
+                </div>
+            </div>
+            <div id='cPwsc'></div>
+            `
     }
 
     displayCompanyOfficers(officers) {
@@ -172,6 +164,7 @@ export class UI {
 
             row.innerText = officer.name
             row.classList.add('officerResult')
+            row.classList.add(officer.personNumber)
             row.dataset.officerAppointmentLink = officer.officerAppointmentLink
 
             if (officer.active) {
@@ -184,13 +177,46 @@ export class UI {
 
         })
 
+        this.state.currentlyViewingOfficers = officers
+
     }
 
     displayOfficer(officer) {
+        const currentAppointments = this.displayOfficerAppointments(officer.appointments.filter(appt => !appt.resigned_on))
+        const pastAppointments = this.displayOfficerAppointments(officer.appointments.filter(appt => appt.resigned_on))
 
-        console.log(officer)
+        this.officerDisplay.innerHTML = `
+            <h1 id='oName'>${officer.name}</h1>
+            <div id='oDob'>DOB: ${this.monthReturn(officer?.dob?.month || '?')} ${officer?.dob?.year || '?'}</div>
+            <div class='flex'>
+                <div class='flexColumn'>
+                    <div id='oCurrentAppts'>${currentAppointments}</div>
+                </div>
+                <div class='flexColumn'>
+                    <div id='oPastAppts'>${pastAppointments}</div>
+                </div>
+                </div>
+
+            `
+
     }
 
+    displayOfficerAppointments(appointments) {
+
+        const div = document.createElement('div')
+        if (appointments.length === 0) {div.innerHTML = '<button class="officerResult">None</button>'}
+
+        appointments.forEach(app => {
+
+            const row = document.createElement('button')
+            row.innerText = app.appointed_to.company_name
+            row.classList.add('officerResult')
+            row.dataset.companyNumber = app.appointed_to.company_number
+            div.appendChild(row)
+        })
+
+        return div.innerHTML
+    }
     //// Helper Functions
 
     toTitleCase(str) {
@@ -236,7 +262,7 @@ export class UI {
         }
         catch {
             console.error('Could not format month: ', month)
-            return month
+            return '?'
         }
     }
     ageFormat(age) {

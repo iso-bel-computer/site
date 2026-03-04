@@ -304,7 +304,6 @@ Tube sounds
 with open('static/resources/tubesounds/stationData.json', 'r') as f:
 
     stationData = json.load(f)
-    print(stationData)
 
 @app.route('/tubesounds')
 def tubesounds():
@@ -380,7 +379,6 @@ def fetchOfficerList():
             auth=AUTH,
             timeout=TIMEOUT
         )
-        print(f'company/{companyNumber}/officers?start_index={index}')
         response.raise_for_status()
         return jsonify(response.json())
     except Exception:

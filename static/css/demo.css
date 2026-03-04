@@ -1,0 +1,79 @@
+html {
+    --global-padding: 1em;
+    --accent-color: rgb(232, 154,172)
+}
+
+* {
+    box-sizing: border-box
+}
+body {
+    background-color: rgb(38,38,38);
+    color: white;
+    font-family: 'Tahoma';
+    margin: 0px;
+}
+
+a {
+
+    cursor: url('https://www.iso-bel.computer/static/resources/images/misc/trans_cursor.png')
+}
+
+header {
+    display: flex;
+    align-items: center;
+    background-color: var(--accent-color);
+    position: sticky;
+    top: 0px;
+    padding: var(--global-padding);
+    height: 60px;
+    border-bottom: 1px solid white;
+    justify-content: center
+}
+
+header a {
+    font-size: 20pt;
+    border-right: 1px dotted white;
+    padding-right: 20px;
+    margin-right: 20px
+}
+
+
+main {
+    display: flex;
+}
+
+#sidebar {
+    padding: var(--global-padding);
+    border-right: 1px solid white;
+    background-color: rgb(72, 115, 132, 0.3);
+}
+
+#content {
+
+    padding: var(--global-padding);
+
+    background-image: linear-gradient(0deg,rgba(91, 206, 250, 0.2) 0%, rgba(245, 169, 184, 0.2) 51%, rgba(255, 255, 255, 0.2) 100%);
+    width: 100%
+}
+#countdown {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    font-size: 75pt;
+    font-weight: bold;
+    width: fit-content;
+}
+
+
+#donationWidget {
+    width: 150px;
+}
+
+footer {
+    border-top: 1px solid white;
+    font-size: 8pt;
+    padding: var(--global-padding);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end
+}
