@@ -10,9 +10,21 @@
 
 
 {% block content %}
-<nav id="sidebar">
-</nav>
 <div id="contentWrapper">
+    <nav id="sidebar">
+        <img src='https://www.iso-bel.computer/static/resources/images/abulafia/abulafia.png'>
+        <div>
+            <div id='clock' style='text-align: right; color: white; font-size: 12px'></div>
+            <script>
+    setInterval(function() {
+    const now = new Date()
+    document.getElementById('clock').innerText = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`
+
+    }, 1000)
+    </script>
+            <p style='margin-top: 0px;color: white; font-size: 9px; text-align: right'>v.0.4.1</p>
+        </div>
+    </nav>
     <div id='searchArea' class='topLevelUi'>
         <input id='companySearch'>
         <div class='checkboxWrapper'>
@@ -22,8 +34,12 @@
         </div>
         <div id='searchResults'></div>
     </div>
-    <div id='companyDisplay' class='topLevelUi'></div>
-    <div id='officerDisplay' class='topLevelUi'></div>
+    <div id='companyDisplay' class='topLevelUi'>
+        <div class='placeholder'><img src='https://www.iso-bel.computer/static/resources/images/abulafia/business.png'></div>
+    </div>
+    <div id='officerDisplay' class='topLevelUi'>
+        <div class='placeholder'><img src='https://www.iso-bel.computer/static/resources/images/abulafia/person.png'></div>
+    </div>
 
 </div>
 

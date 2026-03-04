@@ -16,6 +16,8 @@ export class UI {
 
     }
 
+
+
     initSearchArea() {
 
         const searchArea = document.getElementById('searchArea')
@@ -121,7 +123,7 @@ export class UI {
     }
 
     async getCompany(companyNumber) {
-        this.companyDisplay.innerHTML = 'Loading...'
+        this.companyDisplay.innerHTML = '<div class="placeholder">Loading...</div>'
         console.log(this.state.cachedCompanies)
         const found = this.state.cachedCompanies.find(c => c.companyNumber === companyNumber)
         if (found) return found
@@ -187,8 +189,10 @@ export class UI {
         const dissolved = company.dateDissolved ? `Dissolved: ${company.dateDissolved.toDateString()}</div>` : ``;
         const address = company.address.address_line_1 + '<br>' + company.address.locality + '<br>' + company.address.postal_code
         if (company.hasDisputedAddress) {address += '<br> ! DISPUTED !'}
+        const companyURIName = encodeURIComponent(company.name).replace('LIMITED','')
 
         this.companyDisplay.innerHTML = `
+
             <h1 id='cName'>${company.name}</h1>
             <div style='display: flex'>
                 ${alerts}
@@ -220,7 +224,16 @@ export class UI {
                 </div>
             </div>
             <div id='cPwsc'></div>
+
+            <div style='display: flex; align-items: center; margin-top: 10px'>
+                <a class='socialLinks' href="https://www.linkedin.com/search/results/companies/?keywords=${companyURIName}" target='_blank'><img src='https://upload.wikimedia.org/wikipedia/commons/6/65/Linkedin-png-linkedin-icon-1600.png'></a><br>
+                <a class='socialLinks' href="https://x.com/search?q=${companyURIName}&f=user" target='_blank'><img src='https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Logo_of_Twitter.svg/960px-Logo_of_Twitter.svg.png'></a><br>
+                <a class='socialLinks' href="https://en.wikipedia.org/w/index.php?fulltext=1&search=${companyURIName}" target='_blank'><img src='https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Notification-icon-Wikipedia-logo.svg/640px-Notification-icon-Wikipedia-logo.svg.png'></a><br>
+                <a class='socialLinks' href="https://bsky.app/search?q=${companyURIName}#people" target='_blank'><img src='https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Bluesky_Logo.svg/960px-Bluesky_Logo.svg.png'></a><br>
+                <a class='socialLinks' href="https://www.google.com/search?q=${companyURIName}" target='_blank'><img src='https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/60px-Google_%22G%22_logo.svg.png?_=20230822192911'></a>
+            </div>
             <p id='cNumber'>${company.companyNumber}</p>
+
             `
 
         this.displayCompanyOfficers(company.officers)
@@ -257,6 +270,7 @@ export class UI {
     }
 
     displayOfficer(officer) {
+        this.officerDisplay.innerHTML = '<div class="placeholder">Loading...</div>'
         const currentAppointments = this.displayOfficerAppointments(officer.appointments.filter(appt => !appt.resigned_on))
         const pastAppointments = this.displayOfficerAppointments(officer.appointments.filter(appt => appt.resigned_on))
 
