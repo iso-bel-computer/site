@@ -25,79 +25,163 @@ h1 {
 
 }
 
+h2 {
+    margin: 0px
+}
 header {
     display: flex;
-    align-items: center;
-    background-color: var(--accent-color);
+    justify-content: space-between;
     position: sticky;
     top: 0px;
-    padding: 5px;
-    height: 60px;
+    height: fit-content;
     border-bottom: 1px solid white;
-    justify-content: center
+    background-image: url("https://www.iso-bel.computer/static/resources/images/misc/paper_2.png");
+    background-color: var(--accent-color);
+    background-blend-mode: lighten;
+
+    z-index: 10;
+}
+#siteTitle {
+
+    filter: drop-shadow(0px 0px 3px #00000060);
+    font-family: 'Syncopate';
+    display: flex;
+    align-items: center;
+    font-size: 30pt;
+    font-weight: bolder;
+}
+
+#siteTitle:hover {
+    text-decoration: underline
 }
 
 header a {
-    font-size: 10pt;
-    border-right: 1px dotted #ffffff70;
-    padding: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    color: rgb(38,38,38);
-}
-header a:hover {
-    background-color:rgba(38,38,38, 0.5);
-    color:white
+    font-weight: bold;
+    align-content: center;
+    font-size: 12pt;
+    height: 100%;
+    background-color: rgba(38,38,38, 0.2);
+    border-left: 1px solid #ffffff;
+    padding: 11px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
+.transflagwhite:hover {
 
+    background-color: rgba(266, 266, 266, 0.8);
+    color: rgba(38,38,38, 0.8);
+}
+.transflagblue:hover {
+
+    background-color: rgba(91, 206, 250, 0.8)
+}
+
+.transflagpink:hover {
+
+    background-color: rgba(245, 169, 184, 0.8)
+}
 main {
     display: flex;
 }
 
 #sidebar {
-    padding: var(--global-padding);
-    border-right: 1px solid white;
-    background-color: rgb(72, 115, 132, 0.3);
+    border-left: 1px solid white;
+    background-color: rgb(72, 115, 132, 0.8);
 }
-
-#sidebar a {
-    color: white;
-    text-decoration: none;
-}
-
 #sidebar img {
-    width: 30px;
-    height: auto
+    border-bottom: 1px solid white;
+    max-width: 30vw
 }
 
-#sidebar #socials {
-    display: flex;
-    filter: saturate(80%);
-    margin-bottom: 5px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid #ffffff50;
-    justify-content: space-evenly
+#sidebar #belowImage {
+    padding: 10px;
+    font-family: 'Syncopate';
+    text-align: center;
 }
 
 #content {
 
     font-family: 'Syncopate';
-    padding: var(--global-padding);
 
+    position: relative;
+    overflow: hidden;
     background-image: linear-gradient(0deg,rgba(91, 206, 250, 0.2) 0%, rgba(245, 169, 184, 0.2) 51%, rgba(255, 255, 255, 0.2) 100%);
     width: 100%
 }
-#countdown {
-    font-family: 'Tahoma';
-    display: flex;
-    text-align: center;
-    align-items: center;
-    font-size: 75pt;
-    font-weight: bold;
-    width: fit-content;
+
+#content:after {
+
+      /* content is required when using :after */
+    content: "";
+    /* The grainy image */
+    background-image: url("https://www.iso-bel.computer/static/resources/images/misc/paper_1.png");
+    /* Specify a height and width above and beyond the page header for movement */
+    height: 300%;
+
+    width: 300%;
+    top: 0;
+    left: 0;
+    /* We're using opacity in place of a transparent image */
+    opacity: 0.3;
+    /* We'll need this when the animation kicks in to hold the position of the texture */
+    position: absolute;
+pointer-events: none;
+
 }
 
+#heropage {
+
+    padding: 40px;
+    text-align: center
+}
+#countdownLabel {
+    filter: drop-shadow(2px 2px 3px #00000030);
+}
+#countdown {
+    filter: drop-shadow(0px 0px 5px #00000070);
+    font-family: 'Tahoma';
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    font-size: 60pt;
+    font-weight: bold;
+}
+
+#news {
+    display: flex;
+    flex-wrap: nowrap;
+
+    height: fit-content;
+    padding: 10px;
+    width: 100%;
+    border-top: 1px solid white;
+    overflow: scroll;
+}
+
+#news h3 {
+    font-size: 16pt;
+    margin: 0px
+}
+
+
+
+.newsItem {
+
+    font-family: 'Tahoma';
+    width: 500px;
+    flex-shrink: 0;
+    margin-right: 10px;
+    font-size: 10pt;
+    border: 1px dotted #ffffff50;
+    border-radius: 15px;
+    padding: 10px;
+
+    overflow: scroll;
+    height: 300px;
+    background-color: #ffffff10;
+}
 
 #donationWidget {
     width: 150px;
@@ -108,17 +192,54 @@ footer {
     border-top: 1px solid white;
     font-size: 7pt;
     padding: var(--global-padding);
+    padding-top: 20px;
     display: flex;
     justify-content: space-between;
     align-items: flex-end
 }
-.syncopate-regular {
-  font-weight: 400;
-  font-style: normal;
+
+#donationButton {
+    cursor: pointer;
+    border-radius: 15px;
+    border: 1px solid rgb(213,247,154);
+    background-color: rgb(47,73,54);
+    width: 120px;
+    padding: 10px;
 }
 
-.syncopate-bold {
-  font-family: "Syncopate", sans-serif;
-  font-weight: 700;
-  font-style: normal;
+#donationButton a {
+
+    color: rgb(213,247,154) ;
+    text-decoration: none;
+}
+
+#donationButton:hover {
+
+    background-color:rgb(213,247,154);
+}
+#donationButton:hover a {
+
+    color: rgb(47,73,54);
+}
+
+#footer a {
+    color: white;
+    text-decoration: none;
+}
+
+footer #socials {
+    display: flex;
+    filter: saturate(80%);
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#socials img {
+    width: 30px;
+    height: auto
+}
+
+.socialEl {
+    align-content: center;
+    margin-right: 10px;
 }
