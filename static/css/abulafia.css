@@ -201,14 +201,19 @@ label {
 
         .officerResult {
 
+
             text-align: left;
             width: 100%;
             border: 0px;
             border-bottom: 1px solid #00000020;
             padding-bottom: 3px;
-            transition: transform 0.1s ease-in;
+            transition: font-weight 0.05s ease-in;
             margin-bottom: 2px;
             background-color: #00000000;
+        }
+
+        .officerResult:hover {
+            font-weight: bold
         }
 
     #officerDisplay {

@@ -83,6 +83,11 @@ export class Company {
 
         const industries = []
 
+
+        if (!siccodes) {
+            industries.push('Unknown Industry')
+            return industries
+        }
         siccodes.forEach(code => {
             sicreference.forEach(referenceCode => {
                 if (referenceCode['SIC Code'] === code) {
@@ -91,8 +96,6 @@ export class Company {
             })
         })
 
-        if (industries.length === 0) {industries.push('Unknown Industry')}
-        console.log(industries)
         return industries
     }
 

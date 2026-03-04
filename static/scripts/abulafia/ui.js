@@ -305,6 +305,8 @@ export class UI {
             let   timeFromTo = `<br><div class='spacebetween'><span>${this.dateFormat(app.appointed_on, true)}</span>`
             if (app.resigned_on) {
                 timeFromTo += `<span>→</span><span>${this.dateFormat(app.resigned_on, true)}</span>`
+            } else {
+                timeFromTo += `<span>→</span><span>Present</span>`
             }
             timeFromTo += `</div>`
             const timeInPost = `${app.timeInPost['years']}y, ${app.timeInPost['months']}m`
