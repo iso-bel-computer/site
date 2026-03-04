@@ -3,7 +3,7 @@ export class API {
 
     constructor () {
         this.lastRequest = null
-        this.rateLimit = 500
+        this.rateLimit = 150
         this.queriesThisSession = 0
     }
 
@@ -31,6 +31,7 @@ export class API {
 
         const company = await response.json()
 
+        console.log(company)
         return company
     }
 

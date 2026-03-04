@@ -4,6 +4,7 @@ export class STATE {
 
         this.currentlySelectedCompany = null
         this.currentlyViewingOfficers = []
+        this.cachedCompanies = []
     }
 
 

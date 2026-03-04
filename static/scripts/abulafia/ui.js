@@ -22,6 +22,7 @@ export class UI {
         const searchBar = searchArea.querySelector('#companySearch')
         const searchResults = searchArea.querySelector('#searchResults')
         const activeOnlyCheckbox = searchArea.querySelector('#showOnlyActiveCompanies')
+        const historyButton = searchArea.querySelector('#showHistory')
 
         // calling to display results of search query
         searchBar.addEventListener('keydown', async e => { // initial company search
@@ -43,13 +44,11 @@ export class UI {
             if (!clickedCompany) {return}
 
             const companyNumber = clickedCompany.dataset.companyNumber
-            const companyData = await this.api.fetchCompanyDetails(companyNumber)
-            const company = new Company(companyData, this.api)
+            if (!companyNumber) {return}
+            const company = await this.getCompany(companyNumber)
 
-            this.state.currentlySelectedCompany = company
             this.displayCompany(company)
 
-            await company.loadOfficers()
             this.displayCompanyOfficers(company.officers)
 
         })
@@ -61,6 +60,12 @@ export class UI {
                 e.target.checked
             )
         });
+
+        historyButton.addEventListener('click', e => {
+            searchResults.innerHTML = ''
+            const historyButtons = (this.formatSearchResults(this.state.cachedCompanies.reverse()))
+            searchResults.innerHTML = historyButtons.innerHTML
+        })
 
         return searchArea
     }
@@ -96,9 +101,46 @@ export class UI {
     initOfficerDisplay() {
 
         const officerDisplay = document.getElementById('officerDisplay')
+        officerDisplay.addEventListener('click', async e => {
+
+            const clickedCompany = e.target.closest('.officerResult')
+            if (!clickedCompany ) {return}
+
+            const companyNumber = clickedCompany.dataset.companyNumber
+            if (!companyNumber) {return}
+
+            const company = await this.getCompany(companyNumber)
+
+            this.displayCompany(company)
+
+            this.displayCompanyOfficers(company.officers)
+
+
+        })
         return officerDisplay
     }
 
+    async getCompany(companyNumber) {
+        this.companyDisplay.innerHTML = 'Loading...'
+        console.log(this.state.cachedCompanies)
+        const found = this.state.cachedCompanies.find(c => c.companyNumber === companyNumber)
+        if (found) return found
+        else {
+            const newCompany = this.fetchNewCompany(companyNumber)
+            return newCompany
+        }
+    }
+
+    async fetchNewCompany(companyNumber) {
+
+        const companyData = await this.api.fetchCompanyDetails(companyNumber)
+        const company = new Company(companyData, this.api)
+        await company.loadOfficers()
+
+        this.state.cachedCompanies.push(company)
+
+        return company
+    } 
     /* Everything above this comment runs on init */
 
     formatSearchResults(results) {
@@ -111,13 +153,18 @@ export class UI {
             const row = document.createElement('button')
 
             row.classList.add('searchResult')
-            row.innerText = this.toTitleCase(result.title)
-            row.dataset.companyNumber = result.company_number
-            row.classList.add(result.company_status === 'active' ? 'activecompany' : 'inactivecompany')
+            row.innerText = this.toTitleCase(result?.title || result.name)
+            row.dataset.companyNumber = result?.company_number || result.companyNumber
+            row.classList.add(
+                (result?.company_status === 'active' || result?.status === 'active')
+                    ? 'activecompany'
+                    : 'inactivecompany'
+            )
 
             div.appendChild(row)
 
         })
+        console.log(results, div)
 
         return div
     }
@@ -125,18 +172,43 @@ export class UI {
     displayCompany(company) {
 
 
+
+        this.state.currentlySelectedCompany = company
+        let alerts = ''
+
+        company.alerts
+            .filter(alert => Object.values(alert)[0]) // only truthy ones
+            .map(alert => {
+                const key = Object.keys(alert)[0]
+                alerts += `<div class='calert'>⚠ ${key}</div>`
+            })
         const status = (company.status === 'active' ? 'activecompany' : 'inactivecompany')
-        const dissolved = !company.isActive ? `Dissolved: ${company.dateDissolved}</div>` : ``;
+        const industries = company.industries.join('<br>')
+        const dissolved = company.dateDissolved ? `Dissolved: ${company.dateDissolved.toDateString()}</div>` : ``;
         const address = company.address.address_line_1 + '<br>' + company.address.locality + '<br>' + company.address.postal_code
         if (company.hasDisputedAddress) {address += '<br> ! DISPUTED !'}
 
         this.companyDisplay.innerHTML = `
             <h1 id='cName'>${company.name}</h1>
-            <span id='cStatus' class='${status}'>${company.status}</span><br>
-            <span id='cNumber'>Company Number: ${company.companyNumber}</span>
-            <div id='cDateEst'>Est: ${company.dateCreated.toDateString()}</div>
-            <div id='cDateDissolved'>${dissolved}</div>
-            <div id='cAddress'>${address}</div>
+            <div style='display: flex'>
+                ${alerts}
+            </div>
+            <table>
+                <tr>
+                    <td>
+                        ${industries}
+                    </td><td class='leftalign'>
+                        <span id='cStatus' class='${status}'>${this.toTitleCase(company.status)}</span><br>
+                    </td>
+                </tr><tr>
+                    <td>
+                        <div id='cDateEst'>Est: ${company.dateCreated.toDateString()}</div>
+                        <div id='cDateDissolved'>${dissolved}</div>
+                    </td><td  class='leftalign'>
+                        ${address}
+                    </td>
+                </tr>
+            </table>
             <div class='flex'>
                 <div class='flexColumn'>
                     <h3 id='cActiveOfficerLabel'>Active Officers</h3>
@@ -148,7 +220,10 @@ export class UI {
                 </div>
             </div>
             <div id='cPwsc'></div>
+            <p id='cNumber'>${company.companyNumber}</p>
             `
+
+        this.displayCompanyOfficers(company.officers)
     }
 
     displayCompanyOfficers(officers) {
@@ -187,13 +262,16 @@ export class UI {
 
         this.officerDisplay.innerHTML = `
             <h1 id='oName'>${officer.name}</h1>
-            <div id='oDob'>DOB: ${this.monthReturn(officer?.dob?.month || '?')} ${officer?.dob?.year || '?'}</div>
+            <div id='oDob'>DOB: ${this.monthReturn(officer?.dob?.month || '?')} ${officer?.dob?.year || '?'} - ${this.ageFormat(officer?.dob)} years old</div>
+            <hr>
             <div class='flex'>
                 <div class='flexColumn'>
-                    <div id='oCurrentAppts'>${currentAppointments}</div>
+                    <h3>Current Appts</h3>
+                    <div id='oCurrentAppts' class='officerResults'>${currentAppointments}</div>
                 </div>
                 <div class='flexColumn'>
-                    <div id='oPastAppts'>${pastAppointments}</div>
+                    <h3>Past Appts</h3>
+                    <div id='oPastAppts' class='officerResults'>${pastAppointments}</div>
                 </div>
                 </div>
 
@@ -209,7 +287,16 @@ export class UI {
         appointments.forEach(app => {
 
             const row = document.createElement('button')
-            row.innerText = app.appointed_to.company_name
+            const apptTitle = `<b>${app.appointed_to.company_name}</b>`
+            let   timeFromTo = `<br><div class='spacebetween'><span>${this.dateFormat(app.appointed_on, true)}</span>`
+            if (app.resigned_on) {
+                timeFromTo += `<span>→</span><span>${this.dateFormat(app.resigned_on, true)}</span>`
+            }
+            timeFromTo += `</div>`
+            const timeInPost = `${app.timeInPost['years']}y, ${app.timeInPost['months']}m`
+            row.innerHTML = apptTitle
+            row.innerHTML += timeFromTo
+            row.innerHTML += timeInPost
             row.classList.add('officerResult')
             row.dataset.companyNumber = app.appointed_to.company_number
             div.appendChild(row)
@@ -266,6 +353,7 @@ export class UI {
         }
     }
     ageFormat(age) {
+        if (!age) return '?'
         const now = Date.now()
         const dob = new Date(age['year'], age['month'] + 1)
         const diffTime = Math.abs(now - dob);

@@ -52,10 +52,11 @@ header {
 }
 
 #siteTitle:hover {
-    text-decoration: underline
+    text-decoration: underline;
 }
 
 header a {
+
     font-weight: bold;
     align-content: center;
     font-size: 12pt;
@@ -64,8 +65,11 @@ header a {
     border-left: 1px solid #ffffff;
     padding: 11px;
     padding-left: 15px;
+    font-family: 'Syncopate';
     padding-right: 15px;
 }
+
+
 
 .transflagwhite:hover {
 
@@ -91,7 +95,7 @@ main {
 }
 #sidebar img {
     border-bottom: 1px solid white;
-    max-width: 30vw
+    height: 85vh
 }
 
 #sidebar #belowImage {
@@ -133,6 +137,8 @@ pointer-events: none;
 #heropage {
 
     padding: 40px;
+    padding-top: 70px;
+    padding-bottom: 70px;
     text-align: center
 }
 #countdownLabel {
@@ -189,6 +195,7 @@ pointer-events: none;
 }
 
 footer {
+    background-image: url("https://www.iso-bel.computer/static/resources/images/misc/paper_2.png");
     border-top: 1px solid white;
     font-size: 7pt;
     padding: var(--global-padding);

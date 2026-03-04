@@ -1,9 +1,11 @@
 import { Officer } from "./officer.js";
+import { sicreference } from './data/siccodes.js';
 
 export class Company {
 
     constructor(apiResponse, api) {
 
+        console.log(apiResponse)
         this.apiResponse =   apiResponse
         this.api =           api
 
@@ -18,21 +20,26 @@ export class Company {
 
         this.hasCharges =    apiResponse.has_charges
 
-        this.hasInsolvencyHistory =       apiResponse.has_insolvency_history
-        this.isLiquidated =               apiResponse.has_been_liquidated
-        this.hasUndeliverableAddress =    apiResponse.undeliverable_offfice_address
-        this.hasDisputedAddress =         apiResponse.registered_office_is_in_dispute
-        this.hasSecretPscs =              apiResponse.has_super_secure_pscs
-        this.hasOverdueAccounts =         apiResponse.accounts.overdue
+        this.alerts = [
 
-
+            {'Has insolvency history':        apiResponse.has_insolvency_history},
+            {'Has been liquidated':                apiResponse.has_been_liquidated},
+            {'Has undeliverable address':    apiResponse.undeliverable_offfice_address},
+            {'Has disputed address':          apiResponse.registered_office_is_in_dispute},
+            {'Has sceret PSCS':              apiResponse.has_super_secure_pscs},
+            {'Accounts overdue':         apiResponse.accounts.overdue}
+        ]
 
         this.accounts =      apiResponse.accounts
         this.address =       apiResponse.registered_office_address
 
+        this.siccodes =      apiResponse.sic_codes
+        this.industries =    this.interpretSIC(this.siccodes)
 
 
     }
+
+
 
     async loadOfficers() {
 
@@ -59,13 +66,35 @@ export class Company {
 
         officerData.forEach(officer => {
             const obj = new Officer(officer)
-            officerObjects.push(obj)
+            const match = officerObjects.find(o =>
+                o.name === obj.name &&
+                o?.dob?.year === obj?.dob?.year
+            )
+            if (!match) {
+
+                officerObjects.push(obj)
+            }
         })
 
         this.officers = officerObjects
     }
 
+    interpretSIC(siccodes) {
 
+        const industries = []
+
+        siccodes.forEach(code => {
+            sicreference.forEach(referenceCode => {
+                if (referenceCode['SIC Code'] === code) {
+                    industries.push(referenceCode['Description'])
+                }
+            })
+        })
+
+        if (industries.length === 0) {industries.push('Unknown Industry')}
+        console.log(industries)
+        return industries
+    }
 
 
 
