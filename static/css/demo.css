@@ -4,18 +4,25 @@ html {
 }
 
 * {
-    box-sizing: border-box
+    box-sizing: border-box;
 }
 body {
     background-color: rgb(38,38,38);
     color: white;
-    font-family: 'Tahoma';
     margin: 0px;
+    cursor: url('https://www.iso-bel.computer/static/resources/images/misc/trans_cursor.png'), auto;
+    font-family: 'Tahoma';
 }
 
 a {
+    cursor: pointer;
 
-    cursor: url('https://www.iso-bel.computer/static/resources/images/misc/trans_cursor.png')
+}
+
+h1 {
+    font-size: 40pt;
+    margin: 0px
+
 }
 
 header {
@@ -24,17 +31,23 @@ header {
     background-color: var(--accent-color);
     position: sticky;
     top: 0px;
-    padding: var(--global-padding);
+    padding: 5px;
     height: 60px;
     border-bottom: 1px solid white;
     justify-content: center
 }
 
 header a {
-    font-size: 20pt;
-    border-right: 1px dotted white;
-    padding-right: 20px;
-    margin-right: 20px
+    font-size: 10pt;
+    border-right: 1px dotted #ffffff70;
+    padding: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: rgb(38,38,38);
+}
+header a:hover {
+    background-color:rgba(38,38,38, 0.5);
+    color:white
 }
 
 
@@ -48,14 +61,35 @@ main {
     background-color: rgb(72, 115, 132, 0.3);
 }
 
+#sidebar a {
+    color: white;
+    text-decoration: none;
+}
+
+#sidebar img {
+    width: 30px;
+    height: auto
+}
+
+#sidebar #socials {
+    display: flex;
+    filter: saturate(80%);
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ffffff50;
+    justify-content: space-evenly
+}
+
 #content {
 
+    font-family: 'Syncopate';
     padding: var(--global-padding);
 
     background-image: linear-gradient(0deg,rgba(91, 206, 250, 0.2) 0%, rgba(245, 169, 184, 0.2) 51%, rgba(255, 255, 255, 0.2) 100%);
     width: 100%
 }
 #countdown {
+    font-family: 'Tahoma';
     display: flex;
     text-align: center;
     align-items: center;
@@ -67,13 +101,24 @@ main {
 
 #donationWidget {
     width: 150px;
+    margin-top: 10px
 }
 
 footer {
     border-top: 1px solid white;
-    font-size: 8pt;
+    font-size: 7pt;
     padding: var(--global-padding);
     display: flex;
     justify-content: space-between;
     align-items: flex-end
+}
+.syncopate-regular {
+  font-weight: 400;
+  font-style: normal;
+}
+
+.syncopate-bold {
+  font-family: "Syncopate", sans-serif;
+  font-weight: 700;
+  font-style: normal;
 }

@@ -8,30 +8,54 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/demo.css') }}">
         <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+
     </head>
 
     <body>
 
         <header>
-            <nav>
                 <a>Home</a>
                 <a>About</a>
                 <a>March</a>
+                <a>Speakers</a>
                 <a>FAQ</a>
                 <a style='border-right: none'>Volunteer</a>
-            </nav>
         </header>
 
         <main>
+            <!--Sidebar-->
             <nav id='sidebar'>
-
-            <div id='donationWidget' class="gfm-embed" data-url="https://www.gofundme.com/f/london-trans-pride-2025/widget/medium?sharesheet=undefined&attribution_id=sl:b04ada1c-d0b0-41ed-83f5-793c62c328bd"></div><script defer src="https://www.gofundme.com/static/js/embed.js"></script>
+                <div id='socials'>
+                    <a href='https://www.instagram.com/londontranspride/' target='_blank'><img src='https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png'></a>
+                    <a href='https://www.facebook.com/londontranspride/' target='_blank'><img src='https://upload.wikimedia.org/wikipedia/commons/b/b9/2023_Facebook_icon.svg'></a>
+                    <a href='https://www.tiktok.com/@londontranspride' target='_blank'><img src='https://upload.wikimedia.org/wikipedia/commons/a/a6/Tiktok_icon.svg'></a>
+                </div>
+                <div id='donationWidget' class="gfm-embed" data-url="https://www.gofundme.com/f/london-trans-pride-2025/widget/medium?sharesheet=undefined&attribution_id=sl:b04ada1c-d0b0-41ed-83f5-793c62c328bd"></div><script defer src="https://www.gofundme.com/static/js/embed.js"></script>
             </nav>
+
+            <!--Main content area-->
+            <!--this would be out to a template in the final thing-->
             <div id='content'>
-            <h1>LONDON TRANS+ PRIDE 2026 STARTS IN</h1>
+<!-- svg: first layer -->
+<svg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'>
+  <filter id='noiseFilter'>
+    <feTurbulence
+      type='fractalNoise'
+      baseFrequency='0.65'
+      numOctaves='3'
+      stitchTiles='stitch'/>
+  </filter>
+
+  <rect width='100%' height='100%' filter='url(#noiseFilter)'/>
+</svg>
+            <h1 id='countdownLabel'>LONDON TRANS+ PRIDE 2026 STARTS IN</h1>
             <div id='countdown'></div>
             <script>
             const marchStart = new Date('2026-07-26T13:00:00')
+            const countdownLabel = document.getElementById('countdownLabel')
             const countdownDiv = document.getElementById('countdown')
             setInterval(function() {
 
@@ -55,40 +79,23 @@
                 const seconds = Math.floor(delta)
 
 
-                countdownDiv.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`
+                if (delta > 0) {
+
+                    countdownDiv.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`
+                } else if (now.getDate() === 26 && now.getMonth() === 6) {
+
+                    countdownLabel.innerHTML = `<h1>LONDON TRANS+ PRIDE 2026 HAS STARTED</h1>`
+                    countdownDiv.innerHTML = ``
+                } else {
+
+                    countdownLabel.innerHTML = `<h1>THANK YOU FOR COMING TO LONDON TRANS PRIDE 2026 <3></h1>`
+                }
 
             }, 1000)
 
             </script>
             <h2>Saturday 26th July | 1:00pm @ Langham Place</h2>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
+            <p>Love and Rage 🏳️‍⚧️❤️‍🔥✊</p>
             </div>
             <script>
 
@@ -103,14 +110,13 @@
                  contentDiv.style.backgroundImage = `linear-gradient(${deg}deg,rgba(91, 206, 250, 0.3) 0%, rgba(245, 169, 184, 0.3) ${mid}%, rgba(255, 255, 255, 0.3) 100%)`
                  mid = mid + (1 * pole)
                  deg++
-                                                    console.log('hello')
-             }, 2000)
+             }, 100)
 
             </script>
         </main>
 
         <footer>
-            <div>© London Trans+ Pride 2026<br>If this website isn't accessible to you or you've noticed an accessibility issue, <br>please email our access team at access@londontranspride.org to let us know.</div>
+            <div>© London Trans+ Pride 2026<br>If this website isn't accessible to you or you've noticed an accessibility issue, please email our access team at access@londontranspride.org to let us know.</div>
         </footer>
     </body>
 </html>
