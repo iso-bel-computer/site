@@ -49,10 +49,11 @@ header {
     align-items: center;
     font-size: 30pt;
     font-weight: bolder;
+    transition: filter 0.1s ease-in;
 }
 
 #siteTitle:hover {
-    text-decoration: underline;
+    filter: drop-shadow(2px 2px 5px #00000070);
 }
 
 header a {
@@ -67,6 +68,7 @@ header a {
     padding-left: 15px;
     font-family: 'Syncopate';
     padding-right: 15px;
+    transition: background-color 0.1s ease-in, color 0.1s ease-in;
 }
 
 
