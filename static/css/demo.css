@@ -215,14 +215,14 @@ pointer-events: none;
 }
 
 footer {
+
     background-image: url("https://www.iso-bel.computer/static/resources/images/misc/paper_2.png");
     border-top: 1px solid white;
     font-size: 7pt;
-    padding: var(--global-padding);
-    padding-top: 20px;
+    padding: 15px;
     display: flex;
     justify-content: space-between;
-    align-items: flex-end
+    align-items: centre
 }
 
 #donationButton {

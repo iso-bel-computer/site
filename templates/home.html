@@ -151,7 +151,6 @@
                             element.style.top = getRandomInt(window.innerHeight) + 'px'
 
                             const position = element.getBoundingClientRect()
-                            console.log(element, position)
                             if (position.top < 1 || position.left < 1 || position.right > window.innerWidth || position.bottom > window.innerHeight) {
                                 retryAttempts = retryAttempts + 1
                                 /// this just stops it from freaking out whenever the view has
