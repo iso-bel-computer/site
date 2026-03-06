@@ -147,7 +147,7 @@ def submitMessage():
         if len(message) > 2000:
             return jsonify({"response": "Like the sound of your own voice?"}), 400
 
-        bannedWords = ['nigger', 'tranny', 'fuck you']
+        bannedWords = ['nigger', 'tranny', 'fuck you', '<script>']
         if any(word in message.lower() for word in bannedWords):
             return jsonify({"response": "🖕"}), 422
 
