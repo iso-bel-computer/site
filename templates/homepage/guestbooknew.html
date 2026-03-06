@@ -52,7 +52,8 @@ function initGB() { // bc this gets injected with the other windows
 
         const nametext = name.value
         const messagetext = message.value
-
+        const now = new Date()
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
         const data = new FormData()
         data.append('name', nametext)
         data.append('message', messagetext)
