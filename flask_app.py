@@ -127,7 +127,7 @@ def submitMessage():
     try:
         name = request.form.get("name", "").strip()
         message = request.form.get("message", "").strip()
-        date = datetime.datetime.now()
+        date = datetime.now().strftime('%B %d, %Y')
 
         if not name:
             return jsonify({"response": "What's your name, stranger?"}), 400
@@ -144,7 +144,7 @@ def submitMessage():
 
         newMessage = {
             "user": name,
-            "date": date.strftime('%d/%B/%y'),
+            "date": date,
             "message": message
         }
 
