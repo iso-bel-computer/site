@@ -1,13 +1,11 @@
 <div id='guestbookwrapper'>
     <div style='display: flex'>
         <div id='guestbooksubmit' style='display: flex; flex-direction: column'>
-            <label for='name'>Name:</label>
-            <input id='name' placeholder='Anonymous'>
-            <label for='email'>Email:</label>
-            <input id='email' placeholder='Optional, not displayed publicly'>
-            <label for='message'>Message:</label>
-            <textarea id='message' placeholder='Say something nice! Or else...' rows='4' ></textarea>
-            <button id='sendMessage'>Send</button>
+            <label for='gbname'>Name:</label>
+            <input id='gbname' placeholder='Anonymous'>
+            <label for='gbmessage'>Message:</label>
+            <textarea id='gbmessage' placeholder='Say something nice! Or else...' rows='4' ></textarea>
+            <button id='gbsendMessage'>Send</button>
         </div>
     </div>
     <div id='guestbookmessages'>
@@ -26,6 +24,81 @@
         {% endfor %}
     </div>
 </div>
+
+<script>
+window.addEventListener("load", (event) => {
+    const messages = document.getElementById('guestbookmessages')
+    const submit = document.getElementById('guestbooksubmit')
+
+    const rect = submit.getBoundingClientRect()
+    messages.style.maxHeight = `${rect.height}px`
+});
+
+function initGB() { // bc this gets injected with the other windows
+     // wrapping it in an init function saves the global scope from conflicting w/ 'name' var etc
+
+    const name = document.getElementById('gbname')
+    const message = document.getElementById('gbmessage')
+    const sendbutton = document.getElementById('gbsendMessage')
+    const messagedisplay = document.getElementById('guestbookmessages')
+    let messageSubmittedThisSession = false
+
+    sendbutton.addEventListener('click', async () => {
+
+        if (messageSubmittedThisSession) {
+            return
+
+        }
+
+        const nametext = name.value
+        const messagetext = message.value
+
+        const data = new FormData()
+        data.append('name', nametext)
+        data.append('message', messagetext)
+
+        const response = await fetch('/submit/guestbookmessage', {
+            method: 'POST',
+            body: data
+        })
+
+
+        const json = await response.json()
+        sendbutton.innerText = json.response
+
+        if (response.ok) {
+
+            messageSubmittedThisSession = true
+            const now = new Date()
+            const newMessageDiv = document.createElement('div')
+            newMessageDiv.classList.add('gbmessage')
+            newMessageDiv.innerHTML = `
+            <h3></h3>
+            <i></i>
+            <div></div>`
+            newMessageDiv.querySelector('h3').innerText = nametext
+            newMessageDiv.querySelector('i').innerText = `${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()}`
+            newMessageDiv.querySelector('div').innerText = messagetext
+            messagedisplay.prepend(newMessageDiv)
+
+            sendbutton.classList.remove('failure')
+            sendbutton.classList.add('success')
+        } else if (response.status === 422) {
+
+            messageSubmittedThisSession = true // bit more friction if someone hits the banned words filter
+            sendbutton.classList.add('banned')
+
+        } else {
+
+            sendbutton.classList.add('failure')
+        }
+
+
+    })
+ }
+ initGB()
+
+</script>
 
 <style>
 #guestbookwrapper {
@@ -46,6 +119,53 @@
      border-right: 1px dotted black;
      padding: 10px;
  }
+
+ #gbsendMessage {
+
+     border: 1px dotted #00000030;
+     border-radius: 3px;
+     background-color: #00000030;
+     cursor: pointer
+ }
+
+
+ #gbmessage {
+     resize: none
+ }
+ #guestbookwrapper .success {
+
+     background-color: #21853c60;
+     border: 1px dotted #00000030;
+     border-radius: 3px;
+     height: fit-content;
+
+ }
+ #guestbookwrapper .failure {
+
+     background-color: #db7e7260;
+     border: 1px dotted #00000030;
+     border-radius: 3px;
+     height: fit-content;
+
+ }
+ #guestbookwrapper .failure:active {
+
+     background-color: #db7e7290;
+     border: 1px dotted #00000030;
+     border-radius: 3px;
+     height: fit-content;
+
+ }
+
+ #guestbookwrapper .banned {
+
+     background-color: #82150790;
+     border: 1px dotted #00000030;
+     border-radius: 3px;
+     height: fit-content;
+
+ }
+
  #guestbookmessages {
      overflow: scroll;
  }
@@ -76,14 +196,7 @@
      background-color: #00000020
  }
 
+
+
 </style>
 
-<script>
-window.addEventListener("load", (event) => {
-    const messages = document.getElementById('guestbookmessages')
-    const submit = document.getElementById('guestbooksubmit')
-
-    const rect = submit.getBoundingClientRect()
-    messages.style.maxHeight = `${rect.height}px`
-});
-</script>

@@ -111,15 +111,55 @@ def getGuestbookMessages():
         guestbookmessages = json.load(f)
         return guestbookmessages
 
+WINDOWS = getHomepageWindows()
+GUESTBOOKMESSAGES = getGuestbookMessages()
+
 @app.route('/')
 def home():
     return render_template('home.html',
-                            windows = getHomepageWindows(),
-                            guestbookmessages = getGuestbookMessages(),
+                            windows = WINDOWS,
+                            guestbookmessages = GUESTBOOKMESSAGES,
                             siteMap = siteMap,
                             books = bookData)
 
-#@app.route('/submitguestbookmessage', methods=['POST'])
+@app.route('/submit/guestbookmessage', methods=['POST'])
+def submitMessage():
+    try:
+        name = request.form.get("name", "").strip()
+        message = request.form.get("message", "").strip()
+
+        if not name:
+            return jsonify({"response": "What's your name, stranger?"}), 400
+        if not message:
+            return jsonify({"response": "Cat got your tongue?"}), 400
+        if len(name) > 200:
+            return jsonify({"response": "Name too long... Are you some kind of aristo?"}), 400
+        if len(message) > 2000:
+            return jsonify({"response": "Like the sound of your own voice?"}), 400
+
+        bannedWords = ['nigger', 'tranny', 'fuck you']
+        if any(word in message.lower() for word in bannedWords):
+            return jsonify({"response": "🖕"}), 422
+
+        newMessage = {
+            "user": name,
+            "date": datetime.now().isoformat(),
+            "message": message
+        }
+
+        GUESTBOOKMESSAGES.insert(0, newMessage)
+
+        with open('static/resources/data/guestbookmessages.json', 'w') as f:
+            f.write(json.dumps(GUESTBOOKMESSAGES, indent=4))
+
+        return jsonify({"response":"thanks <3"}), 200
+
+
+
+    except Exception as e:
+        print(e)
+        return jsonify({"response": "something broke :("}), 500
+
 
 
 @app.route('/go', methods=['POST']) # this is the redirect for the header navigation
