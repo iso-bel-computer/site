@@ -1,20 +1,5 @@
 [
     {
-        "user": "test",
-        "date": "March 06, 2026",
-        "message": "test"
-    },
-    {
-        "user": "test",
-        "date": "March 06, 2026",
-        "message": "test"
-    },
-    {
-        "user": "test",
-        "date": "06/March/26",
-        "message": "test"
-    },
-    {
         "message": "cool site, mite check out later. keep up the great work",
         "date": "March 5th, 2026",
         "user": "shrimp enjoyer"

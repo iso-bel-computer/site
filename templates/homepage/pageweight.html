@@ -1,0 +1,18 @@
+<span id='page-weight' style='font-size: 9pt'>...</span>
+<script>
+window.addEventListener('load', () => {
+  const resources = performance.getEntriesByType('resource');
+
+  const total = resources.reduce((sum, r) => {
+    // Use transferSize, fall back to decodedBodySize, then encodedBodySize
+    const size = r.transferSize || r.decodedBodySize || r.encodedBodySize || 0;
+    return sum + size;
+  }, 0);
+
+  const nav = performance.getEntriesByType('navigation')[0];
+  const docSize = nav ? (nav.transferSize || nav.decodedBodySize || 0) : 0;
+
+  const totalKb = ((total + docSize) / 1024).toFixed(1);
+  document.getElementById('page-weight').innerText = `${totalKb} kb`;
+});
+</script>

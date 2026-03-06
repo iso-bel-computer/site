@@ -119,7 +119,7 @@ a {
             margin-top: 2px;
             height: fit-content;
             max-height: 90vh;
-            overflow: scroll;
+            overflow: auto;
             padding: 4px;
             background-color: #fff9ed;
             border: 1px solid white;
