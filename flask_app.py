@@ -3,10 +3,18 @@ from flask import Flask, render_template, jsonify, request, abort, redirect
 import json; from datetime import datetime; import random; from dotenv import load_dotenv
 import requests; from requests.auth import HTTPBasicAuth; from urllib.parse import urlparse
 from flask_cors import CORS
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 load_dotenv()
 os.chdir(os.path.dirname(__file__))  # change CWD to where flask_app.py lives
 app = Flask(__name__)
+
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    default_limits=[]
+)
 
 CORS(app, resources={r"/static/webring/*": {"origins": "*"}})
 siteMap = [
@@ -123,6 +131,7 @@ def home():
                             books = bookData)
 
 @app.route('/submit/guestbookmessage', methods=['POST'])
+@limiter.limit("5 per minute")
 def submitMessage():
     try:
         name = request.form.get("name", "").strip()
