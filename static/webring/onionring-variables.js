@@ -7,10 +7,11 @@
 
 //the full URLs of all the sites in the ring
 var sites = [
-    'https://london.permacomputing.net',
-    'https://www.iso-bel.computer',
+    "https://london.permacomputing.net",
+    "https://www.iso-bel.computer",
     "https://cheng.organic",
-    "https://synte.codeberg.page"
+    "https://synte.codeberg.page",
+    "https://solarpunklondon.neocities.org"
 ];
 
 //the name of the ring
