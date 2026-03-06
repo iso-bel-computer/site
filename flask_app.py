@@ -139,7 +139,7 @@ def submitMessage():
         date = datetime.now().strftime('%B %d, %Y')
 
         if not name:
-            return jsonify({"response": "What's your name, stranger?"}), 400
+            name = 'Anonymous'
         if not message:
             return jsonify({"response": "Cat got your tongue?"}), 400
         if len(name) > 200:
