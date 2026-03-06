@@ -14,7 +14,7 @@
     {
         "icon": "internet.png",
         "headertext": "guestbook.html",
-        "template": "guestbook.html",
+        "template": "guestbooknew.html",
         "classname": "guestbook"
     },
     {

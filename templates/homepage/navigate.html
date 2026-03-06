@@ -4,7 +4,7 @@
             id='headerRouteDisplay'
             name='headerRouteInput'
             onfocus="this.value='~/'"
-            value='~/{{ headerRouteDisplay }}'
+            placeholder='~/'
             autocomplete='off'>
     </input>
 
@@ -13,4 +13,17 @@
         <option value='~{{ url }}'>
     {% endfor %}
     </datalist>
+    <script>
+     const form = document.getElementById('headerRouteDisplay')
+     let blink = true
+     setInterval(function() {
+         if (blink) {
+             form.placeholder = '~/_'
+             blink = false
+         } else {
+             form.placeholder = '~/'
+             blink = true
+         }
+     }, 1000)
+    </script>
 </form>

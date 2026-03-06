@@ -1,0 +1,78 @@
+<div id='guestbookwrapper'>
+    <div style='display: flex'>
+        <div id='guestbooksubmit' style='display: flex; flex-direction: column'>
+            <label for='name'>Name:</label>
+            <input id='name' placeholder='Anonymous'>
+            <label for='email'>Email:</label>
+            <input id='email' placeholder='Optional, not displayed publicly'>
+            <label for='message'>Message:</label>
+            <textarea id='message' placeholder='Say something nice! Or else...' rows='4' ></textarea>
+            <button id='sendMessage'>Send</button>
+        </div>
+    </div>
+    <div id='guestbookmessages'>
+        <div class='gbmessage'>
+            <h3>ckiyme</h3>
+            <i>February 23, 2026 at 9:06:39 PM</i>
+            <p>
+                so sorry to have missed your workshop tonight, im feeling fomo looking at this website! would love to do something this cool for me, but i know i'll end up building just another one page scrolling blog
+            </p><p>
+                can't wait to dig more intor your other projects and artworks
+            </p><p>
+                xoxo
+            </p>
+        </div>
+        <div class='gbmessage'>
+            <h3>vaseabear</h3>
+            <i>February 23, 2026 at 7:58:15 PM</i>
+            <p>
+                i hope you know this is so sick. whatever creative process that went on in your head creating the cursor is precious gold. the bookcase with reviews? just perfect. i love seeing what u create, keep at it! best wishes :3 rose
+            </p>
+        </div>
+    </div>
+</div>
+
+<style>
+#guestbookwrapper {
+    display: flex;
+ }
+
+ #guestbookwrapper input, #guestbookwrapper textarea {
+     margin-bottom: 10px;
+ }
+
+ #guestbooksubmit {
+
+     height: fit-content;
+     border-right: 1px dotted black;
+     padding: 10px;
+ }
+ #guestbookmessages {
+     overflow: scroll;
+ }
+
+ .gbmessage {
+     padding: 5px;
+     background-color: #00000030;
+     border-radius: 3px;
+     margin: 10px;
+ }
+ .gbmessage h3 {
+     margin: 0px
+ }
+
+ .gbmessage p {
+     margin-bottom: 0px
+ }
+</style>
+
+<script>
+window.addEventListener("load", (event) => {
+    const messages = document.getElementById('guestbookmessages')
+    const submit = document.getElementById('guestbooksubmit')
+
+    const rect = submit.getBoundingClientRect()
+     console.log(messages, submit, rect)
+    messages.style.maxHeight = `${rect.height}px`
+});
+</script>

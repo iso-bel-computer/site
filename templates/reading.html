@@ -47,13 +47,20 @@
     <div class='bookSpine' id="{{ book['title']|replace(' ','') }}" style='
     background-color: {{ book["mainColor"] }};
     color: {{ book["accentColor"] }};
+    z-index: {{ book["randomNumbers"]["zIndex"] }};
+    margin-right: {{ book["randomNumbers"]["marginRight"] }};
+    border-radius: {{ book["randomNumbers"]["borderRadius"] }};
+    align-items: {{ book["randomNumbers"]["alignItems"] }};
+    filter: {{ book["randomNumbers"]["brightness"] }};
+    border: {{ book["randomNumbers"]["border"] }};
     padding-left: {{ book["pages"] / 45 }}px;
     padding-right: {{ book["pages"] / 45 }}px'
     data-index='{{ loop.index0 }}'
     data-pages='{{ book["pages"] }}'
     data-fonttype='{{ book["fontStyle"] }}'>
-    <span class="bookTitle">{{ book['title'] }}</span>
-    <span class="bookAuthor">{{ book['author'] }}</span>
+    <span class="bookTitle" style='padding-top: {{ book["randomNumbers"]["paddingTop"] }};'>{{ book['title'] }}</span>
+
+    <span class="bookAuthor" style='padding-bottom: {{ book["randomNumbers"]["paddingBototm"] }}>{{ book['author'] }}</span>
     </div>
     {% endfor %}
     <p id="mapquote">the map is not the territory...</p>
@@ -79,24 +86,15 @@
 
 <script>
 function randomiseBook(book) {
+     console.log(book)
 
     /// this used to randomise clientside. but now randomising serverside improves performance
     /// and lets us use random.seed() to get consistent results.
     /// if we want to release this as a static html generator we should bake this into the
     /// goodreads scraper script instead.
 
-    const title = book.querySelector('.bookTitle')
-    const author = book.querySelector('.bookAuthor')
     const r = bookData[book.dataset.index].randomNumbers
 
-    book.style.zIndex          =  r.zIndex
-    book.style.border          =  r.border
-    book.style.marginRight     =  r.marginRight
-    book.style.borderRadius    =  r.borderRadius
-    book.style.alignItems      =  r.alignItems
-    book.style.filter          =  r.brightness
-     title.style.paddingTop     =  r.paddingTop
-    author.style.paddingBottom =  r.paddingBottom
 
     book.style.setProperty('--book-translateX', r.translateX)
     book.style.setProperty('--book-rotate', r.rotation)

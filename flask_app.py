@@ -96,7 +96,12 @@ def getHomepageWindows():
     with open(windowsconfig) as f:
         windows.extend(json.load(f))
 
+
     random.shuffle(windows)
+    for window in windows:
+        window['top'] = random.randint(1, 500)
+        window['left'] = random.randint(1, 500)
+
 
     return windows
 

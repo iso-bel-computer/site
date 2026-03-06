@@ -198,6 +198,12 @@ a {
             padding: 6px;
         }
 
+        .windowguestbookcontent {
+
+            width: 400px;
+            resize: horizontal;
+        }
+
         /* FOLDERS */
 
         #folderwrapper {
