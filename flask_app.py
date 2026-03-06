@@ -105,15 +105,22 @@ def getHomepageWindows():
 
     return windows
 
+def getGuestbookMessages():
 
-
+    with open('static/resources/data/guestbookmessages.json', 'r') as f:
+        guestbookmessages = json.load(f)
+        return guestbookmessages
 
 @app.route('/')
 def home():
     return render_template('home.html',
                             windows = getHomepageWindows(),
+                            guestbookmessages = getGuestbookMessages(),
                             siteMap = siteMap,
                             books = bookData)
+
+#@app.route('/submitguestbookmessage', methods=['POST'])
+
 
 @app.route('/go', methods=['POST']) # this is the redirect for the header navigation
 def go():

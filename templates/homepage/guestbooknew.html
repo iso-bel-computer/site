@@ -11,24 +11,19 @@
         </div>
     </div>
     <div id='guestbookmessages'>
+        {% for message in guestbookmessages %}
         <div class='gbmessage'>
-            <h3>ckiyme</h3>
-            <i>February 23, 2026 at 9:06:39 PM</i>
-            <p>
-                so sorry to have missed your workshop tonight, im feeling fomo looking at this website! would love to do something this cool for me, but i know i'll end up building just another one page scrolling blog
-            </p><p>
-                can't wait to dig more intor your other projects and artworks
-            </p><p>
-                xoxo
-            </p>
+            <h3>{{ message.user | e}}</h3>
+            <i>{{ message.date | e}}</i>
+            <div>{{ message.message | e}}</div>
         </div>
-        <div class='gbmessage'>
-            <h3>vaseabear</h3>
-            <i>February 23, 2026 at 7:58:15 PM</i>
-            <p>
-                i hope you know this is so sick. whatever creative process that went on in your head creating the cursor is precious gold. the bookcase with reviews? just perfect. i love seeing what u create, keep at it! best wishes :3 rose
-            </p>
+        {% if message.response %}
+        <div class='gbresponse'>
+            <h3>izzy</h3>
+            <div>{{ message.response | e}}</div>
         </div>
+        {% endif %}
+        {% endfor %}
     </div>
 </div>
 
@@ -39,6 +34,10 @@
 
  #guestbookwrapper input, #guestbookwrapper textarea {
      margin-bottom: 10px;
+     background-color: #ffffff60;
+     border: 1px dotted #00000030;
+     border-radius: 3px;
+     padding: 3px;
  }
 
  #guestbooksubmit {
@@ -53,17 +52,30 @@
 
  .gbmessage {
      padding: 5px;
-     background-color: #00000030;
+     background-color: #4e734b30;
+     border: 1px dotted #00000040;
      border-radius: 3px;
      margin: 10px;
+     margin-right: 20px;
+     margin-bottom: 4px;
  }
- .gbmessage h3 {
+ #guestbookmessages h3 {
      margin: 0px
  }
 
  .gbmessage p {
      margin-bottom: 0px
  }
+ .gbresponse {
+     margin: 10px;
+     margin-top: 0px;
+     border: 1px dotted #00000040;
+     margin-left: 35px;
+     padding: 5px;
+     border-radius: 2px;
+     background-color: #00000020
+ }
+
 </style>
 
 <script>
