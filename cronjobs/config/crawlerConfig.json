@@ -1,0 +1,6 @@
+{
+    "headers": {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"},
+    "tableSchema": "CREATE TABLE IF NOT EXISTS councillors (\n    councillor_id INTEGER PRIMARY KEY,\n    council TEXT,\n    name TEXT,\n    party TEXT,\n    title TEXT,\n    ward TEXT,\n    image TEXT,\n    profileLink TEXT\n, rawParty TEXT\n)",
+    "partyHistorySchema": "CREATE TABLE IF NOT EXISTS partyHistroy (\n    partyhistory_id INTEGER PRIMARY KEY,\n    councillor_id INTEGER PRIMARY KEY,\n  name TEXT,\n  title TEXT,\n   rawParty TEXT\n,   date TEXT\n)",
+    "dbLocation": "data/councillors.db"
+}

@@ -123,7 +123,6 @@ a {
             /* Hide scrollbar on Windows/Chrome/Edge */
             scrollbar-width: thin; /* Firefox */
             scrollbar-color: transparent transparent; /* Firefox */
-;
             padding: 4px;
             background-color: #fff9ed;
             border: 1px solid white;
