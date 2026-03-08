@@ -49,7 +49,8 @@
     const STATE = {
         insideWindow: false,
         needsNewCoords: true,
-        hoverWindow: null
+        hoverWindow: null,
+        draggingWindow: false
     }
     const windowtemplates = {{ windows | tojson }}
     const xpwindows = Array.from(document.getElementsByClassName('xpwindow'))
@@ -92,6 +93,7 @@
 
         function dragMouseDown(e) {
             STATE.needsNewCoords = true
+            STATE.draggingWindow = true
             e = e || window.event;
             e.preventDefault();
             elmnt.style.opacity = 0.9
@@ -105,6 +107,7 @@
 
         function elementDrag(e) {
             STATE.needsNewCoords = true
+            STATE.draggingWindow = true
             e = e || window.event;
             e.preventDefault();
             // calculate the new cursor position:
@@ -128,6 +131,7 @@
             // stop moving when mouse button is released:
             document.onmouseup = null;
             document.onmousemove = null;
+            STATE.draggingWindow = false
             elmnt.style.opacity = 1
             handleMouseMoveInternal()
         }
@@ -280,7 +284,7 @@
         const rect = canvas.getBoundingClientRect();
         const coordsdiv = document.getElementById('mousecoords')
 
-        if (!STATE.insideWindow) { // LOGIC FOR WHEN MOUSE IS NOT OVER A WINDOW
+        if (!STATE.insideWindow && !STATE.draggingWindow) { // LOGIC FOR WHEN MOUSE IS NOT OVER A WINDOW
 
 
             clearCanvas()
@@ -370,9 +374,9 @@
 
 
             if (flash) {
-                ctx.fillStyle = "rgba(255,255,255,0.07)";
+                ctx.fillStyle = "rgba(255,255,255,0.15)";
             } else {
-                ctx.fillStyle = `rgba(255,255,255,${(transparency / 1.5) * 0.05})`;
+                ctx.fillStyle = `rgba(255,255,255,${(transparency / 1.5) * 0.1})`;
             }
 
             // DRAWING 3D TRIANGLES
@@ -380,7 +384,7 @@
             drawTriangle(x, y, c.left - offset, c.bottom + offset, c.right + offset, c.bottom + offset) // bottom pane
 
             if (!flash) {
-                ctx.fillStyle = `rgba(255,255,255,${(transparency / 1.5) * 0.02})`;
+                ctx.fillStyle = `rgba(255,255,255,${(transparency / 1.5) * 0.05})`;
             }
 
             drawTriangle(x, y, c.left - offset, c.top - offset, c.left - offset, c.bottom + offset) // left pane
@@ -535,10 +539,10 @@
 
 
     document.addEventListener("mouseout", (event) => {
-    if (!event.relatedTarget && !event.toElement) {
-        // Mouse left the window
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
+        if (!event.relatedTarget && !event.toElement) {
+            // Mouse left the window
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
     });
 
 </script>
