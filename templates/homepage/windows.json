@@ -84,6 +84,12 @@
         "classname": "contact"
     },
     {
+        "icon": "agent.png",
+        "headertext": "councilDefections.mgov",
+        "template": "defections.html",
+        "classname": "defections"
+    },
+    {
         "icon": "quote.png",
         "headertext": "quote.txt",
         "template": "quote.html",

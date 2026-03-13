@@ -5,6 +5,7 @@ import requests; from requests.auth import HTTPBasicAuth; from urllib.parse impo
 from flask_cors import CORS
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from defectionfrontend import getDefectionData
 
 load_dotenv()
 os.chdir(os.path.dirname(__file__))  # change CWD to where flask_app.py lives
@@ -119,16 +120,21 @@ def getGuestbookMessages():
         guestbookmessages = json.load(f)
         return guestbookmessages
 
-WINDOWS = getHomepageWindows()
-GUESTBOOKMESSAGES = getGuestbookMessages()
 
+
+
+
+WINDOWS = getHomepageWindows()
 @app.route('/')
 def home():
+    GUESTBOOKMESSAGES = getGuestbookMessages()
+    defectionEvents = getDefectionData()
     return render_template('home.html',
                             windows = WINDOWS,
                             guestbookmessages = GUESTBOOKMESSAGES,
                             siteMap = siteMap,
-                            books = bookData)
+                            books = bookData,
+                            defectionEvents = defectionEvents)
 
 @app.route('/submit/guestbookmessage', methods=['POST'])
 @limiter.limit("5 per minute")
