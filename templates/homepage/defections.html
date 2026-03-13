@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', event => {
  // getting the furthest back date we have a record for
  const lastDate =  {% for event in defectionEvents %}{% if loop.last %}{{ event["prettyDate"]|tojson|safe }};{% endif %}{% endfor %}
 
- document.getElementById('defectionExplainer').innerHTML = `<div style='padding: 3px; padding-bottom: 0px'>Council defections since ${lastDate}. ~Appx 89% coverage.</div><div style='padding: 3px; padding-top: 0px'><i><a style='color: darkblue'>Explain?</a>&nbsp<a style='color: darkblue'>Data?</a></i></div>`
+ document.getElementById('defectionExplainer').innerHTML = `<div style='padding: 3px; padding-bottom: 0px'>British local political defections & suspensions since ${lastDate}. </div><div style='padding: 3px; padding-bottom: 0px'>~Appx 89% coverage.</div><div style='padding: 3px; padding-top: 0px'><i><a style='color: darkblue'>Explain?</a>&nbsp<a style='color: darkblue'>Data?</a></i></div>`
 
 
 function getNetMovement(partyName) {

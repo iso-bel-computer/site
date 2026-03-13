@@ -19,7 +19,7 @@
 
                 {% for win in windows %}
 
-                <div class='xpwindow window{{ win.classname }}' style='top: {{ win.top }}; left: {{ win.left }}' id='window{{ loop.index }}' data-name='{{ win.headertext }}'>
+                <div class='xpwindow window{{ win.classname }}'  id='window{{ loop.index }}' data-name='{{ win.headertext }}'>
                     <div class='xpwindowheader window{{ win.classname }}header' id='window{{ loop.index }}header'>
 
                         <div class='headercolumn1'>
@@ -157,18 +157,10 @@
 
             let retryAttempts = 0
             function randomisePosition() {
-                element.style.left = getRandomInt(window.innerWidth) + 'px'
-                element.style.top = getRandomInt(window.innerHeight) + 'px'
 
                 const position = element.getBoundingClientRect()
-                if (position.top < 1 || position.left < 1 || position.right > window.innerWidth || position.bottom > window.innerHeight) {
-                    retryAttempts = retryAttempts + 1
-                    /// this just stops it from freaking out whenever the view has
-                    /// got too small
-                    if (retryAttempts < 5) {
-                        randomisePosition()
-                    }
-                }
+                element.style.left = getRandomInt(window.innerWidth - position.width ) + 'px'
+                element.style.top = getRandomInt(window.innerHeight - position.height) + 'px'
             }
 
             randomisePosition()
