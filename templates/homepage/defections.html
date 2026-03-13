@@ -1,93 +1,5 @@
 
-<div style='display:flex'>
-<canvas id='defectionCanvas' ></canvas>
-<script>
-
-document.addEventListener('DOMContentLoaded', event => {
-
- // importing exactly what the backend gives us
- const defectionEvents = [{% for event in defectionEvents %}{{ event|tojson|safe }}{% if not loop.last %},{% endif %}{% endfor %}]
- // getting the furthest back date we have a record for
- const lastDate =  {% for event in defectionEvents %}{% if loop.last %}{{ event["prettyDate"]|tojson|safe }};{% endif %}{% endfor %}
-
-function getNetMovement(partyName) {
-    return defectionEvents.reduce((num, event) => {
-        if (event.partyTo === partyName) return num + 1;
-        if (event.partyFrom === partyName) return num - 1;
-        return num;
-    }, 0)
-}
-
- let partyTotals = {
-
-    "labour": getNetMovement('labour'),
-     "libdem": getNetMovement('liberal democrats'),
-     "green": getNetMovement('green'),
-     "tory": getNetMovement('conservative'),
-     "reform": getNetMovement('reform'),
-     "independent": getNetMovement('independent')
- }
-
-const defectioncanvas = document.getElementById("defectionCanvas");
-const defectionctx = defectioncanvas.getContext("2d");
-
-function resizeCanvas() {
-    const dpr = window.devicePixelRatio || 1;
-    const rect = defectionCanvas.getBoundingClientRect();
-
-    defectionCanvas.width = rect.width * dpr;
-    defectionCanvas.height = rect.height * dpr;
-
-    defectionctx.scale(dpr, dpr);
-}
-
-
-
-function drawBars() {
-
-
-    let partyColours = {
-
-        "labour": '#dc3545',
-        "libdem": '#faa61a',
-        "green": '#6ab023',
-        "tory":  '#0087dc',
-        "reform": '#12b6cf',
-        "independent": "#dcdcdc"
-    }
-
-    barYStart = 0
-    barHeight = 11
-    barGap = 4
-    totalReqHeight = Object.keys(partyTotals).length * (barHeight + barGap) - barGap
-    defectionCanvas.style.height = `${totalReqHeight}px`
-    defectionCanvas.style.width = `${document.querySelector('.windowdefectionscontent').getBoundingClientRect().width / 4}px`
-    resizeCanvas()
-    const midpoint = defectioncanvas.getBoundingClientRect().width / 2
-    Object.keys(partyTotals).forEach(function(key) {
-
-        let barWidth = partyTotals[key] * 10
-        // making sure something is visible if there is low net movement.
-        if (barWidth == 0) {barWidth = 1}
-
-        defectionctx.fillStyle = `${partyColours[key]}`;
-        defectionctx.beginPath(); // Start a new path
-        defectionctx.rect(midpoint, barYStart, barWidth, barHeight)
-        defectionctx.fill(); // Render the path
-        defectionctx.beginPath(); // Start a new path
-        defectionctx.fillStyle = `black`;
-        defectionctx.font = "8px sans-serif";
-        defectionctx.fillText(`${partyTotals[key]}`, 10, barYStart + barGap + 5);
-        defectionctx.fill(); // Render the path
-
-        barYStart += barHeight + barGap
-    })
-
- }
- drawBars()
-
- })
-</script>
+<div style='display:flex;align-items:center'>
 <div id='defectionTableWrapper'>
 
 <table id='defectionTable'>
@@ -101,10 +13,12 @@ function drawBars() {
 
 
         <td>
-            
+
         </td>
         <td>
-            {{ event['councillorName']  }} ({{ event['council'] | replace('District','') | replace('Borough','') | replace('County','') | replace('Council','') }})
+            <div style='display: flex; justify-content: space-between'>
+            <span>{{ event['councillorName']  }}</span><span class='councilSpan'><i>{{ event['council'] | replace('District','') | replace('Borough','') | replace('County','') | replace('Council','') | trim }}</i></span>
+            </div>
         </td>
         <td>
             <svg height="9" width="9" xmlns="http://www.w3.org/2000/svg">
@@ -125,23 +39,155 @@ function drawBars() {
 {% endfor %}
 </table>
 </div>
+<canvas id='defectionCanvas' ></canvas>
+<script>
+
+document.addEventListener('DOMContentLoaded', event => {
+
+ // importing exactly what the backend gives us
+ const defectionEvents = [{% for event in defectionEvents %}{{ event|tojson|safe }}{% if not loop.last %},{% endif %}{% endfor %}]
+ // getting the furthest back date we have a record for
+ const lastDate =  {% for event in defectionEvents %}{% if loop.last %}{{ event["prettyDate"]|tojson|safe }};{% endif %}{% endfor %}
+
+function getNetMovement(partyName) {
+    return defectionEvents.reduce((num, event) => {
+        if (event.partyTo === partyName) return num + 1;
+        if (event.partyFrom === partyName) return num - 1;
+        return num;
+    }, 0)
+}
+
+     let partyTotals = {
+
+         "labour": getNetMovement('labour'),
+         "libdem": getNetMovement('liberal democrats'),
+         "green": getNetMovement('green'),
+         "tory": getNetMovement('conservative'),
+         "reform": getNetMovement('reform'),
+     }
+
+const defectioncanvas = document.getElementById("defectionCanvas");
+const defectionctx = defectioncanvas.getContext("2d");
+
+function resizeCanvas() {
+    const dpr = window.devicePixelRatio || 1;
+    const rect = defectionCanvas.getBoundingClientRect();
+
+    defectionCanvas.width = rect.width * dpr;
+    defectionCanvas.height = (rect.height * dpr) + 4;
+
+    defectionctx.scale(dpr, dpr);
+}
+
+
+
+function drawBars() {
+
+
+    let partyColours = {
+
+        "labour": '#dc3545',
+        "libdem": '#faa61a',
+        "green": '#6ab023',
+        "tory":  '#0087dc',
+        "reform": '#12b6cf',
+    }
+
+
+
+
+    barYStart = 4
+    barHeight = 11
+    barGap = 4
+    totalReqHeight = Object.keys(partyTotals).length * (barHeight + barGap)
+    defectionCanvas.style.height = `${totalReqHeight}px`
+    defectionCanvas.style.width = `${document.querySelector('.windowdefectionscontent').getBoundingClientRect().width / 4}px`
+    resizeCanvas()
+
+    function getLargestNetChange() {
+
+        let largestChange = 0
+        Object.keys(partyTotals).forEach(function(key) {
+            const change = Math.abs(partyTotals[key])
+            if (change > largestChange) {largestChange = change}
+        })
+        return largestChange
+
+    }
+
+    function getScale() {
+        const largestChange = getLargestNetChange()
+        const width = defectionCanvas.style.width
+        let scale = 1
+
+        if (largestChange > width - 5) {
+            scale = width / largestChange
+        }
+
+        if (largestChange < 10) {
+            scale = 5
+        }
+        return scale
+    }
+
+    const scale = getScale()
+
+    const midpoint = defectioncanvas.getBoundingClientRect().width / 2
+
+     // drawing midpoint line
+    defectionctx.beginPath();
+    defectionctx.setLineDash([1, 1]);
+    defectionctx.moveTo(midpoint, 0);
+    defectionctx.lineTo(midpoint, 999);
+    defectionctx.stroke();
+    defectionctx.setLineDash([]);
+
+    Object.keys(partyTotals).forEach(function(key) {
+
+        let barWidth = partyTotals[key] * scale
+        // making sure something is visible if there is low net movement.
+        if (barWidth == 0) {barWidth = 1}
+
+        defectionctx.fillStyle = `${partyColours[key]}`;
+        defectionctx.beginPath(); // Start a new path
+        defectionctx.rect(midpoint, barYStart, barWidth, barHeight)
+        defectionctx.strokeRect(midpoint, barYStart, barWidth, barHeight)
+        defectionctx.fill(); // Render the path
+        defectionctx.beginPath(); // Start a new path
+        defectionctx.fillStyle = `black`;
+        defectionctx.font = "8px sans-serif";
+        defectionctx.fillText(`${partyTotals[key]}`, 6, barYStart + barGap + 3);
+        defectionctx.fill(); // Render the path
+
+        barYStart += barHeight + barGap
+    })
+
+ }
+ drawBars()
+
+ })
+</script>
 <style>
 
-#defectionCanvas {
- }
+
 
 .windowdefectionscontent {
     padding-bottom: 0px;
+    padding-top: 0px;
+    resize: none;
+ }
+.windowdefectionscontent i {
+    font-size: 6pt;
  }
 
 #defectionTableWrapper {
     max-height: 90px;
     overflow: scroll;
-    border-left: 1px dotted black;
+    border-right: 1px dotted black;
 
  }
 #defectionTable td {
-    padding-left: 3px;
+    font-size: 8pt;
     padding-right: 3px;
 
  }
@@ -151,6 +197,10 @@ circle {
     stroke-width: 1;
     fill: #dcdcdc
 }
+
+.councilSpan {
+    margin-left: 8px
+ }
 
 
 
