@@ -1,3 +1,4 @@
 .env
 submittedurls.txt
 guestbookmessages.json
+*.db
