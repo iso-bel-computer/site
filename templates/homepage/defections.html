@@ -1,8 +1,9 @@
 
 <div style='display:flex;align-items:center'>
 <div id='defectionTableWrapper'>
-
 <table id='defectionTable'>
+
+
 
 {% for event in defectionEvents %}
 
@@ -38,6 +39,7 @@
 
 {% endfor %}
 </table>
+    <span id='defectionExplainer' style='font-size: 6pt'></span>
 </div>
 <canvas id='defectionCanvas' ></canvas>
 <script>
@@ -48,6 +50,9 @@ document.addEventListener('DOMContentLoaded', event => {
  const defectionEvents = [{% for event in defectionEvents %}{{ event|tojson|safe }}{% if not loop.last %},{% endif %}{% endfor %}]
  // getting the furthest back date we have a record for
  const lastDate =  {% for event in defectionEvents %}{% if loop.last %}{{ event["prettyDate"]|tojson|safe }};{% endif %}{% endfor %}
+
+ document.getElementById('defectionExplainer').innerHTML = `<div style='padding: 3px; padding-bottom: 0px'>Council defections since ${lastDate}. ~Appx 89% coverage.</div><div style='padding: 3px; padding-top: 0px'><i><a style='color: darkblue'>Explain?</a>&nbsp<a style='color: darkblue'>Data?</a></i></div>`
+
 
 function getNetMovement(partyName) {
     return defectionEvents.reduce((num, event) => {
