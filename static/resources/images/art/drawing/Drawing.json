@@ -782,5 +782,33 @@
     "date": "26-03-01",
     "description": "had to finish the right side of this in a hurry. i'm enjoying doing more museum sketches! and i didn't get shouted at for using charcol this time :)",
     "contenttype": "Drawing"
+  },
+  {
+    "originalFileName": "IMG_4017.HEIC",
+    "fileName": "26-03-21_Margie---London-Drawing_191943",
+    "originalDir": "/Users/dylanhemmings/Desktop/drawingstaging",
+    "originalPath": "/Users/dylanhemmings/Desktop/drawingstaging/IMG_4017.HEIC",
+    "destinationDir": "/Users/dylanhemmings/05.Site/static/resources/images/art/drawing",
+    "previewFile": "26-03-21_Margie---London-Drawing_191943_PREVIEW.jpg",
+    "thumbnailFile": "26-03-21_Margie---London-Drawing_191943_THUMB.jpg",
+    "mainFile": "26-03-21_Margie---London-Drawing_191943.png",
+    "title": "Margie---London-Drawing",
+    "date": "26-03-21",
+    "description": "first time properly using watercolours!",
+    "contenttype": "Drawing"
+  },
+  {
+    "originalFileName": "IMG_4006.HEIC",
+    "fileName": "26-02-21_Margie---London-Drawing_192107",
+    "originalDir": "/Users/dylanhemmings/Desktop/drawingstaging",
+    "originalPath": "/Users/dylanhemmings/Desktop/drawingstaging/IMG_4006.HEIC",
+    "destinationDir": "/Users/dylanhemmings/05.Site/static/resources/images/art/drawing",
+    "previewFile": "26-02-21_Margie---London-Drawing_192107_PREVIEW.jpg",
+    "thumbnailFile": "26-02-21_Margie---London-Drawing_192107_THUMB.jpg",
+    "mainFile": "26-02-21_Margie---London-Drawing_192107.png",
+    "title": "Margie---London-Drawing",
+    "date": "26-02-21",
+    "description": "",
+    "contenttype": "Drawing"
   }
 ]
