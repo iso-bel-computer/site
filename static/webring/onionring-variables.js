@@ -11,9 +11,8 @@ var sites = [
     "https://www.iso-bel.computer",
     "https://cheng.organic",
     "https://synte.codeberg.page",
-    "https://ana.help",
-    "https://solarpunklondon.neocities.org",
-    "https://stephanelambion.com"
+    "https://ana.help/",
+    "https://solarpunklondon.neocities.org"
 ];
 
 //the name of the ring
@@ -31,4 +30,3 @@ var indexPage = 'https://www.iso-bel.computer/permacomputingwebring';
 
 //should the widget include a random button?
 var useRandom = true;
-
