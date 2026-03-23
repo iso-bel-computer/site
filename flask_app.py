@@ -140,8 +140,8 @@ def home():
 @limiter.limit("5 per minute")
 def submitMessage():
     try:
-        global GUESTBOOKMESSAGES
 
+        GUESTBOOKMESSAGES = getGuestbookMessages()
         name = request.form.get("name", "").strip()
         message = request.form.get("message", "").strip()
         date = datetime.now().strftime('%B %d, %Y')
