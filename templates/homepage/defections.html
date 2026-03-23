@@ -18,7 +18,7 @@
         </td>
         <td>
             <div style='display: flex; justify-content: space-between'>
-            <span>{{ event['councillorName']  }}</span><span class='councilSpan'><i>{{ event['council'] | replace('District','') | replace('Borough','') | replace('County','') | replace('Council','') | trim }}</i></span>
+            <span>{{ event['councillorName']  }}</span><span class='councilSpan'><i>{{ event['council'] | replace('District','') | replace('Borough','') | replace('County','') | replace('Council','') | replace('London of', '') | trim }}</i></span>
             </div>
         </td>
         <td>
@@ -217,5 +217,6 @@ circle {
 .dot-liberal-democrats { fill: #faa61a; }
 .dot-reform { fill: #12b6cf; }
 .dot-green { fill: #6ab023; }
+.dot-snp { fill: #FDF38E; }
 </style>
 </div>
