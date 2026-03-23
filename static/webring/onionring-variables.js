@@ -11,7 +11,9 @@ var sites = [
     "https://www.iso-bel.computer",
     "https://cheng.organic",
     "https://synte.codeberg.page",
-    "https://solarpunklondon.neocities.org"
+    "https://ana.help",
+    "https://solarpunklondon.neocities.org",
+    "https://stephanelambion.com"
 ];
 
 //the name of the ring
