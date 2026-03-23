@@ -2,3 +2,5 @@
 submittedurls.txt
 guestbookmessages.json
 *.db
+sites.json
+onionring-variables.js
