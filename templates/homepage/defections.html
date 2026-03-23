@@ -18,7 +18,7 @@
         </td>
         <td>
             <div style='display: flex; justify-content: space-between'>
-            <span>{{ event['councillorName']  }}</span><span class='councilSpan'><i>{{ event['council'] | replace('London Borough of','') | replace('Borough','') | replace('County','') | replace('Council','') | replace('Borough', '') | trim }}</i></span>
+            <span>{{ event['councillorName']  }}</span><span class='councilSpan'><i>{{ event['council'] | replace('London Borough of','') | replace('Borough','') | replace('County','') | replace('Council','') | replace('Borough', '') | replace('District', '') | trim }}</i></span>
             </div>
         </td>
         <td>
