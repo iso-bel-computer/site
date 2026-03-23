@@ -12,7 +12,8 @@ var sites = [
     "https://cheng.organic",
     "https://synte.codeberg.page",
     "https://ana.help/",
-    "https://solarpunklondon.neocities.org"
+    "https://solarpunklondon.neocities.org",
+    "https://stephanelambion.com"
 ];
 
 //the name of the ring
