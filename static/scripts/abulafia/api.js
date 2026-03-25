@@ -59,6 +59,7 @@ export class API {
 
         const officerDetails = await response.json()
 
+        console.log(officerDetails)
         return officerDetails
     }
 
