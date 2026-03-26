@@ -810,5 +810,19 @@
     "date": "26-02-21",
     "description": "",
     "contenttype": "Drawing"
+  },
+  {
+    "originalFileName": "drawing.png",
+    "fileName": "26-03-26_Laura---London-Drawing_101043",
+    "originalDir": "/Users/dylanhemmings/Desktop/drawingstaging",
+    "originalPath": "/Users/dylanhemmings/Desktop/drawingstaging/drawing.png",
+    "destinationDir": "/Users/dylanhemmings/05.Site/static/resources/images/art/drawing",
+    "previewFile": "26-03-26_Laura---London-Drawing_101043_PREVIEW.jpg",
+    "thumbnailFile": "26-03-26_Laura---London-Drawing_101043_THUMB.jpg",
+    "mainFile": "26-03-26_Laura---London-Drawing_101043.png",
+    "title": "Laura---London-Drawing",
+    "date": "26-03-26",
+    "description": "",
+    "contenttype": "Drawing"
   }
 ]
