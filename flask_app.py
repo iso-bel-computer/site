@@ -1,11 +1,12 @@
 import os
 from flask import Flask, render_template, jsonify, request, abort, redirect
 import json; from datetime import datetime; import random; from dotenv import load_dotenv
-import requests; from requests.auth import HTTPBasicAuth; from urllib.parse import urlparse
+import requests; from requests.auth import HTTPBasicAuth; from urllib.parse import urlparse, quote
 from flask_cors import CORS
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from defectionfrontend import getDefectionData, getCouncillorsInCouncil
+import feedparser
 
 load_dotenv()
 os.chdir(os.path.dirname(__file__))  # change CWD to where flask_app.py lives
@@ -310,8 +311,13 @@ def councilDefections():
 def getCllrs():
 
     councilName = request.args.get("council", "").strip()
-    return getCouncillorsInCouncil(councilName)
+    return jsonify(getCouncillorsInCouncil(councilName))
 
+@app.route('/api/googlenews')
+def googleNews():
+    query = request.args.get('q')
+    feed = feedparser.parse('https://news.google.com/rss/search?q=' + quote(query))
+    return jsonify(feed)
 
 """
 Poetry

@@ -58,6 +58,20 @@ circle {
     height: auto
 }
 
+#defectionNews a {
+    color: black;
+    text-decoration: none;
+}
+#defectionNews a:hover {
+    color: white;
+    transform: translateX(10px)
+}
+
+#councilMakeup {
+    height: 10px;
+    width: 100%;
+}
+
 /* Party specific colors */
 .dot-labour { fill: #dc3545; color: #dc3545; }
 .dot-conservative { fill: #0087dc; color: #0087dc; }
