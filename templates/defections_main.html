@@ -69,53 +69,91 @@ document.addEventListener('DOMContentLoaded', event => {
     const table = document.getElementById('defectionTable')
     const details = document.getElementById('defectionDetails')
 
+    function displayCouncilMakeup(members) {
+
+        console.log(members)
+        const activeMembers = []
+        members.forEach(member => {
+            if (member.active === 'ACTIVE') {activeMembers.push(member)}
+        })
+
+        partyTotals = {}
+        activeMembers.forEach(member => {
+            if (!partyTotals[member.party]) {partyTotals[member.party] = 1}
+            else {partyTotals[member.party]++}
+        })
+
+        const sortedParties = Object.entries(partyTotals)
+            .sort((a, b) => b[1] - a[1])
+        console.log(sortedParties)
+
+        const totalSeats = activeMembers.length
+        const largestCount = sortedParties[0][1]
+        const hasMajority = largestCount > totalSeats / 2
+    }
+
+
+
+
     table.addEventListener('click', async function (e) {
 
-        const clicked = e.target.closest('.defectionRow');
-        if (!clicked) return
-
-        const found = defectionEvents.find((defection) => parseInt(defection.defectionid) === parseInt(clicked.dataset.id))
-        if (!found) return
-
-        if (found.rawPartyFrom === '') {found.rawPartyFrom = 'None'}
-        if (found.rawPartyTo === '') {found.rawPartyTo = 'None'}
-
-        details.innerHTML = `
-            <div style='display: flex'>
-                <img id='memberImg'>
-                <div style='display: flex; flex-direction: column; justify-content: end; align-items: start; padding-left: 15px'>
-                    <h1>${found.councillorName}</h1>
-                    <h2>${found.council}</h2>
-                    <h3 id='memberTitle'></h3>
-                    <span>
-                        <svg height="9" width="9" xmlns="http://www.w3.org/2000/svg">
-                            <circle r="3.5" cx="4.5" cy="4.5" class="dot-${found.partyFrom.replace(' ', '-')}"/>
-                        </svg>
-                        &nbsp${found.rawPartyFrom}
-                        &nbsp→&nbsp
-                        <svg height="9" width="9" xmlns="http://www.w3.org/2000/svg">
-                            <circle r="3.5" cx="4.5" cy="4.5" class="dot-${found.partyTo.replace(' ', '-')}"/>
-                        </svg>
-                        ${found.rawPartyTo}
-                    </span>
-                </div>
-            </div>
-
-        `
         try {
+            const clicked = e.target.closest('.defectionRow');
+            if (!clicked) return
+
+            const found = defectionEvents.find((defection) => parseInt(defection.defectionid) === parseInt(clicked.dataset.id))
+            if (!found) return
+
+            if (found.rawPartyFrom === '') {found.rawPartyFrom = 'None'}
+            if (found.rawPartyTo === '') {found.rawPartyTo = 'None'}
+
             const response = await fetch(`/api/councillors?council=${encodeURIComponent(found.council)}`)
             if (!response.ok) throw new Error(`HTTP error: ${response.status}`)
             const members = await response.json()  // actually parse the JSON
-            console.log(members)
+            displayCouncilMakeup(members)
 
             const cllrProfile = members.find((member) => found.councillorName === member.councillorName)
-            document.getElementById('memberImg').src = cllrProfile.imageurl
-            document.getElementById('memberTitle').innerText = cllrProfile.title
+            let cllrTitle = cllrProfile?.title
+            if (!cllrTitle || cllrTitle === 'Unknown') {cllrTitle = ''}
+
+            details.innerHTML = `
+                <div style='display: flex; justify-content: space-between; width: 100%'>
+                    <div style='display: flex; flex-direction: column'>
+                        <h1>${found.councillorName}</h1>
+                        <h2>${found.council}</h2>
+                        <h4 id='memberWard'>Ward: ${cllrProfile?.ward || 'Unknown'}</h4>
+                        <h4 id='memberTitle'>${cllrTitle}</h4>
+                        <span>
+                            <svg height="14" width="14" xmlns="http://www.w3.org/2000/svg">
+                                <circle r="6" cx="7" cy="7" class="dot-${found.partyFrom.replace(' ', '-')}"/>
+                            </svg>
+                            &nbsp${found.rawPartyFrom}
+                            &nbsp→&nbsp
+                            <svg height="14" width="14" xmlns="http://www.w3.org/2000/svg">
+                                <circle r="6" cx="7" cy="7" class="dot-${found.partyTo.replace(' ', '-')}"/>
+                            </svg>
+                            ${found.rawPartyTo}
+                        </span>
+                    </div>
+                    <a id='memberLink' href=${cllrProfile.profileurl}>
+                        <img id='memberImg' >
+                    </a>
+                </div>
+                <hr>
+
+            `
+
+            const img = document.getElementById('memberImg')
+            if (cllrProfile.imageurl) {
+                img.src = cllrProfile.imageurl
+                img.onerror = () => { img.style.display = 'none' }
+            }
 
 
         } catch (err) {
             console.error('Failed to fetch councillors:', err)
         }
+
 
 
     })
