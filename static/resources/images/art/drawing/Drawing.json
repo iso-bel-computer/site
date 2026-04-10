@@ -824,5 +824,33 @@
     "date": "26-03-26",
     "description": "",
     "contenttype": "Drawing"
+  },
+  {
+    "originalFileName": "IMG_4143.HEIC",
+    "fileName": "26-04-10_Elena---Twilight-Lates_223713",
+    "originalDir": "/Users/dylanhemmings/Desktop/drawingstaging",
+    "originalPath": "/Users/dylanhemmings/Desktop/drawingstaging/IMG_4143.HEIC",
+    "destinationDir": "/Users/dylanhemmings/05.Site/static/resources/images/art/drawing",
+    "previewFile": "26-04-10_Elena---Twilight-Lates_223713_PREVIEW.jpg",
+    "thumbnailFile": "26-04-10_Elena---Twilight-Lates_223713_THUMB.jpg",
+    "mainFile": "26-04-10_Elena---Twilight-Lates_223713.png",
+    "title": "Elena---Twilight-Lates",
+    "date": "26-04-10",
+    "description": "I came to do watercolours but got sucked back into the tone work. colour next time...",
+    "contenttype": "Drawing"
+  },
+  {
+    "originalFileName": "IMG_4142.HEIC",
+    "fileName": "26-04-10_Elena---Twilight-Lates_223713",
+    "originalDir": "/Users/dylanhemmings/Desktop/drawingstaging",
+    "originalPath": "/Users/dylanhemmings/Desktop/drawingstaging/IMG_4142.HEIC",
+    "destinationDir": "/Users/dylanhemmings/05.Site/static/resources/images/art/drawing",
+    "previewFile": "26-04-10_Elena---Twilight-Lates_223713_PREVIEW.jpg",
+    "thumbnailFile": "26-04-10_Elena---Twilight-Lates_223713_THUMB.jpg",
+    "mainFile": "26-04-10_Elena---Twilight-Lates_223713.png",
+    "title": "Elena---Twilight-Lates",
+    "date": "26-04-10",
+    "description": "I came to do watercolours but got sucked back into the tone work. colour next time...",
+    "contenttype": "Drawing"
   }
 ]
