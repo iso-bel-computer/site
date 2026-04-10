@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/defections_main.css') }}">
+{% endblock %}
+
+
+{% block content %}
+
+<div style='display:flex;'>
+<div id='defectionTableWrapper'>
+<table id='defectionTable'>
+
+
+
+{% for event in defectionEvents %}
+
+    <tr class='defectionRow' data-id='{{ event["defectionid"] }}'>
+        <td>
+            {{ event['prettyDate'] }}
+        </td>
+
+
+        <td>
+
+        </td>
+        <td>
+            <div style='display: flex; justify-content: space-between'>
+                <b>
+                    <span>{{ event['councillorName']  }}</span>
+                </b>
+                <span class='councilSpan'><i>{{ event['council'] | replace('Councillors','') | replace('London Borough of','') | replace('Borough','') | replace('County','') | replace('Council','') | replace('Borough', '') | replace('District', '') | replace(' of ','') | trim }}</i></span>               </b>
+            </div>
+        </td>
+        <td>
+            <svg height="9" width="9" xmlns="http://www.w3.org/2000/svg">
+                <circle r="3.5" cx="4.5" cy="4.5" class="dot-{{ event['partyFrom'] | replace(' ', '-') }}" />
+            </svg>
+        </td>
+        <td>
+            →
+        </td>
+        <td>
+
+            <svg height="9" width="9" xmlns="http://www.w3.org/2000/svg">
+                <circle r="3.5" cx="4.5" cy="4.5" class="dot-{{ event['partyTo'] | replace(' ', '-') }}" />
+            </svg>
+        </td>
+    </tr>
+
+{% endfor %}
+</table>
+    <span id='defectionExplainer' style='font-size: 6pt'></span>
+</div>
+<div id='defectionDetails'>
+<script>
+
+document.addEventListener('DOMContentLoaded', event => {
+
+    // importing exactly what the backend gives us
+    const defectionEvents = [{% for event in defectionEvents %}{{ event|tojson|safe }}{% if not loop.last %},{% endif %}{% endfor %}]
+    // getting the furthest back date we have a record for
+    const lastDate =  {% for event in defectionEvents %}{% if loop.last %}{{ event["prettyDate"]|tojson|safe }};{% endif %}{% endfor %}
+
+
+    console.log(defectionEvents)
+    document.getElementById('defectionExplainer').innerHTML = `<div style='padding: 3px; padding-bottom: 0px'>British local political defections & suspensions since ${lastDate}. </div><div style='padding: 3px; padding-bottom: 0px;padding-top:0px'>~Appx 89% coverage.</div><div style='padding: 3px; padding-top: 0px'><i><a style='color: darkblue'>Explain?</a>&nbsp<a style='color: darkblue'>Data?</a></i></div>`
+
+    const table = document.getElementById('defectionTable')
+    const details = document.getElementById('defectionDetails')
+
+    table.addEventListener('click', async function (e) {
+
+        const clicked = e.target.closest('.defectionRow');
+        if (!clicked) return
+
+        const found = defectionEvents.find((defection) => parseInt(defection.defectionid) === parseInt(clicked.dataset.id))
+        if (!found) return
+
+        if (found.rawPartyFrom === '') {found.rawPartyFrom = 'None'}
+        if (found.rawPartyTo === '') {found.rawPartyTo = 'None'}
+
+        details.innerHTML = `
+            <div style='display: flex'>
+                <img id='memberImg'>
+                <div style='display: flex; flex-direction: column; justify-content: end; align-items: start; padding-left: 15px'>
+                    <h1>${found.councillorName}</h1>
+                    <h2>${found.council}</h2>
+                    <h3 id='memberTitle'></h3>
+                    <span>
+                        <svg height="9" width="9" xmlns="http://www.w3.org/2000/svg">
+                            <circle r="3.5" cx="4.5" cy="4.5" class="dot-${found.partyFrom.replace(' ', '-')}"/>
+                        </svg>
+                        &nbsp${found.rawPartyFrom}
+                        &nbsp→&nbsp
+                        <svg height="9" width="9" xmlns="http://www.w3.org/2000/svg">
+                            <circle r="3.5" cx="4.5" cy="4.5" class="dot-${found.partyTo.replace(' ', '-')}"/>
+                        </svg>
+                        ${found.rawPartyTo}
+                    </span>
+                </div>
+            </div>
+
+        `
+        try {
+            const response = await fetch(`/api/councillors?council=${encodeURIComponent(found.council)}`)
+            if (!response.ok) throw new Error(`HTTP error: ${response.status}`)
+            const members = await response.json()  // actually parse the JSON
+            console.log(members)
+
+            const cllrProfile = members.find((member) => found.councillorName === member.councillorName)
+            document.getElementById('memberImg').src = cllrProfile.imageurl
+            document.getElementById('memberTitle').innerText = cllrProfile.title
+
+
+        } catch (err) {
+            console.error('Failed to fetch councillors:', err)
+        }
+
+
+    })
+
+    function getNetMovement(partyName) {
+        return defectionEvents.reduce((num, event) => {
+            if (event.partyTo === partyName) return num + 1;
+            if (event.partyFrom === partyName) return num - 1;
+            return num;
+        }, 0)
+    }
+
+    let partyTotals = {
+
+        "labour": getNetMovement('labour'),
+        "libdem": getNetMovement('liberal democrats'),
+        "green": getNetMovement('green'),
+        "tory": getNetMovement('conservative'),
+        "reform": getNetMovement('reform'),
+    }
+
+ })
+</script>
+</div>
+
+{% endblock %}

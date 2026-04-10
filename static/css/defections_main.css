@@ -1,0 +1,67 @@
+h1, h2, h3 {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+section {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#defectionTableWrapper {
+    max-height: 90vh;
+    overflow: scroll;
+    border-right: 1px dotted black;
+    padding: 10px
+
+ }
+#defectionTable {
+    border-collapse: collapse;
+
+}
+
+#defectionTable tr {
+    cursor: pointer
+
+ }
+#defectionTable tr:hover {
+    background-color: #00000020
+
+ }
+#defectionTable td {
+    font-size: 8pt;
+    padding: 5px
+
+ }
+ /* General style for all dots */
+circle {
+    stroke: rgba(0,0,0,0.8);
+    stroke-width: 1;
+    fill: #dcdcdc
+}
+
+.councilSpan {
+    margin-left: 8px
+ }
+
+#defectionDetails {
+    padding: 10px
+
+}
+img {
+    border: 1px solid black;
+    max-width: 80px;
+    min-width: 80px;
+    min-height: 50px;
+    height: auto
+}
+
+/* Party specific colors */
+.dot-labour { fill: #dc3545; color: #dc3545; }
+.dot-conservative { fill: #0087dc; color: #0087dc; }
+.dot-liberal-democrats { fill: #faa61a; color: #faa61a;  }
+.dot-reform { fill: #12b6cf;color: #12b6cf; }
+.dot-green { fill: #6ab023;color: #6ab023; }
+.dot-snp { fill: #FDF38E;color: #FDF38E;  }
+.dot-ukip { fill: #70147A;color: #70147A;  }
+.dot-restore-britain { fill: #0b1c3d;color: #0b1c3d; }

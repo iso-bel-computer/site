@@ -5,7 +5,7 @@ import requests; from requests.auth import HTTPBasicAuth; from urllib.parse impo
 from flask_cors import CORS
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-from defectionfrontend import getDefectionData
+from defectionfrontend import getDefectionData, getCouncillorsInCouncil
 
 load_dotenv()
 os.chdir(os.path.dirname(__file__))  # change CWD to where flask_app.py lives
@@ -20,6 +20,7 @@ limiter = Limiter(
 CORS(app, resources={r"/static/webring/*": {"origins": "*"}})
 siteMap = [
     '', # not an empty string!!! this is the home route!!! dont remove u idiot!!
+    '/projects/councildefections'
     '/projects/YWABM - UNDER CONSTRUCTION',
     '/projects/isoante - UNDER CONSTRUCTION',
     '/projects/paranoid - UNDER CONSTRUCTION',
@@ -292,6 +293,24 @@ def art(category):
         artData=artData,
         headerRoute=category
     )
+
+
+"""
+Defection Main Page
+"""
+@app.route('/projects/councildefections')
+def councilDefections():
+    defectionEvents = getDefectionData()
+    return render_template('defections_main.html',
+                            siteMap = siteMap,
+                            headerRouteDisplay = '/projects/councildefections',
+                            defectionEvents = defectionEvents)
+
+@app.route('/api/councillors')
+def getCllrs():
+
+    councilName = request.args.get("council", "").strip()
+    return getCouncillorsInCouncil(councilName)
 
 
 """
