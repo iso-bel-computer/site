@@ -16,14 +16,6 @@
 
     <tr class='defectionRow' data-id='{{ event["defectionid"] }}'>
         <td>
-            {{ event['prettyDate'] }}
-        </td>
-
-
-        <td>
-
-        </td>
-        <td>
             <div style='display: flex; justify-content: space-between'>
                 <b>
                     <span>{{ event['councillorName']  }}</span>
@@ -44,6 +36,9 @@
             <svg height="9" width="9" xmlns="http://www.w3.org/2000/svg">
                 <circle r="3.5" cx="4.5" cy="4.5" class="dot-{{ event['partyTo'] | replace(' ', '-') }}" />
             </svg>
+        </td>
+        <td>
+            {{ event['prettyDate'] }}
         </td>
     </tr>
 
@@ -169,9 +164,9 @@ document.addEventListener('DOMContentLoaded', event => {
         entries.slice(0,5).forEach(story => {
             const row = document.createElement('tr')
             const published = new Date(story.published)
-            const publishedStr = `${published.getDate()}-${published.getMonth() + 1}-${published.getFullYear()}`
+            const publishedStr = `${published.getDate()}/${published.getMonth() + 1}/${published.getFullYear()}`
             row.innerHTML = `
-            <td style='min-width: 100px'>${publishedStr}</td><td><a href='${story.link}' target="_blank">${story.title}</a></td>`
+            <td class='date'>${publishedStr}</td><td class='story'><a href='${story.link}' target="_blank">${story.title}</a></td>`
             table.appendChild(row)
         })
         return table
@@ -203,7 +198,6 @@ document.addEventListener('DOMContentLoaded', event => {
                 <div style='display: flex; justify-content: space-between; width: 100%'>
                     <div style='display: flex; flex-direction: column'>
                         <h1>${found.councillorName}</h1>
-                        <h2>${found.council}</h2>
                         <h4 id='memberWard'>Ward: ${cllrProfile?.ward || 'Unknown'}</h4>
                         <h4 id='memberTitle'>${cllrTitle}</h4>
                         <span>
@@ -223,6 +217,7 @@ document.addEventListener('DOMContentLoaded', event => {
                     </a>
                 </div>
                 <hr>
+                <h4>${found.council}</h4>
                 <canvas id='councilMakeup'></canvas>
                 <hr>
                 <div id='defectionNews'>Loading news...</div>

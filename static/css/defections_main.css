@@ -58,13 +58,33 @@ circle {
     height: auto
 }
 
+#defectionNews table {
+    border-collapse: collapse
+}
 #defectionNews a {
     color: black;
     text-decoration: none;
 }
 #defectionNews a:hover {
-    color: white;
+    color: #111111;
     transform: translateX(10px)
+}
+
+#defectionNews td {
+    vertical-align: top;
+    padding: 5px;
+    width: fit-content;
+}
+
+#defectionNews .date {
+    padding-right: 10px;
+    border-right: 1px dotted black
+}
+#defectionNews .story {
+    padding-left: 10px;
+}
+#defectionNews .story:hover {
+    background-color: #00000010
 }
 
 #councilMakeup {

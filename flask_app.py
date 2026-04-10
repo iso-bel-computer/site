@@ -328,7 +328,7 @@ Poetry
 def poetry():
     return render_template('poetry.html',
                            siteMap = siteMap,
-                           headerRouteDisplay = '/htmlworkshop')
+                           headerRouteDisplay = '/poetry')
 
 """
 Permacomputing Webring
@@ -381,6 +381,10 @@ HTML Workshop
 
 
 @app.route('/htmlworkshop')
+def workshopredirect():
+    return redirect("/projects/htmlworkshop", code=302)
+
+@app.route('/projects/htmlworkshop')
 def htmlworkshop():
     return render_template('htmlworkshop.html',
                            siteMap = siteMap,
