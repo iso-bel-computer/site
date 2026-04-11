@@ -1,5 +1,31 @@
 [
     {
+        "title": "TRANSMISSIONS",
+        "pages": 256,
+        "author": "Robida",
+        "isbn": "",
+        "isbn13": "",
+        "readDate": "2026/04/11",
+        "coverColours": [],
+        "mainColor": "#275cd8",
+        "accentColor": "#13233c",
+        "fontStyle": "ss",
+        "review": ""
+    },
+    {
+        "title": "Transit",
+        "pages": 260,
+        "author": "Rachel Cusk",
+        "isbn": "057134674X",
+        "isbn13": "9780571346745",
+        "readDate": "2026/04/09",
+        "coverColours": [],
+        "mainColor": "#fffff6",
+        "accentColor": "#161614",
+        "fontStyle": "ss",
+        "review": ""
+    },
+    {
         "title": "The Trial",
         "pages": 220,
         "author": "Franz Kafka",

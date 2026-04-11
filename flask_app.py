@@ -21,7 +21,7 @@ limiter = Limiter(
 CORS(app, resources={r"/static/webring/*": {"origins": "*"}})
 siteMap = [
     '', # not an empty string!!! this is the home route!!! dont remove u idiot!!
-    '/projects/councildefections'
+    '/research/councildefections'
     '/projects/YWABM - UNDER CONSTRUCTION',
     '/projects/isoante - UNDER CONSTRUCTION',
     '/projects/paranoid - UNDER CONSTRUCTION',
@@ -299,7 +299,7 @@ def art(category):
 """
 Defection Main Page
 """
-@app.route('/projects/councildefections')
+@app.route('/research/councildefections')
 def councilDefections():
     defectionEvents = getDefectionData()
     return render_template('defections_main.html',
