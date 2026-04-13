@@ -392,6 +392,9 @@ def htmlworkshop():
 @app.route('/demo')
 def demo():
     return render_template('demo.html')
+@app.route('/democalendar')
+def democalendar():
+    return render_template('demo_calendar.html')
 
 
 """

@@ -1,0 +1,518 @@
+
+        <table id='calendar' class='noselect'>
+        </table>
+        <script>
+
+
+        function mobileCheck()
+            {
+                let check = false;
+                (function(a){if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0,4))) check = true;})(navigator.userAgent||navigator.vendor||window.opera);
+                return check;
+            };
+
+        {% assign eventsJson = site.data.calendar | jsonify %}
+        const events = {{ eventsJson }};
+        const eventsByDate = {}
+        events.forEach(event => {eventsByDate[event.date] = event})
+        const now = new Date()
+
+        function showPerformances() {
+
+             const performanceDiv = document.querySelector('#performanceContent')
+             const upcoming = document.createElement('div')
+             upcoming.innerHTML = '<h4>[ SOON ]</h4>'
+             const archive = document.createElement('div')
+             archive.innerHTML = '<h4>[ PAST ]</h4>'
+
+             let upcomingEvents = 0
+             let pastEvents = 0
+
+             events.forEach(event => {
+
+                 if (event.type === 'performances') {
+                    const eventListing = document.createElement('span')
+                    const eventDate = new Date(event.date)
+
+                    let href = ''
+                    if (event.url != null) {href = `<a target='_blank' href='${event.url}'>`}
+
+                    eventListing.innerHTML = `
+                        ${eventDate.getDate()}/${eventDate.getMonth() + 1}/${eventDate.getFullYear()}
+                        - ${event.time} - ${href}${event.name}</a><br>${event.description}<br><br>`
+
+                    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+                    const eventPassed = today.getTime() > eventDate.getTime() ? true : false
+
+                    if (eventPassed) {
+                        eventListing.classList.add('pastEvents')
+                        archive.appendChild(eventListing)
+                        pastEvents++
+                    }
+                    else {upcoming.appendChild(eventListing); upcomingEvents++}
+
+
+                 }
+
+
+
+             })
+
+             if (!upcomingEvents) {upcoming.innerHTML += '<p>...</p>'}
+             if (!pastEvents) {archive.innerHTML += '<p>...</p>'}
+
+             performanceDiv.appendChild(upcoming)
+             performanceDiv.appendChild(archive)
+         }
+
+        window.addEventListener("load", (event) => {
+            showPerformances()
+        });
+
+        function mainCalendar() {
+                const table = document.getElementById('calendar')
+                const STATE = {
+                    'monthArray': [],
+                    'displayDate': now,
+                    'firstOfMonth': new Date(now.getFullYear(), now.getMonth(), 1),
+                    'displayRandomly': false,
+                }
+
+                // Randomize array in-place using Durstenfeld shuffle algorithm
+                // ty stackoverflow person from 2012
+                function shuffleArray(array) {
+                    for (var i = array.length - 1; i > 0; i--) {
+                        var j = Math.floor(Math.random() * (i + 1));
+                        var temp = array[i];
+                        array[i] = array[j];
+                        array[j] = temp;
+                    }
+                    return array
+                }
+
+                function constructMonthArray() {
+
+                    // ok so the aim here is to get an array with each cell we need.
+                    // inc event details for days, and blank cells for before the start and after the end of each month
+                    monthArray = []
+
+                    function getDaysInMonth() {
+                        return new Date(STATE.displayDate.getFullYear(), STATE.displayDate.getMonth() + 1, 0).getDate();
+                    }
+
+                    // this gets the number of blank cells we need before the 1st of the month
+                    function getOffset() {
+                        let firstOfMonth = new Date(STATE.displayDate.getFullYear(), STATE.displayDate.getMonth(), 1);
+                        return (firstOfMonth.getDay() + 6) % 7
+                    }
+
+                    for (let i = 0; i < getOffset(); i++) {
+                        monthArray.push('blankCell')
+                    }
+
+
+                    // this adds the actual days in the month
+                    for (let i = 1; i < (getDaysInMonth() + 1); i++) {
+                        const d = new Date(STATE.displayDate.getFullYear(), STATE.displayDate.getMonth(), i)
+                        const key = `${STATE.displayDate.getFullYear()}-${String(STATE.displayDate.getMonth() + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`
+                        monthArray.push({
+                            date: d,
+                            event: eventsByDate[key] || {}
+                        })
+                        if (i === 1) {STATE.firstOfMonth = d}
+                    }
+
+                    // this adds the blank cells after the month
+                    let lastOfMonth = new Date(STATE.displayDate.getFullYear(), STATE.displayDate.getMonth(), getDaysInMonth())
+                    let trailingDays = (7 - ((lastOfMonth.getDay() + 6) % 7) - 1) % 7
+
+                    for (let day = 0; day < trailingDays; day++) {
+                        monthArray.push(`blankCell`)
+                    }
+
+                    if (STATE.displayRandomly) {
+                        monthArray = shuffleArray(monthArray)
+                    }
+
+                    STATE.monthArray = monthArray
+                }
+
+
+                function displayEvent(event) {
+                    const cells = table.querySelectorAll('td')
+                    const words = (event.name + ' ' + event.description).split(' ');
+                    const eventDate = new Date(event.date)
+                    let i = 0
+
+                    cells.forEach((cell) => {
+                        const cellDate = new Date(cell.dataset.date)
+
+                        if (cellDate.getDate() === eventDate.getDate()) {
+
+
+                            cell.innerHTML = event.time
+
+                            if (event?.url) {cell.innerText += ' ⎘'}
+
+
+                        }
+
+                        else if (cell.innerText != '~' && event.cancelled.toLowerCase() != 'true' || STATE.displayRandomly) {
+
+
+                                if (i < words.length) {
+
+                                    cell.innerText = words[i]
+                                    cell.classList.add('eventText')
+                                } else {
+
+                                    cell.innerText = '~'
+                                    cell.classList.add('eventTextBlank')
+                                }
+
+                                if (cell.dataset.defaultText === ':)') {
+                                    cell.innerText = ':o'
+                                }
+
+
+
+                            i++
+                        }
+                        if (event.cancelled.toLowerCase() === 'true') {
+
+                            if (cell.dataset.defaultText === ':)') {
+
+                                cell.innerText = ':('
+                            } else {
+
+                                cell.innerText = 'CANCELLED'
+                                cell.classList.add('cancelledEvent')
+                            }
+
+
+                        }
+
+
+                    })
+
+                }
+                function unDisplayEvent() {
+
+                    const cells = table.querySelectorAll('td')
+                    cells.forEach(cell => {
+                        cell.innerText = cell.dataset.defaultText
+                        cell.classList.remove('eventText')
+                        cell.classList.remove('eventTextBlank')
+                        cell.classList.remove('cancelledEvent')
+                    })
+
+
+                }
+
+            function buildTableDOM() {
+                    const fragment = document.createDocumentFragment()
+                    let row = document.createElement('tr')
+                    let i = 1
+                    STATE.monthArray.forEach(day => {
+
+                        const cell = document.createElement('td')
+
+                        if (day?.date) {
+                            cell.innerText = day.date.getDate() + '.' + (day.date.getMonth() + 1)
+                            const date = new Date(day.date)
+                            cell.dataset.date = date.toISOString()
+                            if (date.getDate() === now.getDate() && date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear()) {
+                                cell.innerHTML = 'today'
+                                cell.classList.add('todayCell')
+                            }
+                        } else {
+                            if (i === monthArray.length) {cell.innerText = ':)'}
+                            else {cell.innerText = '~'}
+                        }
+
+                        if (day?.event && Object.keys(day.event).length > 0) {
+
+                            const eventCancelled = day.event.cancelled.toLowerCase() === 'true' ? true : false
+
+                            if (eventCancelled) {cell.classList.add('cancelled')}
+                            else {cell.classList.add(day.event.type)}
+
+                            if (mobileCheck()) {
+                                cell.addEventListener('touchstart', () => {
+                                    if (day?.event) {
+                                        displayEvent(day.event)
+                                    }
+                                })
+
+                                cell.addEventListener('touchend', () => {
+                                    unDisplayEvent()
+                                })
+
+                                cell.addEventListener('mousedown', () => {
+                                    if (day?.event.url != null) {
+                                        window.location.href = day.event.url
+                                    }
+                                } )
+
+
+                            } else {
+
+                                cell.addEventListener('mouseover', () => {displayEvent(day.event)})
+                                cell.addEventListener('mouseout', () => {unDisplayEvent()})
+                                if (day?.event.url != null) {
+                                    cell.addEventListener('click',  () => {window.location.href = day.event.url})
+                                }
+
+                            }
+
+                        }
+
+                        row.appendChild(cell)
+                        if (i % 7 === 0) {
+                            fragment.appendChild(row)
+                            row = document.createElement('tr')
+                        }
+
+                        cell.dataset.defaultText = cell.innerText
+
+
+                        i++
+
+                    })
+
+                    if (row.children.length > 0) {
+                        fragment.appendChild(row)
+                    }
+
+                    const monthCell = table.querySelector('#month')
+                    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                    monthCell.innerText = months[STATE.firstOfMonth.getMonth()] + ' ' + String(STATE.firstOfMonth.getFullYear()).slice(2)
+
+
+
+                    table.appendChild(fragment)
+                }
+
+
+                function addMonthButtons() {
+                    const forwardButton = table.querySelector('#monthForwards')
+                    const resetButton = table.querySelector('#month')
+                    const backwardButton = table.querySelector('#monthBackwards')
+                    const randomButton = table.querySelector('#randomise')
+                    const subscribeButton = table.querySelector('#subscribe')
+                    const dayOfWeekIndicator = table.querySelector('#dayofweekindicator')
+
+                    forwardButton.addEventListener('click', function() {
+                        STATE.displayDate = new Date(STATE.displayDate.getFullYear(), STATE.displayDate.getMonth() + 1, 1)
+                        refreshUI()
+                    })
+
+                    resetButton.addEventListener('click', function() {
+                        STATE.displayDate = new Date()
+                        refreshUI()
+                    })
+
+                    backwardButton.addEventListener('click', function() {
+                        STATE.displayDate = new Date(STATE.displayDate.getFullYear(), STATE.displayDate.getMonth() - 1, 1)
+                        refreshUI()
+                    })
+                    randomButton.addEventListener('click', function() {
+                        STATE.displayRandomly = !STATE.displayRandomly
+                        refreshUI()
+                    })
+                    subscribeButton.addEventListener('click', function() {
+                        window.location.href = "webcal://https://lclo.otherkat.com/calendar.ics"
+                    })
+
+
+                    if (STATE.displayRandomly) {
+                        randomButton.classList.add('active')
+                        dayOfWeekIndicator.innerText = '???'
+                    } else {
+                        randomButton.classList.remove('active')
+                        dayOfWeekIndicator.innerText = 'Mon'
+                    }
+
+
+                }
+
+                function refreshUI() {
+                    table.innerHTML = `
+                            <tr>
+                                <th id='dayofweekindicator'>mon</th>
+                                <th></th>
+                                <th id='subscribe' class='button'>
+                                    <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M3 9H21M12 18V12M15 15.001L9 15M7 3V5M17 3V5M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="white" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </th>
+                                <th id='monthBackwards' class='button'>↩</th>
+                                <th id='month' class='button'></th>
+                                <th id='monthForwards' class='button'>↪</th>
+                                <th id='randomise' class='button'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-shuffle" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M0 3.5A.5.5 0 0 1 .5 3H1c2.202 0 3.827 1.24 4.874 2.418.49.552.865 1.102 1.126 1.532.26-.43.636-.98 1.126-1.532C9.173 4.24 10.798 3 13 3v1c-1.798 0-3.173 1.01-4.126 2.082A9.6 9.6 0 0 0 7.556 8a9.6 9.6 0 0 0 1.317 1.918C9.828 10.99 11.204 12 13 12v1c-2.202 0-3.827-1.24-4.874-2.418A10.6 10.6 0 0 1 7 9.05c-.26.43-.636.98-1.126 1.532C4.827 11.76 3.202 13 1 13H.5a.5.5 0 0 1 0-1H1c1.798 0 3.173-1.01 4.126-2.082A9.6 9.6 0 0 0 6.444 8a9.6 9.6 0 0 0-1.317-1.918C4.172 5.01 2.796 4 1 4H.5a.5.5 0 0 1-.5-.5"/>
+                                    <path d="M13 5.466V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192m0 9v-3.932a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192"/>
+                                    </svg>
+                                </th>
+                            </tr>
+                    `
+                    constructMonthArray()
+                    buildTableDOM()
+                    addMonthButtons()
+                }
+
+                refreshUI()
+         }
+         mainCalendar()
+
+
+
+
+
+
+        </script>
+    <style>
+
+     table svg {
+         max-width: 25px;
+         max-height: 25px;
+     }
+    th#subscribe th#randomise {
+        display: flex;
+        justify-content:right;
+        align-items: center;
+        height: 25px;
+    }
+    table {
+
+        font-family: 'Courier New';
+        margin-bottom: 60px;
+        border-collapse: collapse;
+        cursor: none;
+        border: 2px solid rgb(45,45,45);
+        width: 70%;
+
+     }
+    td, th {
+        vertical-align: center;
+        border: 2px hidden transparent;
+        font-size: 16pt;
+        background-color: rgb(27,27,27);
+        text-align: right;
+        min-width: 115px;
+        color: white;
+        padding: 5px;
+        padding-top: 30px;
+        padding-right: 8px;
+        color: rgb(215,215,216) ;
+     }
+
+     th {
+
+        background-color: rgb(45,45,45);
+     }
+
+
+    td.rehersals, th.rehersals {
+        background-color: rgb(189,214,172);
+        color: black !important;
+     }
+    td.performances, th.performances {
+
+        background-color: rgb(244,218,107);
+        color: black !important;
+     }
+     td.rehersals:hover, th.rehersals:hover {
+
+        background-color: rgb(159, 215, 121) !important;
+     }
+     td.performances:hover, th.performances:hover {
+
+        background-color: rgb(249, 188, 6) !important;
+     }
+
+     th.active {
+         background-color: rgb(230,230,230);
+         color: black
+     }
+
+
+
+     th.button:hover {
+         background-color: rgb(230,230,230) !important;
+         color: black !important
+
+     }
+     td.eventText {
+        background-color: rgb(250,250,250) !important;
+        color: rgb(27,27,27) !important;
+        font-weight: normal !important;
+     }
+     td.eventTextBlank {
+        background-color: rgb(27,27,27) !important;
+        color: white !important;
+     }
+
+     td.cancelled {
+
+        background-color: rgb(194, 120, 97);
+     }
+
+     td.cancelledEvent {
+
+        background-color: rgb(194, 120, 97) !important;
+        color: white !important;
+     }
+
+     td.todayCell {
+         font-weight: bold
+     }
+
+     .pastEvents {
+         opacity: 0.8;
+         text-decoration: line-through;
+         filter: saturate(50%)
+     }
+
+    .noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+        -webkit-user-select: none; /* Safari */
+        -khtml-user-select: none; /* Konqueror HTML */
+        -moz-user-select: none; /* Old versions of Firefox */
+            -ms-user-select: none; /* Internet Explorer/Edge */
+                user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+    }
+
+
+
+    @media (max-width: 768px) {
+
+        td, th {
+            height: 50px;
+            font-size: 0.3em;
+            padding: 0px;
+            padding-right: 3px;
+            padding-top: 0px;
+            min-width: 13vw;
+
+        }
+
+        table {
+            width: 100%
+        }
+
+    }
+
+     @media (min-width: 768px) {
+
+        td:hover, th:hover  {
+            background-color: rgb(150,150,150) ;
+            font-weight: bold;
+        }
+     }
+
+    </style>
+
+</body>
