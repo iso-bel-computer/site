@@ -9,6 +9,37 @@
 
 <div style='display:flex;'>
 <div id='defectionTableWrapper' class='toplevelelement'>
+    <div style='display: flex; justify-content: space-between'>
+        <label for="defectionsFrom"><b>Defections from:</b></label>
+        <select name="defectionsFrom" id="defectionsFrom">
+            <option value="">---</option>
+            <option value="labour">Labour</option>
+            <option value="conservative">Conservative</option>
+            <option value="liberal democrats">Lib Dem</option>
+            <option value="green">Green</option>
+            <option value="reform">Reform</option>
+            <option value="independent">Independent</option>
+            <option value="plaid cymru">Plaid Cymru</option>
+            <option value="snp">SNP</option>
+            <option value="restore britain">Restore Britain</option>
+        </select>
+    </div>
+    <div style='display: flex; justify-content: space-between; margin-top: 5px;'>
+        <label for="defectionsTo"><b>Defections to:</b></label>
+        <select name="defectionsTo" id="defectionsTo">
+            <option value="">---</option>
+            <option value="labour">Labour</option>
+            <option value="conservative">Conservative</option>
+            <option value="liberal democrats">Lib Dem</option>
+            <option value="green">Green</option>
+            <option value="reform">Reform</option>
+            <option value="independent">Independent</option>
+            <option value="plaid cymru">Plaid Cymru</option>
+            <option value="snp">SNP</option>
+            <option value="restore britain">Restore Britain</option>
+        </select>
+    </div>
+    <hr>
 <table id='defectionTable'>
 
 
@@ -59,7 +90,7 @@ document.addEventListener('DOMContentLoaded', event => {
     const lastDate =  {% for event in defectionEvents %}{% if loop.last %}{{ event["prettyDate"]|tojson|safe }};{% endif %}{% endfor %}
 
 
-    document.getElementById('defectionExplainer').innerHTML = `<div style='padding: 3px; padding-bottom: 0px'>British local political defections & suspensions since ${lastDate}. </div><div style='padding: 3px; padding-bottom: 0px;padding-top:0px'>~Appx 89% coverage.</div><div style='padding: 3px; padding-top: 0px'><i><a style='color: darkblue'>Explain?</a>&nbsp<a style='color: darkblue'>Data?</a></i></div>`
+    document.getElementById('defectionExplainer').innerHTML = `<hr><div style='padding: 3px; padding-bottom: 0px'>British local political defections & suspensions since ${lastDate}. </div><div style='padding: 3px; padding-bottom: 0px;padding-top:0px'>~Appx 89% coverage.</div><div style='padding: 3px; padding-top: 0px'></div>`
 
     const table = document.getElementById('defectionTable')
     const details = document.getElementById('defectionDetails')
@@ -101,6 +132,7 @@ document.addEventListener('DOMContentLoaded', event => {
             if (!partyTotals[member.party]) {partyTotals[member.party] = 1}
             else {partyTotals[member.party]++}
         })
+
 
         const sortedParties = Object.entries(partyTotals)
             .sort((a, b) => b[1] - a[1])
@@ -205,6 +237,7 @@ document.addEventListener('DOMContentLoaded', event => {
             if (!response.ok) throw new Error(`HTTP error: ${response.status}`)
             const members = await response.json()  // actually parse the JSON
 
+            console.log(members)
             const cllrProfile = members.find((member) => found.councillorName === member.councillorName)
             let cllrTitle = cllrProfile?.title
             if (!cllrTitle || cllrTitle === 'Unknown') {cllrTitle = ''}
@@ -286,6 +319,28 @@ document.addEventListener('DOMContentLoaded', event => {
         "reform": getNetMovement('reform'),
     }
 
+     /// party filters
+    const fromSelect = document.getElementById('defectionsFrom');
+    const toSelect = document.getElementById('defectionsTo');
+
+    function filterTable() {
+        const fromVal = fromSelect.value;
+        const toVal = toSelect.value;
+
+        document.querySelectorAll('.defectionRow').forEach(row => {
+            const event = defectionEvents.find(e => parseInt(e.defectionid) === parseInt(row.dataset.id));
+            if (!event) return;
+
+            const matchFrom = !fromVal || event.partyFrom === fromVal;
+            const matchTo = !toVal || event.partyTo === toVal;
+
+            // Show row only if it matches both filters
+            row.style.display = (matchFrom && matchTo) ? '' : 'none';
+        });
+    }
+
+    fromSelect.addEventListener('change', filterTable);
+    toSelect.addEventListener('change', filterTable);
  })
 </script>
 

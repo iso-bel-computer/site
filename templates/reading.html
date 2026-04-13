@@ -60,7 +60,7 @@
     data-fonttype='{{ book["fontStyle"] }}'>
     <span class="bookTitle" style='padding-top: {{ book["randomNumbers"]["paddingTop"] }};'>{{ book['title'] }}</span>
 
-    <span class="bookAuthor" style='padding-bottom: {{ book["randomNumbers"]["paddingBototm"] }}>{{ book['author'] }}</span>
+    <span class="bookAuthor" style='padding-bottom: {{ book["randomNumbers"]["paddingBototm"] }}>{{ book["author"] }}'</span>
     </div>
     {% endfor %}
     <p id="mapquote">the map is not the territory...</p>
@@ -201,7 +201,7 @@ function addShelves() {
     const finalShelf = document.createElement('div');
     finalShelf.className = 'shelf';
     const mapQuote = document.getElementById('mapquote')
-    mapQuote.parentNode.insertBefore(finalShelf, mapQuote)
+    wrapper.insertAdjacentHTML('beforeend', finalShelf)
 
 }
 

@@ -1,20 +1,11 @@
 main {
-    font-family: 'Helvetica'
+    font-family: 'Helvetica';
+    border-bottom: 1px dotted black
 }
 
 .toplevelelement {
-    background-color: #00000005;
-    opacity: 90%
-}
-.toplevelelement:hover {
-    background-color: #00000000;
-    opacity: 100%
 }
 
-#thirdelement {
-    width: 35vw;
-    height: 100vh
-}
 
 h1, h2, h3, h4 {
     margin-top: 2px;
@@ -27,14 +18,16 @@ section {
 }
 
 #defectionTableWrapper {
+    width: fit-content;
     max-height: 90vh;
     overflow: scroll;
     border-right: 1px dotted black;
-    padding: 8px;
+    padding: 12px;
 
  }
 #defectionTable {
     border-collapse: collapse;
+    min-width: 25vw
 
 }
 

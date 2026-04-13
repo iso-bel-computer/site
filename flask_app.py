@@ -21,7 +21,7 @@ limiter = Limiter(
 CORS(app, resources={r"/static/webring/*": {"origins": "*"}})
 siteMap = [
     '', # not an empty string!!! this is the home route!!! dont remove u idiot!!
-    '/research/councildefections'
+    '/research/councildefections',
     '/projects/YWABM - UNDER CONSTRUCTION',
     '/projects/isoante - UNDER CONSTRUCTION',
     '/projects/paranoid - UNDER CONSTRUCTION',
@@ -304,7 +304,7 @@ def councilDefections():
     defectionEvents = getDefectionData()
     return render_template('defections_main.html',
                             siteMap = siteMap,
-                            headerRouteDisplay = '/projects/councildefections',
+                            headerRouteDisplay = '/research/councildefections',
                             defectionEvents = defectionEvents)
 
 @app.route('/api/councillors')
