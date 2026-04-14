@@ -140,7 +140,7 @@
                                 day.events.forEach(event => {
                                     const eventDiv = document.createElement('div')
                                     let eventTitle = event.text
-                                    const eventTrimLength = 30
+                                    const eventTrimLength = 28
                                     // trim long titles
                                     if (eventTitle.length > eventTrimLength) {eventTitle = eventTitle.substring(0,eventTrimLength) + ' [...]'}
                                     eventDiv.innerHTML += `<div>${eventTitle}</div>`
@@ -222,9 +222,9 @@
                                 <th></th>
                                 <th></th>
                                 <th></th>
-                                <th id='monthBackwards' class='button'>↩</th>
+                                <th id='monthBackwards' class='button'>←</th>
                                 <th id='month' class='button'></th>
-                                <th id='monthForwards' class='button'>↪</th>
+                                <th id='monthForwards' class='button'>→</th>
                             </tr>
 
                     `
@@ -262,7 +262,7 @@
 
      }
     td, th {
-        font-size: 8pt;
+        font-size: 7pt;
         text-align: right;
         vertical-align: top;
         border: 1px dotted #22222211;
@@ -286,16 +286,16 @@
      }
 
      .cellContent {
-        width: 100px;
-        height: 40px;
+        width: 85px;
+        height: 30px;
         overflow: scroll;
          display: flex;
          justify-content: space-between;
      }
 
      .cellContent img {
-         max-width: 25px;
-         height: 25px;
+         max-width: 18px;
+         height: 18px;
          filter: brightness(70%);
          margin-left: 3px;
          margin-top: 3px;
