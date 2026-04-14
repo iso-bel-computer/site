@@ -94,5 +94,11 @@
         "headertext": "quote.txt",
         "template": "quote.html",
         "classname": "quote"
+    },
+    {
+        "icon": "quote.png",
+        "headertext": "crashout.8601",
+        "template": "crashout.html",
+        "classname": "crashout"
     }
 ]

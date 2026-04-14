@@ -13,6 +13,7 @@
     </head>
     <body>
 
+        <h3>PermaCalendar</h3>
         <div style='display: flex'>
             <table id='calendar' class='noselect'>
             </table>
@@ -265,8 +266,12 @@
         font-size: 7pt;
         text-align: right;
         vertical-align: top;
-        border: 1px dotted #22222211;
         padding: 3px;
+     }
+
+     td {
+
+        border: 1px dotted #22222211;
      }
 
      td:hover {
@@ -274,15 +279,15 @@
 
      }
 
+     .button:hover {
+
+        background-color: rgba(58,126,93,0.5);
+     }
 
      th {
 
-        background-color: green;
+        background-color: rgb(58,126,93);
         color: white;
-     }
-     th:hover {
-         border: 1px solid green
-
      }
 
      .cellContent {
@@ -324,12 +329,12 @@
 
 
      td.todayCell {
-         border: 1px solid green;
+         border: 1px solid rgb(58,126,93);
          background-color:  #00000000 !important;
      }
 
      td.weekendCell {
-         background-color:  #00ff2a07;
+         background-color:  rgba(58,126,93,0.05);
 
      }
 

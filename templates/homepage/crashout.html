@@ -1,0 +1,15 @@
+<div id='timesincecrashout'></div>
+<script>
+const div = document.getElementById('timesincecrashout')
+const lastCrashout = new Date(2026, 3, 13, 23, 20)
+
+
+setInterval(function() {
+    const now = new Date()
+    div.innerHTML = `It has been <strong>${Math.trunc((now.getTime() - lastCrashout.getTime()) / 1000)}</strong> seconds<br>since our last crashout.`
+
+ }, 1000)
+
+
+
+</script>
