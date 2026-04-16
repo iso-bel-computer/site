@@ -12,13 +12,181 @@
 
     </head>
     <body>
-
         <h3>PermaCalendar</h3>
         <div style='display: flex'>
-            <table id='calendar' class='noselect'>
+            <table id='calendar' >
             </table>
             <div id='eventDisplay'></div>
         </div>
+
+    <style>
+
+     table svg {
+         max-width: 25px;
+         max-height: 25px;
+     }
+    th#subscribe th#randomise {
+        display: flex;
+        justify-content:right;
+        align-items: center;
+    }
+    table {
+
+        border-collapse: collapse;
+        border: 1px solid black;
+        /* font-family: Ubuntu,"Trebuchet MS","Droid Sans","Liberation Sans",sans-serif */
+
+     }
+    td, th {
+        font-size: 7pt;
+        text-align: right;
+        vertical-align: top;
+        padding: 3px;
+     }
+
+     td {
+
+        border: 1px dotted #22222211;
+     }
+
+     td:hover {
+         border: 1px solid green
+
+     }
+
+     .button:hover {
+
+        background-color: rgba(58,126,93,0.5);
+     }
+
+     th {
+
+        background-color: rgb(58,126,93);
+        color: white;
+     }
+
+     .cellContent {
+        width: 85px;
+        height: 30px;
+        overflow: scroll;
+         display: flex;
+         justify-content: space-between;
+     }
+
+     .cellContent img {
+         max-width: 18px;
+         height: 18px;
+         filter: brightness(70%);
+         margin-left: 3px;
+         margin-top: 3px;
+     }
+     .dateNumber {
+        color: #22222275;
+     }
+
+
+
+     th.active {
+         background-color: rgb(230,230,230);
+         color: black
+     }
+
+
+
+     td.eventText {
+        background-color: rgb(250,250,250) !important;
+        color: rgb(27,27,27) !important;
+     }
+     td.eventTextBlank {
+        background-color: rgb(27,27,27) !important;
+        color: white !important;
+     }
+
+
+     td.todayCell {
+         border: 1px solid rgb(58,126,93);
+         background-color:  #00000000 !important;
+     }
+
+     td.weekendCell {
+         background-color:  rgba(58,126,93,0.05);
+
+     }
+
+     td.pastCell {
+         background-color:  #00000010;
+         opacity: 0.8
+
+     }
+     .blankCell {
+         background-color: #00000030;
+
+     }
+     .eventListing {
+
+         margin-left: 7px;
+         cursor: pointer;
+     }
+     .eventListing:hover {
+
+         color: #9138c9
+     }
+
+     .pastEvents {
+         opacity: 0.8;
+         text-decoration: line-through;
+         filter: saturate(50%)
+     }
+
+    .noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+        -webkit-user-select: none; /* Safari */
+        -khtml-user-select: none; /* Konqueror HTML */
+        -moz-user-select: none; /* Old versions of Firefox */
+            -ms-user-select: none; /* Internet Explorer/Edge */
+                user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+    }
+
+     #eventDisplay {
+         margin-left: 10px;
+         border: 1px dotted black;
+         padding: 10px;
+         max-width: 20vw;
+         min-width: 20vw;
+         min-height: 10vh;
+         max-height: 20vh;
+         overflow: scroll;
+     }
+
+
+
+    @media (max-width: 768px) {
+
+        td, th {
+            height: 50px;
+            font-size: 0.3em;
+            padding: 0px;
+            padding-right: 3px;
+            padding-top: 0px;
+            min-width: 13vw;
+
+        }
+
+        table {
+            width: 100%
+        }
+
+    }
+
+     @media (min-width: 768px) {
+
+     }
+
+    </style>
+
+
+
 
         <script type='module'>
         const eventDisplay = document.getElementById('eventDisplay')
@@ -410,6 +578,410 @@
 
     </style>
 
+
+    <script>
+const NEW_LINE = /\r\n|\n|\r/
+
+const EVENT = "VEVENT"
+const EVENT_START = "BEGIN"
+const EVENT_END = "END"
+const START_DATE = "DTSTART"
+const END_DATE = "DTEND"
+const DESCRIPTION = "DESCRIPTION"
+const SUMMARY = "SUMMARY"
+const LOCATION = "LOCATION"
+const ALARM = "VALARM"
+
+const keyMap = {
+  [START_DATE]: "startDate",
+  [END_DATE]: "endDate",
+  [DESCRIPTION]: "description",
+  [SUMMARY]: "summary",
+  [LOCATION]: "location"
+}
+
+const clean = string => {
+  if (string == undefined) {
+    return ""
+  }
+  return decodeURI(string).trim()
+}
+
+const icsToJson = icsData => {
+  const array = []
+  let currentObj = {}
+  let lastKey = ""
+
+  const lines = icsData.split(NEW_LINE)
+
+  let isAlarm = false
+  for (let i = 0, iLen = lines.length; i < iLen; ++i) {
+    const line = lines[i] ?? ""
+    const lineData = line.split(":")
+
+    let key = lineData[0]
+    const value = lineData[1]
+
+    if (key && key.indexOf(";") !== -1) {
+      const keyParts = key.split(";")
+      key = keyParts[0]
+      // Maybe do something with that second part later
+    }
+
+    if (key) {
+      if (lineData.length < 2) {
+        if (
+          key.startsWith(" ") &&
+          lastKey !== undefined &&
+          lastKey.length > 0
+        ) {
+          currentObj[lastKey] += clean(line.substring(1))
+        }
+      } else {
+        // @ts-ignore
+        lastKey = keyMap[key]
+      }
+    }
+
+    switch (key) {
+      case EVENT_START:
+        if (value === EVENT) {
+          currentObj = {}
+        } else if (value === ALARM) {
+          isAlarm = true
+        }
+        break
+      case EVENT_END:
+        isAlarm = false
+        if (value === EVENT) array.push(currentObj)
+        break
+      case START_DATE:
+        // @ts-ignore
+        currentObj[keyMap[START_DATE]] = value
+        break
+      case END_DATE:
+        // @ts-ignore
+        currentObj[keyMap[END_DATE]] = value
+        break
+      case DESCRIPTION:
+        if (!isAlarm) currentObj[keyMap[DESCRIPTION]] = clean(value)
+        break
+      case SUMMARY:
+        currentObj[keyMap[SUMMARY]] = clean(value)
+        break
+      case LOCATION:
+        currentObj[keyMap[LOCATION]] = clean(value)
+      default:
+        continue
+    }
+  }
+  return array
+}
+
+async function getICSData(fileLocation) {
+  const icsRes = await fetch(fileLocation);
+  const icsData = await icsRes.text();
+  // Convert
+  const data = icsToJson(icsData);
+  return data;
+};
+
+const data = await getICSData('https://calendar.google.com/calendar/ical/3902ff71dc3fb1b056a764966090f6b1ac8e31893f53c7a6ee3064a9eddd189e%40group.calendar.google.com/public/basic.ics')
+console.log(data)
+
+
+
+        const eventDisplay = document.getElementById('eventDisplay')
+        const calendarSelect = document.getElementById('calendarSelect')
+
+        async function getData(url) {
+
+            try {
+                const response = await fetch(url);
+                const json = response.json()
+                return json
+
+            } catch {
+                console.error('Error fetching data:', url)
+            }
+        }
+
+        const events = await getData('https://calendar.permacomputing.net/calendar.events.json');
+        const eventsByDate = {}
+        events.forEach(event => {
+             const date = new Date(event.start_date)
+             const dateNoTime = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+             if (!eventsByDate[dateNoTime]) {eventsByDate[dateNoTime] = []}
+             eventsByDate[dateNoTime].push(event)
+         })
+        const now = new Date()
+
+        const calendars = await getData('https://calendar.permacomputing.net/calendar.json')
+
+
+
+
+
+
+
+
+
+        function mainCalendar() {
+            const table = document.getElementById('calendar')
+            const STATE = {
+                'monthArray': [],
+                'displayDate': now,
+                'firstOfMonth': new Date(now.getFullYear(), now.getMonth(), 1),
+                'displayRandomly': false,
+                'calendars': {}
+            }
+
+            const icons = ['❁','❀', '⁕', '☘', '✿',  '✼', '❆']
+            const colors = ['#108c5e','#0000af', '#86971b',  '#ff0000', '#000000', '#9138c9' ]
+
+
+
+            calendars.calendars.forEach((calendar, index) => {
+
+                const id = calendar.url_index
+                STATE.calendars[id] = calendar
+                STATE.calendars[id].display = true
+                STATE.calendars[id].icon = icons[index % icons.length];
+                STATE.calendars[id].color = colors[index % colors.length];
+            })
+            console.log(STATE.calendars)
+            function constructMonthArray() {
+
+                // ok so the aim here is to get an array with each cell we need.
+                // inc event details for days, and blank cells for before the start and after the end of each month
+                const monthArray = []
+
+                function getDaysInMonth() {
+                    return new Date(STATE.displayDate.getFullYear(), STATE.displayDate.getMonth() + 1, 0).getDate();
+                }
+
+                // this gets the number of blank cells we need before the 1st of the month
+                function getOffset() {
+                    let firstOfMonth = new Date(STATE.displayDate.getFullYear(), STATE.displayDate.getMonth(), 1);
+                    return (firstOfMonth.getDay() + 6) % 7
+                }
+
+                for (let i = 0; i < getOffset(); i++) {
+                    monthArray.push('blankCell')
+                }
+
+
+                // this adds the actual days in the month
+                for (let i = 1; i < (getDaysInMonth() + 1); i++) {
+                    const d = new Date(STATE.displayDate.getFullYear(), STATE.displayDate.getMonth(), i)
+                    const key = `${STATE.displayDate.getFullYear()}-${String(STATE.displayDate.getMonth() + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`
+
+                    monthArray.push({
+                        date: d,
+                        events: eventsByDate[key] || {}
+                    })
+                    if (i === 1) {STATE.firstOfMonth = d}
+                }
+
+                // this adds the blank cells after the month
+                let lastOfMonth = new Date(STATE.displayDate.getFullYear(), STATE.displayDate.getMonth(), getDaysInMonth())
+                let trailingDays = (7 - ((lastOfMonth.getDay() + 6) % 7) - 1) % 7
+
+                for (let day = 0; day < trailingDays; day++) {
+                    monthArray.push(`blankCell`)
+                }
+
+
+                STATE.monthArray = monthArray
+            }
+
+
+            function displayEvent(event) {
+                const startDate = new Date(event.start_date)
+                const endDate = new Date(event.end_date)
+                const months = ['January','February','March','April','May','June','July','August','September','October','November', 'December']
+
+                console.log(event)
+                eventDisplay.innerHTML = `
+
+                    <h3><span style='color: ${STATE.calendars[event["calendar-index"]].color};' >${STATE.calendars[event["calendar-index"]].icon}</span> ${STATE.calendars[event["calendar-index"]].name}</h3>
+                    <b>${event.text}</b>
+                    <br>
+                    <a href=${event?.location?.url || ""}>${event?.location?.text || ""}</a>
+                    <br>
+                    ${startDate.getDate()} ${months[startDate.getMonth()]} - ${startDate.getHours()}:${String(startDate.getMinutes()).padStart(2, '0')} - ${endDate.getHours()}:${String(endDate.getMinutes()).padStart(2, '0')}
+                    ${"<hr>" + event?.description || ""}
+
+                    `
+            }
+
+            function buildTableDOM() {
+                    const fragment = document.createDocumentFragment()
+                    let row = document.createElement('tr')
+                    let i = 1
+                    STATE.monthArray.forEach(day => {
+
+                        const cell = document.createElement('td')
+                        const div = document.createElement('div')
+                        div.classList.add('cellContent')
+
+                        if (day?.date) {
+                            const date = new Date(day.date)
+                            cell.dataset.date = date.toISOString()
+                            if (date.getDate() === now.getDate() && date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear()) {
+                                div.innerHTML += '<img src="/files/pcm-flower.png">'
+                                cell.classList.add('todayCell')
+                            } else {
+                                div.innerHTML += `<div class='dateNumber'>${day.date.getDate()}</div>`
+
+                            }
+                            /// is it the weekend ?
+                            if (date.getDay() === 0 || date.getDay() === 6) {
+                                cell.classList.add('weekendCell')
+                            }
+
+                            // is it in the past?
+                            if (date.getTime() < now.getTime()) {
+
+                                cell.classList.add('pastCell')
+                            }
+
+                            if (day.events.length > 0) {
+                                day.events.forEach(event => {
+                                    const cal = STATE.calendars[event['calendar-index']]
+                                    if (cal.display) {
+
+                                        const eventDiv = document.createElement('div')
+                                        let eventTitle = event.text
+
+                                        // trim long titles
+                                        const eventTrimLength = 28
+                                        if (eventTitle.length > eventTrimLength) {eventTitle = eventTitle.substring(0,eventTrimLength) + ' [...]'}
+
+                                        eventDiv.innerHTML += `<div><span style='color: ${cal.color};' class='event-flower'>${cal.icon}</span> ${eventTitle}</div>`
+                                        eventDiv.addEventListener('click', () => {displayEvent(event)})
+                                        eventDiv.classList.add('eventListing')
+                                        eventDiv.classList.add(`calendar_${event["calendar-index"]}`)
+                                        div.appendChild(eventDiv)
+
+                                    }
+
+                                })
+
+                            }
+                            cell.appendChild(div)
+
+                        } else {
+                            cell.innerText = '~'
+                            cell.classList.add('blankCell')
+                        }
+
+
+
+                        row.appendChild(cell)
+                        if (i % 7 === 0) {
+                            fragment.appendChild(row)
+                            row = document.createElement('tr')
+                        }
+
+                        cell.dataset.defaultText = cell.innerText
+
+
+                        i++
+
+                    })
+
+                    if (row.children.length > 0) {
+                        fragment.appendChild(row)
+                    }
+
+                    const monthCell = table.querySelector('#month')
+                    const yearCell = table.querySelector('#year')
+                    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                    monthCell.innerText = months[STATE.firstOfMonth.getMonth()]
+                    yearCell.innerText = String(STATE.firstOfMonth.getFullYear())
+
+
+
+                    table.appendChild(fragment)
+                }
+
+
+                function addMonthButtons() {
+                    const forwardButton = table.querySelector('#monthForwards')
+                    const resetButton = table.querySelector('#month')
+                    const backwardButton = table.querySelector('#monthBackwards')
+
+                    forwardButton.addEventListener('click', function() {
+                        STATE.displayDate = new Date(STATE.displayDate.getFullYear(), STATE.displayDate.getMonth() + 1, 1)
+                        refreshUI()
+                    })
+
+                    resetButton.addEventListener('click', function() {
+                        STATE.displayDate = new Date()
+                        refreshUI()
+                    })
+
+                    backwardButton.addEventListener('click', function() {
+                        STATE.displayDate = new Date(STATE.displayDate.getFullYear(), STATE.displayDate.getMonth() - 1, 1)
+                        refreshUI()
+                    })
+
+
+
+
+                }
+
+                function addCalendarSelection() {
+                    calendarSelect.innerHTML = ''; // Clear existing to prevent duplicates
+                    Object.values(STATE.calendars).forEach(cal => {
+                    const container = document.createElement('div');
+                        container.style.display = 'flex'
+                        container.style.justifyContent = 'space-between'
+                    container.innerHTML = `
+
+                        <label class="calendar_${cal.url_index} noselect" for="calendar_${cal.url_index}"><span style='color: ${cal.color};' >${cal.icon}</span> ${cal.name}</label>&nbsp&nbsp
+                        <input id="calendar_${cal.url_index}" type='checkbox' checked>
+                    `;
+
+                    const checkbox = container.querySelector('input');
+
+                    checkbox.addEventListener('change', () => {
+                        if (checkbox.checked) {
+                            STATE.calendars[cal.url_index].display = true;
+                        } else {
+                            STATE.calendars[cal.url_index].display = false;
+                        }
+                        refreshUI();
+                    });
+
+                    calendarSelect.appendChild(container);
+
+                });
+                }
+
+                function refreshUI() {
+                    table.innerHTML = `
+                            <tr>
+                                <th id='month' class='button'></th>
+                                <th id='year'></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th id='monthBackwards' class='button'>←</th>
+                                <th id='monthForwards' class='button'>→</th>
+                            </tr>
+
+                    `
+                    constructMonthArray()
+                    buildTableDOM()
+                    addMonthButtons()
+                }
+
+                refreshUI()
+                addCalendarSelection()
+         }
+         mainCalendar()
 
         </script>
 
