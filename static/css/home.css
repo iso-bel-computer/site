@@ -83,6 +83,7 @@ a {
         padding: 2px;
         font-size: 9pt;
         position: absolute;
+            max-width: fit-content;
         z-index: 1;
         box-shadow: 5px 5px 5px #00000050;
     }

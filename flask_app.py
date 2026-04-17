@@ -107,7 +107,7 @@ def getLastFM():
         apikey = '95f00ca5f087f742aadfee7a955e9bc2'
         page = request.args.get('page', '1')
         print(page)
-        response = requests.get(rootURL + f'?method=user.getrecenttracks&user={user}&api_key={apikey}&format=json&page={page}&limit=100')
+        response = requests.get(rootURL + f'?method=user.getrecenttracks&user={user}&api_key={apikey}&format=json&page={page}&limit=40')
         return jsonify(response.json())
     except Exception as e:
         print(e)

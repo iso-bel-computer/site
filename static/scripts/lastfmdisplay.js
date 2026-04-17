@@ -24,6 +24,7 @@
             const now = new Date()
 
             if (data?.recenttracks?.track) {
+                currentPage++
                 const tracks = data.recenttracks.track
                 let nowPlayingTrack = null
                 tracks.forEach(track => {
@@ -38,10 +39,14 @@
 
                     const hrs = Math.floor(timeSinceListen / 60)
                     const days = Math.floor(hrs / 24)
+
                     let timeStr = ''
-                    if (days < 1) {timeStr = `${hrs}h`} else {timeStr = `${days}d`}
+                    if (hrs < 1) {timeStr = `${Math.trunc(timeSinceListen)}m`}
+                    else if (days < 1) {timeStr = `${hrs}h`}
+                    else {timeStr = `${days}d`}
+
                     if (track?.['@attr']?.nowplaying) {
-                        if (currentPage > 1) {track; return} // it returns now playing track on every page load.
+                        if (currentPage > 2) {track; return} // it returns now playing track on every page load.
                         else {timeStr = 'Now'; nowPlayingTrack = track} // so this just makes sure it's only appended on the first one
                     }
 
@@ -52,14 +57,18 @@
                 })
                 div.innerHTML = ''
                 div.appendChild(table)
-                div.innerHTML += '<button id="lastfmforward">More..?</button>'
+                if ((currentPage) < parseInt(data?.recenttracks?.["@attr"]?.totalPages)) {
+                    div.innerHTML += '<button id="lastfmforward">More..?</button>'
+                    document.querySelector('#lastfmforward').addEventListener('click', function() {
+                        document.querySelector('#lastfmforward').innerText = 'Loading...'
+                        loadTracks(currentPage)
 
-                document.querySelector('#lastfmforward').addEventListener('click', function() {
-                    document.querySelector('#lastfmforward').innerText = 'Loading...'
-                    await loadTracks(currentPage + 1)
-                    currentPage++
+                    })
+                } else {
+                    div.innerHTML += "<br><div style='padding: 5px; font-weight: bold'>That's your lot!</div>"
 
-                })
+                }
+
             } else {
                 if (!document.querySelector('#lastfmforward')) {div.innerHTML = '<div style="padding: 5px; color: darkred ">Error fetching Last FM data :(. Try again?</div>'}
                 else {document.querySelector('#lastfmforward').innerHTML = '<div style="color: darkred ">Error fetching Last FM data :(. Try again?</div>'}
