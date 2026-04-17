@@ -37,7 +37,11 @@
                 const days = Math.floor(hrs / 24)
                 let timeStr = ''
                 if (days < 1) {timeStr = `${hrs}h`} else {timeStr = `${days}d`}
-                if (track?.['@attr']?.nowplaying) {timeStr = 'Now'}
+                if (track?.['@attr']?.nowplaying) {
+                    if (currentPage > 1) {return} // it returns now playing track on every page load.
+                    else {timeStr = 'Now'} // so this just makes sure it's only appended on the first one
+                }
+
 
                 const row = document.createElement('tr')
                 row.innerHTML = `<td class='timecell'>${timeStr}</td><td class='albumartcell' ><img src='${imgurl}' ></td><td class='trackname'>${name}</td><td class='artistcell'>${artist}</td>`
