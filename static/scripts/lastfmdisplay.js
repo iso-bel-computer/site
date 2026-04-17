@@ -18,47 +18,56 @@
 
     let currentPage = 1
     async function loadTracks(pageNo) {
-        const data = await getLastFMData(pageNo)
-        const now = new Date()
+        try {
 
-        if (data?.recenttracks?.track) {
-            const tracks = data.recenttracks.track
-            console.log(tracks)
-            tracks.forEach(track => {
+            const data = await getLastFMData(pageNo)
+            const now = new Date()
 
-                const name  = truncate(track?.name, 30) || 'UNKNOWN'
-                const artist = truncate(track?.artist?.["#text"], 20) || 'UNKNOWN';
-                const imgurl = track?.image[0]?.["#text"] || 'NA';
-                const date = track?.date?.uts ? new Date(Number(track.date.uts) * 1000) : null;
+            if (data?.recenttracks?.track) {
+                const tracks = data.recenttracks.track
+                let nowPlayingTrack = null
+                tracks.forEach(track => {
 
-                const timeSinceListen = ((now - date) / 1000) / 60 // time since listened in minutes
+                    if (track?.name === nowPlayingTrack?.name) {return} // don't display now playing twice once it's already scrobbled
+                    const name  = truncate(track?.name, 30) || 'UNKNOWN'
+                    const artist = truncate(track?.artist?.["#text"], 20) || 'UNKNOWN';
+                    const imgurl = track?.image[0]?.["#text"] || 'NA';
+                    const date = track?.date?.uts ? new Date(Number(track.date.uts) * 1000) : null;
 
-                const hrs = Math.floor(timeSinceListen / 60)
-                const days = Math.floor(hrs / 24)
-                let timeStr = ''
-                if (days < 1) {timeStr = `${hrs}h`} else {timeStr = `${days}d`}
-                if (track?.['@attr']?.nowplaying) {
-                    if (currentPage > 1) {return} // it returns now playing track on every page load.
-                    else {timeStr = 'Now'} // so this just makes sure it's only appended on the first one
-                }
+                    const timeSinceListen = ((now - date) / 1000) / 60 // time since listened in minutes
+
+                    const hrs = Math.floor(timeSinceListen / 60)
+                    const days = Math.floor(hrs / 24)
+                    let timeStr = ''
+                    if (days < 1) {timeStr = `${hrs}h`} else {timeStr = `${days}d`}
+                    if (track?.['@attr']?.nowplaying) {
+                        if (currentPage > 1) {track; return} // it returns now playing track on every page load.
+                        else {timeStr = 'Now'; nowPlayingTrack = track} // so this just makes sure it's only appended on the first one
+                    }
 
 
-                const row = document.createElement('tr')
-                row.innerHTML = `<td class='timecell'>${timeStr}</td><td class='albumartcell' ><img src='${imgurl}' ></td><td class='trackname'>${name}</td><td class='artistcell'>${artist}</td>`
-                table.appendChild(row)
-            })
-            div.innerHTML = ''
-            div.appendChild(table)
-            div.innerHTML += '<button id="lastfmforward">More..?</button>'
+                    const row = document.createElement('tr')
+                    row.innerHTML = `<td class='timecell'>${timeStr}</td><td class='albumartcell' ><img src='${imgurl}' ></td><td class='trackname'>${name}</td><td class='artistcell'>${artist}</td>`
+                    table.appendChild(row)
+                })
+                div.innerHTML = ''
+                div.appendChild(table)
+                div.innerHTML += '<button id="lastfmforward">More..?</button>'
 
-            document.querySelector('#lastfmforward').addEventListener('click', function() {
-                document.querySelector('#lastfmforward').innerText = 'Loading...'
-                currentPage++
-                loadTracks(currentPage)
+                document.querySelector('#lastfmforward').addEventListener('click', function() {
+                    document.querySelector('#lastfmforward').innerText = 'Loading...'
+                    currentPage++
+                    loadTracks(currentPage)
 
-            })
-        } else {
-            div.innerHTML += '<div style="padding: 5px; color: darkred ">Error fetching Last FM data :(</div>'
+                })
+            } else {
+                if (!document.querySelector('#lastfmforward')) {div.innerHTML = '<div style="padding: 5px; color: darkred ">Error fetching Last FM data :(. Try again?</div>'}
+                else {document.querySelector('#lastfmforward').innerHTML = '<div style="color: darkred ">Error fetching Last FM data :(. Try again?</div>'}
+            }
+        } catch {
+            if (!document.querySelector('#lastfmforward')) {div.innerHTML = '<div style="padding: 5px; color: darkred ">Error fetching Last FM data :(. Try again?</div>'}
+            else {document.querySelector('#lastfmforward').innerHTML = '<div style="color: darkred ">Error fetching Last FM data :(. Try again?</div>'}
+
         }
 
      }
