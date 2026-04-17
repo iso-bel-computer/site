@@ -23,6 +23,7 @@
 
         if (data?.recenttracks?.track) {
             const tracks = data.recenttracks.track
+            console.log(tracks)
             tracks.forEach(track => {
 
                 const name  = truncate(track?.name, 30) || 'UNKNOWN'
@@ -36,6 +37,7 @@
                 const days = Math.floor(hrs / 24)
                 let timeStr = ''
                 if (days < 1) {timeStr = `${hrs}h`} else {timeStr = `${days}d`}
+                if (track?.['@attr']?.nowplaying) {timeStr = 'Now'}
 
                 const row = document.createElement('tr')
                 row.innerHTML = `<td class='timecell'>${timeStr}</td><td class='albumartcell' ><img src='${imgurl}' ></td><td class='trackname'>${name}</td><td class='artistcell'>${artist}</td>`
