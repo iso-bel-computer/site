@@ -102,7 +102,7 @@
         "classname": "music"
     },
     {
-        "icon": "quote.png",
+        "icon": "mine.png",
         "headertext": "crashout.8601",
         "template": "crashout.html",
         "classname": "crashout"
