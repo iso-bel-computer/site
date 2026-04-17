@@ -852,5 +852,19 @@
     "date": "26-04-10",
     "description": "",
     "contenttype": "Drawing"
+  },
+  {
+    "originalFileName": "IMG_4177.HEIC",
+    "fileName": "26-04-16_Jaz---London-Drawing_101415",
+    "originalDir": "/Users/dylanhemmings/Desktop/drawingstaging",
+    "originalPath": "/Users/dylanhemmings/Desktop/drawingstaging/IMG_4177.HEIC",
+    "destinationDir": "/Users/dylanhemmings/05.Site/static/resources/images/art/drawing",
+    "previewFile": "26-04-16_Jaz---London-Drawing_101415_PREVIEW.jpg",
+    "thumbnailFile": "26-04-16_Jaz---London-Drawing_101415_THUMB.jpg",
+    "mainFile": "26-04-16_Jaz---London-Drawing_101415.png",
+    "title": "Jaz---London-Drawing",
+    "date": "26-04-16",
+    "description": "enjoying watercolour for the form, then charcol for the outline. and it was all going so well until we hit the face... ecce homo!",
+    "contenttype": "Drawing"
   }
 ]
