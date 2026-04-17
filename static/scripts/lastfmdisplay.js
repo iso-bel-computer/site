@@ -56,7 +56,7 @@
 
                 document.querySelector('#lastfmforward').addEventListener('click', function() {
                     document.querySelector('#lastfmforward').innerText = 'Loading...'
-                    loadTracks(currentPage + 1)
+                    await loadTracks(currentPage + 1)
                     currentPage++
 
                 })
