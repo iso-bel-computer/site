@@ -30,7 +30,7 @@
                 tracks.forEach(track => {
 
                     if (track?.name === nowPlayingTrack?.name) {return} // don't display now playing twice once it's already scrobbled
-                    const name  = truncate(track?.name, 30) || 'UNKNOWN'
+                    const name  = truncate(track?.name,40) || 'UNKNOWN'
                     const artist = truncate(track?.artist?.["#text"], 20) || 'UNKNOWN';
                     const imgurl = track?.image[0]?.["#text"] || 'NA';
                     const date = track?.date?.uts ? new Date(Number(track.date.uts) * 1000) : null;
