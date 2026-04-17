@@ -56,8 +56,8 @@
 
                 document.querySelector('#lastfmforward').addEventListener('click', function() {
                     document.querySelector('#lastfmforward').innerText = 'Loading...'
-                    currentPage++
                     loadTracks(currentPage)
+                    currentPage++
 
                 })
             } else {
