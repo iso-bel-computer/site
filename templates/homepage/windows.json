@@ -96,6 +96,12 @@
         "classname": "quote"
     },
     {
+        "icon": "music.png",
+        "headertext": "tracks.flac",
+        "template": "music.html",
+        "classname": "music"
+    },
+    {
         "icon": "quote.png",
         "headertext": "crashout.8601",
         "template": "crashout.html",

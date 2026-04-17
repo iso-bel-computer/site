@@ -1,0 +1,66 @@
+<div id='lastfmtracks'>
+'<div style="padding: 5px; ">Loading Tracks...</div>'
+</div>
+<script type='module' src="{{ url_for('static', filename='scripts/lastfmdisplay.js') }}"></script>
+<style>
+ .windowmusiccontent {
+     height: 80px;
+     overflow: scroll;
+     max-width: fit-content;
+     padding: 0px
+ }
+
+#lastfmtracks table {
+    margin-top: 3px;
+    border-collapse: collapse;
+    --hover-color: #00000000;
+
+}
+#lastfmtracks td {
+    vertical-align: top;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+
+#lastfmtracks tr:hover {
+    --hover-color: #00000010;
+}
+#lastfmtracks button {
+    all: unset;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 5px;
+    padding: 3px;
+    border-radius: 3px;
+    border: 1px #aaaaaa black
+
+}
+#lastfmtracks .trackname {
+    padding-left: 3px;
+    background-color: var(--hover-color)
+}
+#lastfmtracks .timecell {
+    text-align: center;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+#lastfmtracks .albumartcell {
+    background-color: var(--hover-color);
+    padding-right: 3px;
+    padding-left: 6px;
+    border-left: 1px solid #77777750
+}
+#lastfmtracks .artistcell {
+    background-color: var(--hover-color)
+}
+ #lastfmtracks img {
+    display: block;
+    margin: 0 auto;
+     max-width: 10px;
+     max-height: 10px;
+     margin-top: 1px;
+     border: 1px solid #aaaaaa
+ }
+
+</style>

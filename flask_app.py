@@ -97,6 +97,22 @@ Homepage & Redirect
 
 """
 
+
+# we maybe want to cache these pretty aggressively. rather than fetching new for every page load.
+@app.route('/api/getlastfm')
+def getLastFM():
+    try:
+        rootURL = 'http://ws.audioscrobbler.com/2.0/'
+        user = 'izzy-c-h'
+        apikey = '95f00ca5f087f742aadfee7a955e9bc2'
+        page = request.args.get('page', '1')
+        print(page)
+        response = requests.get(rootURL + f'?method=user.getrecenttracks&user={user}&api_key={apikey}&format=json&page={page}&limit=100')
+        return jsonify(response.json())
+    except Exception as e:
+        print(e)
+        return jsonify({"error": 'Error fetching Last.FM data'})
+
 def getHomepageWindows():
     windows = []
 
@@ -121,6 +137,8 @@ def getGuestbookMessages():
     with open('static/resources/data/guestbookmessages.json', 'r') as f:
         guestbookmessages = json.load(f)
         return guestbookmessages
+
+
 
 
 
@@ -310,6 +328,8 @@ def councilDefections():
 @app.route('/api/councillors')
 def getCllrs():
 
+    councilName = request.args.get("council", "").strip()
+    page = 'page'
     councilName = request.args.get("council", "").strip()
     return jsonify(getCouncillorsInCouncil(councilName))
 
