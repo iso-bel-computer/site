@@ -242,6 +242,10 @@ a {
             height: 35px;
             margin-bottom: 1px;
             cursor: pointer;
+            filter: saturate(75%)
+        }
+        .foldericon:hover {
+            filter: saturate(130%)
         }
 
         .folderlabel {
