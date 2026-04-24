@@ -61,16 +61,16 @@ export class soundManager {
         if (!this.init) return;
 
         const lineChords = {
-            'waterloo-city':   ["C3", "E3", "G3"],
-            'hammersmith-city':["D3", "F#3", "A3"],
-            'metropolitan':    ["E3", "G#3", "B3"],
-            'central':         ["F#3", "A#3", "C#4"],
-            'district':        ["G#3", "C4", "D#4"],
-            'circle':          ["A#3", "D4", "F4"],
-            'bakerloo':        ["C4", "E4", "G4"],
-            'northern':        ["D4", "F#4", "A4"],
-            'victoria':        ["E4", "G#4", "B4"],
-            'jubilee':         ["F#4", "A#4", "C#5"],
+            'waterloo-city':   ["C9", "E9", "G9"],
+            'hammersmith-city':["D9", "F#9", "A9"],
+            'metropolitan':    ["E9", "G#9", "B9"],
+            'central':         ["F#9", "A#9", "C#9"],
+            'district':        ["G#9", "C9", "D#9"],
+            'circle':          ["A#9", "D9", "F9"],
+            'bakerloo':        ["C9", "E9", "G9"],
+            'northern':        ["D9", "F#9", "A9"],
+            'victoria':        ["E9", "G#9", "B9"],
+            'jubilee':         ["F#9", "A#9", "C#10"],
         };
 
         const synth = this.arrivalSynths[line];
@@ -89,16 +89,16 @@ export class soundManager {
         if (!this.init) return;
 
         const lineNotes = {
-            'waterloo-city': "C2",
-            'hammersmith-city': "D2",
-            'metropolitan': "E2",
-            'central': "F#2",
-            'district': "G#2",
-            'circle': "A#3",
-            'bakerloo': "C3",
-            'northern': "D3",
-            'victoria': "E3",
-            'jubilee': "F#3",
+            'waterloo-city': "C9",
+            'hammersmith-city': "D9",
+            'metropolitan': "E9",
+            'central': "F#9",
+            'district': "G#9",
+            'circle': "A#9",
+            'bakerloo': "C9",
+            'northern': "D9",
+            'victoria': "E9",
+            'jubilee': "F#9",
         };
 
         const synth = this.arrivalSynths[line];
@@ -137,9 +137,9 @@ export class soundManager {
 
         this.kick.chain(this.kickdistortion, this.kickcompressor, Tone.Destination);
 
-        this.kickLoop = new Tone.Loop((time) => {
-            this.kick.triggerAttackRelease("C1", "8n", time);
-        }, "4n").start(0);
+        // this.kickLoop = new Tone.Loop((time) => {
+        //     this.kick.triggerAttackRelease("C1", "8n", time);
+        // }, "4n").start(0);
 
         this.transport = Tone.getTransport();
         if (this.transport.state !== "started") {
