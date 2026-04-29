@@ -144,9 +144,12 @@ def getGuestbookMessages():
 
 
 
+pictures = os.listdir('./static/resources/homepage/randompics/')
 WINDOWS = getHomepageWindows()
 @app.route('/')
 def home():
+    picture = pictures[random.randint(0,len(pictures))]
+    print(picture)
     GUESTBOOKMESSAGES = getGuestbookMessages()
     defectionEvents = getDefectionData()
     return render_template('home.html',
@@ -154,6 +157,7 @@ def home():
                             guestbookmessages = GUESTBOOKMESSAGES,
                             siteMap = siteMap,
                             books = bookData,
+                            picture = picture,
                             defectionEvents = defectionEvents)
 
 @app.route('/submit/guestbookmessage', methods=['POST'])
@@ -532,6 +536,10 @@ def abulafia():
                            headerRouteDisplay = '/research/abulafia')
 
 
+
+@app.route('/readinggroup')
+def readingGroup():
+    return render_template('readinggroup.html')
 
 """
 Init

@@ -108,6 +108,12 @@
         "classname": "deleuze"
     },
     {
+        "icon": "bwo.png",
+        "headertext": "pic.png",
+        "template": "picture.html",
+        "classname": "randompicture"
+    },
+    {
         "icon": "mine.png",
         "headertext": "crashout.8601",
         "template": "crashout.html",
