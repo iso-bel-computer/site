@@ -148,7 +148,7 @@ pictures = os.listdir('./static/resources/homepage/randompics/')
 WINDOWS = getHomepageWindows()
 @app.route('/')
 def home():
-    picture = pictures[random.randint(0,len(pictures))]
+    picture = pictures[random.randint(0,len(pictures) - 1)]
     print(picture)
     GUESTBOOKMESSAGES = getGuestbookMessages()
     defectionEvents = getDefectionData()
