@@ -102,7 +102,7 @@
         "classname": "music"
     },
     {
-        "icon": "bwo.png",
+        "icon": "picture.png",
         "headertext": "pic.png",
         "template": "picture.html",
         "classname": "randompicture"
