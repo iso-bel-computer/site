@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/> <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<div class='flex'>
+    <div id="map"></div>
+    <div id='controls'>
+        <div id='latlng'>
+        </div>
+    </div>
+</div>
+<style>
+ .flex {
+     display: flex;
+ }
+ #map {
+     width: 65%;
+     height: 90vh;
+     cursor: crosshair;
+ }
+
+ #controls {
+     padding: 10px;
+     margin-left: 10px;
+     width: 30%;
+     height: 90vh;
+ }
+</style>
+<script>
+const map = L.map('map').setView([51.505, -0.09], 13);
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+    subdomains: 'abcd',
+    maxZoom: 20
+}).addTo(map);
+
+const line = L.polyline([], {"color":"black"}).addTo(map)
+
+function onMapClick(e) {
+    line.addLatLng(e.latlng)
+    latlng.innerHTML += '[' + e.latlng.lat + ', ' + e.latlng.lng + '],<br>'
+     console.log(line)
+}
+
+map.on('click', onMapClick);
+
+</script>
+{% endblock %}

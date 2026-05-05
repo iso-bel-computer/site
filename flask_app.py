@@ -541,6 +541,10 @@ def abulafia():
 def readingGroup():
     return render_template('readinggroup.html')
 
+@app.route('/tools/map')
+def mapPage():
+    return render_template('tools/map.html')
+
 """
 Init
 
