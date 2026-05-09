@@ -1,0 +1,58 @@
+body {
+    margin: 0px;
+    background-color: #c5d3d9;
+    display: flex;
+    justify-content: center;
+    widht: 100vw;
+}
+canvas {
+    margin-top: 50px;
+    width: 500px;
+    height: 500px;
+    filter: saturate(90%);
+    border: 3px inset black;
+    background-color: #164a24;
+
+}
+#gameWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#tileInfoDisplay {
+    font-family: 'Arial', sans-serif;
+    padding-top: 20px;
+    font-size: 12pt;
+
+}
+
+.tileLabel {
+    padding: 5px;
+    margin-bottom: 5px;
+    filter: saturate(50%);
+    width: min-content
+}
+
+.tileLabel.water {
+    background-color: blue;
+    color: white;
+}
+.tileLabel.grass {
+    background-color: seagreen
+}
+.tileLabel.tree {
+    background-color: darkgreen;
+    color: white;
+}
+.tileLabel.ash {
+    background-color: darkgrey;
+    color: white;
+}
+.tileLabel.mud {
+    background-color: brown;
+    color: white;
+}
+.tileLabel.fire {
+    background-color: darkorange !important;
+}

@@ -228,6 +228,7 @@ a {
             height: 100%;
             flex-wrap: wrap;
         }
+
         .folderfile {
             width: 45px;
             height: auto;
@@ -253,4 +254,9 @@ a {
             width: 100%;
             overflow-wrap: break-word;
             text-align: center;
+        }
+
+        .windowartfoldercontent, .windowprojectscontent, .windowartpiecescontent {
+
+            max-width: 215px;
         }

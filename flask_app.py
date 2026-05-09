@@ -545,6 +545,11 @@ def readingGroup():
 def mapPage():
     return render_template('tools/map.html')
 
+@app.route('/fallingland')
+def fallingLand():
+    return render_template('games/fallingland.html')
+
+
 """
 Init
 
