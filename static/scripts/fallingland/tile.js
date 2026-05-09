@@ -3,6 +3,10 @@ import { getRandomInt, getRandomArbitrary, clamp } from './helpers.js';
 
 export class Tile {
 
+    init() {
+        this.assignColour()
+        this.setDefaultPassable()
+    }
 
     isTileSurroundedBySameType() {
         return this.neighbours.every(neighbour => neighbour.type === this.type);
@@ -19,6 +23,19 @@ export class Tile {
             neighbour.assignColour()
         })
     }
+
+    setDefaultPassable() {
+        this.setPassable(config.tileTypes[this.type]?.passable ?? true)
+    }
+
+    setPassable(bool) {
+        this.passable = bool
+    }
+
+    isPassable() {
+        return this.passable
+    }
+
 
     addHuman(human) {
         this.human = human
@@ -55,17 +72,18 @@ export class Tile {
             this.updateColourEveryTick = true
         }
 
-        else if (this.snowCovered) {
-            const brightness = getRandomArbitrary(0.75,1)
-            r = getRandomInt(245,255) * brightness
-            g = getRandomInt(245,255) * brightness
-            b = getRandomInt(245,255) * brightness
+        else if (this.snowCovered && this.type != 'tree') {
+            const brightness = getRandomArbitrary(0.80,1)
+            const white = (210 + (elevation * 3))
+            r = Math.min(white * brightness, 255)
+            g = Math.min(white * brightness, 255)
+            b = Math.min(white * brightness, 255)
         }
         else if (this.bridge) {
             const brightness = getRandomArbitrary(0.75,1)
-            r = getRandomInt(67,80) * brightness
-            g = getRandomInt(55,65) * brightness
-            b = getRandomInt(0,10) * brightness
+            r = getRandomInt(170,190) * brightness
+            g = getRandomInt(150,170) * brightness
+            b = getRandomInt(90,100) * brightness
         }
 
         else if (this.type === 'grass') {
@@ -90,12 +108,7 @@ export class Tile {
             } else {
                 r = getRandomInt(0, 15)
                 g = getRandomInt(0, 100) - (Math.abs(elevation) * 4)
-                b = getRandomInt(250,255) - (Math.abs(elevation) * 1)
-
                 b = clamp(getRandomInt(250,255) - (Math.abs(elevation) * 1), 150, 255)
-                // r = getRandomInt(0, 15)
-                // g = getRandomInt(0, 100) - (Math.abs(elevation) * 4)
-                // b = clamp(getRandomInt(250,255) - (Math.abs(elevation) * 0.1), 100, 255)
             }
         }
 
@@ -114,6 +127,11 @@ export class Tile {
             r = getRandomInt(30,70)
             g = getRandomInt(30,70)
             b = getRandomInt(30,70)
+        }
+        else if (this.type === 'beehive') {
+            r = getRandomInt(160,180)
+            g = getRandomInt(130,140)
+            b = getRandomInt(0,10)
         }
 
         else if (this.type === 'tree') {
@@ -197,6 +215,7 @@ export class Tile {
     }
 
     updateFire() {
+        if (this.snowCovered) {this.snowCovered = false}
         const burnTime = config.tileTypes[this.type]?.burnTime || 20;
         this.burnTimer = (this.burnTimer || burnTime) - 1;
         if (this.burnTimer <= 0) {

@@ -9,6 +9,7 @@ export class Interactions {
         this.game = document.getElementById('game')
         this.brushSelection = document.getElementById('brushSelection')
         this.earthDisplay = document.getElementById('amountOfEarth')
+        this.tileInfoDisplay = document.getElementById('tileInfoDisplay')
         this.earth = 0
         this.brushSize = 5
     }
@@ -24,9 +25,22 @@ export class Interactions {
             })
         })
 
+        this.game.addEventListener('mousemove', (e) => {
+            const tile = this.render.getTile(e.clientX, e.clientY)
+            if (tile) {
+                if (tile != this.prevTile) {
+                    this.prevTile = tile
+                    this.updateTileInfo(tile)
+                }
+            }
+        })
+
         this.game.addEventListener('click', (e) => {
             const tile = this.render.getTile(e.clientX, e.clientY)
             if (tile) {
+
+                console.log('SELECTED TILE: ', tile)
+
                 if (this.selectedBrush === 'fire') {
                     this.addFire(tile)
                 }
@@ -108,11 +122,17 @@ export class Interactions {
                 console.warn('Bridge too long')
             }
 
+
             bridgeTiles.forEach(tile => {
                 if (tile.elevation > bridgeStart.elevation + 5
                 || tile.elevation > bridgeEnd.elevation + 5) {
                     buildBridge = false
                     console.warn('Bridge over high terrain', tile.elevation, bridgeStart.elevation, bridgeEnd.elevation)
+                }
+
+                if (tile.bridge) {
+                    buildBridge = false
+                    console.warn('Bridge intersects another bridge')
                 }
             })
 
@@ -156,6 +176,7 @@ export class Interactions {
             this.earth--
         })
         this.displayEarthAmount()
+        this.updateTileInfo(tile)
 
     }
 
@@ -169,8 +190,8 @@ export class Interactions {
             if (tile.bridge) {tile.bridge.demolish()}
             this.earth++
         })
+        this.updateTileInfo(tile)
         this.displayEarthAmount()
-
     }
 
     displayEarthAmount() {
@@ -183,5 +204,19 @@ export class Interactions {
     }
 
 
+    updateTileInfo(tile) {
+        const fire = tile.aflame ? 'fire' : ''
+        const human = tile.human ? 'human' : ''
+        const snow = tile.snowCovered ? 'snow' : ''
+        const bridge = tile.bridge ? 'bridge' : ''
+            this.tileInfoDisplay.innerHTML = `
+                <div class='${tile.type} tileLabel ${fire} ${human} ${snow} ${bridge}'>
+                    ${tile.type} ${fire} ${human} ${snow} ${bridge}
+                </div>
+                ${tile.x}x ${tile.y}y<br>
+                ${Math.floor(tile.elevation)} ft<br>
+            `
+
+    }
 
 }

@@ -38,11 +38,9 @@ export class Human {
             // figuring out which neighbouring tile human would most like to go to
 
             if (neighbour.human) {return}
+            if (!neighbour.isPassable()) {return}
+            if (Math.abs(tile.elevation - neighbour.elevation) > 5) {return}
 
-            let tileIsImpassable = config.tileTypes[neighbour.type]?.impassable || false
-            if (Math.abs(tile.elevation - neighbour.elevation) > 5) {tileIsImpassable = true}
-
-            if (tileIsImpassable) {return}
 
             let neighbourDesirability = config.tileTypes[neighbour.type]?.desirability || 0.5
             if (currentDesirability < neighbourDesirability) { // do not covet thy neighbours tile...

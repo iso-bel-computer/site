@@ -26,7 +26,6 @@ canvas {
     padding-top: 5vh;
 }
 #amountOfEarth {
-    text-align: right;
     font-size: 10pt;
 }
 
@@ -89,12 +88,21 @@ canvas {
     background-color: pink ;
 }
 
+#brushSelection {
+    display: flex;
+    max-width: 10vw;
+    flex-wrap: wrap;
+    margin-top: 3px;
+
+}
 #brushSelection button {
-    border: 1px solid #ffffff00;
-    filter: saturate(60%)
+    border: 2px solid #ffffff00;
+    filter: saturate(60%);
+    margin-right: 3px;
+    margin-bottom: 3px;
 }
 #brushSelection button.active, #brushSelection button:hover {
-    border: 1px solid #000000;
+    border: 2px solid #00000060;
     filter: saturate(100%)
 }
 
@@ -118,4 +126,7 @@ canvas {
 }
 #brushSelection #flower {
     background-color: pink ;
+}
+#brushSelection #bridge {
+    background-color:  #baa663 !important;
 }

@@ -7,7 +7,7 @@ export const config = {
         "waterAmount": 0, // lower for more land. higher for more water.
         "randomiseWaterLevel": true,
         "beachAmounts": 0.03, // chance of any shore tile having a beach
-        "beachSize": 0.9, // value 0 to 1
+        "beachSize": 0.5, // value 0 to 1
         "randomiseBeaches": true,
         "bogAmounts": 0.001,
         "bogSize": 10,
@@ -16,6 +16,8 @@ export const config = {
         "shallowWaterRockRate": 0.0004,
         "mountainRockRate": 0.0002,
         "snowAltitude": 65,
+        "enableSnowWorlds": true,
+        "beehiveChanceInTree": 0.0001, // chance any tree tile is replaced with a beehive
 
     },
     "viewSettings": {
@@ -37,7 +39,7 @@ export const config = {
     },
     "tileTypes": {
         "water": {
-            "impassable": true,
+            "passable": false,
         },
         "sand": {
             "flammability": 0.05,
@@ -49,17 +51,17 @@ export const config = {
             "desirability": 0.4,
         },
         "marsh": {
-            "flammability": 0.2,
-            "burnTime": 300,
+            "flammability": 0.03,
+            "burnTime": 500,
             "desirability": 0.2
         },
         "tree": {
-            "flammability": 0.1,
-            "burnTime": 30,
-            "impassable": true,
+            "flammability": 0.05,
+            "burnTime": 20,
+            "passable": false,
         },
         "grass": {
-            "flammability": 0.2,
+            "flammability": 0.1,
             "burnTime": 3,
             "desirability": 0.7,
         },

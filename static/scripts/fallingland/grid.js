@@ -139,7 +139,7 @@ export class Grid {
         let y = 0;
         let waterLevel = config.worldGen.waterAmount
         if (config.worldGen.randomiseWaterLevel) {
-            waterLevel = getRandomInt(-40,30)
+            waterLevel = getRandomInt(-20,20)
         }
         while (y <= config.gameSettings.canvasHeight) {
 
@@ -188,6 +188,10 @@ export class Grid {
                         const coordTile = this.getTile(coord[0],coord[1])
                         if (coordTile && coordTile.type != 'water') {
                             coordTile.type = 'tree'
+                            if (Math.random() < config.worldGen.beehiveChanceInTree) {
+                                coordTile.type = 'beehive'
+                                console.log(coordTile)
+                            }
                         }
                     })
                 }
@@ -228,7 +232,7 @@ export class Grid {
 
 
         tiles.forEach(tile => {
-            tile.assignColour()
+            tile.init()
         })
 
         return tiles;
@@ -240,8 +244,8 @@ export class Grid {
         let beachSize    = config.worldGen.beachSize
 
         if (config.worldGen.randomiseBeaches) {
-            beachAmounts = getRandomArbitrary(0.01, 0.04)
-            beachSize    = getRandomArbitrary(0.4, 1)
+            beachAmounts = getRandomArbitrary(0.02, 0.001)
+            beachSize    = getRandomArbitrary(0.6, 1)
         }
 
         tiles.forEach(tile => {
@@ -311,7 +315,7 @@ export class Grid {
                     blob.forEach(coord => {
                         const tile = this.getTile(coord[0], coord[1]);
                         if (tile && tile.type === 'water') {
-                            if (Math.random() < 0.85) {
+                            if (Math.random() < 0.75) {
                                 tile.type = 'stone';
                                 tile.elevation = getRandomInt(1, 4);
                             }
@@ -341,9 +345,14 @@ export class Grid {
     addSnow(tiles) {
 
         let snowAltitude = config.worldGen.snowAltitude
+        let snowRate = 0.8
+        if (Math.random() < 0.01 && config.worldGen.enableSnowWorlds) {
+            snowAltitude = 0
+            snowRate = getRandomArbitrary(0.65,1)
+        }
         tiles.forEach(tile => {
             if (tile.elevation < snowAltitude) {return}
-            if (Math.random() < 0.8) {
+            if (Math.random() < snowRate) {
                 tile.snowCovered = true
             }
         })
@@ -394,10 +403,14 @@ export class Grid {
 
     getTileNeighbours(tile) {
         const offsets = [
-            { x: -1, y:  0 },
-            { x:  1, y:  0 },
-            { x:  0, y: -1 },
-            { x:  0, y:  1 },
+            { x:  1,  y:  0  },
+            { x:  1,  y:  1  },
+            { x:  1,  y:  -1 },
+            { x:  0,  y:  -1 },
+            { x:  0,  y:  1  },
+            { x:  -1, y:  1  },
+            { x:  -1, y:  0  },
+            { x:  -1, y:  -1 },
         ];
         return offsets
             .map(offset => this.tileMap.get(`${tile.x + offset.x},${tile.y + offset.y}`))
@@ -448,10 +461,6 @@ export class Grid {
     addBridge(tiles) {
         const bridge = new Bridge(tiles)
 
-        tiles.forEach(tile => {
-            tile.bridge = bridge
-            tile.assignColour()
-        })
 
     }
 
