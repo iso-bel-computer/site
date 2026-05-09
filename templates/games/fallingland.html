@@ -12,7 +12,30 @@
     <body>
         <div id='gameWrapper'>
             <canvas id='game'></canvas>
-            <div id='tileInfoDisplay'></div>
+        </div>
+        <div id='controls'>
+            <div id='tileInfoDisplay'>
+                <div class='tileLabel loading'>
+                    ...
+                </div>
+                -x -y<br>
+                -ft
+
+
+            </div>
+            <div id='brushSelection'>
+
+                <button id='fire'  data-brush='fire'>Fire</button>
+                <button id='tree'  data-brush='tree'>Tree</button>
+                <button id='land'  data-brush='land'>Land</button>
+                <button id='dig'   data-brush='excavate'>Dig</button>
+                <button id='human' data-brush='human'>Human</button>
+                <button id='flower' data-brush='flower'>Flower</button>
+                <button id='bridge' data-brush='bridge'>Bridge</button>
+
+            </div>
+            <div id='amountOfEarth'></div>
+            </div>
         </div>
         <script type='module' src="{{ url_for('static', filename='scripts/fallingland/main.js') }}"></script>
 

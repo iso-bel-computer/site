@@ -1,5 +1,6 @@
 import { config } from './config.js';
 import { Tile } from './tile.js';
+import { Bridge } from './entities/bridge.js';
 import { getRandomInt, getRandomArbitrary } from './helpers.js';
 
 export class Grid {
@@ -120,14 +121,25 @@ export class Grid {
         return total / maxValue;
     }
 
+    generateFlowers(startX, startY, endX, endY, amount) {
+        const flowers = []
+        for (let i = 0; i < amount; i++) {
+            const x = getRandomInt(startX, endX)
+            const y = getRandomInt(startY, endY)
+            flowers.push([x,y])
+        }
+        return flowers
+
+    }
+
     constructTiles() {
 
         const tiles = [];
         let x = 0;
         let y = 0;
-        let waterLevel = config.worldGen.defaultWaterLevel
+        let waterLevel = config.worldGen.waterAmount
         if (config.worldGen.randomiseWaterLevel) {
-            waterLevel = getRandomInt(-25,25)
+            waterLevel = getRandomInt(-40,30)
         }
         while (y <= config.gameSettings.canvasHeight) {
 
@@ -137,14 +149,11 @@ export class Grid {
             tile.y = y;
             tile.elevation = 255 * this.getElevation(x,y) - waterLevel;
 
-            if (tile.elevation < 0) {
+            if (tile.elevation < 1) {
                 tile.type = 'water'
             }
-            else if (tile.elevation < (config.worldGen.sandHeightAboveWater) && Math.random() < 0.5) {
-                tile.type = 'mud'
-            }
 
-            else if (tile.elevation > getRandomInt(50, 100)) {
+            else if (tile.elevation > getRandomInt(50,60) && Math.random() < 0.6) {
                 tile.type = 'stone'
             }
             else {
@@ -174,7 +183,7 @@ export class Grid {
         forests.forEach(tree => {
             if (this.getTile(tree[0][0], tree[0][1])) {
                 const treeTile = this.getTile(tree[0][0], tree[0][1])
-                if (treeTile.elevation * Math.random() < 15) {
+                if (treeTile.elevation * Math.random() < 8) {
                     tree.forEach(coord => {
                         const coordTile = this.getTile(coord[0],coord[1])
                         if (coordTile && coordTile.type != 'water') {
@@ -185,48 +194,159 @@ export class Grid {
             }
         })
 
+        let numberOfFlowerPatches = getRandomInt(0, 5)
+        for (let i=0; i <= numberOfFlowerPatches; i++) {
+            const startX = getRandomInt(0,config.gameSettings.canvasWidth)
+            const startY = getRandomInt(0,config.gameSettings.canvasHeight)
+            const flowers = this.generateFlowers(
+                startX,
+                startY,
+                startX + getRandomInt(100,200),
+                startY + getRandomInt(100,200),
+                getRandomInt(50,150))
+            console.log(flowers)
+            flowers.forEach(flower => {
+                const tile = this.getTile(flower[0], flower[1])
+                if (tile) {
+                    if (tile.type === 'grass') {
+                        tile.type = 'flower'
+                    }
+                }
+            })
+
+        }
+
+
+        tiles.forEach(tile => {
+            tile.neighbours = this.getTileNeighbours(tile)
+        })
+
+        this.addBeaches(tiles)
+        this.addBogs(tiles)
+        this.addRocks(tiles)
+        this.addSnow(tiles)
+
+
         tiles.forEach(tile => {
             tile.assignColour()
         })
 
-        console.log(forests)
-
         return tiles;
     }
 
-    addTree(x,y) { // only called from the brush right now
-        const treeCoords = this.generateBlob(x,y,getRandomInt(2,3))
-        treeCoords.forEach(coord => {
-            const tile = this.getTile(coord[0], coord[1])
-            if (tile.type === 'water') return
-            tile.type = 'tree'
-            tile.assignColour()
-        })
+    addBeaches(tiles) {
 
-    }
+        let beachAmounts = config.worldGen.beachAmounts
+        let beachSize    = config.worldGen.beachSize
 
-    addLand(x,y) {
-        const coords = this.generateBlob(x,y,getRandomInt(3,5))
-        coords.forEach(coord => {
-            const tile = this.getTile(coord[0], coord[1])
-            if (tile.type === 'water' || tile.type === 'mud') {
-                tile.type = 'grass'
-                tile.elevation = getRandomInt(1,4)
-                tile.assignColour()
+        if (config.worldGen.randomiseBeaches) {
+            beachAmounts = getRandomArbitrary(0.01, 0.04)
+            beachSize    = getRandomArbitrary(0.4, 1)
+        }
+
+        tiles.forEach(tile => {
+            if (tile.type !== 'water') {
+                if (tile.neighbours.find(neighbour => neighbour.type === 'water'
+                && Math.random() < beachAmounts)) {
+                    tile.type = 'sand';
+                }
 
             }
         })
-    }
 
-    excavate(x,y) {
-        const coords = this.generateBlob(x,y,getRandomInt(5,10))
-        coords.forEach(coord => {
-            const tile = this.getTile(coord[0], coord[1])
-            tile.elevation = tile.elevation - 3
-            if (tile.type === 'tree') {tile.type = 'grass'}
-            tile.assignColour()
+        tiles.forEach(tile => {
+            if (tile.type !== 'water') {
+                if (tile.neighbours.find(neighbour => neighbour.type === 'sand')
+                && tile.elevation < getRandomInt(3,6)
+                && Math.random() < beachSize) {
+                    tile.type = 'sand';
+                }
+            }
         })
 
+        return tiles
+
+    }
+
+    addBogs(tiles) {
+
+        let bogAmounts   = config.worldGen.bogAmounts
+        let bogSize      = config.worldGen.bogSize
+
+        tiles.forEach(tile => {
+            if (tile.type !== 'water'
+            && tile.neighbours.find(neighbour => neighbour.type === 'water')
+            && Math.random() < bogAmounts) {
+                const coords = this.generateBlob(tile.x, tile.y, getRandomInt(bogSize * 0.5, bogSize * 1.5))
+                coords.forEach(coord => {
+                    const tile = this.getTile(coord[0], coord[1]);
+                    if (tile) {
+                        if (tile.type !== 'water' && Math.random() < 0.7) {
+                            tile.type = 'marsh'
+                        }
+                    }
+                })
+
+            }
+        })
+
+        return tiles
+
+
+    }
+
+
+    addRocks(tiles) {
+
+        let seaRockRate      = config.worldGen.shallowWaterRockRate
+        let mountainRockRate = config.worldGen.mountainRockRate
+
+        tiles.forEach(tile => {
+
+            // random rocks in the sea
+            if (tile.type === 'water' && tile.elevation > -8) {
+                if (Math.random() < seaRockRate) {
+                    const radius = getRandomInt(1, 5);
+                    const blob = this.generateBlob(tile.x, tile.y, radius);
+                    blob.forEach(coord => {
+                        const tile = this.getTile(coord[0], coord[1]);
+                        if (tile && tile.type === 'water') {
+                            if (Math.random() < 0.85) {
+                                tile.type = 'stone';
+                                tile.elevation = getRandomInt(1, 4);
+                            }
+                        }
+                    })
+                }
+            }
+
+            // random rocks on mountains
+            if (tile.elevation > 27) {
+                if (Math.random() < mountainRockRate) {
+                    const radius = getRandomInt(1, 4);
+                    const blob = this.generateBlob(tile.x, tile.y, radius);
+                    blob.forEach(coord => {
+                        const tile = this.getTile(coord[0], coord[1]);
+                        if (tile && Math.random() < 0.7) {
+                            tile.type = 'stone';
+                        }
+                    })
+                }
+            }
+        })
+        return tiles
+
+    }
+
+    addSnow(tiles) {
+
+        let snowAltitude = config.worldGen.snowAltitude
+        tiles.forEach(tile => {
+            if (tile.elevation < snowAltitude) {return}
+            if (Math.random() < 0.8) {
+                tile.snowCovered = true
+            }
+        })
     }
 
     getTile(x,y) {
@@ -234,6 +354,43 @@ export class Grid {
 
     }
 
+
+    getLineOfTiles(x0,y0,x1,y1) {
+
+        const tiles = []
+
+        const mx = Math.abs(x1 - x0)
+        const my = Math.abs(y1 - y0)
+
+        const steps = Math.max(mx, my)
+        if (steps === 0) return  // same tile clicked twice
+
+        let sx = 0
+        let sy = 0
+
+
+        let x = x0
+        let y = y0
+
+        tiles.push(this.getTile(x,y))
+
+        while (x != x1 || y != y1) {
+            sx += mx
+            sy += my
+            const dx = x1 > x0 ? 1 : -1
+            const dy = y1 > y0 ? 1 : -1
+
+            if (sx >= steps) { sx -= steps; x += dx }
+            if (sy >= steps) { sy -= steps; y += dy }
+
+
+            const tile = this.getTile(x, y)
+            tiles.push(tile)
+        }
+
+        return tiles
+
+    }
 
     getTileNeighbours(tile) {
         const offsets = [
@@ -249,48 +406,23 @@ export class Grid {
 
     tick(tickCount) {
         this.tiles.forEach(tile => {
-            if (tile.aflame) {
-                this.updateFire(tile)
-            }
-            if (tile.type === 'ash') {
-                this.updateAsh(tile)
-            }
-            if (tile.updateColourEveryTick) {
-                tile.assignColour(tickCount)
-            }
+            tile.tick(tickCount)
             if (tile.elevation < 0 && tile.type != 'water') {
                 this.updateBelowSeaLevel(tile)
             }
         })
     }
 
-    updateFire(tile) {
-        tile.assignColour()
-        const burnTime = config.tileTypes[tile.type]?.burnTime || 20;
-        tile.burnTimer = (tile.burnTimer || burnTime) - 1;
-        if (tile.burnTimer <= 0) {
-            tile.type = 'ash';
-            tile.aflame = false
-            tile.assignColour();
-            return;
-        }
-        const neighbours = this.getTileNeighbours(tile)
-        neighbours.forEach(neighbour => {
-            const flammability = config.tileTypes[neighbour.type]?.flammability;
-            if (flammability && Math.random() < flammability) {
-                neighbour.aflame = true
-            }
-        })
 
-    }
-
-    updateAsh(tile) {
-
+    regrow(tile) {
         const neighbours = this.getTileNeighbours(tile)
         let regrowthChance = 0
+        const regrowthSpeed = config.tileTypes[tile.type]?.grassRegrowthSpeed || 0.1;
         neighbours.forEach(neighbour => {
-            if (neighbour.type === 'grass') {
-                regrowthChance = regrowthChance + config.tileTypes.ash.grassRegrowthSpeed
+            // grass can't regrow across more than 5 feet
+            const heightDifference = Math.abs(neighbour.elevation - tile.elevation)
+            if (neighbour.type === 'grass' && heightDifference < config.worldBehaviour.grassGrowAcrossHeightDifference) {
+                regrowthChance = regrowthChance + regrowthSpeed
             }
         })
         if (Math.random() < regrowthChance) {
@@ -300,7 +432,6 @@ export class Grid {
     }
 
     updateBelowSeaLevel(tile) {
-        console.log('called')
         const neighbours = this.getTileNeighbours(tile)
         let flood = false
         neighbours.forEach(neighbour => {
@@ -312,6 +443,16 @@ export class Grid {
             tile.type = 'water'
             tile.assignColour()
         }
+    }
+
+    addBridge(tiles) {
+        const bridge = new Bridge(tiles)
+
+        tiles.forEach(tile => {
+            tile.bridge = bridge
+            tile.assignColour()
+        })
+
     }
 
 }

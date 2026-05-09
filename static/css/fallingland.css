@@ -3,12 +3,13 @@ body {
     background-color: #c5d3d9;
     display: flex;
     justify-content: center;
-    widht: 100vw;
+    width: 100vw;
+    font-family: 'Arial', sans-serif;
 }
 canvas {
-    margin-top: 50px;
-    width: 500px;
-    height: 500px;
+    margin-top: 5vh;
+    width: 60vw;
+    height: 90vh;
     filter: saturate(90%);
     border: 3px inset black;
     background-color: #164a24;
@@ -20,9 +21,16 @@ canvas {
     justify-content: center;
 }
 
+#controls {
+    padding-left: 1vw;
+    padding-top: 5vh;
+}
+#amountOfEarth {
+    text-align: right;
+    font-size: 10pt;
+}
+
 #tileInfoDisplay {
-    font-family: 'Arial', sans-serif;
-    padding-top: 20px;
     font-size: 12pt;
 
 }
@@ -31,9 +39,13 @@ canvas {
     padding: 5px;
     margin-bottom: 5px;
     filter: saturate(50%);
-    width: min-content
+    width: fit-content
 }
 
+.tileLabel.loading {
+    background-color: grey;
+    color: white;
+}
 .tileLabel.water {
     background-color: blue;
     color: white;
@@ -49,10 +61,61 @@ canvas {
     background-color: darkgrey;
     color: white;
 }
+.tileLabel.stone {
+    background-color: grey;
+}
 .tileLabel.mud {
     background-color: brown;
     color: white;
 }
+.tileLabel.marsh {
+    background-color: #2a4d25;
+    color: white;
+}
+.tileLabel.sand {
+    background-color: gold;
+}
 .tileLabel.fire {
     background-color: darkorange !important;
+}
+.tileLabel.snow {
+    background-color: white !important;
+}
+.tileLabel.human {
+    background-color:  #5c483e !important;
+    color: white;
+}
+.tileLabel.flower {
+    background-color: pink ;
+}
+
+#brushSelection button {
+    border: 1px solid #ffffff00;
+    filter: saturate(60%)
+}
+#brushSelection button.active, #brushSelection button:hover {
+    border: 1px solid #000000;
+    filter: saturate(100%)
+}
+
+#brushSelection #fire {
+    background-color: darkorange;
+}
+#brushSelection #human {
+    background-color: #5c483e;
+    color: white;
+}
+#brushSelection #tree {
+    background-color: darkgreen;
+    color: white;
+}
+#brushSelection #land {
+    background-color: seagreen
+}
+#brushSelection #dig {
+    background-color: brown;
+    color: white;
+}
+#brushSelection #flower {
+    background-color: pink ;
 }
