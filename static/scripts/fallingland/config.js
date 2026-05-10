@@ -2,6 +2,7 @@ export const config = {
     "gameSettings": {
         "canvasWidth": 500,
         "canvasHeight": 500,
+        "messageTimeout": 7000, // length of time messages to the player are displayed, in ms
     },
     "worldGen": {
         "waterAmount": 0, // lower for more land. higher for more water.
@@ -40,6 +41,7 @@ export const config = {
     "tileTypes": {
         "water": {
             "passable": false,
+            "deadly": true,
         },
         "sand": {
             "flammability": 0.05,

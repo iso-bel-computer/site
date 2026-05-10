@@ -25,8 +25,14 @@ canvas {
     padding-left: 1vw;
     padding-top: 5vh;
 }
-#amountOfEarth {
+#resources {
     font-size: 10pt;
+}
+
+#messages {
+    font-size: 10pt;
+    max-width: 100px;
+    max-height: 300px;
 }
 
 #tileInfoDisplay {
@@ -84,6 +90,9 @@ canvas {
     background-color:  #5c483e !important;
     color: white;
 }
+.tileLabel.bridge {
+    background-color:  #baa663  !important;
+}
 .tileLabel.flower {
     background-color: pink ;
 }
@@ -128,5 +137,5 @@ canvas {
     background-color: pink ;
 }
 #brushSelection #bridge {
-    background-color:  #baa663 !important;
+    background-color:  #baa663 ;
 }

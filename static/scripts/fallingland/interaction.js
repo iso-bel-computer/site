@@ -8,11 +8,22 @@ export class Interactions {
         this.render = render
         this.game = document.getElementById('game')
         this.brushSelection = document.getElementById('brushSelection')
-        this.earthDisplay = document.getElementById('amountOfEarth')
+        this.resourceDisplay= document.getElementById('resources')
         this.tileInfoDisplay = document.getElementById('tileInfoDisplay')
+        this.messageDisplay = document.getElementById('messages')
         this.earth = 0
         this.brushSize = 5
+
+        this.messageDisplay.innerHTML = ''
     }
+
+    writeMessage(message) {
+        this.messageDisplay.innerHTML = message
+        document.setTimeout(() => {
+            this.messageDisplay.innerHTML = ''
+        }, config.gameSettings.messageTimeout)
+    }
+
 
     addEventListeners() {
         this.brushSelection.querySelectorAll('button').forEach(button => {
@@ -39,7 +50,7 @@ export class Interactions {
             const tile = this.render.getTile(e.clientX, e.clientY)
             if (tile) {
 
-                console.log('SELECTED TILE: ', tile)
+                this.messageDisplay.innerHTML = ''
 
                 if (this.selectedBrush === 'fire') {
                     this.addFire(tile)
@@ -113,13 +124,13 @@ export class Interactions {
 
             if (bridgeStart.type === 'water' || bridgeEnd.type === 'water') {
                 buildBridge = false
-                console.warn('Bridge over ... water')
+                this.writeMessage('Bridge can\'t start or end on water.')
             }
 
             // check if bridge is valid
             if (bridgeTiles.length > (config.gameplay.maxBridgeLength)) {
                 buildBridge = false
-                console.warn('Bridge too long')
+                this.writeMessage(`Bridge can't be more than ${config.gameplay.maxBridgeLength} tiles long.`)
             }
 
 
@@ -127,12 +138,12 @@ export class Interactions {
                 if (tile.elevation > bridgeStart.elevation + 5
                 || tile.elevation > bridgeEnd.elevation + 5) {
                     buildBridge = false
-                    console.warn('Bridge over high terrain', tile.elevation, bridgeStart.elevation, bridgeEnd.elevation)
+                    this.writeMessage(`Middle of bridge can't be higher than start or end points.`)
                 }
 
                 if (tile.bridge) {
                     buildBridge = false
-                    console.warn('Bridge intersects another bridge')
+                    this.writeMessage(`Bridge intersects another bridge.`)
                 }
             })
 
@@ -154,14 +165,21 @@ export class Interactions {
                 tile.assignColour()
             })
 
-        } 
+        }
+
+        else {
+            this.writeMessage(`Trees only like grass :(`)
+        }
     }
 
     addLand(tile) {
 
         const coords = this.grid.generateBlob(tile.x, tile.y, getRandomInt(4,7))
         coords.forEach(coord => {
-            if (this.earth < 1) {return}
+            if (this.earth < 1) {
+                this.writeMessage(`Out of dirt!`)
+                return
+            }
             const tile = this.grid.getTile(coord[0], coord[1])
             tile.elevation = tile.elevation + 1
             if (tile.elevation > 0) {
@@ -196,7 +214,7 @@ export class Interactions {
 
     displayEarthAmount() {
 
-        this.earthDisplay.innerHTML = `${Math.floor(this.earth / 30)} dirt`
+        this.resourceDisplay.innerHTML = `${Math.floor(this.earth / 30)} dirt`
     }
 
     addPerson(tile) {

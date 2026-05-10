@@ -6,7 +6,6 @@ export class RenderEngine {
         this.canvas = document.getElementById('game')
         this.ctx = this.canvas.getContext('2d')
         this.pixelScale = 4
-        this.tileInfoDisplay = document.getElementById('tileInfoDisplay')
         this.resizeCanvas()
         const rect = this.canvas.getBoundingClientRect();
         this.viewW = rect.width;
@@ -164,26 +163,6 @@ export class RenderEngine {
         return this.grid.tileMap.get(`${x},${y}`);
     }
     addEventListener() {
-
-        this.canvas.addEventListener('mousemove', (e) => {
-            const tile = this.getTile(e.clientX, e.clientY)
-            if (tile) {
-                if (tile != this.prevTile) {
-                    this.prevTile = tile
-                    const fire = tile.aflame ? 'fire' : ''
-                    const human = tile.human ? 'human' : ''
-                    const snow = tile.snowCovered ? 'snow' : ''
-                    const bridge = tile.bridge ? 'bridge' : ''
-                        this.tileInfoDisplay.innerHTML = `
-                            <div class='${tile.type} tileLabel ${fire} ${human} ${snow} ${bridge}'>
-                                ${tile.type} ${fire} ${human} ${snow} ${bridge}
-                            </div>
-                            ${tile.x}x ${tile.y}y<br>
-                            ${Math.floor(tile.elevation)} ft<br>
-                        `
-                };
-            }
-        });
 
         document.addEventListener('keydown', (e) => {
             e.preventDefault()

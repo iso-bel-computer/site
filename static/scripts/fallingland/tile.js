@@ -39,6 +39,7 @@ export class Tile {
 
     addHuman(human) {
         this.human = human
+        this.human.tile = this
         this.assignColour()
 
     }
@@ -101,8 +102,8 @@ export class Tile {
         else if (this.type === 'water') {
             const shore = (!this.isTileSurroundedBySameType())
             if (shore) {
-                r = getRandomInt(230,255)
-                g = getRandomInt(230,255)
+                r = getRandomInt(190,220)
+                g = getRandomInt(190,220)
                 b = getRandomInt(230,255)
                 this.updateColourEveryTick = true
             } else {
@@ -209,7 +210,7 @@ export class Tile {
         }
 
         if (this.human) {
-            this.human.move(this, this.neighbours)
+            this.human.tick()
         }
 
     }

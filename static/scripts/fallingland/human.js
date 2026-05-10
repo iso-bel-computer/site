@@ -4,6 +4,28 @@ import { config } from './config.js';
 export class Human {
     constructor() {
         this.assignColour()
+        this.alive = true
+    }
+
+    tick() {
+        this.checkTileIsSafe()
+        this.move(this, this.neighbours)
+    }
+
+    checkTileIsSafe() {
+        if (!this.tile.passable && Math.random() < 0.3) {
+            this.die()
+        }
+
+        if (this.tile.aflame && Math.random() < 0.1) {
+            this.die()
+        }
+    }
+
+    die() {
+        this.tile.removeHuman()
+        this.alive = false
+
     }
 
     assignColour() {
@@ -27,19 +49,19 @@ export class Human {
         }
     }
 
-    move(tile, neighbours) {
+    move() {
 
-        let nextTile = tile
+        let nextTile = this.tile
         let moving = false
-        let currentDesirability = config.tileTypes[tile.type]?.desirability || 0.5
+        let currentDesirability = config.tileTypes[this.tile.type]?.desirability || 0.5
 
-        neighbours.forEach(neighbour => {
+        this.tile.neighbours.forEach(neighbour => {
 
             // figuring out which neighbouring tile human would most like to go to
 
             if (neighbour.human) {return}
             if (!neighbour.isPassable()) {return}
-            if (Math.abs(tile.elevation - neighbour.elevation) > 5) {return}
+            if (Math.abs(this.tile.elevation - neighbour.elevation) > 5) {return}
 
 
             let neighbourDesirability = config.tileTypes[neighbour.type]?.desirability || 0.5
@@ -56,7 +78,7 @@ export class Human {
         })
 
         if (moving) {
-            tile.removeHuman(this)
+            this.tile.removeHuman(this)
             nextTile.addHuman(this)
         }
 
