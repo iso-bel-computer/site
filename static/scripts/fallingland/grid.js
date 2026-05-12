@@ -1,7 +1,7 @@
 import { config } from './config.js';
 import { Tile } from './tile.js';
 import { Bridge } from './entities/bridge.js';
-import { getRandomInt, getRandomArbitrary } from './helpers.js';
+import { getRandomInt, getRandomArbitrary, clamp } from './helpers.js';
 
 export class Grid {
     constructor() {
@@ -25,26 +25,6 @@ export class Grid {
     }
 
 
-    generateTrees() {
-        const centreX = getRandomInt(0, config.gameSettings.canvasWidth)
-        const centreY = getRandomInt(0, config.gameSettings.canvasHeight)
-        const features = [];
-        const featureSize = getRandomInt(80,400)
-        const density = getRandomInt(featureSize / 4, featureSize * 3)          // number of blobs
-        for (let i = 0; i <= density; i++) {
-            let wildcard = 0
-            if (Math.random() < 0.1) {
-                wildcard = getRandomInt(-100,100)
-            }
-            const blob = this.generateBlob(
-                getRandomInt(centreX - (featureSize / 3) + wildcard, centreX + (featureSize / 3) + wildcard), // centre x of blob
-                getRandomInt(centreY - (featureSize / 3) - wildcard, centreY + (featureSize / 3) + wildcard), // centre y of blob
-                getRandomInt(1, 3)                       // radius of blob
-            );
-            features.push(blob)
-        }
-        return features
-    }
 
 
     createPerlin() {
@@ -98,7 +78,13 @@ export class Grid {
 
     }
 
-    getElevation(x, y) {
+    getElevation(x, y, offset) {
+
+        if (!offset) {offset = 0}
+
+        x = x + offset
+        y = y + offset
+
         // warp the coordinates using separate noise samples
         const warpStrength = 60
         const wx = x + warpStrength * this.perlin.get(x * 0.005 + 1.7, y * 0.005 + 9.2);
@@ -113,12 +99,44 @@ export class Grid {
             { scale: 0.08,  strength: 0.10 },
         ];
 
+
+
+
         const total = octaves.reduce((sum, octave) => {
             return sum + this.perlin.get(wx * octave.scale, wy * octave.scale) * octave.strength;
         }, 0);
 
         const maxValue = octaves.reduce((sum, o) => sum + o.strength, 0);
         return total / maxValue;
+    }
+    getFertility(x, y) {
+
+        const offset = 25000
+
+        x = x + offset
+        y = y + offset
+
+        // warp the coordinates using separate noise samples
+        const warpStrength = 60
+        const wx = x + warpStrength * this.perlin.get(x * 0.005 + 1.7, y * 0.005 + 9.2);
+        const wy = y + warpStrength * this.perlin.get(x * 0.005 + 8.3, y * 0.005 + 2.4);
+
+        const octaves = [
+            { scale: 0.0001, strength: 6 },
+            { scale: 0.003, strength: 3 },
+            { scale: 0.02,  strength: 1 },
+            { scale: 0.01,  strength: 0.8 },
+        ];
+
+        const total = octaves.reduce((sum, octave) => {
+            return sum + this.perlin.get(wx * octave.scale, wy * octave.scale) * octave.strength;
+        }, 0);
+
+        const maxValue = octaves.reduce((sum, o) => sum + o.strength, 0);
+        const normalized = (total / maxValue + 1) / 2;
+        const contrast = 3; // 1 = unchanged
+
+        return clamp((normalized - 0.5) * contrast + 0.5, 0, 1);
     }
 
     generateFlowers(startX, startY, endX, endY, amount) {
@@ -141,19 +159,30 @@ export class Grid {
         if (config.worldGen.randomiseWaterLevel) {
             waterLevel = getRandomInt(-20,20)
         }
+        let randomWaterLevelMod = getRandomInt(config.worldGen.randomWaterLevelMod[0], config.worldGen.randomWaterLevelMod[1])
+
+        let mapHasOcean = (Math.random() < config.worldGen.chanceOfOcean)
         while (y <= config.gameSettings.canvasHeight) {
 
             const tile = new Tile();
 
             tile.x = x;
             tile.y = y;
-            tile.elevation = 255 * this.getElevation(x,y) - waterLevel;
+            tile.elevation = ((600 * this.getElevation(x,y) - waterLevel)  + randomWaterLevelMod)
+
+            tile.baseFertility = this.getFertility(x,y, 2500);
+
+            if (!mapHasOcean) {
+                tile.elevation = (Math.floor(Math.abs(tile.elevation) * 0.9) + 3)
+            }
 
             if (tile.elevation < 1) {
                 tile.type = 'water'
             }
 
-            else if (tile.elevation > getRandomInt(50,60) && Math.random() < 0.6) {
+            else if (tile.elevation > getRandomInt(90,110) && Math.random() < 0.6
+                     || tile.elevation > 110 && Math.random() < 0.85
+                    ) {
                 tile.type = 'stone'
             }
             else {
@@ -172,31 +201,6 @@ export class Grid {
         this.tileMap = new Map();
         tiles.forEach(tile => this.tileMap.set(`${tile.x},${tile.y}`, tile));
 
-        let forests = new Set()
-        let numberOfForests = getRandomInt(config.worldGen.minForestsPerMap, config.worldGen.maxForestsPerMap)
-        for (let i=0; i <= numberOfForests; i++) {
-            const forest = this.generateTrees();
-            forest.forEach(tree => {
-                forests.add(tree)
-            })
-        }
-        forests.forEach(tree => {
-            if (this.getTile(tree[0][0], tree[0][1])) {
-                const treeTile = this.getTile(tree[0][0], tree[0][1])
-                if (treeTile.elevation * Math.random() < 8) {
-                    tree.forEach(coord => {
-                        const coordTile = this.getTile(coord[0],coord[1])
-                        if (coordTile && coordTile.type != 'water') {
-                            coordTile.type = 'tree'
-                            if (Math.random() < config.worldGen.beehiveChanceInTree) {
-                                coordTile.type = 'beehive'
-                                console.log(coordTile)
-                            }
-                        }
-                    })
-                }
-            }
-        })
 
         let numberOfFlowerPatches = getRandomInt(0, 5)
         for (let i=0; i <= numberOfFlowerPatches; i++) {
@@ -223,19 +227,54 @@ export class Grid {
 
         tiles.forEach(tile => {
             tile.neighbours = this.getTileNeighbours(tile)
+            tile.immediateNeighbours = this.getImmediateNeighbours(tile)
         })
 
         this.addBeaches(tiles)
-        this.addBogs(tiles)
-        this.addRocks(tiles)
         this.addSnow(tiles)
 
 
         tiles.forEach(tile => {
-            tile.init()
+            this.addBogs(tile)
+            this.addRocks(tile)
+            this.adjustFertility(tile)
         })
 
+
+        this.addTrees(tiles)
+        this.addGorse(tiles)
+
+        tiles.forEach(tile => {
+            tile.init()
+        })
         return tiles;
+    }
+
+    addTree(tile) {
+
+        if (!config.tileTypes[tile.type]?.canPlantTrees) {return}
+
+        const treeCoords = this.generateBlob(tile.x,tile.y,getRandomInt(1,4))
+        treeCoords.forEach(coord => {
+            const tile = this.getTile(coord[0], coord[1])
+            if (!tile) return
+            if (tile.type === 'water') return
+            tile.type = 'tree'
+            tile.assignColour()
+        })
+
+    }
+    addTrees(tiles) {
+        tiles.forEach(tile => {
+            const treeDensity = getRandomArbitrary(0.010, 0.020)
+            if (Math.random() < treeDensity
+                && tile.fertility > 0.40
+                && (Math.random() / 2) + 0.1 < tile.fertility
+                && (tile.type === 'grass' || tile.type === 'marsh' ))
+            {
+                this.addTree(tile)
+            }
+        })
     }
 
     addBeaches(tiles) {
@@ -272,91 +311,162 @@ export class Grid {
 
     }
 
-    addBogs(tiles) {
+    addBogs(tile) {
 
         let bogAmounts   = config.worldGen.bogAmounts
         let bogSize      = config.worldGen.bogSize
 
-        tiles.forEach(tile => {
-            if (tile.type !== 'water'
-            && tile.neighbours.find(neighbour => neighbour.type === 'water')
-            && Math.random() < bogAmounts) {
-                const coords = this.generateBlob(tile.x, tile.y, getRandomInt(bogSize * 0.5, bogSize * 1.5))
-                coords.forEach(coord => {
-                    const tile = this.getTile(coord[0], coord[1]);
-                    if (tile) {
-                        if (tile.type !== 'water' && Math.random() < 0.7) {
-                            tile.type = 'marsh'
-                        }
+        if (tile.type !== 'water'
+        && tile.neighbours.find(neighbour => neighbour.type === 'water')
+        && tile.baseFertility > 0.5
+        && Math.random() < bogAmounts) {
+            const coords = this.generateBlob(tile.x, tile.y, getRandomInt(bogSize * 0.5, bogSize * 1.5))
+            coords.forEach(coord => {
+                const tile = this.getTile(coord[0], coord[1]);
+                if (tile) {
+                    if (tile.type !== 'water' && Math.random() < 0.7) {
+                        tile.type = 'marsh'
                     }
-                })
+                }
+            })
 
-            }
-        })
+        }
 
-        return tiles
-
+        return tile
 
     }
 
 
-    addRocks(tiles) {
+    addRocks(tile) {
 
-        let seaRockRate      = config.worldGen.shallowWaterRockRate
-        let mountainRockRate = config.worldGen.mountainRockRate
+        let seaRockRate      = config.worldGen.shallowWaterRockRate * getRandomArbitrary(0.75, 1.25)
+        let mountainRockRate = config.worldGen.mountainRockRate * getRandomArbitrary(0.75, 1.25)
 
-        tiles.forEach(tile => {
 
-            // random rocks in the sea
-            if (tile.type === 'water' && tile.elevation > -8) {
-                if (Math.random() < seaRockRate) {
-                    const radius = getRandomInt(1, 5);
-                    const blob = this.generateBlob(tile.x, tile.y, radius);
-                    blob.forEach(coord => {
-                        const tile = this.getTile(coord[0], coord[1]);
-                        if (tile && tile.type === 'water') {
-                            if (Math.random() < 0.75) {
-                                tile.type = 'stone';
-                                tile.elevation = getRandomInt(1, 4);
-                            }
-                        }
-                    })
-                }
-            }
-
-            // random rocks on mountains
-            if (tile.elevation > 27) {
-                if (Math.random() < mountainRockRate) {
-                    const radius = getRandomInt(1, 4);
-                    const blob = this.generateBlob(tile.x, tile.y, radius);
-                    blob.forEach(coord => {
-                        const tile = this.getTile(coord[0], coord[1]);
-                        if (tile && Math.random() < 0.7) {
+        // random rocks in the sea
+        if (tile.type === 'water' && tile.elevation > -8) {
+            if (Math.random() < seaRockRate) {
+                const radius = getRandomInt(1, 5);
+                const blob = this.generateBlob(tile.x, tile.y, radius);
+                blob.forEach(coord => {
+                    const tile = this.getTile(coord[0], coord[1]);
+                    if (tile && tile.type === 'water') {
+                        if (Math.random() < 0.75) {
                             tile.type = 'stone';
+                            tile.elevation = getRandomInt(1, 4);
                         }
-                    })
-                }
+                    }
+                })
             }
-        })
-        return tiles
+        }
+
+        // random rocks on mountains
+        if (tile.elevation > 34) {
+            if (Math.random() < mountainRockRate) {
+                const radius = getRandomInt(1, 4);
+                const blob = this.generateBlob(tile.x, tile.y, radius);
+                blob.forEach(coord => {
+                    const tile = this.getTile(coord[0], coord[1]);
+                    if (tile && Math.random() < 0.7) {
+                        tile.type = 'stone';
+                    }
+                })
+            }
+        }
+
+        return tile
 
     }
 
     addSnow(tiles) {
 
-        let snowAltitude = config.worldGen.snowAltitude
-        let snowRate = 0.8
-        if (Math.random() < 0.01 && config.worldGen.enableSnowWorlds) {
-            snowAltitude = 0
-            snowRate = getRandomArbitrary(0.65,1)
-        }
-        tiles.forEach(tile => {
-            if (tile.elevation < snowAltitude) {return}
-            if (Math.random() < snowRate) {
-                tile.snowCovered = true
+        let snowOnThisMap = (Math.random() < 0.5)
+        if (snowOnThisMap) {
+            let snowAltitude = config.worldGen.snowAltitude
+            let snowRate = 0.8
+            if (Math.random() < config.worldGen.snowWorldChance) {
+                snowAltitude = 0
+                snowRate = getRandomArbitrary(0.65,1)
             }
-        })
+            tiles.forEach(tile => {
+                if (tile.elevation < snowAltitude) {return}
+                if (Math.random() < snowRate) {
+                    tile.snowCovered = true
+                }
+            })
+
+        }
+
     }
+
+    adjustFertility(tile) {
+        // we already get a noise map of fertility added to the tile.
+        // so this is just adjusting it for environmental factors
+
+        let fertility = tile.baseFertility
+
+        if (tile.type != 'water') {
+            // if there's water anywhere near there then fertility gets a boost
+            const furtherNeighbours = this.getTileNeighbours(tile, 10)
+            furtherNeighbours.forEach(neighbour => {
+
+                const fertilityBoost = config.tileTypes[neighbour.type]?.fertilityBoost
+                if (fertilityBoost) {
+                    fertility = fertility + fertilityBoost
+                }
+
+            })
+
+        }
+
+        const steps = tile.elevation / 10 // 1 for every 15ft of height
+        const percentLoss = 0.01 * steps
+        fertility = fertility - percentLoss
+        tile.fertility = fertility
+
+
+        return tile
+
+    }
+
+    addGorse(tiles) {
+        tiles.forEach(tile => {
+
+            if (tile.fertility < 0.30 && tile.type === 'grass') {
+
+                if (tile.elevation > 20
+                && tile.elevation < 50
+                && Math.random() < 0.007) {
+                    const radius = getRandomInt(3, 5);
+                    const blob = this.generateBlob(tile.x, tile.y, radius);
+                    blob.forEach(coord => {
+                        const tile = this.getTile(coord[0], coord[1]);
+                        if (tile && Math.random() < 0.7) {
+                            tile.type = 'gorse';
+                            tile.assignColour()
+                        }
+                    })
+                }
+
+                if (tile.elevation < 20
+                    && Math.random() < 0.003) {
+                    const radius = getRandomInt(1, 3);
+                    const blob = this.generateBlob(tile.x, tile.y, radius);
+                    blob.forEach(coord => {
+                        const tile = this.getTile(coord[0], coord[1]);
+                        if (tile && Math.random() < 0.5) {
+                            tile.type = 'shrub';
+                            tile.assignColour()
+                        }
+                    })
+
+                }
+            }
+
+        })
+        return tiles
+    }
+
 
     getTile(x,y) {
         return this.tileMap.get(`${x},${y}`)
@@ -401,17 +511,37 @@ export class Grid {
 
     }
 
-    getTileNeighbours(tile) {
+    getTileNeighbours(tile, range) {
+        if (!range) {range = 1}
+
+        let x = range * -1
+        let y = range * -1
+
+        const offsets = []
+
+        while (x <= range) {
+            while (y <= range) {
+                if (!(x === 0 && y === 0)) {
+                    offsets.push( {"x": x, "y": y} )
+                }
+                y++
+            }
+            x++
+            y = range * -1
+        }
+
+        return offsets
+            .map(offset => this.tileMap.get(`${tile.x + offset.x},${tile.y + offset.y}`))
+            .filter(Boolean);
+    }
+
+    getImmediateNeighbours(tile) {
         const offsets = [
-            { x:  1,  y:  0  },
-            { x:  1,  y:  1  },
-            { x:  1,  y:  -1 },
-            { x:  0,  y:  -1 },
-            { x:  0,  y:  1  },
-            { x:  -1, y:  1  },
-            { x:  -1, y:  0  },
-            { x:  -1, y:  -1 },
-        ];
+            {"x": 1, "y": 0},
+            {"x": -1, "y": 0},
+            {"x": 0, "y": 1},
+            {"x": 0, "y": -1},
+        ]
         return offsets
             .map(offset => this.tileMap.get(`${tile.x + offset.x},${tile.y + offset.y}`))
             .filter(Boolean);
@@ -424,24 +554,6 @@ export class Grid {
                 this.updateBelowSeaLevel(tile)
             }
         })
-    }
-
-
-    regrow(tile) {
-        const neighbours = this.getTileNeighbours(tile)
-        let regrowthChance = 0
-        const regrowthSpeed = config.tileTypes[tile.type]?.grassRegrowthSpeed || 0.1;
-        neighbours.forEach(neighbour => {
-            // grass can't regrow across more than 5 feet
-            const heightDifference = Math.abs(neighbour.elevation - tile.elevation)
-            if (neighbour.type === 'grass' && heightDifference < config.worldBehaviour.grassGrowAcrossHeightDifference) {
-                regrowthChance = regrowthChance + regrowthSpeed
-            }
-        })
-        if (Math.random() < regrowthChance) {
-            tile.type = 'grass'
-            tile.assignColour()
-        }
     }
 
     updateBelowSeaLevel(tile) {

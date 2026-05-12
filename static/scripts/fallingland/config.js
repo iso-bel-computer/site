@@ -1,38 +1,42 @@
 export const config = {
     "gameSettings": {
-        "canvasWidth": 500,
-        "canvasHeight": 500,
-        "messageTimeout": 7000, // length of time messages to the player are displayed, in ms
+        "canvasWidth": 400,
+        "canvasHeight": 400,
+        "messageTimeout": 1500, // length of time messages to the player are displayed, in ms
     },
     "worldGen": {
+        "chanceOfOcean": 0.4,
         "waterAmount": 0, // lower for more land. higher for more water.
-        "randomiseWaterLevel": true,
+        "randomiseWaterLevel": false,
+        "randomWaterLevelMod": [-30,20], // added on after perlin noise to bias towards more or less water. allows for waterless and drowned worlds
         "beachAmounts": 0.03, // chance of any shore tile having a beach
         "beachSize": 0.5, // value 0 to 1
         "randomiseBeaches": true,
-        "bogAmounts": 0.001,
-        "bogSize": 10,
-        "minForestsPerMap": 5,
-        "maxForestsPerMap": 20,
-        "shallowWaterRockRate": 0.0004,
-        "mountainRockRate": 0.0002,
-        "snowAltitude": 65,
-        "enableSnowWorlds": true,
+        "bogAmounts": 0.0001,
+        "bogSize": 60,
+        "minForestsPerMap": 0,
+        "maxForestsPerMap": 40,
+        "shallowWaterRockRate": 0.0008,
+        "mountainRockRate": 0.0007,
+        "snowAltitude": 115, // default altutide for snow. 65 creates snow capped mountains
+        "snowWorldChance": 0.05, // random 1% chance for any world to be covered in snow
         "beehiveChanceInTree": 0.0001, // chance any tree tile is replaced with a beehive
 
     },
     "viewSettings": {
-        "contourInterval": 10,
+        "contourInterval": 15,
         "contourThickness": 2,
+        "contourDarkness": 45,
         "gridInterval": 40,
         "gridOffset": 20,
-        "maxZoom": 8,
-        "minZoom": 3,
+        "maxZoom": 10,
+        "minZoom": 1,
 
     },
     "worldBehaviour": {
         "grassGrowAcrossHeightDifference": 5, // how close in elevation two tiles have to be for grass to grow beteween them
-        "waterEvaporationRate": 0.01 // the chance an isolated block of water will evaporate every tick
+        "waterEvaporationRate": 0.01, // the chance an isolated block of water will evaporate every tick
+        "riverSpreadSpeed": 0.2,
 
     },
     "gameplay": {
@@ -41,31 +45,46 @@ export const config = {
     "tileTypes": {
         "water": {
             "passable": false,
-            "deadly": true,
+            "fertilityBoost": 0.001, // fertility is a 0-1 value. this is for every neighbour in a four mile radius
+            "neverDrawContour": true
         },
         "sand": {
             "flammability": 0.05,
             "burnTime": 1,
             "desirability": 0.6,
+            "fertilityBoost": -0.001, // fertility is a 0-1 value. this is for every neighbour in a four mile radius
+            "erosionChance": 0.9
         },
 
         "stone": {
             "desirability": 0.4,
+            "canPlantTrees": true,
+            "fertilityBoost": -0.001, // fertility is a 0-1 value. this is for every neighbour in a four mile radius
+            "erosionChance": 0.1
+
         },
         "marsh": {
-            "flammability": 0.03,
-            "burnTime": 500,
-            "desirability": 0.2
+            "flammability": 0.002,
+            "burnTime": 200,
+            "desirability": 0.2,
+            "canPlantTrees": true,
+            "fertilityBoost": 0.005 // fertility is a 0-1 value. this is for every neighbour in a four mile radius
+
         },
         "tree": {
-            "flammability": 0.05,
-            "burnTime": 20,
+            "flammability": 0.045,
+            "burnTime": 13,
             "passable": false,
+            "marshSpreadSpeed": 0.000001,
+            "neverDrawContour": true
         },
         "grass": {
             "flammability": 0.1,
             "burnTime": 3,
+            "canPlantTrees": true,
             "desirability": 0.7,
+            "marshSpreadSpeed": 0.00001,
+            "erosionChance": 0.3
         },
         "flower": {
             "flammability": 1,
@@ -73,17 +92,26 @@ export const config = {
             "desirability": 0.8,
         },
         "ash": {
-            "grassRegrowthSpeed": 0.001, // chance of regrowth per tick, per neighbouring grass tile
+            "grassRegrowthSpeed": 0.0005, // chance of regrowth per tick, per neighbouring grass tile
             "desirability": 0.1,
         },
         "mud": {
-            "grassRegrowthSpeed": 0.003, // chance of regrowth per tick, per neighbouring grass tile
+            "grassRegrowthSpeed": 0.002, // chance of regrowth per tick, per neighbouring grass tile
             "desirability": 0.2,
+            "erosionChance": 0.5
         },
         "bridge": {
             "flammability": 0.1,
             "burnTime": 15,
         },
+        "gorse": {
+            "flammability": 0.2,
+            "burnTime": 3,
+        },
+        "shrub": {
+            "flammability": 0.3,
+            "burnTime": 4,
+        }
     }
 
 }

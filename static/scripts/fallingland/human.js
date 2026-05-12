@@ -9,16 +9,15 @@ export class Human {
 
     tick() {
         this.checkTileIsSafe()
-        this.move(this, this.neighbours)
+        this.move()
     }
 
     checkTileIsSafe() {
-        if (!this.tile.passable && Math.random() < 0.3) {
-            this.die()
-        }
+        if ((!this.tile.passable && Math.random() < 0.3)
+        || (this.tile.aflame && Math.random() < 0.1) ) {
 
-        if (this.tile.aflame && Math.random() < 0.1) {
             this.die()
+
         }
     }
 

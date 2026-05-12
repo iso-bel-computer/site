@@ -18,7 +18,6 @@
                 <div class='tileLabel loading'>
                     ...
                 </div>
-                -x -y<br>
                 -ft
 
 
@@ -26,6 +25,7 @@
             <div id='brushSelection'>
 
                 <button id='fire'  data-brush='fire'>Fire</button>
+                <button id='water'  data-brush='water'>Water</button>
                 <button id='tree'  data-brush='tree'>Tree</button>
                 <button id='land'  data-brush='land'>Land</button>
                 <button id='dig'   data-brush='excavate'>Dig</button>
@@ -36,8 +36,16 @@
             </div>
             <div id='resources'></div>
             <div id='messages'>Loading...</div>
-
+            <div id='controlsInfoWrapper'>
+                <div id='controlsToggle'>Controls ➡</div>
+                <div id='controlsInfo' hidden>
+                    Pan camera with WASD / Arrow Keys. <br>
+                    Shift to pan faster.<br>
+                    + / - keys to zoom.<br>
+                    Click on brushes, then click the map!.
+                </div>
             </div>
+
         </div>
         <script type='module' src="{{ url_for('static', filename='scripts/fallingland/main.js') }}"></script>
 

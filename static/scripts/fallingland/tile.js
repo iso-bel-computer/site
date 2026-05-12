@@ -6,6 +6,7 @@ export class Tile {
     init() {
         this.assignColour()
         this.setDefaultPassable()
+        this.waterlogged = 0
     }
 
     isTileSurroundedBySameType() {
@@ -52,6 +53,7 @@ export class Tile {
         this.bridge = bridge
         this.assignColour()
     }
+
     assignColour() {
         const elevation = this.elevation
         this.updateColourEveryTick = false
@@ -59,6 +61,12 @@ export class Tile {
         let r = 0
         let g = 0
         let b = 0
+
+        let h = 0
+        let s = 0
+        let l = 0
+
+        let usingHSL = false
 
         if (this.human) {
 
@@ -73,12 +81,14 @@ export class Tile {
             this.updateColourEveryTick = true
         }
 
-        else if (this.snowCovered && this.type != 'tree') {
-            const brightness = getRandomArbitrary(0.80,1)
-            const white = (210 + (elevation * 3))
-            r = Math.min(white * brightness, 255)
-            g = Math.min(white * brightness, 255)
-            b = Math.min(white * brightness, 255)
+        else if (this.snowCovered && this.type != 'tree' && this.type != 'shrub' && this.type != 'gorse') {
+            usingHSL = true
+            h = 1
+            s = 1
+            l = getRandomInt(85,90)
+            const steps = Math.abs(Math.floor(elevation / config.viewSettings.contourInterval))
+
+            l = l - (steps * 1.5)
         }
         else if (this.bridge) {
             const brightness = getRandomArbitrary(0.75,1)
@@ -88,29 +98,66 @@ export class Tile {
         }
 
         else if (this.type === 'grass') {
-            const brightness = getRandomArbitrary(0.45,0.85)
-            r = Math.min((Math.abs(elevation) * Math.abs(elevation)) / 10, 255) * brightness
-            g = getRandomInt(225,255) * brightness
-            b = getRandomInt(0,50) * brightness
+            usingHSL = true
+            h = getRandomInt(120,130) - (this.elevation * 0.8)
+            s = getRandomInt(60,70)
+            l = getRandomInt(30,45)
+
+            if (this.fertility > 0.6)  {l = l - getRandomInt(5,7)}
+            if (this.fertility < 0.35) {s = s - getRandomInt(10,13)}
+            const steps = Math.abs(Math.floor(elevation / config.viewSettings.contourInterval))
+
+            l = clamp(l - (steps * 2), 15, 43)
+
         }
         else if (this.type === 'marsh') {
-            r = getRandomInt(38,48)
-            g = getRandomInt(70,80)
-            b = getRandomInt(30,43)
+            r = getRandomInt(95,125)
+            g = getRandomInt(145,175)
+            b = getRandomInt(90,120)
+        }
+        else if (this.type === 'gorse') {
+            if (Math.random() < 0.95) {
+                r = getRandomInt(5, 15)
+                g = getRandomInt(40,50)
+                b = getRandomInt(5,15)
+            }
+            else {
+                r = getRandomInt(235,245)
+                g = getRandomInt(245,255)
+                b = getRandomInt(0,10)
+            }
+        }
+        else if (this.type === 'shrub') {
+            usingHSL = true
+            h = getRandomInt(35,40)
+            s = getRandomInt(31,37)
+            l = getRandomInt(20,30)
         }
 
         else if (this.type === 'water') {
-            const shore = (!this.isTileSurroundedBySameType())
-            if (shore) {
+            this.shore = (!this.isTileSurroundedBySameType() && this.elevation < 3)
+            if (this.shore) {
                 r = getRandomInt(190,220)
                 g = getRandomInt(190,220)
                 b = getRandomInt(230,255)
                 this.updateColourEveryTick = true
-            } else {
-                r = getRandomInt(0, 15)
-                g = getRandomInt(0, 100) - (Math.abs(elevation) * 4)
-                b = clamp(getRandomInt(250,255) - (Math.abs(elevation) * 1), 150, 255)
+            } else
+            {
+                usingHSL = true
+                h = getRandomInt(203,206)
+                s = getRandomInt(78,83)
+                l = getRandomInt(35,40)
+
+                if (this.elevation < 3) {
+                    const steps = Math.abs(Math.floor(elevation / 25))
+                    l = clamp(l - (steps * 5), 20, 43)
+                } else {
+                    // l = l + (this.elevation / 20)
+                    s = s * Math.min(this.waterLevel / 2, 1)
+
+                }
             }
+
         }
 
         else if (this.type === 'mud') {
@@ -119,9 +166,10 @@ export class Tile {
             b = getRandomInt(0,10)
         }
         else if (this.type === 'sand') {
-            r = getRandomInt(220,240)
-            g = getRandomInt(210,230)
-            b = getRandomInt(165,185)
+            usingHSL = true
+            h = getRandomInt(47,50)
+            s = getRandomInt(45,50)
+            l = getRandomInt(55,75)
         }
 
         else if (this.type === 'ash') {
@@ -142,43 +190,37 @@ export class Tile {
                 b = getRandomInt(0,15)
             } else {
                 r = getRandomInt(0,15)
-                g = getRandomInt(35,100)
+                g = getRandomInt(50,80)
                 b = getRandomInt(0,15)
             }
         }
 
         else if (this.type === 'stone') {
-            const brightness = getRandomArbitrary(0.75,1)
-            r = getRandomInt(170,190) * brightness
-            g = getRandomInt(170,190) * brightness
-            b = getRandomInt(170,190) * brightness
+            // const brightness = getRandomArbitrary(0.75,1)
+            // r = getRandomInt(170,190) * brightness
+            // g = getRandomInt(170,190) * brightness
+            // b = getRandomInt(170,190) * brightness
+            usingHSL = true
+            h = getRandomInt(120,130) - (this.elevation * 0.8)
+            s = getRandomInt(15,23)
+            l = getRandomInt(60,70)
         }
 
         else if (this.type === 'flower') {
-            const random = Math.random()
-            if (random < 0.2) {
-                r = getRandomInt(200,225)
-                g = getRandomInt(30,100)
-                b = getRandomInt(30,100)
-            } else if (random < 0.4) {
-                r = getRandomInt(30,100)
-                g = getRandomInt(200,225)
-                b = getRandomInt(30,100)
-            } else if (random < 0.6) {
-                r = getRandomInt(30,100)
-                g = getRandomInt(200,225)
-                b = getRandomInt(200,225)
-            } else if (random < 0.8) {
-                r = getRandomInt(200,225)
-                g = getRandomInt(200,225)
-                b = getRandomInt(30,100)
-            }
-            else {
-                r = getRandomInt(30,100)
-                g = getRandomInt(30,100)
-                b = getRandomInt(200,225)
-            }
+            usingHSL = true
+            h = getRandomInt(1,359)
+            s = getRandomInt(60,80)
+            l = getRandomInt(50, 70)
         }
+
+        if (usingHSL) { // try not to use hsl where the value is going to be recalculated a lot
+                        // for performance reasons
+            const convertedRGB = this.hslToRgb(h / 360, s / 100, l / 100)
+            r = convertedRGB[0]
+            g = convertedRGB[1]
+            b = convertedRGB[2]
+        }
+
 
         if (this.neighbours.find(neighbour => Math.abs(neighbour.elevation - this.elevation) > 7) && this.type != 'water') {
             r = r - 10
@@ -190,6 +232,32 @@ export class Tile {
         this.dirty = true
     }
 
+    hslToRgb(h, s, l) {
+
+        let r, g, b;
+
+        if (s === 0) {
+            r = g = b = l; // achromatic
+        } else {
+            const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+            const p = 2 * l - q;
+            r = this.hueToRgb(p, q, h + 1/3);
+            g = this.hueToRgb(p, q, h);
+            b = this.hueToRgb(p, q, h - 1/3);
+        }
+
+        return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+    }
+
+    hueToRgb(p, q, t) {
+        if (t < 0) t += 1;
+        if (t > 1) t -= 1;
+        if (t < 1/6) return p + (q - p) * 6 * t;
+        if (t < 1/2) return q;
+        if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+        return p;
+    }
+
     tick(tickCount) {
 
         if (this.aflame) {
@@ -199,6 +267,10 @@ export class Tile {
         // automatically regrow if we have set a regrowth speed
         if (config.tileTypes[this.type]?.grassRegrowthSpeed) {
             this.regrowGrass()
+        }
+
+        if (config.tileTypes[this.type]?.marshSpreadSpeed) {
+            this.spreadMarsh()
         }
 
         if (this.updateColourEveryTick) {
@@ -217,7 +289,9 @@ export class Tile {
 
     updateFire() {
         if (this.snowCovered) {this.snowCovered = false}
-        const burnTime = config.tileTypes[this.type]?.burnTime || 20;
+        const defaultBurnTime = config.tileTypes[this.type]?.burnTime
+        let burnTime = getRandomInt(defaultBurnTime * 0.5, defaultBurnTime * 1.5) || 20;
+        if (Math.random() < 0.006) {burnTime = burnTime * 3}
         this.burnTimer = (this.burnTimer || burnTime) - 1;
         if (this.burnTimer <= 0) {
             this.changeTileType('ash')
@@ -247,6 +321,24 @@ export class Tile {
         if (Math.random() < regrowthChance) {
             this.changeTileType('grass')
         }
+    }
+
+    spreadMarsh() {
+        let spreadChance = 0
+        const spreadSpeed = config.tileTypes[this.type].marshSpreadSpeed;
+        this.neighbours.forEach(neighbour => {
+            const heightDifference = Math.abs(neighbour.elevation - this.elevation)
+            if (neighbour.type === 'marsh'
+            && neighbour.fertility > 0.7
+            && this.elevation < 10
+            && heightDifference < config.worldBehaviour.grassGrowAcrossHeightDifference) {
+                spreadChance = spreadChance + spreadSpeed
+            }
+        })
+        if (Math.random() < spreadChance) {
+            this.changeTileType('marsh')
+        }
+
     }
 
     evaporate() { // called when a water block is surrounded by land blocks.

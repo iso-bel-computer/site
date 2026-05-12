@@ -11,7 +11,7 @@ export class RenderEngine {
         this.viewW = rect.width;
         this.viewH = rect.height;
         this.displayLoading()
-        this.centerPixel = [0,0]
+        this.centerPixel = [-100, -100]
         this.scrollVertical = 0
         this.scrollHorizontal = 0
         this.scrollSpeed = 1
@@ -19,6 +19,8 @@ export class RenderEngine {
             'drawContourLines': true,
             'drawGridLines': true,
             'tintBelowSeaLevel': true,
+            'elevationView': false,
+            'fertilityView': false
         }
 
         // In constructor, create an offscreen canvas at world size
@@ -46,15 +48,28 @@ export class RenderEngine {
     writeTileToBuffer(tile) {
         let [r, g, b] = tile.colour;
         if (this.viewSettings.drawContourLines) {
-            let contourThickness = config.viewSettings.contourThickness
-            if (tile.elevation > 15) {
-                const nearContour = Math.abs(tile.elevation) % config.viewSettings.contourInterval < contourThickness;
-                if (nearContour) {
-                    r = Math.min(r - 50, 255)
-                    g = Math.min(g - 50, 255)
-                    b = Math.min(b - 50, 255)
+            if (!config.tileTypes[tile.type]?.neverDrawContour) {
+                let contourThickness = config.viewSettings.contourThickness
+                if (tile.elevation > 5) {
+                    const nearContour = Math.abs(tile.elevation) % config.viewSettings.contourInterval < contourThickness;
+                    if (nearContour) {
+                        r = Math.max(r - config.viewSettings.contourDarkness, 0)
+                        g = Math.max(g - config.viewSettings.contourDarkness, 0)
+                        b = Math.max(b - config.viewSettings.contourDarkness, 0)
+                    }
                 }
+
             }
+        }
+        if (this.viewSettings.fertilityView && tile.type != 'water') {
+            r = 255 - (tile.fertility * 225)
+            g = tile.fertility * 225
+            b = 0
+        }
+        if (this.viewSettings.elevationView) {
+            r = 255 - (tile.elevation * 10)
+            g = 255 - (tile.elevation * 10)
+            b = 255 - (tile.elevation * 10)
         }
         if (this.viewSettings.drawGridLines) {
             if (   (tile.x - config.viewSettings.gridOffset) % config.viewSettings.gridInterval === 0
@@ -90,8 +105,10 @@ export class RenderEngine {
         // scroll
         if (this.scrollVertical)   this.centerPixel[1] += this.scrollVertical * this.scrollSpeed;
         if (this.scrollHorizontal) this.centerPixel[0] += this.scrollHorizontal * this.scrollSpeed;
-        this.centerPixel[0] = Math.min(0, Math.max(-config.gameSettings.canvasWidth + Math.ceil(this.viewW / this.pixelScale), this.centerPixel[0]));
-        this.centerPixel[1] = Math.min(0, Math.max(-config.gameSettings.canvasHeight + Math.ceil(this.viewH / this.pixelScale), this.centerPixel[1]));
+        // this.centerPixel[0] = Math.min(0, Math.max(-config.gameSettings.canvasWidth + Math.ceil(this.viewW / this.pixelScale), this.centerPixel[0]));
+        // this.centerPixel[1] = Math.min(0, Math.max(-config.gameSettings.canvasHeight + Math.ceil(this.viewH / this.pixelScale), this.centerPixel[1]));
+
+
 
 
         let anyDirty = false;
@@ -134,6 +151,10 @@ export class RenderEngine {
         );
         this.data = this.imageData.data;
 
+        this.markAllTilesDirty()
+    }
+
+    markAllTilesDirty() {
         // mark everything dirty so it all redraws
         for (const tile of this.grid.tiles) {
             tile.dirty = true;
@@ -158,9 +179,24 @@ export class RenderEngine {
     }
     getTile(pixelX, pixelY) {
         const rect = this.canvas.getBoundingClientRect();
-        const x = Math.floor((pixelX - rect.left) * this.dpr / this.pixelScale) - this.centerPixel[0];
-        const y = Math.floor((pixelY - rect.top) * this.dpr / this.pixelScale) - this.centerPixel[1];
+        const x = Math.floor((pixelX - rect.left) / this.pixelScale) - this.centerPixel[0];
+        const y = Math.floor((pixelY - rect.top) / this.pixelScale) - this.centerPixel[1];
         return this.grid.tileMap.get(`${x},${y}`);
+    }
+    exportMapAsPNG() {
+        // make sure the offscreen canvas is fully up to date
+        this.markAllTilesDirty();
+        for (const tile of this.grid.tiles) {
+            this.writeTileToBuffer(tile);
+            tile.dirty = false;
+        }
+        this.offscreenCtx.putImageData(this.imageData, 0, 0);
+
+        // trigger download
+        const link = document.createElement('a');
+        link.download = 'map.png';
+        link.href = this.offscreen.toDataURL('image/png');
+        link.click();
     }
     addEventListener() {
 
@@ -172,7 +208,11 @@ export class RenderEngine {
             if (e.key === 'd' || e.key === 'ArrowRight') {this.scrollHorizontal = -1}
             if (e.key === '+' || e.key === '=') {this.setZoomLevel(1)}
             if (e.key === '-' || e.key === '_') {this.setZoomLevel(-1)}
+            if (e.key === 'f') {console.log(this.viewSettings.fertilityView), this.viewSettings.fertilityView = !this.viewSettings.fertilityView}
+            if (e.key === 'e') {console.log(this.viewSettings.fertilityView), this.viewSettings.elevationView = !this.viewSettings.elevationView}
             if (e.key === 'Shift') {this.scrollSpeed = 3}
+            if (e.key === 'p') { this.exportMapAsPNG() }
+
         })
         document.addEventListener('keyup', (e) => {
             if (e.key === 'w'

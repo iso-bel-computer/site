@@ -1,11 +1,13 @@
 import { getRandomInt, getRandomArbitrary, clamp } from './helpers.js';
 import { Human } from './human.js';
+import { River } from './entities/river.js';
 import { config } from './config.js';
 
 export class Interactions {
-    constructor(grid, render) {
+    constructor(grid, render, entityManager) {
         this.grid = grid
         this.render = render
+        this.entityManager = entityManager
         this.game = document.getElementById('game')
         this.brushSelection = document.getElementById('brushSelection')
         this.resourceDisplay= document.getElementById('resources')
@@ -13,16 +15,23 @@ export class Interactions {
         this.messageDisplay = document.getElementById('messages')
         this.earth = 0
         this.brushSize = 5
+        this.controlsToggle = document.getElementById('controlsToggle')
+        this.controlsInfo = document.getElementById('controlsInfo')
+
 
         this.messageDisplay.innerHTML = ''
     }
 
+
+
+
     writeMessage(message) {
         this.messageDisplay.innerHTML = message
-        document.setTimeout(() => {
+        setTimeout(() => {
             this.messageDisplay.innerHTML = ''
         }, config.gameSettings.messageTimeout)
     }
+
 
 
     addEventListeners() {
@@ -34,6 +43,18 @@ export class Interactions {
                 })
                 button.classList.add('active')
             })
+        })
+
+        this.controlsToggle.addEventListener('click', (e) => {
+            if (this.controlsInfo.hidden) {
+                this.controlsInfo.hidden = false
+                this.controlsToggle.innerHTML = 'Controls ⬇'
+            }
+            else {
+                this.controlsInfo.hidden = true
+                this.controlsToggle.innerHTML = 'Controls ➡'
+
+            }
         })
 
         this.game.addEventListener('mousemove', (e) => {
@@ -50,6 +71,8 @@ export class Interactions {
             const tile = this.render.getTile(e.clientX, e.clientY)
             if (tile) {
 
+
+                console.log(this.grid)
                 this.messageDisplay.innerHTML = ''
 
                 if (this.selectedBrush === 'fire') {
@@ -73,6 +96,9 @@ export class Interactions {
                 if (this.selectedBrush === 'bridge') {
                     this.addBridge(tile)
                 }
+                if (this.selectedBrush === 'water') {
+                    this.addWater(tile)
+                }
             }
 
         });
@@ -83,6 +109,10 @@ export class Interactions {
         if (config.tileTypes[tile.type]?.flammability) {
             tile.aflame = true
         }
+    }
+
+    addWater(tile) {
+        this.entityManager.addEntity(new River(tile))
     }
 
     addFlower(tile) {
@@ -156,20 +186,7 @@ export class Interactions {
     }
 
     addTree(tile) {
-        if (tile.type === 'grass') {
-            const treeCoords = this.grid.generateBlob(tile.x,tile.y,getRandomInt(2,3))
-            treeCoords.forEach(coord => {
-                const tile = this.grid.getTile(coord[0], coord[1])
-                if (tile.type === 'water') return
-                tile.type = 'tree'
-                tile.assignColour()
-            })
-
-        }
-
-        else {
-            this.writeMessage(`Trees only like grass :(`)
-        }
+        this.grid.addTree(tile)
     }
 
     addLand(tile) {
@@ -204,7 +221,8 @@ export class Interactions {
             const tile = this.grid.getTile(coord[0], coord[1])
             if (tile.type === 'water') {return}
             tile.elevation = tile.elevation - 1
-            tile.changeTileType('mud')
+            if (tile.type != 'water') {tile.changeTileType('mud')}
+            else {tile.assignColour()}
             if (tile.bridge) {tile.bridge.demolish()}
             this.earth++
         })
@@ -227,12 +245,14 @@ export class Interactions {
         const human = tile.human ? 'human' : ''
         const snow = tile.snowCovered ? 'snow' : ''
         const bridge = tile.bridge ? 'bridge' : ''
+        const waterLevel = tile.waterLevel ? (tile.waterLevel + tile.elevation).toFixed(1)  : tile.elevation
             this.tileInfoDisplay.innerHTML = `
                 <div class='${tile.type} tileLabel ${fire} ${human} ${snow} ${bridge}'>
                     ${tile.type} ${fire} ${human} ${snow} ${bridge}
                 </div>
-                ${tile.x}x ${tile.y}y<br>
                 ${Math.floor(tile.elevation)} ft<br>
+                Fertility - ${tile.fertility.toFixed(1)}
+                Water Level - ${waterLevel}
             `
 
     }
