@@ -162,6 +162,11 @@ export class Grid {
         let randomWaterLevelMod = getRandomInt(config.worldGen.randomWaterLevelMod[0], config.worldGen.randomWaterLevelMod[1])
 
         let mapHasOcean = (Math.random() < config.worldGen.chanceOfOcean)
+
+        const xTilt = getRandomArbitrary(-0.4, 0.4)
+        const yTilt = getRandomArbitrary(-0.4, 0.4)
+        console.log(xTilt, yTilt)
+
         while (y <= config.gameSettings.canvasHeight) {
 
             const tile = new Tile();
@@ -169,6 +174,14 @@ export class Grid {
             tile.x = x;
             tile.y = y;
             tile.elevation = ((600 * this.getElevation(x,y) - waterLevel)  + randomWaterLevelMod)
+
+            // tilting world
+            tile.elevation = tile.elevation + (tile.x * xTilt)
+            tile.elevation = tile.elevation + (tile.y * yTilt)
+
+
+            // making world slightly irregular for water
+            tile.elevation = tile.elevation + getRandomArbitrary(-0.2, 0.2)
 
             tile.baseFertility = this.getFertility(x,y, 2500);
 

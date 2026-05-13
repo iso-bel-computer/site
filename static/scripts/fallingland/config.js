@@ -18,7 +18,7 @@ export const config = {
         "maxForestsPerMap": 40,
         "shallowWaterRockRate": 0.0008,
         "mountainRockRate": 0.0007,
-        "snowAltitude": 115, // default altutide for snow. 65 creates snow capped mountains
+        "snowAltitude": 155, // default altutide for snow. 65 creates snow capped mountains
         "snowWorldChance": 0.05, // random 1% chance for any world to be covered in snow
         "beehiveChanceInTree": 0.0001, // chance any tree tile is replaced with a beehive
 
@@ -36,7 +36,6 @@ export const config = {
     "worldBehaviour": {
         "grassGrowAcrossHeightDifference": 5, // how close in elevation two tiles have to be for grass to grow beteween them
         "waterEvaporationRate": 0.01, // the chance an isolated block of water will evaporate every tick
-        "riverSpreadSpeed": 0.2,
 
     },
     "gameplay": {
@@ -46,7 +45,7 @@ export const config = {
         "water": {
             "passable": false,
             "fertilityBoost": 0.001, // fertility is a 0-1 value. this is for every neighbour in a four mile radius
-            "neverDrawContour": true
+            "neverDrawContour": true,
         },
         "sand": {
             "flammability": 0.05,

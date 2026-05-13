@@ -1,14 +1,16 @@
+import { WaterManager } from './water.js';
+
 export class EntityManager {
     constructor() {
-        this.entities = []
-    }
-    tick() {
-        this.entities.forEach(entity => {
-            entity.tick()
-        })
+        this.water = new WaterManager()
     }
 
-    addEntity(entity) {
-        this.entities.push(entity)
+    addWaterSource(tile) {
+        this.water.addOrigin(tile)
     }
+
+    tick(tickNumber) {
+        this.water.tick(tickNumber)
+    }
+
 }

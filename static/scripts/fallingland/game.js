@@ -22,7 +22,7 @@ export class gameClass {
     tick() {
         this.tickCount = (this.tickCount || 0) + 1;
         this.grid.tick(this.tickCount)
-        this.entityManager.tick()
+        this.entityManager.tick(this.tickCount)
 
     }
 

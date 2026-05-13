@@ -148,12 +148,20 @@ export class Tile {
                 s = getRandomInt(78,83)
                 l = getRandomInt(35,40)
 
-                if (this.elevation < 3) {
+                if (this.elevation < 0.1) {
                     const steps = Math.abs(Math.floor(elevation / 25))
                     l = clamp(l - (steps * 5), 20, 43)
                 } else {
-                    // l = l + (this.elevation / 20)
-                    s = s * Math.min(this.waterLevel / 2, 1)
+
+                    if      (this.waterLevel < 1) {
+                        s = s - getRandomInt(60,70)
+                        l = l + getRandomInt(20,30)
+                    } else {
+                        l = l - (this.waterLevel)
+                    }
+
+                    this.updateColourEveryTick = true
+
 
                 }
             }
@@ -184,14 +192,13 @@ export class Tile {
         }
 
         else if (this.type === 'tree') {
+            usingHSL = true
+            h = getRandomInt(120,125)
+            s = getRandomInt(52,54)
+            l = getRandomInt(15,20)
             if (this.isTileSurroundedBySameType()) {
-                r = getRandomInt(0,15)
-                g = getRandomInt(20,60)
-                b = getRandomInt(0,15)
-            } else {
-                r = getRandomInt(0,15)
-                g = getRandomInt(50,80)
-                b = getRandomInt(0,15)
+                l = l - getRandomInt(5,8)
+
             }
         }
 
@@ -204,6 +211,9 @@ export class Tile {
             h = getRandomInt(120,130) - (this.elevation * 0.8)
             s = getRandomInt(15,23)
             l = getRandomInt(60,70)
+
+            const steps = Math.floor(elevation / config.viewSettings.contourInterval)
+            l = l - (steps * 3)
         }
 
         else if (this.type === 'flower') {

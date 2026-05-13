@@ -1,6 +1,5 @@
 import { getRandomInt, getRandomArbitrary, clamp } from './helpers.js';
 import { Human } from './human.js';
-import { River } from './entities/river.js';
 import { config } from './config.js';
 
 export class Interactions {
@@ -61,8 +60,16 @@ export class Interactions {
             const tile = this.render.getTile(e.clientX, e.clientY)
             if (tile) {
                 if (tile != this.prevTile) {
+
                     this.prevTile = tile
                     this.updateTileInfo(tile)
+
+                    if (this.render.selectedTile) {
+                        this.render.selectedTile.dirty = true
+                    }
+
+                    this.render.selectedTile = tile
+                    tile.dirty = true
                 }
             }
         })
@@ -112,7 +119,7 @@ export class Interactions {
     }
 
     addWater(tile) {
-        this.entityManager.addEntity(new River(tile))
+        this.entityManager.addWaterSource(tile)
     }
 
     addFlower(tile) {
@@ -241,19 +248,22 @@ export class Interactions {
 
 
     updateTileInfo(tile) {
-        const fire = tile.aflame ? 'fire' : ''
-        const human = tile.human ? 'human' : ''
-        const snow = tile.snowCovered ? 'snow' : ''
-        const bridge = tile.bridge ? 'bridge' : ''
-        const waterLevel = tile.waterLevel ? (tile.waterLevel + tile.elevation).toFixed(1)  : tile.elevation
-            this.tileInfoDisplay.innerHTML = `
-                <div class='${tile.type} tileLabel ${fire} ${human} ${snow} ${bridge}'>
-                    ${tile.type} ${fire} ${human} ${snow} ${bridge}
-                </div>
-                ${Math.floor(tile.elevation)} ft<br>
-                Fertility - ${tile.fertility.toFixed(1)}
-                Water Level - ${waterLevel}
-            `
+        const fire         = tile.aflame ? 'fire' : ''
+        const human        = tile.human ? 'human' : ''
+        const snow         = tile.snowCovered ? 'snow' : ''
+        const bridge       = tile.bridge ? 'bridge' : ''
+        const waterDepth   = tile.waterLevel ? tile.waterLevel.toFixed(1) : 0
+        const waterSurface = tile.waterLevel ? (tile.waterLevel + tile.elevation).toFixed(1) : Math.trunc(tile.elevation)
+
+        this.tileInfoDisplay.innerHTML = `
+            <div class='${tile.type} tileLabel ${fire} ${human} ${snow} ${bridge}'>
+                ${tile.type} ${fire} ${human} ${snow} ${bridge}
+            </div>
+            ${Math.floor(tile.elevation)} ft          <br>
+            Fertility - ${tile.fertility.toFixed(1)}  <br>
+            Water Surface - ${waterSurface}           <br>
+            Water Depth - ${waterDepth}               <br>
+        `
 
     }
 

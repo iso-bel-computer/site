@@ -67,10 +67,17 @@ export class RenderEngine {
             b = 0
         }
         if (this.viewSettings.elevationView) {
-            r = 255 - (tile.elevation * 10)
-            g = 255 - (tile.elevation * 10)
-            b = 255 - (tile.elevation * 10)
+            r = 0   + (tile.elevation * 2.5)
+            g = 255 - (tile.elevation * 2.5)
+            b = 0
         }
+
+        if (tile === this.selectedTile) {
+            r = r - 150
+            g = g - 150
+            b = b - 150
+        }
+
         if (this.viewSettings.drawGridLines) {
             if (   (tile.x - config.viewSettings.gridOffset) % config.viewSettings.gridInterval === 0
                 || (tile.y - config.viewSettings.gridOffset) % config.viewSettings.gridInterval === 0) {
@@ -105,11 +112,6 @@ export class RenderEngine {
         // scroll
         if (this.scrollVertical)   this.centerPixel[1] += this.scrollVertical * this.scrollSpeed;
         if (this.scrollHorizontal) this.centerPixel[0] += this.scrollHorizontal * this.scrollSpeed;
-        // this.centerPixel[0] = Math.min(0, Math.max(-config.gameSettings.canvasWidth + Math.ceil(this.viewW / this.pixelScale), this.centerPixel[0]));
-        // this.centerPixel[1] = Math.min(0, Math.max(-config.gameSettings.canvasHeight + Math.ceil(this.viewH / this.pixelScale), this.centerPixel[1]));
-
-
-
 
         let anyDirty = false;
         for (const tile of this.grid.tiles) {

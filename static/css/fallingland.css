@@ -16,6 +16,7 @@ canvas {
 #gameWrapper {
     width: 100vw;
     height: 100vh;
+    cursor: crosshair;
     /* filter: saturate(80%) ; */
 }
 
