@@ -1,10 +1,12 @@
 export const config = {
     "gameSettings": {
-        "canvasWidth": 400,
-        "canvasHeight": 400,
+        "canvasWidth": 350, // 400 best for gameplay
+        "canvasHeight": 350,
         "messageTimeout": 1500, // length of time messages to the player are displayed, in ms
+        "timeBetweenTicks": 50 // time in ms. 50 works well.
     },
     "worldGen": {
+        "maxWaterSources": 5,
         "chanceOfOcean": 0.4,
         "waterAmount": 0, // lower for more land. higher for more water.
         "randomiseWaterLevel": false,
@@ -35,7 +37,7 @@ export const config = {
     },
     "worldBehaviour": {
         "grassGrowAcrossHeightDifference": 5, // how close in elevation two tiles have to be for grass to grow beteween them
-        "waterEvaporationRate": 0.01, // the chance an isolated block of water will evaporate every tick
+        "waterEvaporationRate": 0.003, // the amount of water that comes off a block every tick
 
     },
     "gameplay": {
@@ -45,7 +47,7 @@ export const config = {
         "water": {
             "passable": false,
             "fertilityBoost": 0.001, // fertility is a 0-1 value. this is for every neighbour in a four mile radius
-            "neverDrawContour": true,
+            "neverDrawContour": false,
         },
         "sand": {
             "flammability": 0.05,
@@ -59,7 +61,7 @@ export const config = {
             "desirability": 0.4,
             "canPlantTrees": true,
             "fertilityBoost": -0.001, // fertility is a 0-1 value. this is for every neighbour in a four mile radius
-            "erosionChance": 0.1
+            "erosionChance": 0.01
 
         },
         "marsh": {
@@ -83,7 +85,7 @@ export const config = {
             "canPlantTrees": true,
             "desirability": 0.7,
             "marshSpreadSpeed": 0.00001,
-            "erosionChance": 0.3
+            "erosionChance": 0.1
         },
         "flower": {
             "flammability": 1,
@@ -97,7 +99,7 @@ export const config = {
         "mud": {
             "grassRegrowthSpeed": 0.002, // chance of regrowth per tick, per neighbouring grass tile
             "desirability": 0.2,
-            "erosionChance": 0.5
+            "erosionChance": 0.1
         },
         "bridge": {
             "flammability": 0.1,

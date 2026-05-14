@@ -1,12 +1,15 @@
 import { Grid } from './grid.js';
+import { config } from './config.js';
 import { RenderEngine } from './render.js';
 import { EntityManager } from './entities/entityManager.js';
 import { Interactions } from './interaction.js';
 
 export class gameClass {
     constructor() {
+
+        this.tickCount = 0
         this.render = new RenderEngine()
-        this.entityManager = new EntityManager()
+        // this.entityManager = new EntityManager()
         this.grid = new Grid()
         this.render.grid = this.grid
         this.render.drawTiles()
@@ -16,13 +19,26 @@ export class gameClass {
         this.interaction.addEventListeners()
         setInterval(() => {
             this.tick()
-        }, 50)
+        }, config.gameSettings.timeBetweenTicks) // default is 50
+        this.toggleLoadingMessage()
     }
 
+
     tick() {
-        this.tickCount = (this.tickCount || 0) + 1;
+        this.tickCount = this.tickCount + 1;
         this.grid.tick(this.tickCount)
-        this.entityManager.tick(this.tickCount)
+        this.interaction.tick()
+        // this.entityManager.tick(this.tickCount)
+        if (this.tickCount % 50 === 0) {
+            console.log("Tick: ", this.tickCount)
+        }
+
+    }
+
+    toggleLoadingMessage() {
+
+        document.getElementById('controls').hidden =       false
+        document.getElementById('loadingMessage').hidden = true
 
     }
 

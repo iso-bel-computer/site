@@ -12,15 +12,28 @@ export class Interactions {
         this.resourceDisplay= document.getElementById('resources')
         this.tileInfoDisplay = document.getElementById('tileInfoDisplay')
         this.messageDisplay = document.getElementById('messages')
-        this.earth = 0
-        this.brushSize = 5
         this.controlsToggle = document.getElementById('controlsToggle')
         this.controlsInfo = document.getElementById('controlsInfo')
-
-
         this.messageDisplay.innerHTML = ''
+        this.earth = 0
+        this.brushSize = 5
+        this.brushes = {
+            "fire":     (tile) => this.addFire(tile),
+            "tree":     (tile) => this.addTree(tile),
+            "land":     (tile) => this.addLand(tile),
+            "excavate": (tile) => this.excavate(tile),
+            "human":    (tile) => this.addPerson(tile),
+            "flower":   (tile) => this.addFlower(tile),
+            "bridge":   (tile) => this.addBridge(tile),
+            "water":    (tile) => this.addWater(tile)
+        }
+
     }
 
+    tick() {
+        this.updateTileInfo()
+
+    }
 
 
 
@@ -62,15 +75,15 @@ export class Interactions {
                 if (tile != this.prevTile) {
 
                     this.prevTile = tile
-                    this.updateTileInfo(tile)
+                    this.selectedTile = tile
+                    this.updateTileInfo()
+                    this.markCrosshair(tile)
 
-                    if (this.render.selectedTile) {
-                        this.render.selectedTile.dirty = true
-                    }
-
-                    this.render.selectedTile = tile
-                    tile.dirty = true
                 }
+            } else {
+                this.render.drawCrosshair = false
+                this.eraseCrosshair()
+                this.game.style.cursor = 'auto'
             }
         })
 
@@ -78,39 +91,63 @@ export class Interactions {
             const tile = this.render.getTile(e.clientX, e.clientY)
             if (tile) {
 
-
-                console.log(this.grid)
+                console.log(tile)
                 this.messageDisplay.innerHTML = ''
 
-                if (this.selectedBrush === 'fire') {
-                    this.addFire(tile)
-                }
-                if (this.selectedBrush === 'tree') {
-                    this.addTree(tile)
-                }
-                if (this.selectedBrush === 'land') {
-                    this.addLand(tile)
-                }
-                if (this.selectedBrush === 'excavate') {
-                    this.excavate(tile)
-                }
-                if (this.selectedBrush === 'human') {
-                    this.addPerson(tile)
-                }
-                if (this.selectedBrush === 'flower') {
-                    this.addFlower(tile)
-                }
-                if (this.selectedBrush === 'bridge') {
-                    this.addBridge(tile)
-                }
-                if (this.selectedBrush === 'water') {
-                    this.addWater(tile)
+                const brushFn = this.brushes[this.selectedBrush]
+                if (brushFn) {
+                    brushFn(tile)
                 }
             }
-
         });
     }
 
+    eraseCrosshair() {
+        if (this.render.crosshairTiles.length > 0) {
+            this.render.crosshairTiles.forEach(tile => {
+                if (tile[0]) {tile[0].dirty = true}
+            })
+            this.render.crosshairTiles = []
+        }
+
+    }
+
+    markCrosshair(tile) {
+
+        this.game.style.cursor = 'none'
+
+        this.render.drawCrosshair = true
+        this.eraseCrosshair()
+
+        this.render.crosshairTiles = [
+            [tile,                                        200],
+            [this.grid.getTile(tile.x + 1, tile.y),       100],
+            [this.grid.getTile(tile.x - 1, tile.y),       100],
+            [this.grid.getTile(tile.x, tile.y + 1),       100],
+            [this.grid.getTile(tile.x, tile.y - 1),       100],
+            [this.grid.getTile(tile.x + 2, tile.y),        50],
+            [this.grid.getTile(tile.x - 2, tile.y),        50],
+            [this.grid.getTile(tile.x, tile.y + 2),        50],
+            [this.grid.getTile(tile.x, tile.y - 2),        50],
+            [this.grid.getTile(tile.x + 1, tile.y + 1),       -25],
+            [this.grid.getTile(tile.x - 1, tile.y + 1),       -25],
+            [this.grid.getTile(tile.x + 1, tile.y - 1),       -25],
+            [this.grid.getTile(tile.x - 1, tile.y - 1),       -25],
+            [this.grid.getTile(tile.x - 1, tile.y + 2),       -12],
+            [this.grid.getTile(tile.x - 1, tile.y - 2),       -12],
+            [this.grid.getTile(tile.x - 2, tile.y - 1),       -12],
+            [this.grid.getTile(tile.x + 1, tile.y + 2),       -12],
+            [this.grid.getTile(tile.x + 2, tile.y + 1),       -12],
+            [this.grid.getTile(tile.x - 2, tile.y + 1),       -12],
+            [this.grid.getTile(tile.x + 1, tile.y - 2),       -12],
+            [this.grid.getTile(tile.x + 2, tile.y - 1),       -12],
+        ]
+
+        this.render.crosshairTiles.forEach(entry => {
+            if (entry[0]) {entry[0].dirty = true}
+        })
+
+    }
 
     addFire(tile) {
         if (config.tileTypes[tile.type]?.flammability) {
@@ -119,7 +156,7 @@ export class Interactions {
     }
 
     addWater(tile) {
-        this.entityManager.addWaterSource(tile)
+        this.grid.addWaterSource(tile)
     }
 
     addFlower(tile) {
@@ -226,7 +263,6 @@ export class Interactions {
         const coords = this.grid.generateBlob(tile.x, tile.y, getRandomInt(4,7))
         coords.forEach(coord => {
             const tile = this.grid.getTile(coord[0], coord[1])
-            if (tile.type === 'water') {return}
             tile.elevation = tile.elevation - 1
             if (tile.type != 'water') {tile.changeTileType('mud')}
             else {tile.assignColour()}
@@ -247,22 +283,39 @@ export class Interactions {
     }
 
 
-    updateTileInfo(tile) {
+    updateTileInfo() {
+
+        const tile = this.selectedTile
+        if (!tile) {return}
+
         const fire         = tile.aflame ? 'fire' : ''
         const human        = tile.human ? 'human' : ''
         const snow         = tile.snowCovered ? 'snow' : ''
         const bridge       = tile.bridge ? 'bridge' : ''
-        const waterDepth   = tile.waterLevel ? tile.waterLevel.toFixed(1) : 0
-        const waterSurface = tile.waterLevel ? (tile.waterLevel + tile.elevation).toFixed(1) : Math.trunc(tile.elevation)
+        const waterDepth   = tile.waterLevel ? tile.waterLevel.toFixed(1) : '-'
+        const waterSurface = tile.waterLevel ? (tile.waterLevel + tile.elevation).toFixed(1) : '-'
+        const eroded       = tile.amountEroded ? tile.amountEroded.toFixed(1) : '-'
+        const sedimented   = tile.amountSedimented ? tile.amountSedimented.toFixed(1)  : '-'
 
         this.tileInfoDisplay.innerHTML = `
             <div class='${tile.type} tileLabel ${fire} ${human} ${snow} ${bridge}'>
                 ${tile.type} ${fire} ${human} ${snow} ${bridge}
             </div>
-            ${Math.floor(tile.elevation)} ft          <br>
-            Fertility - ${tile.fertility.toFixed(1)}  <br>
-            Water Surface - ${waterSurface}           <br>
-            Water Depth - ${waterDepth}               <br>
+            <table>
+                <tr> <td>
+                Elevation </td> <td> ${Math.floor(tile.elevation)} ft
+                </td> </tr><tr> <td>
+                Fertility </td> <td> ${tile.fertility.toFixed(1)}
+                </td> </tr><tr> <td>
+                Water Surface </td> <td> ${waterSurface}
+                </td> </tr><tr> <td>
+                Water Depth </td> <td> ${waterDepth}
+                </td> </tr><tr> <td>
+                Eroded </td> <td> ${eroded}
+                </td> </tr><tr> <td>
+                Sedimented </td> <td> ${sedimented}
+                </td> </tr>
+            </table>
         `
 
     }

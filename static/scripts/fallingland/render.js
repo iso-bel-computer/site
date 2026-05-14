@@ -3,6 +3,7 @@ import { config } from './config.js';
 export class RenderEngine {
 
     constructor() {
+        this.crosshairTiles = []
         this.canvas = document.getElementById('game')
         this.ctx = this.canvas.getContext('2d')
         this.pixelScale = 4
@@ -11,7 +12,7 @@ export class RenderEngine {
         this.viewW = rect.width;
         this.viewH = rect.height;
         this.displayLoading()
-        this.centerPixel = [-100, -100]
+        this.centerPixel = [0, 0]
         this.scrollVertical = 0
         this.scrollHorizontal = 0
         this.scrollSpeed = 1
@@ -20,7 +21,8 @@ export class RenderEngine {
             'drawGridLines': true,
             'tintBelowSeaLevel': true,
             'elevationView': false,
-            'fertilityView': false
+            'fertilityView': false,
+            'waterLevelView': false,
         }
 
         // In constructor, create an offscreen canvas at world size
@@ -46,39 +48,55 @@ export class RenderEngine {
         this.ctx.scale(this.dpr, this.dpr);
     }
     writeTileToBuffer(tile) {
-        let [r, g, b] = tile.colour;
-        if (this.viewSettings.drawContourLines) {
-            if (!config.tileTypes[tile.type]?.neverDrawContour) {
-                let contourThickness = config.viewSettings.contourThickness
-                if (tile.elevation > 5) {
-                    const nearContour = Math.abs(tile.elevation) % config.viewSettings.contourInterval < contourThickness;
-                    if (nearContour) {
-                        r = Math.max(r - config.viewSettings.contourDarkness, 0)
-                        g = Math.max(g - config.viewSettings.contourDarkness, 0)
-                        b = Math.max(b - config.viewSettings.contourDarkness, 0)
-                    }
-                }
 
+        let [r, g, b] = tile.colour;
+
+        const crosshairData = this.crosshairTiles.find(entry => entry[0] === tile);
+
+        if (this.viewSettings.drawContourLines
+        && !config.tileTypes[tile.type]?.neverDrawContour
+        && tile.elevation > 5
+        && !crosshairData) {
+            let contourThickness = config.viewSettings.contourThickness
+            const nearContour = Math.abs(tile.elevation) % config.viewSettings.contourInterval < contourThickness;
+
+
+
+            if (nearContour && tile.type != 'water') {
+                r = Math.max(r - config.viewSettings.contourDarkness, 0)
+                g = Math.max(g - config.viewSettings.contourDarkness, 0)
+                b = Math.max(b - config.viewSettings.contourDarkness, 0)
+            } else if (nearContour) {
+                r = Math.max(r - config.viewSettings.contourDarkness * 0.5, 0)
+                g = Math.max(g - config.viewSettings.contourDarkness * 0.5, 0)
+                b = Math.max(b - config.viewSettings.contourDarkness * 0.5, 0)
             }
+
         }
-        if (this.viewSettings.fertilityView && tile.type != 'water') {
+        if (this.viewSettings.fertilityView) {
             r = 255 - (tile.fertility * 225)
             g = tile.fertility * 225
             b = 0
         }
-        if (this.viewSettings.elevationView) {
-            r = 0   + (tile.elevation * 2.5)
-            g = 255 - (tile.elevation * 2.5)
+        if (this.viewSettings.elevationView && (tile.amountSedimented > 0 || tile.amountEroded > 0)) {
+            r = 0   + (tile.amountEroded      * 60) - (tile.amountSedimented * 60)
+            g = 0   + (tile.amountSedimented  * 60) - (tile.amountEroded     * 60)
             b = 0
         }
-
-        if (tile === this.selectedTile) {
-            r = r - 150
-            g = g - 150
-            b = b - 150
+        if (this.viewSettings.waterLevelView && tile.type === 'water') {
+            const waterLevel = tile.waterLevel ? tile.waterLevel + tile.elevation : 0
+            r = waterLevel
+            g = waterLevel
+            b = waterLevel * 2
+        }
+        if (this.viewSettings.waterDepthView && tile.type === 'water') {
+            const waterLevel = tile.waterLevel ? tile.waterLevel * 50 : 0
+            r = waterLevel / 3
+            g = waterLevel / 3
+            b = waterLevel * 2
         }
 
-        if (this.viewSettings.drawGridLines) {
+        if (this.viewSettings.drawGridLines && !crosshairData) {
             if (   (tile.x - config.viewSettings.gridOffset) % config.viewSettings.gridInterval === 0
                 || (tile.y - config.viewSettings.gridOffset) % config.viewSettings.gridInterval === 0) {
                 r = Math.max(r - 50, 0)
@@ -92,6 +110,11 @@ export class RenderEngine {
                 g = Math.max(g - Math.abs(Math.min(tile.elevation, -10) * 3), 0)
                 b = Math.max(b - Math.abs(Math.min(tile.elevation, -10) * 3), 0)
             }
+        }
+        if (crosshairData && this.drawCrosshair) {
+            r = Math.min(r + crosshairData[1], 255)
+            g = Math.min(g + crosshairData[1], 255)
+            b = Math.min(b + crosshairData[1], 255)
         }
 
         for (let dx = 0; dx < this.pixelScale; dx++) {
@@ -210,8 +233,10 @@ export class RenderEngine {
             if (e.key === 'd' || e.key === 'ArrowRight') {this.scrollHorizontal = -1}
             if (e.key === '+' || e.key === '=') {this.setZoomLevel(1)}
             if (e.key === '-' || e.key === '_') {this.setZoomLevel(-1)}
-            if (e.key === 'f') {console.log(this.viewSettings.fertilityView), this.viewSettings.fertilityView = !this.viewSettings.fertilityView}
-            if (e.key === 'e') {console.log(this.viewSettings.fertilityView), this.viewSettings.elevationView = !this.viewSettings.elevationView}
+            if (e.key === 'f') {this.viewSettings.fertilityView = !this.viewSettings.fertilityView ;  this.markAllTilesDirty()}
+            if (e.key === 'e') {this.viewSettings.elevationView = !this.viewSettings.elevationView ;  this.markAllTilesDirty()}
+            if (e.key === 'v') {this.viewSettings.waterLevelView = !this.viewSettings.waterLevelView;   this.markAllTilesDirty()}
+            if (e.key === 'c') {this.viewSettings.waterDepthView = !this.viewSettings.waterDepthView;   this.markAllTilesDirty()}
             if (e.key === 'Shift') {this.scrollSpeed = 3}
             if (e.key === 'p') { this.exportMapAsPNG() }
 

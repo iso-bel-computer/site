@@ -144,23 +144,38 @@ export class Tile {
             } else
             {
                 usingHSL = true
-                h = getRandomInt(203,206)
-                s = getRandomInt(78,83)
-                l = getRandomInt(35,40)
 
                 if (this.elevation < 0.1) {
+                    h = getRandomInt(203,206)
+                    s = getRandomInt(78,83)
+                    l = 32
                     const steps = Math.abs(Math.floor(elevation / 25))
                     l = clamp(l - (steps * 5), 20, 43)
+                    l = l + getRandomInt(3,5)
                 } else {
 
+                    this.updateColourEveryTick = true
                     if      (this.waterLevel < 1) {
-                        s = s - getRandomInt(60,70)
-                        l = l + getRandomInt(20,30)
+                        h = getRandomInt(203,206)
+                        s = getRandomInt(18,20)
+                        l = getRandomInt(55,60)
+                        l = l + (this.elevation / 4)
+                        this.waterColourInitialised = true
+                    }
+                    else if (this.tickCount % getRandomInt(0,50) === 0 || !this.waterColourInitialised) {
+                        h = getRandomInt(203,206)
+                        s = getRandomInt(78,83)
+                        l = getRandomInt(20,22)
+                        const steps = Math.abs(Math.floor((this.waterLevel + this.elevation) / config.viewSettings.contourInterval ))
+                        l = l + (steps * 3)
+                        this.waterColourInitialised = true
                     } else {
-                        l = l - (this.waterLevel)
+                        usingHSL = false
+                        r = this.colour[0]
+                        g = this.colour[1]
+                        b = this.colour[2]
                     }
 
-                    this.updateColourEveryTick = true
 
 
                 }
@@ -232,11 +247,6 @@ export class Tile {
         }
 
 
-        if (this.neighbours.find(neighbour => Math.abs(neighbour.elevation - this.elevation) > 7) && this.type != 'water') {
-            r = r - 10
-            g = g - 10
-            b = b - 10
-        }
 
         this.colour = [r, g, b];
         this.dirty = true
@@ -270,6 +280,8 @@ export class Tile {
 
     tick(tickCount) {
 
+        this.tickCount = tickCount
+
         if (this.aflame) {
             this.updateFire()
         }
@@ -287,9 +299,6 @@ export class Tile {
             this.assignColour(tickCount)
         }
 
-        if (this.type === 'water' && this.isTileSurroundedByDifferentTypes()) {
-            this.evaporate()
-        }
 
         if (this.human) {
             this.human.tick()
@@ -327,6 +336,10 @@ export class Tile {
             if (neighbour.type === 'grass' && heightDifference < config.worldBehaviour.grassGrowAcrossHeightDifference) {
                 regrowthChance = regrowthChance + regrowthSpeed
             }
+            if (neighbour.type === 'water' && this.elevation > 1) { // allows for grassy islands in rivers
+                regrowthChance = regrowthChance + regrowthSpeed
+            }
+
         })
         if (Math.random() < regrowthChance) {
             this.changeTileType('grass')
@@ -351,12 +364,6 @@ export class Tile {
 
     }
 
-    evaporate() { // called when a water block is surrounded by land blocks.
-        if (Math.random() < config.worldBehaviour.waterEvaporationRate) {
-            this.changeTileType('mud')
-        }
-
-    }
 
 
 

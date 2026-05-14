@@ -11,17 +11,22 @@ export class WaterManager {
         tile.waterLevel = 0
         this.origin.push({
             "tile": tile,
-            "baseAmount": getRandomArbitrary(0.5,5)
+            "baseAmount": getRandomArbitrary(0.4,1.5),
+            "pulseOffset": getRandomInt(0,50)
         })
         this.addTile(tile)
     }
 
     tick(tickNumber) {
         const tilesToRemove = []
-        const sineMultiplier = 1 + Math.sin(tickNumber * 0.1) // oscillates between 0 and 2
 
         this.origin.forEach(originTile => {
-            originTile.tile.waterLevel += originTile.baseAmount * sineMultiplier
+            originTile.tile.waterLevel += originTile.baseAmount
+        })
+
+        this.tiles.forEach(tile => {
+            tile.newLevel = tile.waterLevel
+            tile.amountTransferred = 0
         })
 
         this.tiles.forEach(tile => {
@@ -29,66 +34,113 @@ export class WaterManager {
             if (tile.snowCovered) {tile.snowCovered = false}
             if (tile.aflame)      {tile.aflame      = false}
 
-            shuffleArray(tile.neighbours)
-
             const lowerTiles = []
 
-            tile.neighbours.forEach(neighbour => {
+            tile.immediateNeighbours.forEach(neighbour => {
 
-                neighbour.waterLevel ??= 0
-                const neighbourSurface = neighbour.waterLevel + neighbour.elevation
-                const tileSurface      = tile.waterLevel      + tile.elevation
+                if (!this.origin.some(o => o.tile === neighbour)) {
+                    neighbour.waterLevel ??= 0
+                    const neighbourSurface = neighbour.waterLevel + neighbour.elevation
+                    const tileSurface      = tile.waterLevel      + tile.elevation
 
-                if (neighbourSurface < tileSurface && tile.waterLevel > 0) {
-                    lowerTiles.push(neighbour)
-                }
-            })
-
-            lowerTiles.forEach(neighbour => {
-
-                const transfer = tile.waterLevel / lowerTiles.length // this is the bit that i wanna change
-
-                tile.waterLevel -= transfer
-
-                if (neighbour.elevation > 0) { // rivers flow into the sea
-                    neighbour.waterLevel += transfer
-                }
-
-                if (neighbour.elevation < tile.elevation) {
-                    this.erode(tile, transfer) // only er1ode if water is actually flowing downhill
-                }
-
-                if (Math.random() < 0.1) {
-                    this.erode(neighbour, Math.min(transfer * 0.5, 1))
-                }
-
-                if (neighbour.waterLevel > 0.01) {
-
-                    if (neighbour.type !== 'water' && neighbour.type !== 'tree'
-                        || neighbour.type === 'tree' && Math.random() < 0.05) {
-
-                        this.addTile(neighbour)
+                    if (neighbourSurface < tileSurface && tile.waterLevel > 0) {
+                        lowerTiles.push(neighbour)
                     }
+
                 }
             })
 
 
+            this.calculateWaterTransfer(tile, lowerTiles)
 
-            /// to do - make tiles waterlogged to take water out of the system that way
+
+        })
+
+        this.tiles.forEach(tile => {
+
+            tile.waterLevel = tile.newLevel
+            if (tile.elevation < 1) {tile.waterLevel = 0} // sea drainage
+        })
+
+        this.tiles.forEach(tile => {
+
+            tile.numberOfTransfers = tile.numberOfTransfers + 1 || 0
+            tile.averageTransfer   = (((tile.averageTransfer * tile.numberOfTransfers) + tile.amountTransferred) / tile.numberOfTransfers) || tile.amountTransferred
+
+            if (tile.amountTransferred > 0.15) {
+                this.erode(tile, tile.amountTransferred)
+
+                const dryNeighbours = []
+                tile.neighbours.forEach(neighbour => {
+                    if (neighbour.type != 'water') {dryNeighbours.push(neighbour)}
+                })
+
+                dryNeighbours.forEach(neighbour => {
+                    this.erode(neighbour, tile.amountTransferred / dryNeighbours.length)
+                })
+
+            }
+
+            if (tile.amountTransferred < 0.1){
+                this.sediment(tile)
+            }
 
             if (tile.waterLevel < 0.1) {
                 tilesToRemove.push(tile)
             }
+
+            this.evaporate(tile)
         })
+
 
         tilesToRemove.forEach(tile => {
             this.removeTile(tile)
         })
     }
 
+    calculateWaterTransfer(sourceTile, lowerTiles) {
+
+        const lowerTilesLevels = lowerTiles.reduce((sum, tile) => sum + tile.waterLevel, 0)
+
+        const totalSurface = (sourceTile.waterLevel + sourceTile.elevation)
+            + lowerTiles.reduce((sum, t) => sum + t.waterLevel + t.elevation, 0)
+        const targetSurface = totalSurface / (lowerTiles.length + 1)
+        const targetLevel = targetSurface - sourceTile.elevation
+
+        const amountToTransfer = Math.min(sourceTile.waterLevel - targetLevel, sourceTile.waterLevel)
+
+        lowerTiles.forEach(lowerTile => {
+            const share = lowerTilesLevels === 0
+                ? amountToTransfer / lowerTiles.length
+                : (lowerTile.waterLevel / lowerTilesLevels) * amountToTransfer
+
+            if (share > 0.01 || ((sourceTile.elevation - lowerTile.elevation > 1))) {
+                this.addTile(lowerTile)
+                lowerTile.newLevel = (lowerTile.newLevel ?? 0) + share
+            }
+            // else {
+            //     sourceTile.newLevel = sourceTile.newLevel + share /// i'm pretty sure this is the culprit
+            // }
+        })
+
+        sourceTile.newLevel = (sourceTile.newLevel ?? sourceTile.waterLevel) - amountToTransfer
+        sourceTile.amountTransferred = amountToTransfer
+        if (sourceTile.amountTransferred > 10) {
+            console.warn('Water spiking. wtf????')
+        }
+
+    }
+
+    evaporate(tile) {
+        tile.waterLevel = tile.waterLevel - config.worldBehaviour.waterEvaporationRate
+
+    }
+ 
     addTile(tile) {
-        tile.previousType = tile.type
-        tile.changeTileType('water')
+        if (tile.type != 'water') {
+            tile.previousType = tile.type
+            tile.changeTileType('water')
+        }
         tile.removalTimer = null
         this.tiles.add(tile)
     }
@@ -100,24 +152,23 @@ export class WaterManager {
 
 
         if (!tile.removalTimer) {
-            tile.removalTimer = getRandomInt(5,8)
+            tile.removalTimer = 2
         }
 
         else {
             tile.removalTimer--
         }
 
-        if (tile.removalTimer === 0) {
+        if (tile.removalTimer === 0 && tile.waterLevel < 0.1) {
             this.tiles.delete(tile)
-            this.sediment(tile)
 
-            if (Math.random() < 0.3 && tile.previousType != 'stone') {
+            if ((Math.random() < 0.5 && tile.previousType != 'stone')) {
                 tile.changeTileType('mud')
             }
+
             else {
                 tile.changeTileType(tile.previousType)
             }
-            this.sediment(tile)
             tile.waterLevel = 0
 
         }
@@ -126,21 +177,34 @@ export class WaterManager {
     }
 
     erode(tile, transfer) {
-        if (tile.elevation > 3) {
-            const erosionChance = config.tileTypes[tile.previousType]?.erosionChance || 0.2
-            if (Math.random() < erosionChance) {
-                tile.elevation = tile.elevation - (0.01 * transfer)
+        const erosionChance = config.tileTypes[tile.previousType]?.erosionChance || 0.2
+        if (Math.random() < erosionChance && tile.elevation > 3) {
+
+            const erosionMultiplier = 0.1 * transfer
+            const erosionConstant = 0.5
+
+            tile.elevation = tile.elevation - (erosionConstant * erosionMultiplier)
+            tile.amountEroded = (tile.amountEroded ?? 0) + (erosionConstant * erosionMultiplier)
+
+            if (Math.random() < 0.005) {tile.previousType = 'stone'} // finding stone at bottom of river bed
+                                                                     // to make erosion slower
+            if (tile.type === 'tree' && Math.random() < 0.001) {
+                tile.elevation = tile.elevation - getRandomArbitrary(3,6)
+                tile.changeTileType('grass')
             }
         }
     }
 
     sediment(tile) {
         const baseChance = 0.1
-        if (Math.random() < baseChance)  {
-            const sedimentationChance = config.tileTypes[tile.previousType]?.sedimentationChance || 0.1
-            if (Math.random() < sedimentationChance) {
-                tile.elevation = tile.elevation + 0.01
-            }
+        if (Math.random() < baseChance && tile.waterLevel < 8) {
+
+            const sedMultiplier = 0.01 * tile.waterLevel
+            const sedConstant = 0.08
+
+            tile.elevation = tile.elevation + (sedConstant * sedMultiplier)
+            tile.amountSedimented = (tile.amountSedimented ?? 0) + (sedConstant * sedMultiplier)
+            tile.fertility = tile.fertility + (sedConstant * sedMultiplier) / 25
         }
     }
 }

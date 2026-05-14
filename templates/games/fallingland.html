@@ -13,7 +13,7 @@
         <div id='gameWrapper'>
             <canvas id='game'></canvas>
         </div>
-        <div id='controls'>
+        <div id='controls' hidden>
             <div id='tileInfoDisplay'>
                 <div class='tileLabel loading'>
                     ...
@@ -35,7 +35,7 @@
 
             </div>
             <div id='resources'></div>
-            <div id='messages'>Loading...</div>
+            <div id='messages'></div>
             <div id='controlsInfoWrapper'>
                 <div id='controlsToggle'>Controls ➡</div>
                 <div id='controlsInfo' hidden>
@@ -46,6 +46,11 @@
                 </div>
             </div>
 
+        </div>
+        <div id='loadingMessage'>
+            <div id='loadingText'>Loading...</div>
+            <br>
+            <div id='loadingQuote'>…In that Empire, the Art of Cartography attained such Perfection that the map of a single Province occupied the entirety of a City, and the map of the Empire, the entirety of a Province. In time, those Unconscionable Maps no longer satisfied, and the Cartographers Guilds struck a Map of the Empire whose size was that of the Empire, and which coincided point for point with it.</div>
         </div>
         <script type='module' src="{{ url_for('static', filename='scripts/fallingland/main.js') }}"></script>
 

@@ -2,12 +2,19 @@ import { config } from './config.js';
 import { Tile } from './tile.js';
 import { Bridge } from './entities/bridge.js';
 import { getRandomInt, getRandomArbitrary, clamp } from './helpers.js';
+import { WaterManager } from './entities/water.js';
 
 export class Grid {
     constructor() {
         this.perlin = this.createPerlin();
+        this.water = new WaterManager()
         this.tiles = this.constructTiles()
+        this.maxWaterSources = config.worldGen.maxWaterSources
 
+    }
+
+    addWaterSource(tile) {
+        this.water.addOrigin(tile)
     }
 
     generateBlob(centerX, centerY, radius) {
@@ -240,6 +247,7 @@ export class Grid {
 
         tiles.forEach(tile => {
             tile.neighbours = this.getTileNeighbours(tile)
+            if (tile.neighbours.length < 8) {tile.edgeTile = true}
             tile.immediateNeighbours = this.getImmediateNeighbours(tile)
         })
 
@@ -251,6 +259,7 @@ export class Grid {
             this.addBogs(tile)
             this.addRocks(tile)
             this.adjustFertility(tile)
+            this.addWaterAtWorldGen(tile)
         })
 
 
@@ -263,6 +272,13 @@ export class Grid {
         return tiles;
     }
 
+    addWaterAtWorldGen(tile) {
+        if (tile.elevation > 110 && Math.random() < 0.001 && this.maxWaterSources > 0) {
+            this.addWaterSource(tile)
+            this.maxWaterSources = this.maxWaterSources - 1
+        }
+    }
+
     addTree(tile) {
 
         if (!config.tileTypes[tile.type]?.canPlantTrees) {return}
@@ -273,6 +289,7 @@ export class Grid {
             if (!tile) return
             if (tile.type === 'water') return
             tile.type = 'tree'
+            tile.elevation = tile.elevation + getRandomInt(3,8)
             tile.assignColour()
         })
 
@@ -567,6 +584,8 @@ export class Grid {
                 this.updateBelowSeaLevel(tile)
             }
         })
+
+        this.water.tick(tickCount)
     }
 
     updateBelowSeaLevel(tile) {

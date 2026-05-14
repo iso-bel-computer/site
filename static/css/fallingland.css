@@ -16,10 +16,19 @@ canvas {
 #gameWrapper {
     width: 100vw;
     height: 100vh;
-    cursor: crosshair;
+    cursor: none;
     /* filter: saturate(80%) ; */
 }
 
+
+table {
+    border-collapse: collapse;
+    font-size: 9pt
+}
+
+td {
+    padding-right: 12px;
+}
 
 #controls {
     position: absolute;
@@ -29,6 +38,7 @@ canvas {
     left: 30px;
     z-index: 999;
     opacity: 0.85;
+    min-width: 13vw;
 }
 
 #controls:hover {
@@ -42,6 +52,26 @@ canvas {
 
 }
 
+#loadingMessage {
+    position: absolute;
+    top: 25vh;
+    left: 33vw;
+    line-height: 80%;
+    padding: 20px;
+    font-size: 12pt;
+    background-color: #ffffff90;
+    min-width: 33vw;
+    max-width: 33vw;
+    text-align: center;
+
+}
+
+#loadingQuote {
+    font-size: 8pt;
+    margin-top: 5px;
+    font-style: italic
+}
+
 #controlsToggle {
     font-weight: bold;
     font-size: 10pt;
@@ -49,7 +79,6 @@ canvas {
 
 #controlsInfo {
     font-size: 8pt;
-    max-width: 10vw;
     overflow: scroll;
 }
 #resources {
@@ -65,7 +94,6 @@ canvas {
 
 #tileInfoDisplay {
     font-size: 12pt;
-    max-width: 10vw;
     overflow: scroll;
 
 }
@@ -168,4 +196,9 @@ canvas {
 }
 #brushSelection #bridge {
     background-color:  #baa663 ;
+}
+
+#brushSelection #water {
+    background-color:  #42b0db ;
+    color: white;
 }
