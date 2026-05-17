@@ -15,149 +15,143 @@ export class Grid {
 
     }
 
+    tick(tickCount) {
+        this.tiles.forEach(tile => {
+            tile.tick(tickCount)
+            if (tile.elevation < 0 && tile.type != 'water') {
+                this.updateBelowSeaLevel(tile)
+            }
+        })
+
+        this.water.tick(tickCount)
+    }
+
+    /// ADDING MAP ELEMENTS DURING GAMEPLAY
+    /// (AND DURING WORLD GEN)
+    addTree(tile) {
+
+        if (!config.tileTypes[tile.type]?.canPlantTrees) {return}
+
+        let radius = getRandomInt(2,4)
+        if (Math.random() < 0.02) {radius = getRandomInt(5,6)}
+        const treeCoords = this.generateBlob(tile.x,tile.y,radius)
+        treeCoords.forEach(coord => {
+            const tile = this.getTile(coord[0], coord[1])
+            if (!tile) return
+            if (tile.type === 'water') return
+            if (treeCoords.length === 9 && Math.random() < 0.1) {
+                null // break up square trees
+            } else {
+                tile.type = 'tree'
+            }
+            tile.elevation = tile.elevation + getRandomInt(3,8)
+        })
+
+        treeCoords.forEach(coord => {
+            const tile = this.getTile(coord[0], coord[1])
+            if (!tile) return
+            tile.assignColour()
+        })
+    }
     addWaterSource(tile) {
         this.water.addOrigin(tile)
     }
 
-    generateBlob(centerX, centerY, radius) {
-        const blob = [];
-        for (let x = centerX - radius; x < centerX + radius; x++) {
-            for (let y = centerY - radius; y < centerY + radius; y++) {
-                const dist = Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2);
-                const wobble = radius * (0.7 + Math.random() * 0.3);
-                if (dist < wobble) {
-                    blob.push([x,y])
+    /// UTILITIES TO GET TILES
+    getTile(x,y) {
+        return this.tileMap.get(`${x},${y}`)
+
+    }
+    getLineOfTiles(x0,y0,x1,y1) {
+
+        const tiles = []
+
+        const mx = Math.abs(x1 - x0)
+        const my = Math.abs(y1 - y0)
+
+        const steps = Math.max(mx, my)
+        if (steps === 0) return  // same tile clicked twice
+
+        let sx = 0
+        let sy = 0
+
+
+        let x = x0
+        let y = y0
+
+        tiles.push(this.getTile(x,y))
+
+        while (x != x1 || y != y1) {
+            sx += mx
+            sy += my
+            const dx = x1 > x0 ? 1 : -1
+            const dy = y1 > y0 ? 1 : -1
+
+            if (sx >= steps) { sx -= steps; x += dx }
+            if (sy >= steps) { sy -= steps; y += dy }
+
+
+            const tile = this.getTile(x, y)
+            tiles.push(tile)
+        }
+
+        return tiles
+
+    }
+    getTileNeighbours(tile, range) {
+        if (!range) {range = 1}
+
+        let x = range * -1
+        let y = range * -1
+
+        const offsets = []
+
+        while (x <= range) {
+            while (y <= range) {
+                if (!(x === 0 && y === 0)) {
+                    offsets.push( {"x": x, "y": y} )
                 }
+                y++
             }
+            x++
+            y = range * -1
         }
-        return blob;
+
+        return offsets
+            .map(offset => this.tileMap.get(`${tile.x + offset.x},${tile.y + offset.y}`))
+            .filter(Boolean);
     }
-
-
-
-
-    createPerlin() {
-
-        let perlin = {
-            rand_vect: function(){
-                let theta = Math.random() * 2 * Math.PI;
-                return {x: Math.cos(theta), y: Math.sin(theta)};
-            },
-            dot_prod_grid: function(x, y, vx, vy){
-                let g_vect;
-                let d_vect = {x: x - vx, y: y - vy};
-                if (this.gradients[[vx,vy]]){
-                    g_vect = this.gradients[[vx,vy]];
-                } else {
-                    g_vect = this.rand_vect();
-                    this.gradients[[vx, vy]] = g_vect;
-                }
-                return d_vect.x * g_vect.x + d_vect.y * g_vect.y;
-            },
-            smootherstep: function(x){
-                return 6*x**5 - 15*x**4 + 10*x**3;
-            },
-            interp: function(x, a, b){
-                return a + this.smootherstep(x) * (b-a);
-            },
-            seed: function(){
-                this.gradients = {};
-                this.memory = {};
-            },
-            get: function(x, y) {
-                if (this.memory.hasOwnProperty([x,y]))
-                    return this.memory[[x,y]];
-                let xf = Math.floor(x);
-                let yf = Math.floor(y);
-                //interpolate
-                let tl = this.dot_prod_grid(x, y, xf,   yf);
-                let tr = this.dot_prod_grid(x, y, xf+1, yf);
-                let bl = this.dot_prod_grid(x, y, xf,   yf+1);
-                let br = this.dot_prod_grid(x, y, xf+1, yf+1);
-                let xt = this.interp(x-xf, tl, tr);
-                let xb = this.interp(x-xf, bl, br);
-                let v = this.interp(y-yf, xt, xb);
-                this.memory[[x,y]] = v;
-                return v;
+    getImmediateNeighbours(tile) {
+        const offsets = [
+            {"x": 1, "y": 0},
+            {"x": -1, "y": 0},
+            {"x": 0, "y": 1},
+            {"x": 0, "y": -1},
+        ]
+        return offsets
+            .map(offset => this.tileMap.get(`${tile.x + offset.x},${tile.y + offset.y}`))
+            .filter(Boolean);
+    }
+    updateBelowSeaLevel(tile) {
+        const neighbours = this.getTileNeighbours(tile)
+        let flood = false
+        neighbours.forEach(neighbour => {
+            if (neighbour.type === 'water' && Math.random() < 0.3) {
+                flood = true
             }
+        })
+        if (flood) {
+            tile.type = 'water'
+            tile.assignColour()
         }
-        perlin.seed();
-
-        return perlin
-
+    }
+    addBridge(tiles) {
+        const bridge = new Bridge(tiles)
     }
 
-    getElevation(x, y, offset) {
 
-        if (!offset) {offset = 0}
-
-        x = x + offset
-        y = y + offset
-
-        // warp the coordinates using separate noise samples
-        const warpStrength = 60
-        const wx = x + warpStrength * this.perlin.get(x * 0.005 + 1.7, y * 0.005 + 9.2);
-        const wy = y + warpStrength * this.perlin.get(x * 0.005 + 8.3, y * 0.005 + 2.4);
-
-        const octaves = [
-            { scale: 0.0001, strength: 3   },
-            { scale: 0.005, strength: 2   },
-            { scale: 0.02,  strength: 0.9 },
-            { scale: 0.08,  strength: 0.20 },
-            { scale: 0.03,  strength: 0.10 },
-            { scale: 0.08,  strength: 0.10 },
-        ];
-
-
-
-
-        const total = octaves.reduce((sum, octave) => {
-            return sum + this.perlin.get(wx * octave.scale, wy * octave.scale) * octave.strength;
-        }, 0);
-
-        const maxValue = octaves.reduce((sum, o) => sum + o.strength, 0);
-        return total / maxValue;
-    }
-    getFertility(x, y) {
-
-        const offset = 25000
-
-        x = x + offset
-        y = y + offset
-
-        // warp the coordinates using separate noise samples
-        const warpStrength = 60
-        const wx = x + warpStrength * this.perlin.get(x * 0.005 + 1.7, y * 0.005 + 9.2);
-        const wy = y + warpStrength * this.perlin.get(x * 0.005 + 8.3, y * 0.005 + 2.4);
-
-        const octaves = [
-            { scale: 0.0001, strength: 6 },
-            { scale: 0.003, strength: 3 },
-            { scale: 0.02,  strength: 1 },
-            { scale: 0.01,  strength: 0.8 },
-        ];
-
-        const total = octaves.reduce((sum, octave) => {
-            return sum + this.perlin.get(wx * octave.scale, wy * octave.scale) * octave.strength;
-        }, 0);
-
-        const maxValue = octaves.reduce((sum, o) => sum + o.strength, 0);
-        const normalized = (total / maxValue + 1) / 2;
-        const contrast = 3; // 1 = unchanged
-
-        return clamp((normalized - 0.5) * contrast + 0.5, 0, 1);
-    }
-
-    generateFlowers(startX, startY, endX, endY, amount) {
-        const flowers = []
-        for (let i = 0; i < amount; i++) {
-            const x = getRandomInt(startX, endX)
-            const y = getRandomInt(startY, endY)
-            flowers.push([x,y])
-        }
-        return flowers
-
-    }
+    //// WORLD GEN
+    //// LOGIC STARTS HERE
 
     constructTiles() {
 
@@ -223,26 +217,7 @@ export class Grid {
         tiles.forEach(tile => this.tileMap.set(`${tile.x},${tile.y}`, tile));
 
 
-        let numberOfFlowerPatches = getRandomInt(0, 5)
-        for (let i=0; i <= numberOfFlowerPatches; i++) {
-            const startX = getRandomInt(0,config.gameSettings.canvasWidth)
-            const startY = getRandomInt(0,config.gameSettings.canvasHeight)
-            const flowers = this.generateFlowers(
-                startX,
-                startY,
-                startX + getRandomInt(100,200),
-                startY + getRandomInt(100,200),
-                getRandomInt(50,150))
-            flowers.forEach(flower => {
-                const tile = this.getTile(flower[0], flower[1])
-                if (tile) {
-                    if (tile.type === 'grass') {
-                        tile.type = 'flower'
-                    }
-                }
-            })
-
-        }
+        this.addFlowers()
 
 
         tiles.forEach(tile => {
@@ -272,41 +247,168 @@ export class Grid {
         })
         return tiles;
     }
+    addFlowers() {
 
+        function generateFlowerPatch(startX, startY, endX, endY, amount) {
+            const flowers = []
+            for (let i = 0; i < amount; i++) {
+                const x = getRandomInt(startX, endX)
+                const y = getRandomInt(startY, endY)
+                flowers.push([x,y])
+            }
+            return flowers
+
+        }
+
+        let numberOfFlowerPatches = getRandomInt(0, 5)
+        for (let i=0; i <= numberOfFlowerPatches; i++) {
+            const startX = getRandomInt(0,config.gameSettings.canvasWidth)
+            const startY = getRandomInt(0,config.gameSettings.canvasHeight)
+            const flowers = generateFlowerPatch(
+                startX,
+                startY,
+                startX + getRandomInt(100,200),
+                startY + getRandomInt(100,200),
+                getRandomInt(50,150))
+            flowers.forEach(flower => {
+                const tile = this.getTile(flower[0], flower[1])
+                if (tile) {
+                    if (tile.type === 'grass') {
+                        tile.type = 'flower'
+                    }
+                }
+            })
+
+        }
+    }
+    generateBlob(centerX, centerY, radius) {
+        const blob = [];
+        for (let x = centerX - radius; x < centerX + radius; x++) {
+            for (let y = centerY - radius; y < centerY + radius; y++) {
+                const dist = Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2);
+                const wobble = radius * (0.7 + Math.random() * 0.3);
+                if (dist < wobble) {
+                    blob.push([x,y])
+                }
+            }
+        }
+        return blob;
+    }
+    createPerlin() {
+
+        let perlin = {
+            rand_vect: function(){
+                let theta = Math.random() * 2 * Math.PI;
+                return {x: Math.cos(theta), y: Math.sin(theta)};
+            },
+            dot_prod_grid: function(x, y, vx, vy){
+                let g_vect;
+                let d_vect = {x: x - vx, y: y - vy};
+                if (this.gradients[[vx,vy]]){
+                    g_vect = this.gradients[[vx,vy]];
+                } else {
+                    g_vect = this.rand_vect();
+                    this.gradients[[vx, vy]] = g_vect;
+                }
+                return d_vect.x * g_vect.x + d_vect.y * g_vect.y;
+            },
+            smootherstep: function(x){
+                return 6*x**5 - 15*x**4 + 10*x**3;
+            },
+            interp: function(x, a, b){
+                return a + this.smootherstep(x) * (b-a);
+            },
+            seed: function(){
+                this.gradients = {};
+                this.memory = {};
+            },
+            get: function(x, y) {
+                if (this.memory.hasOwnProperty([x,y]))
+                    return this.memory[[x,y]];
+                let xf = Math.floor(x);
+                let yf = Math.floor(y);
+                //interpolate
+                let tl = this.dot_prod_grid(x, y, xf,   yf);
+                let tr = this.dot_prod_grid(x, y, xf+1, yf);
+                let bl = this.dot_prod_grid(x, y, xf,   yf+1);
+                let br = this.dot_prod_grid(x, y, xf+1, yf+1);
+                let xt = this.interp(x-xf, tl, tr);
+                let xb = this.interp(x-xf, bl, br);
+                let v = this.interp(y-yf, xt, xb);
+                this.memory[[x,y]] = v;
+                return v;
+            }
+        }
+        perlin.seed();
+
+        return perlin
+
+    }
+    getElevation(x, y, offset) {
+
+        if (!offset) {offset = 0}
+
+        x = x + offset
+        y = y + offset
+
+        // warp the coordinates using separate noise samples
+        const warpStrength = 60
+        const wx = x + warpStrength * this.perlin.get(x * 0.005 + 1.7, y * 0.005 + 9.2);
+        const wy = y + warpStrength * this.perlin.get(x * 0.005 + 8.3, y * 0.005 + 2.4);
+
+        const octaves = [
+            { scale: 0.0001, strength: 3   },
+            { scale: 0.005, strength: 2   },
+            { scale: 0.02,  strength: 0.9 },
+            { scale: 0.08,  strength: 0.20 },
+            { scale: 0.03,  strength: 0.10 },
+            { scale: 0.08,  strength: 0.10 },
+        ];
+
+
+
+
+        const total = octaves.reduce((sum, octave) => {
+            return sum + this.perlin.get(wx * octave.scale, wy * octave.scale) * octave.strength;
+        }, 0);
+
+        const maxValue = octaves.reduce((sum, o) => sum + o.strength, 0);
+        return total / maxValue;
+    }
+    getFertility(x, y) {
+
+        const offset = 25000
+
+        x = x + offset
+        y = y + offset
+
+        // warp the coordinates using separate noise samples
+        const warpStrength = 60
+        const wx = x + warpStrength * this.perlin.get(x * 0.005 + 1.7, y * 0.005 + 9.2);
+        const wy = y + warpStrength * this.perlin.get(x * 0.005 + 8.3, y * 0.005 + 2.4);
+
+        const octaves = [
+            { scale: 0.0001, strength: 6 },
+            { scale: 0.003, strength: 3 },
+            { scale: 0.02,  strength: 1 },
+            { scale: 0.01,  strength: 0.8 },
+        ];
+
+        const total = octaves.reduce((sum, octave) => {
+            return sum + this.perlin.get(wx * octave.scale, wy * octave.scale) * octave.strength;
+        }, 0);
+
+        const maxValue = octaves.reduce((sum, o) => sum + o.strength, 0);
+        const normalized = (total / maxValue + 1) / 2;
+        const contrast = 3; // 1 = unchanged
+
+        return clamp((normalized - 0.5) * contrast + 0.5, 0, 1);
+    }
     addWaterAtWorldGen(tile) {
         if (tile.elevation > 110 && Math.random() < 0.001 && this.maxWaterSources > 0) {
             this.addWaterSource(tile)
             this.maxWaterSources = this.maxWaterSources - 1
         }
-    }
-
-    addTree(tile) {
-
-        if (!config.tileTypes[tile.type]?.canPlantTrees) {return}
-
-        let radius = getRandomInt(2,4)
-        if (Math.random() < 0.02) {radius = getRandomInt(5,6)}
-        const treeCoords = this.generateBlob(tile.x,tile.y,radius)
-        treeCoords.forEach(coord => {
-            const tile = this.getTile(coord[0], coord[1])
-            if (!tile) return
-            if (tile.type === 'water') return
-            if (treeCoords.length === 9 && Math.random() < 0.1) {
-                null // break up square trees
-            } else {
-                tile.type = 'tree'
-            }
-            tile.elevation = tile.elevation + getRandomInt(3,8)
-        })
-
-        treeCoords.forEach(coord => {
-            const tile = this.getTile(coord[0], coord[1])
-            if (!tile) return
-            tile.assignColour()
-
-
-        })
-
     }
     addTrees(tiles) {
         tiles.forEach(tile => {
@@ -320,7 +422,6 @@ export class Grid {
             }
         })
     }
-
     addBeaches(tiles) {
 
         let beachAmounts = config.worldGen.beachAmounts
@@ -354,7 +455,6 @@ export class Grid {
         return tiles
 
     }
-
     addBogs(tile) {
 
         let bogAmounts   = config.worldGen.bogAmounts
@@ -379,8 +479,6 @@ export class Grid {
         return tile
 
     }
-
-
     addRocks(tile) {
 
         let seaRockRate      = config.worldGen.shallowWaterRockRate * getRandomArbitrary(0.75, 1.25)
@@ -421,7 +519,6 @@ export class Grid {
         return tile
 
     }
-
     addSnow(tiles) {
 
         let snowOnThisMap = (Math.random() < 0.5)
@@ -442,7 +539,6 @@ export class Grid {
         }
 
     }
-
     adjustFertility(tile) {
         // we already get a noise map of fertility added to the tile.
         // so this is just adjusting it for environmental factors
@@ -472,7 +568,6 @@ export class Grid {
         return tile
 
     }
-
     addGorse(tiles) {
         tiles.forEach(tile => {
 
@@ -509,117 +604,6 @@ export class Grid {
 
         })
         return tiles
-    }
-
-
-    getTile(x,y) {
-        return this.tileMap.get(`${x},${y}`)
-
-    }
-
-
-    getLineOfTiles(x0,y0,x1,y1) {
-
-        const tiles = []
-
-        const mx = Math.abs(x1 - x0)
-        const my = Math.abs(y1 - y0)
-
-        const steps = Math.max(mx, my)
-        if (steps === 0) return  // same tile clicked twice
-
-        let sx = 0
-        let sy = 0
-
-
-        let x = x0
-        let y = y0
-
-        tiles.push(this.getTile(x,y))
-
-        while (x != x1 || y != y1) {
-            sx += mx
-            sy += my
-            const dx = x1 > x0 ? 1 : -1
-            const dy = y1 > y0 ? 1 : -1
-
-            if (sx >= steps) { sx -= steps; x += dx }
-            if (sy >= steps) { sy -= steps; y += dy }
-
-
-            const tile = this.getTile(x, y)
-            tiles.push(tile)
-        }
-
-        return tiles
-
-    }
-
-    getTileNeighbours(tile, range) {
-        if (!range) {range = 1}
-
-        let x = range * -1
-        let y = range * -1
-
-        const offsets = []
-
-        while (x <= range) {
-            while (y <= range) {
-                if (!(x === 0 && y === 0)) {
-                    offsets.push( {"x": x, "y": y} )
-                }
-                y++
-            }
-            x++
-            y = range * -1
-        }
-
-        return offsets
-            .map(offset => this.tileMap.get(`${tile.x + offset.x},${tile.y + offset.y}`))
-            .filter(Boolean);
-    }
-
-    getImmediateNeighbours(tile) {
-        const offsets = [
-            {"x": 1, "y": 0},
-            {"x": -1, "y": 0},
-            {"x": 0, "y": 1},
-            {"x": 0, "y": -1},
-        ]
-        return offsets
-            .map(offset => this.tileMap.get(`${tile.x + offset.x},${tile.y + offset.y}`))
-            .filter(Boolean);
-    }
-
-    tick(tickCount) {
-        this.tiles.forEach(tile => {
-            tile.tick(tickCount)
-            if (tile.elevation < 0 && tile.type != 'water') {
-                this.updateBelowSeaLevel(tile)
-            }
-        })
-
-        this.water.tick(tickCount)
-    }
-
-    updateBelowSeaLevel(tile) {
-        const neighbours = this.getTileNeighbours(tile)
-        let flood = false
-        neighbours.forEach(neighbour => {
-            if (neighbour.type === 'water' && Math.random() < 0.3) {
-                flood = true
-            }
-        })
-        if (flood) {
-            tile.type = 'water'
-            tile.assignColour()
-        }
-    }
-
-    addBridge(tiles) {
-        const bridge = new Bridge(tiles)
-
-
     }
 
 }

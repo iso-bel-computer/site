@@ -22,3 +22,22 @@ export function shuffleArray(array) {
         array[j] = temp;
     }
 }
+
+
+export function getRandomDirection() { // bees will move in a random specific direction, with slight variety,
+                        // if they don't know where any flowers etc are
+    const directions = [
+        { x: -1, y: -1 },
+        { x:  0, y: -1 },
+        { x:  1, y: -1 },
+        { x: -1, y:  0 },
+        { x:  1, y:  0 },
+        { x: -1, y:  1 },
+        { x:  0, y:  1 },
+        { x:  1, y:  1 },
+    ]
+
+    const vector = directions[getRandomInt(0, directions.length - 1)]
+
+    return vector
+}

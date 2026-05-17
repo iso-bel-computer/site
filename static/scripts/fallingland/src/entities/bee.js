@@ -1,4 +1,4 @@
-import { getRandomInt } from '../helpers.js';
+import { getRandomInt, getRandomDirection } from '../helpers.js';
 import { config } from '../config.js';
 
 export class Bee {
@@ -21,13 +21,6 @@ export class Bee {
         }
     }
 
-    setMovementVector() { // bees will move in a random specific direction, with slight variety,
-                          // if they don't know where any flowers etc are
-        this.vector.x = getRandomInt(-1, 1)
-        this.vector.y = getRandomInt(-1, 1)
-
-    }
-
     tick() {
         this.collectPollen()
         this.spreadPollen()
@@ -36,7 +29,7 @@ export class Bee {
     collectPollen() {
         this.tile.neighbours.forEach(neighbour => {
             const pollen = config.tileTypes?.[neighbour.type]?.beesWillSpread
-            if (pollen) {
+            if (pollen && Math.random() < 0.3) {
                 this.pollenStored.add(neighbour.type)
             }
         })
@@ -59,6 +52,9 @@ export class Bee {
                 }
             }
 
+            if (Math.random() < 0.3) { // bees can spread pollen maybe 3 or 4 times before having to refresh it
+                this.pollenStored.delete(randomPollen)
+            }
         }
     }
 
@@ -67,40 +63,31 @@ export class Bee {
 
         let nextTile = this.tile
 
-        const lookingForMoreFertileLand = (this.tile.fertility < 0.2)
-        if (lookingForMoreFertileLand) { // this sucks !
-
-            this.tile.neighbours.forEach(neighbour => {
-                if (neighbour.fertility > nextTile.fertility) {
-                    nextTile = neighbour
-                }
-            })
+        if (Math.random() < 0.4) { // idle behaviour
+            this.vector = getRandomDirection()
         }
 
-        else {
-            if (Math.random() < 0.4) { // idle behaviour
-                this.setMovementVector()
+        let foundAcceptableTile
+        let i = 0
+        while (!foundAcceptableTile) {
+            nextTile = this.tile.neighbours.find(tile =>
+                tile.x === this.tile.x + this.vector.x &&
+                tile.y === this.tile.y + this.vector.y
+            )
+
+            if (i > 5 ||
+                nextTile &&
+                nextTile.fertility > 0.3 &&
+                nextTile.type !== 'water'
+               ) {
+                foundAcceptableTile = true
             }
 
-            let foundAcceptableTile
-            let i = 0
-            while (!foundAcceptableTile) {
-                nextTile = this.tile.neighbours.find(tile =>
-                    tile.x === this.tile.x + this.vector.x &&
-                    tile.y === this.tile.y + this.vector.y
-                )
-
-                if (nextTile.fertility > 0.3 && nextTile.type != 'water' || i > 5) {
-                    foundAcceptableTile = true
-                }
-
-                else {
-                    this.setMovementVector()
-                    i++
-                }
+            else {
+                this.vector = getRandomDirection()
+                i++
             }
         }
-
 
         return nextTile
 

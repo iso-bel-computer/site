@@ -62,14 +62,6 @@ export class RenderEngine {
             const nearContour = Math.abs(tile.elevation) % config.viewSettings.contourInterval < contourThickness;
 
 
-        if (this.viewSettings.drawGridLines && !crosshairData) {
-            if (   (tile.x - config.viewSettings.gridOffset) % config.viewSettings.gridInterval === 0
-                || (tile.y - config.viewSettings.gridOffset) % config.viewSettings.gridInterval === 0) {
-                r = Math.max(r - 50, 0)
-                g = Math.max(g - 35, 0)
-                b = Math.max(b - 15, 0)
-            }
-        }
 
             if (nearContour && tile.type != 'water') {
                 r = Math.max(r - config.viewSettings.contourDarkness, 0)
@@ -81,6 +73,14 @@ export class RenderEngine {
                 b = Math.max(b - config.viewSettings.contourDarkness * 0.5, 0)
             }
 
+        }
+        if (this.viewSettings.drawGridLines && !crosshairData) {
+            if (   (tile.x - config.viewSettings.gridOffset) % config.viewSettings.gridInterval === 0
+                || (tile.y - config.viewSettings.gridOffset) % config.viewSettings.gridInterval === 0) {
+                r = Math.max(r - 50, 0)
+                g = Math.max(g - 35, 0)
+                b = Math.max(b - 15, 0)
+            }
         }
         if (this.viewSettings.fertilityView) {
             r = 255 - (tile.fertility * 225)

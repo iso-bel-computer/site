@@ -13,6 +13,7 @@ export class gameClass {
         this.state = new GameState()
         this.grid = new Grid(this.state)
         this.entities = new EntityManager(this.grid, this.state)
+        this.grid.entities = this.entities
         this.render.grid = this.grid
         this.render.drawTiles()
         this.render.setZoomLevel(5)
