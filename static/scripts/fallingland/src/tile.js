@@ -5,6 +5,7 @@ export class Tile {
 
     init() {
         this.assignColour()
+        this.entities = new Set()
         this.setDefaultPassable()
         this.waterlogged = 0
     }
@@ -38,17 +39,6 @@ export class Tile {
     }
 
 
-    addHuman(human) {
-        this.human = human
-        this.human.tile = this
-        this.assignColour()
-
-    }
-    removeHuman() {
-        this.human = null
-        this.assignColour()
-
-    }
     addBridge(bridge) {
         this.bridge = bridge
         this.assignColour()
@@ -68,13 +58,7 @@ export class Tile {
 
         let usingHSL = false
 
-        if (this.human) {
-
-            r = this.human.r
-            g = this.human.g
-            b = this.human.b
-        }
-        else if (this.aflame) {
+        if (this.aflame) {
             r = getRandomInt(150,255)
             g = getRandomInt(20,130)
             b = getRandomInt(17,20)
@@ -140,9 +124,8 @@ export class Tile {
                 r = getRandomInt(190,220)
                 g = getRandomInt(190,220)
                 b = getRandomInt(230,255)
-                this.updateColourEveryTick = true
-            } else
-            {
+            }
+            else {
                 usingHSL = true
 
                 if (this.elevation < 0.1) {
@@ -150,7 +133,7 @@ export class Tile {
                     s = getRandomInt(78,83)
                     l = 32
                     const steps = Math.abs(Math.floor(elevation / 25))
-                    l = clamp(l - (steps * 5), 20, 43)
+                    l = clamp(l - (steps * 5), 5, 43)
                     l = l + getRandomInt(3,5)
                 } else {
 
@@ -175,12 +158,8 @@ export class Tile {
                         g = this.colour[1]
                         b = this.colour[2]
                     }
-
-
-
                 }
             }
-
         }
 
         else if (this.type === 'mud') {
@@ -218,14 +197,10 @@ export class Tile {
         }
 
         else if (this.type === 'stone') {
-            // const brightness = getRandomArbitrary(0.75,1)
-            // r = getRandomInt(170,190) * brightness
-            // g = getRandomInt(170,190) * brightness
-            // b = getRandomInt(170,190) * brightness
             usingHSL = true
-            h = getRandomInt(120,130) - (this.elevation * 0.8)
-            s = getRandomInt(15,23)
-            l = getRandomInt(60,70)
+            h = getRandomInt(120,135) - (this.elevation * 0.8)
+            s = getRandomInt(15,25)
+            l = getRandomInt(60,75)
 
             const steps = Math.floor(elevation / config.viewSettings.contourInterval)
             l = l - (steps * 3)
@@ -234,7 +209,7 @@ export class Tile {
         else if (this.type === 'flower') {
             usingHSL = true
             h = getRandomInt(1,359)
-            s = getRandomInt(60,80)
+            s = getRandomInt(40,50)
             l = getRandomInt(50, 70)
         }
 
@@ -291,18 +266,12 @@ export class Tile {
             this.regrowGrass()
         }
 
-        if (config.tileTypes[this.type]?.marshSpreadSpeed) {
-            this.spreadMarsh()
-        }
 
         if (this.updateColourEveryTick) {
             this.assignColour(tickCount)
         }
 
 
-        if (this.human) {
-            this.human.tick()
-        }
 
     }
 
@@ -345,25 +314,16 @@ export class Tile {
             this.changeTileType('grass')
         }
     }
-
-    spreadMarsh() {
-        let spreadChance = 0
-        const spreadSpeed = config.tileTypes[this.type].marshSpreadSpeed;
-        this.neighbours.forEach(neighbour => {
-            const heightDifference = Math.abs(neighbour.elevation - this.elevation)
-            if (neighbour.type === 'marsh'
-            && neighbour.fertility > 0.7
-            && this.elevation < 10
-            && heightDifference < config.worldBehaviour.grassGrowAcrossHeightDifference) {
-                spreadChance = spreadChance + spreadSpeed
-            }
-        })
-        if (Math.random() < spreadChance) {
-            this.changeTileType('marsh')
-        }
-
+    addEntity(entity) {
+        entity.tile = this
+        this.entities.add(entity)
+        this.assignColour()
     }
 
+    removeEntity(entity) {
+        this.entities.delete(entity)
+        this.assignColour()
+    }
 
 
 

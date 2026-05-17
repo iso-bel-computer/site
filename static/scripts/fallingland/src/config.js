@@ -38,6 +38,7 @@ export const config = {
     "worldBehaviour": {
         "grassGrowAcrossHeightDifference": 5, // how close in elevation two tiles have to be for grass to grow beteween them
         "waterEvaporationRate": 0.003, // the amount of water that comes off a block every tick
+        "beePropogationRate": 0.001, // the amount bees will spread pollen. after this role, they will still only spread if the selected tile is grass
 
     },
     "gameplay": {
@@ -85,12 +86,14 @@ export const config = {
             "canPlantTrees": true,
             "desirability": 0.7,
             "marshSpreadSpeed": 0.00001,
-            "erosionChance": 0.1
+            "erosionChance": 0.1,
+            "beesWillSpread": true,
         },
         "flower": {
             "flammability": 1,
             "burnTime": 2,
             "desirability": 0.8,
+            "beesWillSpread": true,
         },
         "ash": {
             "grassRegrowthSpeed": 0.0005, // chance of regrowth per tick, per neighbouring grass tile
@@ -108,6 +111,7 @@ export const config = {
         "gorse": {
             "flammability": 0.2,
             "burnTime": 3,
+            "beesWillSpread": true,
         },
         "shrub": {
             "flammability": 0.3,

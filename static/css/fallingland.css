@@ -53,21 +53,29 @@ td {
 }
 
 #loadingMessage {
+    font-family: 'Imperator', serif;
     position: absolute;
     top: 25vh;
-    left: 33vw;
+    left: 30vw;
     line-height: 80%;
-    padding: 20px;
+    padding: 15px;
     font-size: 12pt;
-    background-color: #ffffff90;
-    min-width: 33vw;
-    max-width: 33vw;
+    background-color: #ffffff60;
+    min-width: 40vw;
+    max-width: 40vw;
     text-align: center;
 
 }
 
+#loadingText {
+
+    font-size: 15pt;
+    font-weight: bold;
+}
+
 #loadingQuote {
     font-size: 8pt;
+    text-align: left;
     margin-top: 5px;
     font-style: italic
 }

@@ -1,9 +1,9 @@
 import { getRandomInt, getRandomArbitrary, clamp } from './helpers.js';
-import { Human } from './human.js';
 import { config } from './config.js';
 
 export class Interactions {
     constructor(grid, render, entityManager) {
+        this.entities = entityManager
         this.grid = grid
         this.render = render
         this.entityManager = entityManager
@@ -25,7 +25,8 @@ export class Interactions {
             "human":    (tile) => this.addPerson(tile),
             "flower":   (tile) => this.addFlower(tile),
             "bridge":   (tile) => this.addBridge(tile),
-            "water":    (tile) => this.addWater(tile)
+            "water":    (tile) => this.addWater(tile),
+            "bee":      (tile) => this.addBee(tile),
         }
 
     }
@@ -121,27 +122,36 @@ export class Interactions {
 
         this.render.crosshairTiles = [
             [tile,                                        200],
-            [this.grid.getTile(tile.x + 1, tile.y),       100],
-            [this.grid.getTile(tile.x - 1, tile.y),       100],
-            [this.grid.getTile(tile.x, tile.y + 1),       100],
-            [this.grid.getTile(tile.x, tile.y - 1),       100],
-            [this.grid.getTile(tile.x + 2, tile.y),        50],
-            [this.grid.getTile(tile.x - 2, tile.y),        50],
-            [this.grid.getTile(tile.x, tile.y + 2),        50],
-            [this.grid.getTile(tile.x, tile.y - 2),        50],
-            [this.grid.getTile(tile.x + 1, tile.y + 1),       -25],
-            [this.grid.getTile(tile.x - 1, tile.y + 1),       -25],
-            [this.grid.getTile(tile.x + 1, tile.y - 1),       -25],
-            [this.grid.getTile(tile.x - 1, tile.y - 1),       -25],
-            [this.grid.getTile(tile.x - 1, tile.y + 2),       -12],
-            [this.grid.getTile(tile.x - 1, tile.y - 2),       -12],
-            [this.grid.getTile(tile.x - 2, tile.y - 1),       -12],
-            [this.grid.getTile(tile.x + 1, tile.y + 2),       -12],
-            [this.grid.getTile(tile.x + 2, tile.y + 1),       -12],
-            [this.grid.getTile(tile.x - 2, tile.y + 1),       -12],
-            [this.grid.getTile(tile.x + 1, tile.y - 2),       -12],
-            [this.grid.getTile(tile.x + 2, tile.y - 1),       -12],
+            [this.grid.getTile(tile.x + 1, tile.y),       110],
+            [this.grid.getTile(tile.x - 1, tile.y),       110],
+            [this.grid.getTile(tile.x, tile.y + 1),       110],
+            [this.grid.getTile(tile.x, tile.y - 1),       110],
+
+            // [this.grid.getTile(tile.x + 1, tile.y + 1),       100],
+            // [this.grid.getTile(tile.x - 1, tile.y - 1),       100],
+            // [this.grid.getTile(tile.x - 1, tile.y + 1),       100],
+            // [this.grid.getTile(tile.x + 1, tile.y - 1),       100],
+
+            // [this.grid.getTile(tile.x + 2, tile.y),        50],
+            // [this.grid.getTile(tile.x - 2, tile.y),        50],
+            // [this.grid.getTile(tile.x, tile.y + 2),        50],
+            // [this.grid.getTile(tile.x, tile.y - 2),        50],
+
+            // [this.grid.getTile(tile.x + 1, tile.y + 1),       -25],
+            // [this.grid.getTile(tile.x - 1, tile.y + 1),       -25],
+            // [this.grid.getTile(tile.x + 1, tile.y - 1),       -25],
+            // [this.grid.getTile(tile.x - 1, tile.y - 1),       -25],
+            // [this.grid.getTile(tile.x - 1, tile.y + 2),       -12],
+            // [this.grid.getTile(tile.x - 1, tile.y - 2),       -12],
+            // [this.grid.getTile(tile.x - 2, tile.y - 1),       -12],
+            // [this.grid.getTile(tile.x + 1, tile.y + 2),       -12],
+            // [this.grid.getTile(tile.x + 2, tile.y + 1),       -12],
+            // [this.grid.getTile(tile.x - 2, tile.y + 1),       -12],
+            // [this.grid.getTile(tile.x + 1, tile.y - 2),       -12],
+            // [this.grid.getTile(tile.x + 2, tile.y - 1),       -12],
         ]
+
+        this.render.crosshairElevation = tile.elevation
 
         this.render.crosshairTiles.forEach(entry => {
             if (entry[0]) {entry[0].dirty = true}
@@ -279,9 +289,12 @@ export class Interactions {
     }
 
     addPerson(tile) {
-        tile.addHuman(new Human())
+        this.entities.addHuman(tile)
     }
 
+    addBee(tile) {
+        this.entities.addBee(tile)
+    }
 
     updateTileInfo() {
 

@@ -5,9 +5,11 @@ import { getRandomInt, getRandomArbitrary, clamp } from './helpers.js';
 import { WaterManager } from './entities/water.js';
 
 export class Grid {
-    constructor() {
+    constructor(gameState) {
         this.perlin = this.createPerlin();
-        this.water = new WaterManager()
+        this.gameState = gameState
+        this.water = new WaterManager(gameState)
+        this.water.grid = this
         this.tiles = this.constructTiles()
         this.maxWaterSources = config.worldGen.maxWaterSources
 
@@ -172,7 +174,6 @@ export class Grid {
 
         const xTilt = getRandomArbitrary(-0.4, 0.4)
         const yTilt = getRandomArbitrary(-0.4, 0.4)
-        console.log(xTilt, yTilt)
 
         while (y <= config.gameSettings.canvasHeight) {
 
@@ -232,7 +233,6 @@ export class Grid {
                 startX + getRandomInt(100,200),
                 startY + getRandomInt(100,200),
                 getRandomInt(50,150))
-            console.log(flowers)
             flowers.forEach(flower => {
                 const tile = this.getTile(flower[0], flower[1])
                 if (tile) {
@@ -249,6 +249,7 @@ export class Grid {
             tile.neighbours = this.getTileNeighbours(tile)
             if (tile.neighbours.length < 8) {tile.edgeTile = true}
             tile.immediateNeighbours = this.getImmediateNeighbours(tile)
+            tile.extendedNeighbours  = this.getTileNeighbours(tile, 3)
         })
 
         this.addBeaches(tiles)
@@ -283,14 +284,27 @@ export class Grid {
 
         if (!config.tileTypes[tile.type]?.canPlantTrees) {return}
 
-        const treeCoords = this.generateBlob(tile.x,tile.y,getRandomInt(1,4))
+        let radius = getRandomInt(2,4)
+        if (Math.random() < 0.02) {radius = getRandomInt(5,6)}
+        const treeCoords = this.generateBlob(tile.x,tile.y,radius)
         treeCoords.forEach(coord => {
             const tile = this.getTile(coord[0], coord[1])
             if (!tile) return
             if (tile.type === 'water') return
-            tile.type = 'tree'
+            if (treeCoords.length === 9 && Math.random() < 0.1) {
+                null // break up square trees
+            } else {
+                tile.type = 'tree'
+            }
             tile.elevation = tile.elevation + getRandomInt(3,8)
+        })
+
+        treeCoords.forEach(coord => {
+            const tile = this.getTile(coord[0], coord[1])
+            if (!tile) return
             tile.assignColour()
+
+
         })
 
     }

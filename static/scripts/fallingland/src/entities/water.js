@@ -1,9 +1,10 @@
 import { config } from '../config.js';
-import { shuffleArray, getRandomInt, getRandomArbitrary  } from '../helpers.js';
+import { getRandomInt, getRandomArbitrary } from '../helpers.js';
 
 export class WaterManager {
-    constructor() {
+    constructor(gameState) {
         this.tiles = new Set()
+        this.state = gameState
         this.origin = []
     }
 
@@ -18,6 +19,8 @@ export class WaterManager {
     }
 
     tick(tickNumber) {
+
+        if (tickNumber % 2 != 0) {return}
         const tilesToRemove = []
 
         this.origin.forEach(originTile => {
@@ -93,8 +96,18 @@ export class WaterManager {
         })
 
 
+        this.rain(this.state.rainfall)
+
         tilesToRemove.forEach(tile => {
             this.removeTile(tile)
+        })
+
+    }
+
+    rain(amount) {
+        this.tiles.forEach(tile => {
+            const elevationAdjustedAmount = amount * (1 / tile.elevation)  // simulating rain draining into flood plains
+            tile.waterLevel = tile.waterLevel ? tile.waterLevel + elevationAdjustedAmount : 0 + elevationAdjustedAmount
         })
     }
 
@@ -104,30 +117,33 @@ export class WaterManager {
 
         const totalSurface = (sourceTile.waterLevel + sourceTile.elevation)
             + lowerTiles.reduce((sum, t) => sum + t.waterLevel + t.elevation, 0)
+
         const targetSurface = totalSurface / (lowerTiles.length + 1)
         const targetLevel = targetSurface - sourceTile.elevation
 
         const amountToTransfer = Math.min(sourceTile.waterLevel - targetLevel, sourceTile.waterLevel)
 
+
         lowerTiles.forEach(lowerTile => {
             const share = lowerTilesLevels === 0
-                ? amountToTransfer / lowerTiles.length
+                  ? amountToTransfer / lowerTiles.length
                 : (lowerTile.waterLevel / lowerTilesLevels) * amountToTransfer
 
             if (share > 0.01 || ((sourceTile.elevation - lowerTile.elevation > 1))) {
                 this.addTile(lowerTile)
                 lowerTile.newLevel = (lowerTile.newLevel ?? 0) + share
             }
-            // else {
-            //     sourceTile.newLevel = sourceTile.newLevel + share /// i'm pretty sure this is the culprit
-            // }
         })
 
         sourceTile.newLevel = (sourceTile.newLevel ?? sourceTile.waterLevel) - amountToTransfer
+
+        // edge tile drainage
+        // const noOfEdgeTiles  = 8 - lowerTiles.length
+        // if (noOfEdgeTiles > 0) {
+        //     sourceTile.newLevel = sourceTile.newLevel - (amountToTransfer / noOfEdgeTiles)
+        // }
+
         sourceTile.amountTransferred = amountToTransfer
-        if (sourceTile.amountTransferred > 10) {
-            console.warn('Water spiking. wtf????')
-        }
 
     }
 
@@ -148,8 +164,6 @@ export class WaterManager {
     removeTile(tile) {
 
         if (this.origin.some(o => o.tile === tile)) { return } // dont remove water sources
-        // if (tile.isTileSurroundedBySameType()) {return} // don't remove tiles in the middle of a river
-
 
         if (!tile.removalTimer) {
             tile.removalTimer = 2

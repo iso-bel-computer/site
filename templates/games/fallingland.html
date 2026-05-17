@@ -1,13 +1,14 @@
 <!doctype html>
 <html class="no-js" lang="">
     <head>
+        <title>Falling Land</title>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Falling Land</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="apple-touch-icon" href="/apple-touch-icon.png">
         <link rel="stylesheet" href="{{url_for('static', filename='css/fallingland.css')}}">
+        <link rel="stylesheet" href="css/fallingland.css">
     </head>
     <body>
         <div id='gameWrapper'>
@@ -16,14 +17,9 @@
         <div id='controls' hidden>
             <div id='tileInfoDisplay'>
                 <div class='tileLabel loading'>
-                    ...
                 </div>
-                -ft
-
-
             </div>
             <div id='brushSelection'>
-
                 <button id='fire'  data-brush='fire'>Fire</button>
                 <button id='water'  data-brush='water'>Water</button>
                 <button id='tree'  data-brush='tree'>Tree</button>
@@ -32,7 +28,7 @@
                 <button id='human' data-brush='human'>Human</button>
                 <button id='flower' data-brush='flower'>Flower</button>
                 <button id='bridge' data-brush='bridge'>Bridge</button>
-
+                <button id='bee' data-brush='bee'>Bee</button>
             </div>
             <div id='resources'></div>
             <div id='messages'></div>
@@ -45,15 +41,21 @@
                     Click on brushes, then click the map!.
                 </div>
             </div>
-
         </div>
         <div id='loadingMessage'>
             <div id='loadingText'>Loading...</div>
             <br>
-            <div id='loadingQuote'>…In that Empire, the Art of Cartography attained such Perfection that the map of a single Province occupied the entirety of a City, and the map of the Empire, the entirety of a Province. In time, those Unconscionable Maps no longer satisfied, and the Cartographers Guilds struck a Map of the Empire whose size was that of the Empire, and which coincided point for point with it.</div>
+            <div id='loadingQuote'>
+                <p>
+                In that Empire, the art of Cartography attained such perfection that the map of a single province occupied the entirety of a city,
+                and the map of the Empire, the entirety of a province.
+                </p>
+                <p>
+                In time, those unconscionable maps no longer satisfied, and the Cartographers Guilds struck a map of the Empire
+                whose size was that of the Empire, and which coincided point for point with it.
+                </p>
+            </div>
         </div>
-        <script type='module' src="{{ url_for('static', filename='scripts/fallingland/main.js') }}"></script>
-
-
+        <script type='module' src="./src/main.js"></script>
     </body>
 </html>

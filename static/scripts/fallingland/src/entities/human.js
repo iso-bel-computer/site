@@ -1,5 +1,5 @@
-import { getRandomInt, getRandomArbitrary, clamp } from './helpers.js';
-import { config } from './config.js';
+import { getRandomInt, getRandomArbitrary, clamp } from '../helpers.js';
+import { config } from '../config.js';
 
 export class Human {
     constructor() {
@@ -9,12 +9,11 @@ export class Human {
 
     tick() {
         this.checkTileIsSafe()
-        this.move()
     }
 
     checkTileIsSafe() {
-        if ((!this.tile.passable && Math.random() < 0.3)
-        || (this.tile.aflame && Math.random() < 0.1) ) {
+        if ((!this.tile.passable && Math.random() < 0.5)
+        || (this.tile.aflame && Math.random() < 0.2) ) {
 
             this.die()
 
@@ -22,9 +21,7 @@ export class Human {
     }
 
     die() {
-        this.tile.removeHuman()
         this.alive = false
-
     }
 
     assignColour() {
@@ -77,8 +74,7 @@ export class Human {
         })
 
         if (moving) {
-            this.tile.removeHuman(this)
-            nextTile.addHuman(this)
+            return nextTile
         }
 
     }

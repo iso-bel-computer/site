@@ -20,6 +20,7 @@ export class RenderEngine {
             'drawContourLines': true,
             'drawGridLines': true,
             'tintBelowSeaLevel': true,
+            'erosionView': false,
             'elevationView': false,
             'fertilityView': false,
             'waterLevelView': false,
@@ -61,6 +62,14 @@ export class RenderEngine {
             const nearContour = Math.abs(tile.elevation) % config.viewSettings.contourInterval < contourThickness;
 
 
+        if (this.viewSettings.drawGridLines && !crosshairData) {
+            if (   (tile.x - config.viewSettings.gridOffset) % config.viewSettings.gridInterval === 0
+                || (tile.y - config.viewSettings.gridOffset) % config.viewSettings.gridInterval === 0) {
+                r = Math.max(r - 50, 0)
+                g = Math.max(g - 35, 0)
+                b = Math.max(b - 15, 0)
+            }
+        }
 
             if (nearContour && tile.type != 'water') {
                 r = Math.max(r - config.viewSettings.contourDarkness, 0)
@@ -78,9 +87,19 @@ export class RenderEngine {
             g = tile.fertility * 225
             b = 0
         }
-        if (this.viewSettings.elevationView && (tile.amountSedimented > 0 || tile.amountEroded > 0)) {
+        if (this.viewSettings.erosionView && (tile.amountSedimented > 0 || tile.amountEroded > 0)) {
             r = 0   + (tile.amountEroded      * 60) - (tile.amountSedimented * 60)
             g = 0   + (tile.amountSedimented  * 60) - (tile.amountEroded     * 60)
+            b = 0
+        }
+        if (this.viewSettings.elevationView) {
+            if (tile.elevation > 70) {r = tile.elevation - 70}
+            else {r = 0}
+
+            if (tile.elevation > 70) {
+                g = (tile.elevation - (70 - tile.elevation))
+            }
+            g = tile.elevation
             b = 0
         }
         if (this.viewSettings.waterLevelView && tile.type === 'water') {
@@ -96,14 +115,6 @@ export class RenderEngine {
             b = waterLevel * 2
         }
 
-        if (this.viewSettings.drawGridLines && !crosshairData) {
-            if (   (tile.x - config.viewSettings.gridOffset) % config.viewSettings.gridInterval === 0
-                || (tile.y - config.viewSettings.gridOffset) % config.viewSettings.gridInterval === 0) {
-                r = Math.max(r - 50, 0)
-                g = Math.max(g - 35, 0)
-                b = Math.max(b - 15, 0)
-            }
-        }
         if (this.viewSettings.tintBelowSeaLevel) {
             if (tile.elevation < 1 && tile.type != 'water') {
                 r = Math.max(r - Math.abs(Math.min(tile.elevation, -10) * 3), 0)
@@ -112,9 +123,28 @@ export class RenderEngine {
             }
         }
         if (crosshairData && this.drawCrosshair) {
-            r = Math.min(r + crosshairData[1], 255)
-            g = Math.min(g + crosshairData[1], 255)
-            b = Math.min(b + crosshairData[1], 255)
+
+            const light = crosshairData[1]
+            if (tile.elevation - 0.2 <= this.crosshairElevation || tile.elevation < 0) {
+                r = Math.min(r + light, 255)
+                g = Math.min(g + light, 255)
+                b = Math.min(b + light, 255)
+            }
+            else {
+                // const shadow = crosshairData[1] * 0.2
+                // r = Math.max(r + shadow, 0)
+                // g = Math.max(g + shadow, 0)
+                // b = Math.max(b + shadow, 0)
+                null
+
+            }
+        }
+
+        if (tile.entities.size > 0) {
+            const entity = tile.entities.values().next().value
+            r = entity.r
+            g = entity.g
+            b = entity.b
         }
 
         for (let dx = 0; dx < this.pixelScale; dx++) {
@@ -189,7 +219,6 @@ export class RenderEngine {
 
     setZoomLevel(amount) {
         this.pixelScale = this.pixelScale + amount;
-        console.log(this.pixelScale)
         if (this.pixelScale < config.viewSettings.minZoom) this.pixelScale = config.viewSettings.minZoom;
         if (this.pixelScale > config.viewSettings.maxZoom) this.pixelScale = config.viewSettings.maxZoom;
         this.rebuildBuffer();
@@ -233,10 +262,11 @@ export class RenderEngine {
             if (e.key === 'd' || e.key === 'ArrowRight') {this.scrollHorizontal = -1}
             if (e.key === '+' || e.key === '=') {this.setZoomLevel(1)}
             if (e.key === '-' || e.key === '_') {this.setZoomLevel(-1)}
-            if (e.key === 'f') {this.viewSettings.fertilityView = !this.viewSettings.fertilityView ;  this.markAllTilesDirty()}
-            if (e.key === 'e') {this.viewSettings.elevationView = !this.viewSettings.elevationView ;  this.markAllTilesDirty()}
-            if (e.key === 'v') {this.viewSettings.waterLevelView = !this.viewSettings.waterLevelView;   this.markAllTilesDirty()}
-            if (e.key === 'c') {this.viewSettings.waterDepthView = !this.viewSettings.waterDepthView;   this.markAllTilesDirty()}
+            if (e.key === 'f') {this.viewSettings.fertilityView  = !this.viewSettings.fertilityView  ;   this.markAllTilesDirty()}
+            if (e.key === 'e') {this.viewSettings.elevationView  = !this.viewSettings.elevationView  ;   this.markAllTilesDirty()}
+            if (e.key === 'r') {this.viewSettings.erosionView    = !this.viewSettings.erosionView    ;   this.markAllTilesDirty()}
+            if (e.key === 'v') {this.viewSettings.waterLevelView = !this.viewSettings.waterLevelView ;   this.markAllTilesDirty()}
+            if (e.key === 'c') {this.viewSettings.waterDepthView = !this.viewSettings.waterDepthView ;   this.markAllTilesDirty()}
             if (e.key === 'Shift') {this.scrollSpeed = 3}
             if (e.key === 'p') { this.exportMapAsPNG() }
 
