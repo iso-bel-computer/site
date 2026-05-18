@@ -48,6 +48,11 @@
             <div id='loadingText'>Loading...</div>
             <br>
             <div id='loadingQuote'>
+            </div>
+        </div>
+        <script>
+         const loadingMessage = document.getElementById('loadingQuote')
+         const messages = [`
                 <p>
                 In that Empire, the art of Cartography attained such perfection that the map of a single province occupied the entirety of a city,
                 and the map of the Empire, the entirety of a province.
@@ -56,8 +61,45 @@
                 In time, those unconscionable maps no longer satisfied, and the Cartographers Guilds struck a map of the Empire
                 whose size was that of the Empire, and which coincided point for point with it.
                 </p>
-            </div>
-        </div>
+             `,
+             `
+                It\'s knowing I'm not shackled by forgotten words and bars
+                <br>
+                and the ink stains that have dried upon some lines,
+                <br>
+                that keeps you on the back roads, in the rivers of my memories,
+                <br>
+                that keeps you ever gentle on my mind.
+             `,
+             `
+                I have seen him in the watch-fires of a hundred circling camps,
+                <br>
+                They have builded him an altar in the evening dews and damps,
+                <br>
+                I can read his righteous sentence by the dim and flaring lamps...
+             `,
+             `
+                If my true love, she were gone,
+                <br>
+                Then I'll surely find another;
+                <br>
+                To pull wild mountain thyme,
+                <br>
+                All around the bloomin' heather...
+                <br>
+             `
+         ]
+
+        // this function is inclusive
+        function getRandomInt(min, max) {
+            const minCeiled = Math.ceil(min);
+            const maxFloored = Math.floor(max);
+            return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled); // The maximum is inclusive and the minimum is inclusive
+        }
+
+         loadingMessage.innerHTML = messages[getRandomInt(0, messages.length - 1)]
+
+        </script>
         <script type='module' src="./src/main.js"></script>
         <script type='module' src="{{url_for('static', filename='scripts/fallingland/src/main.js')}}"></script>
     </body>

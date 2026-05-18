@@ -61,9 +61,7 @@ td {
     padding: 15px;
     font-size: 12pt;
     background-color: #ffffff60;
-    min-width: 40vw;
     max-width: 40vw;
-    text-align: center;
 
 }
 
@@ -75,7 +73,6 @@ td {
 
 #loadingQuote {
     font-size: 8pt;
-    text-align: left;
     margin-top: 5px;
     font-style: italic
 }
