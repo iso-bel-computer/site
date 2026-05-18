@@ -61,16 +61,16 @@ export class soundManager {
         if (!this.init) return;
 
         const lineChords = {
-            'waterloo-city':   ["C9", "E9", "G9"],
-            'hammersmith-city':["D9", "F#9", "A9"],
-            'metropolitan':    ["E9", "G#9", "B9"],
-            'central':         ["F#9", "A#9", "C#9"],
-            'district':        ["G#9", "C9", "D#9"],
-            'circle':          ["A#9", "D9", "F9"],
-            'bakerloo':        ["C9", "E9", "G9"],
-            'northern':        ["D9", "F#9", "A9"],
-            'victoria':        ["E9", "G#9", "B9"],
-            'jubilee':         ["F#9", "A#9", "C#10"],
+            'waterloo-city':   ["C4", "E4", "G4"],
+            'hammersmith-city':["D4", "F#4", "A5"],
+            'metropolitan':    ["E5", "G#5", "B5"],
+            'central':         ["F#5", "A#5", "C#5"],
+            'district':        ["G#5", "C5", "D#5"],
+            'circle':          ["A#5", "D5", "F5"],
+            'bakerloo':        ["C6", "E6", "G6"],
+            'northern':        ["D6", "F#6", "A6"],
+            'victoria':        ["E6", "G#6", "B6"],
+            'jubilee':         ["F#6", "A#6", "C#6"],
         };
 
         const synth = this.arrivalSynths[line];
@@ -89,16 +89,16 @@ export class soundManager {
         if (!this.init) return;
 
         const lineNotes = {
-            'waterloo-city': "C9",
-            'hammersmith-city': "D9",
-            'metropolitan': "E9",
-            'central': "F#9",
-            'district': "G#9",
-            'circle': "A#9",
-            'bakerloo': "C9",
-            'northern': "D9",
-            'victoria': "E9",
-            'jubilee': "F#9",
+            'waterloo-city': "C4",
+            'hammersmith-city': "D4",
+            'metropolitan': "E4",
+            'central': "F#4",
+            'district': "G#4",
+            'circle': "A#5",
+            'bakerloo': "C5",
+            'northern': "D5",
+            'victoria': "E5",
+            'jubilee': "F#5",
         };
 
         const synth = this.arrivalSynths[line];
