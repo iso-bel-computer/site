@@ -6,35 +6,36 @@
 
 {% block content %}
 
-        <div id='imageContainer'>
-            <div id="imageWrapper">
-            <img class="mainImage" id="mainImage" src='{{url_for('static',
-                        filename='resources/images/art/' + artData[0].contenttype|lower + '/previews/' + artData[0].previewFile)}}'>
-            </div>
-            <div id="rightHandSideWrapper">
-                <div id="imageInfo">
-                    <h3 id="imageTitle">{{ artData[0].title|replace("-"," ")|replace("   "," - ") }}</h3>
-                    <i id="imageDate">{{ artData[0].date }}</i>
-                    <p id="imageDesc">{{ artData[0].description }}</p>
-                    <p id="counterContainer"><span id="counter">1</span> / <span>{{ artData|length }}</span></p>
-               </div>
-                <span id="navButtonWrapper">
-                    <button id="forwardsButton" class="navButtons">←</button>
-                    <a id="zoomButton" target="_blank">🔍</a>
-                    <button id="backwardsButton" class="navButtons">→</button>
-                </span>
-
-            </div>
+<div id='imageContainer'>
+    <div id="imageWrapper">
+    <img class="mainImage" id="mainImage" src='{{url_for('static',
+                filename='resources/images/art/' + artData[0].contenttype|lower + '/previews/' + artData[0].previewFile)}}'>
+    </div>
+    <div id="rightHandSideWrapper">
+        <div id="imageInfo">
+            <h3 id="imageTitle">{{ artData[0].title|replace("-"," ")|replace("   "," - ") }}</h3>
+            <i id="imageDate">{{ artData[0].date }}</i>
+            <p id="imageDesc">{{ artData[0].description }}</p>
+            <p id="counterContainer"><span id="counter">1</span> / <span>{{ artData|length }}</span></p>
         </div>
+        <span id="navButtonWrapper">
+            <button id="forwardsButton" class="navButtons">←</button>
+            <a id="zoomButton" target="_blank">🔍</a>
+            <button id="backwardsButton" class="navButtons">→</button>
+        </span>
 
-        <div id='thumbnailContainer'>
-        {% for imgObj in artData %}
-        <img class="thumbnail"
-             data-index={{ loop.index0 }}
-             src='{{url_for('static',
-                     filename='resources/images/art/' + imgObj.contenttype|lower + '/thumbnails/' + imgObj.thumbnailFile)}}'>
-        {% endfor %}
-        </div>
+    </div>
+</div>
+
+<div id='thumbnailContainer'>
+{% for imgObj in artData %}
+<img class="thumbnail"
+        data-index={{ loop.index0 }}
+        src='{{url_for('static',
+                filename='resources/images/art/' + imgObj.contenttype|lower + '/thumbnails/' + imgObj.thumbnailFile)}}'>
+{% endfor %}
+</div>
+
 <style>
 #imageWrapper {
     background:  url('{{ url_for("static", filename="resources/images/core/galleryBG.png") }}');
