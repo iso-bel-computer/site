@@ -13,7 +13,8 @@ var sites = [
     "https://synte.codeberg.page",
     "https://ana.help/",
     "https://solarpunklondon.neocities.org",
-    "https://stephanelambion.com"
+    "https://stephanelambion.com",
+    "https://calcuode.com"
 ];
 
 //the name of the ring
